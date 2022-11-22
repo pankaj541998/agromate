@@ -7,7 +7,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 
 class updatePassword extends StatefulWidget {
-  const updatePassword({super.key});
+  const updatePassword({Key? key}) : super(key: key);
 
   @override
   State<updatePassword> createState() => _updatePasswordState();

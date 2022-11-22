@@ -10,21 +10,21 @@ import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     debugPrint("root build");
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-
-      initialRoute: '/',
+      initialRoute: '/dashboard',
       getPages: [
         GetPage(name: '/', page: () => login()),
         GetPage(name: '/register', page: () => register()),
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/forgotPassword', page: () => forgotPassword()),
         GetPage(name: '/otpVerification', page: () => otpVerification()),
         GetPage(name: '/updatePassword', page: () => updatePassword()),
-        GetPage(name: '/dashboard', page: () => Dashboard()),
+        GetPage(name: '/dashboard', page: () => DashBoard()),
       ],
     );
   }
