@@ -1,9 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+import 'package:get/get.dart';
 
 class TopBar extends StatelessWidget {
   TopBar({Key? key}) : super(key: key);
 
   List<String> poplist = ['My Profile', 'Log Out'];
+  buildPin(context) {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                        size: 60,
+                        color: Color(0xFFFF0000),
+                        Icons.cancel_outlined),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "Are You Sure You want to logout?",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 160,
+                          child: TextButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        side: BorderSide(
+                                            color: Color(0xFF327C04))))),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                  fontSize: 17, color: Color(0XFF000000)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 160,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color(0xFF327C04)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ))),
+                            onPressed: () {
+                              Get.toNamed('/login');
+                            },
+                            child: Text('Logout'),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,51 +292,46 @@ class TopBar extends StatelessWidget {
                       'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png'),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 4.0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                  ),
-                  child: PopupMenuButton(
-                      offset: const Offset(0, 50),
-                      color: const Color(0xff327C04),
-                      tooltip: '',
-                      // elevation: 0,
-                      padding: const EdgeInsets.all(0),
-                      icon: const Icon(
+                    padding: const EdgeInsets.only(
+                      left: 4.0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                    ),
+                    child: PopupMenuButton(
+                      offset: Offset(0, 50),
+                      color: Color(0xFF327C04),
+                      icon: Icon(
                         Icons.keyboard_arrow_down,
                         color: Color(0xffffffff),
                       ),
                       onSelected: (value) {
-                        if (value == 'My Profile') {
-                          print('My Profile');
-                        } else {
-                          print('Logout');
+                        if (value == '/logout') {
+                          buildPin(context);
+                        } else if (value == "/myProfile") {
+                          Get.toNamed('/myprofile');
                         }
+                        ;
                       },
-                      itemBuilder: (BuildContext context) {
-                        return poplist
-                            .map(
-                              (e) => PopupMenuItem<int>(
-                                padding: const EdgeInsets.only(left: 20),
-                                height: 40,
-                                child: SizedBox(
-                                  width: 200,
-                                  child: Text(
-                                    e,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Poppins',
-                                      color: Color(0xffffffff),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList();
-                      }),
-                ),
+                      itemBuilder: (BuildContext bc) {
+                        return [
+                          PopupMenuItem(
+                            child: Text(
+                              "My profile",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            value: '/myProfile',
+                          ),
+                          PopupMenuItem(
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            value: '/logout',
+                          )
+                        ];
+                      },
+                    )),
               ],
             ),
           ],
