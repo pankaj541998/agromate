@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_agro_new/pages/home.dart';
+import 'package:flutter_agro_new/pages/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           body: Column(
-        children: [
+        children: const [
           DashBoard(),
         ],
       )),
