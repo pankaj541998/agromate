@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+import 'package:flutter_agro_new/pages/inventory.dart';
+import 'package:flutter_agro_new/pages/inventory_class_type.dart';
 
 import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
 import 'package:flutter_agro_new/pages/login_Registration/login.dart';
@@ -6,6 +9,9 @@ import 'package:flutter_agro_new/pages/login_Registration/otpVerification.dart';
 import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
+import 'package:flutter_agro_new/pages/stock_manager.dart';
+import 'package:flutter_agro_new/pages/stock_order.dart';
+import 'package:flutter_agro_new/pages/stock_planner.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
@@ -33,6 +39,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/otpVerification', page: () => otpVerification()),
         GetPage(name: '/updatePassword', page: () => updatePassword()),
         GetPage(name: '/dashboard', page: () => DashBoard()),
+        GetPage(name: '/inventory', page: () => Inventory()),
+        GetPage(name: '/stockplanner', page: () => StockPlanner()),
+        GetPage(name: '/stockmanager', page: () => StockManager()),
+        GetPage(name: '/stockorder', page: () => StockOrder()),
+        GetPage(name: '/classandtype', page: () => InventoryClassType()),
+        GetPage(name: '/modesofapplication', page: () => ModesOfApplication()),
       ],
     );
   }
