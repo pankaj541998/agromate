@@ -78,7 +78,7 @@ class _loginState extends State<login> {
                                 child: Checkbox(
                                   activeColor: Color(0xFF4E944F),
                                   checkColor: Colors.white,
-                                  shape: const RoundedRectangleBorder(
+                                  shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(5.0))),
                                   value: check,
@@ -97,7 +97,7 @@ class _loginState extends State<login> {
                             ],
                           ),
                           SizedBox(width: 10),
-                          TextButton(
+                          ElevatedButton(
                             onPressed: () {
                               Get.toNamed('/forgotPassword');
                             },

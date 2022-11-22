@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextInputField extends StatefulWidget {
   const TextInputField({
+    Key? key,
     this.validator,
     this.inputFormatters,
     required this.hintText,
@@ -9,8 +10,7 @@ class TextInputField extends StatefulWidget {
     this.textEditingController,
     this.leadingIcon,
     this.isInputPassword = false,
-    super.key,
-  });
+  }) : super(key: key);
 
   final dynamic validator;
   final TextEditingController? textEditingController;

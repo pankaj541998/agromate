@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class thankyou extends StatefulWidget {
-  const thankyou({super.key});
+  const thankyou({Key? key}) : super(key: key);
 
   @override
   State<thankyou> createState() => _thankyouState();

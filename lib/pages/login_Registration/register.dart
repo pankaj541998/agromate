@@ -5,7 +5,7 @@ import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
 
 class register extends StatefulWidget {
-  const register({super.key});
+  const register({Key? key}) : super(key: key);
 
   @override
   State<register> createState() => _registerState();

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class otpVerification extends StatefulWidget {
-  otpVerification({Key? key}) : super(key: key);
+  const otpVerification({Key? key}) : super(key: key);
 
   @override
   State<otpVerification> createState() => _otpVerificationState();
@@ -137,7 +137,7 @@ class _otpVerificationState extends State<otpVerification> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Didn't receive OTP ?"),
-                          TextButton(
+                          ElevatedButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Color(0xFF327C04)),
