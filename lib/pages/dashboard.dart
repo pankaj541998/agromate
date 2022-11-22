@@ -111,10 +111,12 @@ class DashBoardState extends State<DashBoard> {
                                             ),
                                           ),
                                         ),
-                                        const Padding(
-                                          padding: EdgeInsets.only(left: 8.0),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
                                           child: InkWell(
-                                            child: Text(
+                                            onTap: () {},
+                                            child: const Text(
                                               'View all',
                                               style: TextStyle(
                                                 fontSize: 14,
