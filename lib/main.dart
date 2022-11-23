@@ -17,6 +17,8 @@ import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
+import 'pages/crop-plan/add_crop_plan.dart';
+import 'pages/crop-plan/crop_plan.dart';
 import 'test.dart';
 
 void main() {
@@ -34,22 +36,26 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
+      initialRoute: '/add_crop_plan',
       getPages: [
         GetPage(name: '/', page: () => const login()),
         GetPage(name: '/register', page: () => const register()),
         GetPage(name: '/thankyou', page: () => const thankyou()),
         GetPage(name: '/forgotPassword', page: () => forgotPassword()),
-        GetPage(name: '/otpVerification', page: () => otpVerification()),
-        GetPage(name: '/updatePassword', page: () => updatePassword()),
-        GetPage(name: '/dashboard', page: () => DashBoard()),
+        GetPage(name: '/otpVerification', page: () => const otpVerification()),
+        GetPage(name: '/updatePassword', page: () => const updatePassword()),
+        GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
-        GetPage(name: '/inventory', page: () => Inventory()),
-        GetPage(name: '/stockplanner', page: () => StockPlanner()),
-        GetPage(name: '/stockmanager', page: () => StockManager()),
-        GetPage(name: '/stockorder', page: () => StockOrder()),
-        GetPage(name: '/classandtype', page: () => InventoryClassType()),
-        GetPage(name: '/modesofapplication', page: () => ModesOfApplication()),
+        GetPage(name: '/inventory', page: () => const Inventory()),
+        GetPage(name: '/stockplanner', page: () => const StockPlanner()),
+        GetPage(name: '/stockmanager', page: () => const StockManager()),
+        GetPage(name: '/stockorder', page: () => const StockOrder()),
+        GetPage(name: '/classandtype', page: () => const InventoryClassType()),
+        GetPage(name: '/crop_plan', page: () => const CropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
+        GetPage(
+            name: '/modesofapplication',
+            page: () => const ModesOfApplication()),
       ],
     );
   }
