@@ -28,7 +28,7 @@ class TopBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Image(
-              image: AssetImage('/image/dashborad_logo.png'),
+              image: AssetImage('/images/dashborad_logo.png'),
               height: 40,
             ),
             Row(

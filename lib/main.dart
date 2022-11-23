@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
+import 'test.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -24,15 +26,16 @@ class MyApp extends StatelessWidget {
     debugPrint("root build");
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',
+      initialRoute: '/test',
       getPages: [
-        GetPage(name: '/', page: () => login()),
-        GetPage(name: '/register', page: () => register()),
-        GetPage(name: '/thankyou', page: () => thankyou()),
+        GetPage(name: '/', page: () => const login()),
+        GetPage(name: '/register', page: () => const register()),
+        GetPage(name: '/thankyou', page: () => const thankyou()),
         GetPage(name: '/forgotPassword', page: () => forgotPassword()),
-        GetPage(name: '/otpVerification', page: () => otpVerification()),
-        GetPage(name: '/updatePassword', page: () => updatePassword()),
-        GetPage(name: '/dashboard', page: () => DashBoard()),
+        GetPage(name: '/otpVerification', page: () => const otpVerification()),
+        GetPage(name: '/updatePassword', page: () => const updatePassword()),
+        GetPage(name: '/dashboard', page: () => const DashBoard()),
+        GetPage(name: '/test', page: () => const Charts()),
       ],
     );
   }
