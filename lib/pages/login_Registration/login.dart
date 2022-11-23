@@ -118,7 +118,9 @@ class _loginState extends State<login> {
                         width: 500,
                         child: customElevatedButton(
                           title: 'Log in',
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed('/dashboard');
+                          },
                         ))
                   ],
                 ),
