@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
+import 'package:flutter_agro_new/pages/login_Registration/otpVerification.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../../services/otp_api.dart';
 
 class forgotPassword extends StatefulWidget {
   forgotPassword({Key? key}) : super(key: key);
@@ -11,6 +18,35 @@ class forgotPassword extends StatefulWidget {
 }
 
 class _forgotPasswordState extends State<forgotPassword> {
+  final email = TextEditingController();
+
+  Future<void> otpSendData() async {
+    print("reached");
+    Map<String, dynamic> updata = {
+      "email": email.text,
+    };
+
+    http.Response response = await OTPServices().otp(updata);
+    Map responseMap = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      print("go to otp now");
+      Get.toNamed('/otpVerification');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => otpVerification(
+            email: email.text,
+          ),
+        ),
+      );
+    } else {
+      Flushbar(
+        duration: const Duration(seconds: 2),
+        message: responseMap.values.first,
+      ).show(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +99,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                       height: 25,
                     ),
                     TextInputField(
+                      textEditingController: email,
                       leadingIcon: Icon(
                         Icons.email_outlined,
                         color: Color(0xFFA1B809),
@@ -88,7 +125,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                       child: customElevatedButton(
                         title: 'Send Mail',
                         onPressed: () {
-                          Get.toNamed('/otpVerification');
+                          otpSendData();
                         },
                       ),
                     ),
