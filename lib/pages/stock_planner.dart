@@ -4,7 +4,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
 
 class StockPlanner extends StatefulWidget {
-  const StockPlanner({super.key});
+  const StockPlanner({Key? key}) : super(key: key);
 
   @override
   State<StockPlanner> createState() => _StockPlannerState();

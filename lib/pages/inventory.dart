@@ -3,7 +3,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
 class Inventory extends StatefulWidget {
-  const Inventory({super.key});
+  const Inventory({Key? key}) : super(key: key);
 
   @override
   State<Inventory> createState() => _InventoryState();

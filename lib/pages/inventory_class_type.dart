@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
 class InventoryClassType extends StatefulWidget {
-  const InventoryClassType({super.key});
+  const InventoryClassType({Key? key}) : super(key: key);
 
   @override
   State<InventoryClassType> createState() => _InventoryClassTypeState();

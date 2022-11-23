@@ -1,5 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
-import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+// import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:get/get.dart';
 
 class TopBar extends StatelessWidget {
@@ -19,19 +21,20 @@ class TopBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                        size: 60,
-                        color: Color(0xFFFF0000),
-                        Icons.cancel_outlined),
-                    SizedBox(
+                    const Icon(
+                      Icons.cancel_outlined,
+                      size: 60,
+                      color: Color(0xFFFF0000),
+                    ),
+                    const SizedBox(
                       height: 30,
                     ),
-                    Text(
+                    const Text(
                       "Are You Sure You want to logout?",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Row(
@@ -39,26 +42,31 @@ class TopBar extends StatelessWidget {
                         SizedBox(
                           height: 40,
                           width: 160,
-                          child: TextButton(
+                          child: ElevatedButton(
                             style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        side: BorderSide(
-                                            color: Color(0xFF327C04))))),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: const BorderSide(
+                                    color: Color(0xFF327C04),
+                                  ),
+                                ),
+                              ),
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(
+                            child: const Text(
                               'Cancel',
                               style: TextStyle(
-                                  fontSize: 17, color: Color(0XFF000000)),
+                                fontSize: 17,
+                                color: Color(0XFF000000),
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
                         SizedBox(
@@ -68,7 +76,8 @@ class TopBar extends StatelessWidget {
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color(0xFF327C04)),
+                                  const Color(0xFF327C04),
+                                ),
                                 shape: MaterialStateProperty.all<
                                         RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
@@ -77,7 +86,7 @@ class TopBar extends StatelessWidget {
                             onPressed: () {
                               Get.toNamed('/login');
                             },
-                            child: Text('Logout'),
+                            child: const Text('Logout'),
                           ),
                         )
                       ],

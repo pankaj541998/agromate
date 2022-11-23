@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
 class StockManager extends StatefulWidget {
-  const StockManager({super.key});
+  const StockManager({Key? key}) : super(key: key);
 
   @override
   State<StockManager> createState() => _StockManagerState();

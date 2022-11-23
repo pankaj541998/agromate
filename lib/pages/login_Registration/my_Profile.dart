@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
@@ -15,7 +17,6 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
       initialIndex: widget.initial ?? 0,
       length: 2,
@@ -54,8 +55,12 @@ class _MyProfileState extends State<MyProfile> {
                     elevation: 0,
                     backgroundColor: Colors.white,
                     leading: IconButton(
-                        onPressed: () {},
-                        icon: Icon(color: Colors.black, Icons.arrow_back)),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Color(0xff000000),
+                      ),
+                    ),
                   ),
                 ),
               ),

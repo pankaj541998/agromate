@@ -43,9 +43,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/otpVerification', page: () => otpVerification()),
         GetPage(name: '/updatePassword', page: () => updatePassword()),
         GetPage(name: '/dashboard', page: () => DashBoard()),
-
         GetPage(name: '/myprofile', page: () => MyProfile()),
-
         GetPage(name: '/inventory', page: () => Inventory()),
         GetPage(name: '/stockplanner', page: () => StockPlanner()),
         GetPage(name: '/stockmanager', page: () => StockManager()),
