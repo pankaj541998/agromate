@@ -1,19 +1,51 @@
+import 'dart:convert';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
+import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:http/http.dart' as http;
+import '../../services/otp_api.dart';
 
 class otpVerification extends StatefulWidget {
-  const otpVerification({Key? key}) : super(key: key);
+  otpVerification({Key? key, this.email}) : super(key: key);
 
   @override
   State<otpVerification> createState() => _otpVerificationState();
+  final String? email;
 }
 
 class _otpVerificationState extends State<otpVerification> {
   final otp = TextEditingController();
+
+  Future<void> otpSend() async {
+    print(widget.email);
+    Map<String, dynamic> updata = {
+      "email": widget.email,
+      "otp": otp.text,
+    };
+
+    http.Response response = await OTPServices().verifyOTP(updata);
+    Map responseMap = jsonDecode(response.body);
+    print("response is $responseMap");
+    if (response.statusCode == 200) {
+      Get.toNamed('/updatePassword');
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => updatePassword(email: widget.email)));
+    } else {
+      Flushbar(
+        message: responseMap.values.last.toString(),
+        duration: const Duration(seconds: 2),
+      ).show(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +156,7 @@ class _otpVerificationState extends State<otpVerification> {
                       child: customElevatedButton(
                         title: "Submit OTP",
                         onPressed: () {
-                          Get.toNamed('/updatePassword');
+                          otpSend();
                         },
                       ),
                     ),
