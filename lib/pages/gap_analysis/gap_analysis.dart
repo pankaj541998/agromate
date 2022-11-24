@@ -45,11 +45,11 @@ class _GapAnalysisState extends State<GapAnalysis> {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
-                    GestureDetector(
-                      onTap: () {
+                    IconButton(
+                      onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      icon: Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -71,22 +71,24 @@ class _GapAnalysisState extends State<GapAnalysis> {
                               // ignore: prefer_const_literals_to_create_immutables
                             ),
                             SizedBox(
-                              height: 60,
+                              height: 40,
                               width: 330,
                               child: DropdownButtonFormField(
                                 focusColor: Colors.white,
                                 isExpanded: true,
                                 decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFFA1B809)),
+                                        color: Color(0xFF327C04)),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFFA1B809)),
+                                        color: Color(0xFF327C04)),
                                   ),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -125,20 +127,22 @@ class _GapAnalysisState extends State<GapAnalysis> {
                               height: 10,
                             ),
                             SizedBox(
-                              height: 60,
+                              height: 40,
                               width: 330,
                               child: TextFormField(
                                 maxLines: 3,
                                 decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFFA1B809)),
+                                        color: Color(0xFF327C04)),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: const BorderSide(
-                                        color: Color(0xFFA1B809)),
+                                        color: Color(0xFF327C04)),
                                   ),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -471,7 +475,7 @@ class Question extends StatelessWidget {
                 onTap: () {},
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFFA1B809)),
+                      side: BorderSide(color: Color(0xFF327C04)),
                       borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
@@ -489,7 +493,7 @@ class Question extends StatelessWidget {
                 onTap: () {},
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFFA1B809)),
+                      side: BorderSide(color: Color(0xFF327C04)),
                       borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
@@ -507,7 +511,7 @@ class Question extends StatelessWidget {
                 onTap: () {},
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFFA1B809)),
+                      side: BorderSide(color: Color(0xFF327C04)),
                       borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),

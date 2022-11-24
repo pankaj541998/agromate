@@ -50,8 +50,8 @@ class _MyProfileState extends State<MyProfile> {
                                 TextStyle(color: Color(0xFF6B6B6B)),
                             labelStyle: TextStyle(
                               color: Color(0xFF000000),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20,
                             ),
                             tabs: [
                               Tab(
@@ -130,11 +130,12 @@ class _profileState extends State<profile> {
               Expanded(
                 flex: 1,
                 child: Column(
-                  children: const [
+                  children: [
                     SizedBox(
                       height: 30,
                     ),
                     CircleAvatar(
+                      child: Image.asset("assets/images/profilepic.png"),
                       radius: 72.5,
                     ),
                     SizedBox(
@@ -167,7 +168,7 @@ class _profileState extends State<profile> {
                       height: 15,
                     ),
                     const SizedBox(
-                        height: 50,
+                        height: 40,
                         width: 353,
                         child: TextInputField(
                             hintText: "Username", validatorText: "")),
@@ -183,7 +184,7 @@ class _profileState extends State<profile> {
                       height: 15,
                     ),
                     SizedBox(
-                        height: 50,
+                        height: 40,
                         width: 353,
                         child: TextInputField(
                             hintText: "Email Address", validatorText: "")),
@@ -191,7 +192,7 @@ class _profileState extends State<profile> {
                       height: 35,
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 40,
                       width: 353,
                       child: customElevatedButton(
                         onPressed: () {},
@@ -218,7 +219,7 @@ class _profileState extends State<profile> {
                       height: 15,
                     ),
                     SizedBox(
-                        height: 50,
+                        height: 40,
                         width: 353,
                         child: TextInputField(
                             hintText: "Full Name", validatorText: "")),
@@ -234,7 +235,7 @@ class _profileState extends State<profile> {
                       height: 15,
                     ),
                     SizedBox(
-                        height: 50,
+                        height: 40,
                         width: 353,
                         child: TextInputField(
                             hintText: "Phone Number", validatorText: "")),
@@ -274,7 +275,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 width: 15,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.67,
                 child: Divider(
                   color: Color(0xFF327C04),
                   thickness: 1,
@@ -293,7 +294,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             height: 15,
           ),
           SizedBox(
-            height: 50,
+            height: 40,
             width: 353,
             child: TextInputField(
               hintText: "Enter Current Password",
@@ -312,7 +313,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             height: 15,
           ),
           SizedBox(
-            height: 50,
+            height: 40,
             width: 353,
             child: TextInputField(
               hintText: "Enter New Password",
@@ -331,7 +332,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             height: 15,
           ),
           SizedBox(
-            height: 50,
+            height: 40,
             width: 353,
             child: TextInputField(
               hintText: "Confirm New Password",
@@ -343,7 +344,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             height: 30,
           ),
           SizedBox(
-            height: 50,
+            height: 40,
             width: 353,
             child: customElevatedButton(
               onPressed: () {},

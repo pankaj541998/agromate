@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -170,6 +171,7 @@ class _registerState extends State<register> {
                         height: 20,
                       ),
                       TextInputField(
+                          leadingIcon: Image.asset(""),
                           textEditingController: phonenumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {

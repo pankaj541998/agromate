@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+import 'package:flutter_agro_new/pages/farms/select_block.dart';
+import 'package:flutter_agro_new/pages/farms/select_field.dart';
+
+import 'package:flutter_agro_new/pages/farms/view_farm.dart';
+import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
+import 'package:flutter_agro_new/pages/growth_stages/growth_stage_details.dart';
+import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
 import 'package:flutter_agro_new/pages/inventory.dart';
 import 'package:flutter_agro_new/pages/inventory_class_type.dart';
 
@@ -25,6 +32,7 @@ import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
+import 'pages/farms/select_plot.dart';
 import 'test.dart';
 
 void main() {
@@ -58,6 +66,18 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/stockorder', page: () => StockOrder()),
         GetPage(name: '/classandtype', page: () => InventoryClassType()),
         GetPage(name: '/modesofapplication', page: () => ModesOfApplication()),
+        GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
+        GetPage(name: '/growthstage', page: () => GrowthStage()),
+        GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
+        GetPage(name: '/crop_plan', page: () => CropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
+        GetPage(name: '/grid_view_crop', page: () => Crop()),
+        GetPage(name: '/table_view_crop', page: () => TableViewCrop()),
+        GetPage(name: '/view_details', page: () => ViewDetails()),
+        GetPage(name: '/view_farm', page: () => ViewFarm()),
+        GetPage(name: '/select_plot', page: () => SelectPlot()),
+        GetPage(name: '/select_block', page: () => SelectBlock()),
+        GetPage(name: '/select_field', page: () => SelectField()),
       ],
     );
   }

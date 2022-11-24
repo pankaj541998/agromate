@@ -139,7 +139,7 @@ class _loginState extends State<login> {
                               ],
                             ),
                             SizedBox(width: 10),
-                            ElevatedButton(
+                            TextButton(
                               onPressed: () {
                                 Get.toNamed('/forgotPassword');
                               },

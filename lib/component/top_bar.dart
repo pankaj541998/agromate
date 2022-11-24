@@ -202,7 +202,10 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/view_farm');
+                  },
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],

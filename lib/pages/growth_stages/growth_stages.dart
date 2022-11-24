@@ -30,12 +30,18 @@ class _GrowthStageState extends State<GrowthStage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Add New Growth Stage",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.cancel_outlined))
                       ],
                     ),
                     SizedBox(
@@ -56,7 +62,7 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 50,
+                                height: 40,
                                 width: 300,
                                 child: TextDropdown(
                                     items: const ['Onion', 'Potato', 'Carrot'],
@@ -80,7 +86,7 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 50,
+                                height: 40,
                                 width: 300,
                                 child: TextInputField(
                                     hintText: "", validatorText: ""))
@@ -155,7 +161,7 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 50,
+                                height: 40,
                                 width: 300,
                                 child: TextDropdown(
                                     items: const ['Onion', 'Potato', 'Carrot'],
@@ -179,7 +185,7 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 50,
+                                height: 40,
                                 width: 300,
                                 child: TextDropdown(
                                     items: const ['Onion', 'Potato', 'Carrot'],
@@ -368,7 +374,7 @@ class _TextDropdownState extends State<TextDropdown> {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: 40,
           child: TextFormField(
             readOnly: true,
             onChanged: widget.onInput,
