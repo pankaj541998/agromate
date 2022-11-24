@@ -15,16 +15,16 @@ class _ViewFarmState extends State<ViewFarm> {
   late String _selectedValue2;
   late String _selectedValue3;
   List<String> listOfValue = [
-    'Kishan',
-    'Kishan',
-    'Kishan',
-    'Kishan',
+    'Kishan 1',
+    'Kishan 2',
+    'Kishan 3',
+    'Kishan 4',
   ];
   List<String> listOfValue1 = [
-    'VARKPLAAS',
-    'VARKPLAAS',
-    'VARKPLAAS',
-    'VARKPLAAS',
+    'VARKPLAAS 1',
+    'VARKPLAAS 2',
+    'VARKPLAAS 3',
+    'VARKPLAAS 4',
   ];
   List<String> listOfValue2 = [
     'A',

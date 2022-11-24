@@ -16,6 +16,26 @@ class GrowthStage extends StatefulWidget {
 final crop = TextEditingController();
 
 class _GrowthStageState extends State<GrowthStage> {
+  late String _selectedValue1;
+  late String _selectedValue2;
+  late String _selectedValue3;
+  List<String> listOfValue2 = [
+    'Week 1',
+    'Week 2',
+    'Week 3',
+    'Week 4',
+  ];
+  List<String> listOfValue3 = [
+    'Week 1',
+    'Week 2',
+    'Week 3',
+    'Week 4',
+  ];
+  List<String> listOfValue1 = [
+    'Onion',
+    'carrot',
+    'potato',
+  ];
   buildPin(context) {
     return showDialog(
       context: context,
@@ -62,12 +82,50 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 40,
-                                width: 300,
-                                child: TextDropdown(
-                                    items: const ['Onion', 'Potato', 'Carrot'],
-                                    controller: crop,
-                                    showDropDown: true))
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                hint: Text("Select Crop"),
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue1.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue2;
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -117,12 +175,12 @@ class _GrowthStageState extends State<GrowthStage> {
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide:
-                                  const BorderSide(color: Color(0xFFA1B809)),
+                                  const BorderSide(color: Color(0xFF327C04)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide:
-                                  const BorderSide(color: Color(0xFFA1B809)),
+                                  const BorderSide(color: Color(0xFF327C04)),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -161,12 +219,50 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 40,
-                                width: 300,
-                                child: TextDropdown(
-                                    items: const ['Onion', 'Potato', 'Carrot'],
-                                    controller: crop,
-                                    showDropDown: true))
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                hint: Text("Select Week"),
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue2.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue2;
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -185,12 +281,50 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                                height: 40,
-                                width: 300,
-                                child: TextDropdown(
-                                    items: const ['Onion', 'Potato', 'Carrot'],
-                                    controller: crop,
-                                    showDropDown: true))
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                hint: Text("Select Week"),
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue3.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue2;
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ],

@@ -90,6 +90,8 @@ class _updatePasswordState extends State<updatePassword> {
                       height: 30,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "New Password",
                       validatorText: "validatorText",
                       textEditingController: passwordcontroller,
@@ -123,6 +125,8 @@ class _updatePasswordState extends State<updatePassword> {
                       height: 18,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "Confirm New Password",
                       validatorText: "",
                       validator: (value) {

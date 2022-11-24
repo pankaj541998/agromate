@@ -77,6 +77,11 @@ class _loginState extends State<login> {
                         height: 32,
                       ),
                       TextInputField(
+                        leadingIcon: Image.asset(
+                          "assets/images/username.png",
+                          height: 30,
+                          width: 30,
+                        ),
                         textEditingController: username,
                         validator: (value) {
                           if (value != null && value.isEmpty) {
@@ -91,6 +96,11 @@ class _loginState extends State<login> {
                         height: 30,
                       ),
                       TextInputField(
+                          leadingIcon: Image.asset(
+                            "assets/images/password.png",
+                            height: 30,
+                            width: 30,
+                          ),
                           textEditingController: password,
                           validator: (value) {
                             if (value != null && value.isEmpty) {
