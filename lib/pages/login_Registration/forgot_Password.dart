@@ -100,10 +100,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                     ),
                     TextInputField(
                       textEditingController: email,
-                      leadingIcon: Icon(
-                        Icons.email_outlined,
-                        color: Color(0xFFA1B809),
-                      ),
+                      leadingIcon: Image.asset("assets/images/email.png"),
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||

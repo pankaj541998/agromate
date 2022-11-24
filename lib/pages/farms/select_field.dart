@@ -280,7 +280,7 @@ class _SelectFieldState extends State<SelectField> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Get.toNamed('/view_farm');
                                   },
                                   child: const Text(
                                     'Submit Plot',
