@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
-import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
-import 'package:flutter_agro_new/pages/growth_stages/growth_stage_details.dart';
-import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
 import 'package:flutter_agro_new/pages/inventory.dart';
 import 'package:flutter_agro_new/pages/inventory_class_type.dart';
 
@@ -15,12 +12,19 @@ import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
 import 'package:flutter_agro_new/pages/stock_manager.dart';
+import 'package:flutter_agro_new/pages/stock_manager_table.dart';
 import 'package:flutter_agro_new/pages/stock_order.dart';
 import 'package:flutter_agro_new/pages/stock_planner.dart';
+import 'package:flutter_agro_new/pages/stock_planner_table.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
+import 'pages/crop-plan/add_crop_plan.dart';
+import 'pages/crop-plan/crop_plan.dart';
+import 'pages/crop/grid_view_crop.dart';
+import 'pages/crop/table_view_crop.dart';
+import 'pages/crop/view_details.dart';
 import 'test.dart';
 
 void main() {
@@ -45,8 +49,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/thankyou', page: () => const thankyou()),
         GetPage(name: '/forgotPassword', page: () => forgotPassword()),
         GetPage(name: '/otpVerification', page: () => otpVerification()),
-        GetPage(name: '/updatePassword', page: () => updatePassword()),
-        GetPage(name: '/dashboard', page: () => DashBoard()),
+        GetPage(name: '/updatePassword', page: () => const updatePassword()),
+        GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
         GetPage(name: '/inventory', page: () => Inventory()),
         GetPage(name: '/stockplanner', page: () => StockPlanner()),
@@ -54,10 +58,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/stockorder', page: () => StockOrder()),
         GetPage(name: '/classandtype', page: () => InventoryClassType()),
         GetPage(name: '/modesofapplication', page: () => ModesOfApplication()),
-        GetPage(name: '/growthstage', page: () => GrowthStage()),
-        GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
-        GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
-        GetPage(name: '/popup', page: () => popUp()),
       ],
     );
   }

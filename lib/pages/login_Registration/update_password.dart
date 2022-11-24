@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -5,9 +8,14 @@ import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+
+import '../../services/auth_api.dart';
 
 class updatePassword extends StatefulWidget {
-  const updatePassword({Key? key}) : super(key: key);
+  const updatePassword({Key? key, this.email}) : super(key: key);
+
+  final String? email;
 
   @override
   State<updatePassword> createState() => _updatePasswordState();
@@ -17,6 +25,26 @@ class _updatePasswordState extends State<updatePassword> {
   final TextEditingController controller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
   bool success = false;
+
+  Future<void> updatePasword() async {
+    Map<String, dynamic> updata = {
+      "email": widget.email,
+      "password": passwordcontroller.text,
+    };
+
+    http.Response response = await AuthServices.changePassword(updata);
+    Map responseMap = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      AuthServices.changePassword(updata);
+      Get.toNamed('/login');
+    } else {
+      Flushbar(
+        message: responseMap.values.first,
+        duration: const Duration(seconds: 3),
+      ).show(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +145,7 @@ class _updatePasswordState extends State<updatePassword> {
                       child: customElevatedButton(
                         title: "Update Password",
                         onPressed: () {
-                          Get.toNamed('/login');
+                          updatePasword();
                         },
                       ),
                     ),

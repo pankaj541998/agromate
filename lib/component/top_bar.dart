@@ -133,6 +133,7 @@ class TopBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
+                  onTap: () => Get.toNamed('/dashboard'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -157,14 +158,16 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Task',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 GestureDetector(
+                  onTap: () => Get.toNamed('/crop_plan'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -173,14 +176,16 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Crop Plans',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 GestureDetector(
+                  onTap: () => Get.toNamed('/grid_view_crop'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -189,9 +194,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Crop',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -205,9 +211,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Farms',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -221,9 +228,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Inventory',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -240,9 +248,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Growth Stage',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -259,9 +268,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'GAP Analysis',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -275,9 +285,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'User',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -291,9 +302,10 @@ class TopBar extends StatelessWidget {
                       child: Text(
                         'Allocation',
                         style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff)),
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: Color(0xffffffff),
+                        ),
                       ),
                     ),
                   ),
@@ -316,9 +328,9 @@ class TopBar extends StatelessWidget {
                       bottom: 0,
                     ),
                     child: PopupMenuButton(
-                      offset: Offset(0, 50),
-                      color: Color(0xFF327C04),
-                      icon: Icon(
+                      offset: const Offset(0, 50),
+                      color: const Color(0xFF327C04),
+                      icon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: Color(0xffffffff),
                       ),
@@ -332,14 +344,14 @@ class TopBar extends StatelessWidget {
                       },
                       itemBuilder: (BuildContext bc) {
                         return [
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             child: Text(
                               "My profile",
                               style: TextStyle(color: Colors.white),
                             ),
                             value: '/myProfile',
                           ),
-                          PopupMenuItem(
+                          const PopupMenuItem(
                             child: Text(
                               "Logout",
                               style: TextStyle(color: Colors.white),
