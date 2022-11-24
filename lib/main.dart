@@ -23,10 +23,12 @@ import 'package:flutter_agro_new/pages/stock_manager_table.dart';
 import 'package:flutter_agro_new/pages/stock_order.dart';
 import 'package:flutter_agro_new/pages/stock_planner.dart';
 import 'package:flutter_agro_new/pages/stock_planner_table.dart';
+import 'package:flutter_agro_new/pages/user.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
+import 'pages/add_stock.dart';
 import 'pages/crop-plan/add_crop_plan.dart';
 import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
+      initialRoute: '/user',
       getPages: [
         GetPage(name: '/', page: () => const login()),
         GetPage(name: '/register', page: () => const register()),
@@ -61,11 +63,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
         GetPage(name: '/inventory', page: () => Inventory()),
-        GetPage(name: '/stockplanner', page: () => StockPlanner()),
-        GetPage(name: '/stockmanager', page: () => StockManager()),
-        GetPage(name: '/stockorder', page: () => StockOrder()),
-        GetPage(name: '/classandtype', page: () => InventoryClassType()),
-        GetPage(name: '/modesofapplication', page: () => ModesOfApplication()),
         GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
         GetPage(name: '/growthstage', page: () => GrowthStage()),
         GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
@@ -78,6 +75,25 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/select_plot', page: () => SelectPlot()),
         GetPage(name: '/select_block', page: () => SelectBlock()),
         GetPage(name: '/select_field', page: () => SelectField()),
+        GetPage(name: '/inventory', page: () => const Inventory()),
+        GetPage(name: '/stockplanner', page: () => const StockPlanner()),
+        GetPage(
+            name: '/stockplannertable', page: () => const StockPlannerTable()),
+        GetPage(name: '/stockmanager', page: () => const StockManager()),
+        GetPage(
+            name: '/stockmanagertable', page: () => const StockManagerTable()),
+        GetPage(name: '/addstock', page: () => const AddStock()),
+        GetPage(name: '/stockorder', page: () => const StockOrder()),
+        GetPage(name: '/classandtype', page: () => const InventoryClassType()),
+        GetPage(name: '/crop_plan', page: () => const CropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
+        GetPage(name: '/grid_view_crop', page: () => const Crop()),
+        GetPage(name: '/view_details', page: () => const ViewDetails()),
+        GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),
+        GetPage(
+            name: '/modesofapplication',
+            page: () => const ModesOfApplication()),
+        GetPage(name: '/user', page: () => User()),
       ],
     );
   }

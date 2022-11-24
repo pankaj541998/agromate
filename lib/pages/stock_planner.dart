@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 import '../component/custom_Elevated_Button.dart';
 
@@ -17,6 +19,16 @@ class StockPlanner extends StatefulWidget {
 }
 
 class _StockPlannerState extends State<StockPlanner> {
+  final TextEditingController _date = TextEditingController();
+  final format = DateFormat("dd-MM-yyyy");
+  String questionsSelected = 'Select Your Question *';
+  var questions = [
+    'Select Your Question *',
+    'Question 1',
+    'Question 2',
+    'Question 3',
+    'Question 4',
+  ];
   var currentDate = DateTime.now();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -26,7 +38,7 @@ class _StockPlannerState extends State<StockPlanner> {
   String? weeks;
   TextEditingController controller = TextEditingController();
 
-  buildPinAlertDialog() {
+  buildPinAlertDialog(screenSize) {
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -46,7 +58,7 @@ class _StockPlannerState extends State<StockPlanner> {
                     Text(
                       "Add New Stock",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -68,15 +80,11 @@ class _StockPlannerState extends State<StockPlanner> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Unit Cost",
-                            style: TextStyle(fontSize: 18),
-                          ),
                           SizedBox(
                             height: 10,
                           ),
                           Image.asset(
-                              height: 70, "assets/images/Group 6740.png"),
+                              height: 70, "assets/images/Group6740.png"),
                         ],
                       ),
                       SizedBox(
@@ -84,128 +92,208 @@ class _StockPlannerState extends State<StockPlanner> {
                       ),
                       Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Warehouse",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
+                          SizedBox(
+                            width: screenSize.width * 0.21,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Select Warehouse',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xff000000),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                TextFormField(
+                                  // initialValue: 'enter heritage',
+                                  style: const TextStyle(
+                                    // color: Color(0xffffffff),
+                                    fontFamily: 'Helvetica',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  // readOnly: true,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
                                   decoration: InputDecoration(
+                                    fillColor: Colors.transparent,
+                                    errorMaxLines: 3,
+                                    hintText: "Enter Warehouse",
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 15,
+                                        bottom: 15),
+                                    hintStyle: const TextStyle(
+                                      fontSize: 16,
+                                      // color: const Color(0xffffffff).withOpacity(0.8),
+                                      fontFamily: 'Helvetica',
+                                    ),
+                                    // fillColor: Colors.white,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Warehouse',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                    errorStyle: const TextStyle(
+                                      fontSize: 16.0,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
+                                    isDense: true,
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Warehouse";
-                                    }
-                                    return null;
-                                  },
+                                  // controller: _email,
+                                  keyboardType: TextInputType.text,
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return 'Please enter your email Id';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  // onSaved: (name) {},
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 25,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Start Date",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
+                          SizedBox(
+                            width: screenSize.width * 0.21,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'End Date',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xff000000),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                DateTimeField(
+                                  cursorColor: const Color(0xff000000),
                                   decoration: InputDecoration(
+                                    errorMaxLines: 3,
+                                    hintText: "Date",
+                                    contentPadding: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                      left: 10,
+                                      right: 10,
+                                    ),
+                                    hintStyle: const TextStyle(
+                                      fontSize: 16,
+                                      // color: const Color(0xff161723).withOpacity(0.5),
+                                      // fontFamily: 'Helvetica',
+                                    ),
+                                    // fillColor: Colors.white,
+                                    filled: true,
+                                    fillColor: Colors.transparent,
+                                    suffixIcon: const Icon(
+                                      CupertinoIcons.calendar_today,
+                                      color: Color(0xff327C04),
+                                      size: 25,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Start Date',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                    errorStyle: const TextStyle(
+                                      fontSize: 16.0,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
+                                    isDense: true,
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Start Date";
-                                    }
-                                    return null;
+                                  format: format,
+                                  onShowPicker: (context, currentValue) {
+                                    return showDatePicker(
+                                      helpText: 'Select Date',
+                                      context: context,
+                                      firstDate: DateTime(1970),
+                                      // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                      initialDate: currentValue ??
+                                          DateTime.now().subtract(
+                                              const Duration(days: 4745)),
+                                      // lastDate: DateTime(2100));
+                                      lastDate: DateTime.now(),
+                                      builder: (BuildContext context,
+                                          Widget? child) {
+                                        return Theme(
+                                          data: ThemeData.dark().copyWith(
+                                            colorScheme: const ColorScheme.dark(
+                                              primary: Color(0xff327C04),
+                                              // onPrimary: Colors.black,
+                                              surface: Color(0xff327C04),
+                                              // onSurface: Color(0xff000000),
+                                            ),
+                                            dialogBackgroundColor:
+                                                const Color(0xff000000),
+                                          ),
+                                          child: child!,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (date) => date == null
+                                      ? 'Date of birth is required'
+                                      : null,
+                                  onChanged: (date) {
+                                    setState(() {});
                                   },
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 25,
@@ -213,132 +301,186 @@ class _StockPlannerState extends State<StockPlanner> {
                         ],
                       ),
                       SizedBox(
-                        height: 0,
+                        height: 20,
                       ),
                       Row(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Stock Name",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
+                          SizedBox(
+                            width: screenSize.width * 0.21,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Stock Name',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xff000000),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                TextFormField(
+                                  // initialValue: 'enter heritage',
+                                  style: const TextStyle(
+                                    // color: Color(0xffffffff),
+                                    fontFamily: 'Helvetica',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  // readOnly: true,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
                                   decoration: InputDecoration(
+                                    fillColor: Colors.transparent,
+                                    errorMaxLines: 3,
+                                    hintText: "Enter Stock Name",
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 15,
+                                        bottom: 15),
+                                    hintStyle: const TextStyle(
+                                      fontSize: 16,
+                                      // color: const Color(0xffffffff).withOpacity(0.8),
+                                      fontFamily: 'Helvetica',
+                                    ),
+                                    // fillColor: Colors.white,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Stock Name',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                    errorStyle: const TextStyle(
+                                      fontSize: 16.0,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
+                                    isDense: true,
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Stock Name";
-                                    }
-                                    return null;
-                                  },
+                                  // controller: _email,
+                                  keyboardType: TextInputType.text,
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return 'Please enter your email Id';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  // onSaved: (name) {},
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 25,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Quantity",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
+                          SizedBox(
+                            width: screenSize.width * 0.21,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Enter Quantity',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xff000000),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                TextFormField(
+                                  // initialValue: 'enter heritage',
+                                  style: const TextStyle(
+                                    // color: Color(0xffffffff),
+                                    fontFamily: 'Helvetica',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  // readOnly: true,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
                                   decoration: InputDecoration(
+                                    fillColor: Colors.transparent,
+                                    errorMaxLines: 3,
+                                    hintText: "Enter Quantity",
+                                    contentPadding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 15,
+                                        bottom: 15),
+                                    hintStyle: const TextStyle(
+                                      fontSize: 16,
+                                      // color: const Color(0xffffffff).withOpacity(0.8),
+                                      fontFamily: 'Helvetica',
+                                    ),
+                                    // fillColor: Colors.white,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
                                     errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Quantity',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                    errorStyle: const TextStyle(
+                                      fontSize: 16.0,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Color(0xff327C04),
+                                      ),
+                                    ),
+                                    isDense: true,
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Quantity";
-                                    }
-                                    return null;
-                                  },
+                                  // controller: _email,
+                                  keyboardType: TextInputType.text,
+                                  // validator: (value) {
+                                  //   if (value == null || value.isEmpty) {
+                                  //     return 'Please enter your email Id';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  // onSaved: (name) {},
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             width: 25,
@@ -350,7 +492,7 @@ class _StockPlannerState extends State<StockPlanner> {
                       ),
                       SizedBox(
                         height: 40,
-                        width: 298,
+                        width: screenSize.width * 0.21,
                         child: customElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -391,39 +533,94 @@ class _StockPlannerState extends State<StockPlanner> {
                           onTap: () => Navigator.pop(context),
                           child: Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      InkWell(
-                        onTap: () => Get.toNamed('/stockplannertable'),
-                        child: Text(
-                          'Stock Planner',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        'Stock Planner',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff000000),
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: screenSize.width * 0.02),
-                      ToggleButtons(
-                        onPressed: (int index) {
-                          setState(() {
-                            // The button that is tapped is set to true, and the others to false.
-                            for (int i = 0; i < _selectedFruits.length; i++) {
-                              _selectedFruits[i] = i == index;
-                            }
-                          });
-                        },
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        selectedBorderColor: Color(0xFF327c04),
-                        selectedColor: Colors.white,
-                        fillColor: Color(0xFF327c04),
-                        color: Colors.black,
-                        constraints: const BoxConstraints(
-                          minHeight: 30.0,
-                          minWidth: 60.0,
-                        ),
-                        isSelected: _selectedFruits,
-                        children: options,
+                      Row(
+                        children: [
+                          InkWell(
+                            hoverColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xff327C04),
+                                border: Border.all(
+                                  color: const Color(0xff327C04),
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 3),
+                                child: Text(
+                                  'Grid',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => Get.toNamed('/stockplannertable'),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xffF7F9EA),
+                                border: Border.all(
+                                  color: const Color(0xff327C04),
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 3),
+                                child: Text(
+                                  'Table',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff000000),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                      // ToggleButtons(
+                      //   onPressed: (int index) {
+                      //     setState(() {
+                      //       // The button that is tapped is set to true, and the others to false.
+                      //       for (int i = 0; i < _selectedFruits.length; i++) {
+                      //         _selectedFruits[i] = i == index;
+                      //       }
+                      //     });
+                      //   },
+                      //   borderRadius:
+                      //       const BorderRadius.all(Radius.circular(8)),
+                      //   selectedBorderColor: Color(0xFF327c04),
+                      //   selectedColor: Colors.white,
+                      //   fillColor: Color(0xFF327c04),
+                      //   color: Colors.black,
+                      //   constraints: const BoxConstraints(
+                      //     minHeight: 30.0,
+                      //     minWidth: 60.0,
+                      //   ),
+                      //   isSelected: _selectedFruits,
+                      //   children: options,
+                      // ),
                       Expanded(
                         flex: 3,
                         child: Row(
@@ -432,7 +629,7 @@ class _StockPlannerState extends State<StockPlanner> {
                           children: [
                             InkWell(
                               onTap: () {
-                                buildPinAlertDialog();
+                                buildPinAlertDialog(screenSize);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -530,72 +727,212 @@ class _StockPlannerState extends State<StockPlanner> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Chemical'),
-                          SizedBox(height: 10),
-                          SizedBox(
-                              width: 300,
-                              height: 50,
-                              child: TextDropdown(
-                                  // onInput: (input) =>
-                                  //     chemical = input,
-                                  items: const [
-                                    'Ammonia',
-                                    'Nitrogen',
-                                    'Sulphur'
-                                  ],
-                                  controller: TextEditingController(),
-                                  showDropDown: true)),
-                        ],
-                      ),
-                      SizedBox(width: screenSize.width * 0.03),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Date'),
-                          SizedBox(height: 10),
-                          StatefulBuilder(
-                            builder: (context, setState) {
-                              return InkWell(
-                                child: Container(
-                                  width: 300,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(child: Text("22/11/22")),
-                                        Icon(
-                                          Icons.expand_circle_down_rounded,
-                                          size: 19,
-                                        )
-                                      ],
-                                    ),
+                      SizedBox(
+                        width: screenSize.width * 0.28,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Select Warehouse',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xff000000),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            DropdownButtonFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      const Color(0xff327C04).withOpacity(0.5),
+                                  fontFamily: 'Helvetica',
+                                ),
+                                fillColor: Colors.transparent,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
                                   ),
                                 ),
-                                onTap: () async {
-                                  var newDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now(),
-                                      lastDate: DateTime(2050));
-                                  if (newDate != null) {
-                                    setState(() {
-                                      var date =
-                                          '${newDate.day}-${newDate.month}-${newDate.year}';
-                                    });
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                        ],
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                errorStyle: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                isDense: true,
+                              ),
+                              isExpanded: true,
+                              value: questionsSelected,
+                              iconEnabledColor:
+                                  Colors.transparent, // Down Arrow Icon
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xff327C04),
+                              ),
+                              iconSize: 30,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff000000),
+                                  fontFamily: 'Helvetica'),
+                              items: questions.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  questionsSelected = newValue!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: screenSize.width * 0.03),
+                      SizedBox(
+                        width: screenSize.width * 0.28,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Start Date',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xff000000),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            DateTimeField(
+                              cursorColor: const Color(0xff000000),
+                              decoration: InputDecoration(
+                                errorMaxLines: 3,
+                                hintText: "Start Date",
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                hintStyle: const TextStyle(
+                                  fontSize: 16,
+                                  // color: const Color(0xff161723).withOpacity(0.5),
+                                  // fontFamily: 'Helvetica',
+                                ),
+                                // fillColor: Colors.white,
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                suffixIcon: const Icon(
+                                  CupertinoIcons.calendar_today,
+                                  color: Color(0xff327C04),
+                                  size: 25,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                errorStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                isDense: true,
+                              ),
+                              format: format,
+                              onShowPicker: (context, currentValue) {
+                                return showDatePicker(
+                                  helpText: 'Select Date',
+                                  context: context,
+                                  firstDate: DateTime(1970),
+                                  // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                  initialDate: currentValue ??
+                                      DateTime.now()
+                                          .subtract(const Duration(days: 4745)),
+                                  // lastDate: DateTime(2100));
+                                  lastDate: DateTime.now(),
+                                  builder:
+                                      (BuildContext context, Widget? child) {
+                                    return Theme(
+                                      data: ThemeData.dark().copyWith(
+                                        colorScheme: const ColorScheme.dark(
+                                          primary: Color(0xff327C04),
+                                          // onPrimary: Colors.black,
+                                          surface: Color(0xff327C04),
+                                          // onSurface: Color(0xff000000),
+                                        ),
+                                        dialogBackgroundColor:
+                                            const Color(0xff000000),
+                                      ),
+                                      child: child!,
+                                    );
+                                  },
+                                );
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (date) => date == null
+                                  ? 'Date of birth is required'
+                                  : null,
+                              onChanged: (date) {
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -701,39 +1038,42 @@ Widget _buildgridview(context, screenSize) {
       ),
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
-        return Card(
-          color: Color(0xfff7f9ea),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(height: 70, "assets/images/Group 6740.png"),
-                      SizedBox(width: screenSize.width * 0.03),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nitrogen",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: screenSize.height * 0.03),
-                          Text("Quantity : 200ml"),
-                          SizedBox(height: screenSize.height * 0.03),
-                          Text("Required : 200ml"),
-                        ],
-                      )
-                    ],
-                  )
-                ],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: Color(0xfff7f9ea),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(height: 70, "assets/images/Group6740.png"),
+                        SizedBox(width: screenSize.width * 0.02),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nitrogen",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: screenSize.height * 0.02),
+                            Text("Quantity : 200ml"),
+                            SizedBox(height: screenSize.height * 0.02),
+                            Text("Required : 200ml"),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
