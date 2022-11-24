@@ -11,7 +11,7 @@ class GapAnalysis extends StatefulWidget {
   State<GapAnalysis> createState() => _GapAnalysisState();
 }
 
-bool check = false;
+bool check3 = false;
 bool check1 = false;
 bool check2 = false;
 
@@ -174,10 +174,10 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5.0))),
-                                value: check,
+                                value: check3,
                                 onChanged: (check) {
                                   setState(() {
-                                    check = check!;
+                                    check3 = check!;
                                   });
                                 },
                               ),

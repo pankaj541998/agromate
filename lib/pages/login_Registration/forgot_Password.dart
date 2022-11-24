@@ -8,7 +8,7 @@ import 'package:flutter_agro_new/pages/login_Registration/otpVerification.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/otp_api.dart';
+import '../../component/services/otp_api.dart';
 
 class forgotPassword extends StatefulWidget {
   forgotPassword({Key? key}) : super(key: key);
@@ -100,10 +100,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                     ),
                     TextInputField(
                       textEditingController: email,
-                      leadingIcon: Icon(
-                        Icons.email_outlined,
-                        color: Color(0xFFA1B809),
-                      ),
+                      leadingIcon: Image.asset("assets/images/email.png"),
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||

@@ -10,7 +10,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/auth_api.dart';
+import '../../component/services/auth_api.dart';
 
 class updatePassword extends StatefulWidget {
   const updatePassword({Key? key, this.email}) : super(key: key);
@@ -90,6 +90,8 @@ class _updatePasswordState extends State<updatePassword> {
                       height: 30,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "New Password",
                       validatorText: "validatorText",
                       textEditingController: passwordcontroller,
@@ -123,6 +125,8 @@ class _updatePasswordState extends State<updatePassword> {
                       height: 18,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "Confirm New Password",
                       validatorText: "",
                       validator: (value) {

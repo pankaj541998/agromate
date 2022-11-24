@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
-import 'package:flutter_agro_new/services/auth_api.dart';
+import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/test_api.dart';
+import '../../component/services/test_api.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -77,6 +77,11 @@ class _loginState extends State<login> {
                         height: 32,
                       ),
                       TextInputField(
+                        leadingIcon: Image.asset(
+                          "assets/images/username.png",
+                          height: 30,
+                          width: 30,
+                        ),
                         textEditingController: username,
                         validator: (value) {
                           if (value != null && value.isEmpty) {
@@ -91,6 +96,11 @@ class _loginState extends State<login> {
                         height: 30,
                       ),
                       TextInputField(
+                          leadingIcon: Image.asset(
+                            "assets/images/password.png",
+                            height: 30,
+                            width: 30,
+                          ),
                           textEditingController: password,
                           validator: (value) {
                             if (value != null && value.isEmpty) {

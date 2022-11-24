@@ -9,7 +9,7 @@ import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:http/http.dart' as http;
-import '../../services/otp_api.dart';
+import '../../component/services/otp_api.dart';
 
 class otpVerification extends StatefulWidget {
   otpVerification({Key? key, this.email}) : super(key: key);

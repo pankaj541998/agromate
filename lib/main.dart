@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+
 import 'package:flutter_agro_new/pages/allocation.dart';
+
+import 'package:flutter_agro_new/pages/allocate.dart';
+
 import 'package:flutter_agro_new/pages/farms/select_block.dart';
 import 'package:flutter_agro_new/pages/farms/select_field.dart';
 
@@ -36,10 +40,17 @@ import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
 import 'pages/farms/select_plot.dart';
+import 'providers/map_filter_provider.dart';
 import 'test.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+        ChangeNotifierProvider(create: (context) => MapFilterProvider())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -96,6 +107,9 @@ class MyApp extends StatelessWidget {
             page: () => const ModesOfApplication()),
         GetPage(name: '/user', page: () => User()),
         GetPage(name: '/allocation', page: () => Allocation()),
+
+        GetPage(name: '/allocate', page: () => Allocate()),
+
       ],
     );
   }
