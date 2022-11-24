@@ -35,10 +35,17 @@ import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
 import 'pages/farms/select_plot.dart';
+import 'providers/map_filter_provider.dart';
 import 'test.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+        ChangeNotifierProvider(create: (context) => MapFilterProvider())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

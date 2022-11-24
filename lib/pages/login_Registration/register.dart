@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
-import '../../services/register_api.dart';
+import '../../component/services/register_api.dart';
 
 class register extends StatefulWidget {
   const register({Key? key}) : super(key: key);

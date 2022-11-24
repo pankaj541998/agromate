@@ -10,7 +10,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/auth_api.dart';
+import '../../component/services/auth_api.dart';
 
 class updatePassword extends StatefulWidget {
   const updatePassword({Key? key, this.email}) : super(key: key);
