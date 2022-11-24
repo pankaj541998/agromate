@@ -12,6 +12,7 @@ class popUp extends StatefulWidget {
 }
 
 class _popUpState extends State<popUp> {
+  //add new user
   buildPin() {
     return showDialog(
       context: context,
@@ -119,6 +120,7 @@ class _popUpState extends State<popUp> {
     );
   }
 
+//edit user
   buildPinAlert() {
     return showDialog(
       context: context,
@@ -145,7 +147,7 @@ class _popUpState extends State<popUp> {
                     Row(
                       children: [
                         Text(
-                          "Add New ",
+                          "Edit New User",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w500),
                         ),
@@ -211,7 +213,7 @@ class _popUpState extends State<popUp> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            title: "Add User",
+                            title: "Update",
                           ),
                         ),
                       ],
@@ -226,6 +228,7 @@ class _popUpState extends State<popUp> {
     );
   }
 
+//delete
   Alert() {
     return showDialog(
       context: context,

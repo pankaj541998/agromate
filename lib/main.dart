@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+
+import 'package:flutter_agro_new/pages/allocation.dart';
+
 import 'package:flutter_agro_new/pages/allocate.dart';
+
 import 'package:flutter_agro_new/pages/farms/select_block.dart';
 import 'package:flutter_agro_new/pages/farms/select_field.dart';
 
@@ -60,7 +64,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/user',
+      initialRoute: '/allocation',
       getPages: [
         GetPage(name: '/', page: () => const login()),
         GetPage(name: '/register', page: () => const register()),
@@ -102,7 +106,10 @@ class MyApp extends StatelessWidget {
             name: '/modesofapplication',
             page: () => const ModesOfApplication()),
         GetPage(name: '/user', page: () => User()),
+        GetPage(name: '/allocation', page: () => Allocation()),
+
         GetPage(name: '/allocate', page: () => Allocate()),
+
       ],
     );
   }

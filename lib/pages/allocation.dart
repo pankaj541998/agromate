@@ -4,23 +4,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
 import 'package:flutter_agro_new/pages/stock_planner.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 
 import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
 
-class User extends StatefulWidget {
-  User({Key? key, this.initial}) : super(key: key);
+class Allocation extends StatefulWidget {
+  Allocation({Key? key, this.initial}) : super(key: key);
 
   @override
-  State<User> createState() => _UserState();
+  State<Allocation> createState() => _AllocationState();
 
   int? initial;
 }
 
-class _UserState extends State<User> {
+class _AllocationState extends State<Allocation> {
   @override
-  Widget build(BuildContext) {
+  Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
       initialIndex: widget.initial ?? 0,
@@ -41,7 +42,7 @@ class _UserState extends State<User> {
                   Row(
                     children: [
                       const SizedBox(
-                        width: 300,
+                        width: 100,
                         height: 50,
                         child: TabBar(
                           indicatorColor: Color(0xFF327C04),
@@ -57,9 +58,6 @@ class _UserState extends State<User> {
                             Tab(
                               text: 'Users',
                             ),
-                            Tab(
-                              text: 'Request',
-                            )
                           ],
                         ),
                       ),
@@ -70,7 +68,7 @@ class _UserState extends State<User> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: () => buildPin(context),
+                              // onTap: () => buildPin(context),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF327C04),
@@ -161,8 +159,7 @@ class _UserState extends State<User> {
                     height: 590,
                     child: TabBarView(
                       children: [
-                        _buildusertable(screenSize, context),
-                        _buildrequesttable(screenSize, context),
+                        _buildusertable(screenSize, context, setState),
                       ],
                     ),
                   )
@@ -176,135 +173,18 @@ class _UserState extends State<User> {
   }
 }
 
-_buildusertable(screenSize, context) {
+_buildusertable(screenSize, context, setState) {
   return Container(
     height: screenSize.height * 0.5,
     child: SingleChildScrollView(
       child: Padding(
           padding: EdgeInsets.only(top: 15),
-          child: datatable(screenSize, context)),
+          child: datatable(screenSize, context, setState)),
     ),
   );
 }
 
-_buildrequesttable(screenSize, context) {
-  return Padding(
-    padding: EdgeInsets.only(top: 15),
-    child: datatablerequest(screenSize, context),
-  );
-}
-
-//delete
-
-//add new user
-buildPin(context) {
-  return showDialog(
-    context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AlertDialog(
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.cancel_outlined))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Add New user",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 35,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter Email Address",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                          height: 50,
-                          width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Role",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                          height: 50,
-                          width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 28,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 296,
-                        child: customElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          title: "Add User",
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    ),
-  );
-}
-
-datatable(screenSize, context) {
+datatable(screenSize, context, setState) {
   return Container(
     height: screenSize.height * 0.7,
     decoration: const BoxDecoration(),
@@ -318,6 +198,7 @@ datatable(screenSize, context) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSource(
+                setState: setState,
                 myData: myData,
                 count: myData.length,
                 context: context,
@@ -465,17 +346,18 @@ datatable(screenSize, context) {
 class RowSource extends DataTableSource {
   var myData;
   final count;
+  final setState;
   BuildContext context;
-  RowSource({
-    required this.myData,
-    required this.count,
-    required this.context,
-  });
+  RowSource(
+      {required this.myData,
+      required this.count,
+      required this.context,
+      required this.setState});
 
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index], context);
+      return recentFileDataRow(myData![index], context, setState);
     } else {
       return null;
     }
@@ -491,7 +373,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, context) {
+DataRow recentFileDataRow(var data, context, setState) {
   return DataRow(
     cells: [
       DataCell(Align(
@@ -509,16 +391,31 @@ DataRow recentFileDataRow(var data, context) {
           alignment: Alignment.center, child: Text(data.email.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.role.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: _buildactions(context))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: _buildactions(context, setState))),
     ],
   );
 }
 
-_buildactions(context) {
+_buildactions(context, setState) {
+  bool status = true;
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
+      SizedBox(
+        height: 30,
+        width: 50,
+        child: FlutterSwitch(
+          activeColor: Color(0xff327c04),
+          value: status,
+          onToggle: (val) {
+            setState(() {
+              status = val;
+            });
+          },
+        ),
+      ),
       InkWell(
           onTap: () {
             print("pressed");
@@ -927,386 +824,3 @@ List<Data> myData = [
     action: '245747',
   ),
 ];
-
-datatablerequest(screenSize, BuildContext context) {
-  return Container(
-    height: screenSize.height * 0.7,
-    decoration: const BoxDecoration(),
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: PaginatedDataTable(
-              sortColumnIndex: 0,
-              // sortAscending: sort,
-              source: RowSourceRequest(
-                  myDataRequest: myDataRequest,
-                  count: myDataRequest.length,
-                  context: context),
-              rowsPerPage: 9,
-              columnSpacing: 0,
-              headingRowHeight: 50,
-              horizontalMargin: 0,
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Email Address",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Role",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Status",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Action",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-class RowSourceRequest extends DataTableSource {
-  var myDataRequest;
-  final count;
-  BuildContext context;
-  RowSourceRequest({
-    required this.myDataRequest,
-    required this.count,
-    required this.context,
-  });
-
-  @override
-  DataRow? getRow(int index) {
-    if (index < rowCount) {
-      return recentFileDataRowrequest(myDataRequest![index], context);
-    } else {
-      return null;
-    }
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => count;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-DataRow recentFileDataRowrequest(var data, context) {
-  return DataRow(
-    cells: [
-      DataCell(Align(
-          alignment: Alignment.center, child: Text(data.email.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center, child: Text(data.role.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.phonenumber.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center, child: _buildactionsrequest(context))),
-    ],
-  );
-}
-
-_buildactionsrequest(context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      InkWell(
-          onTap: () {},
-          child: Image.asset(height: 30, "assets/images/bell.png")),
-      InkWell(
-          onTap: () {
-            print("pressed");
-            buildPinAlert(context);
-          },
-          child: Image.asset(height: 30, "assets/images/edit.png")),
-      InkWell(
-          onTap: () {
-            print("pressed");
-            customAlert(context);
-          },
-          child: Image.asset(height: 30, "assets/images/delete.png")),
-    ],
-  );
-}
-
-class DataRequest {
-  String? profile;
-  String? username;
-  String? fullname;
-  String? phonenumber;
-  String? email;
-  String? role;
-  String? action;
-
-  DataRequest({
-    required this.profile,
-    required this.username,
-    required this.fullname,
-    required this.phonenumber,
-    required this.email,
-    required this.role,
-    required this.action,
-  });
-}
-
-List<Data> myDataRequest = [
-  Data(
-    profile: "1",
-    username: 'Raj',
-    fullname: 'A1A',
-    phonenumber: '464',
-    email: '23',
-    role: '134',
-    action: '24524',
-  ),
-  Data(
-    profile: "2",
-    username: 'Raju',
-    fullname: '30',
-    phonenumber: '512',
-    email: '172',
-    role: '124',
-    action: '`52435`',
-  ),
-  Data(
-    profile: "3",
-    username: 'Kishan',
-    fullname: '32',
-    phonenumber: '512',
-    email: '172',
-    role: '42',
-    action: '245245',
-  ),
-  Data(
-    profile: "4",
-    username: 'Dhurmil',
-    fullname: '33',
-    phonenumber: '512',
-    email: '172',
-    role: '245',
-    action: '245245',
-  ),
-  Data(
-    profile: "5",
-    username: 'Pooja',
-    fullname: '23',
-    phonenumber: '512',
-    email: '172',
-    role: '2452',
-    action: '245245',
-  ),
-  Data(
-    profile: "6",
-    username: 'Jothi',
-    fullname: '24',
-    phonenumber: '512',
-    email: '172',
-    role: '452',
-    action: '24524',
-  ),
-  Data(
-    profile: "7",
-    username: 'Salman',
-    fullname: '36',
-    phonenumber: '512',
-    email: '172',
-    role: '245',
-    action: '13435',
-  ),
-  Data(
-    profile: "8",
-    username: '244242',
-    fullname: '38',
-    phonenumber: '512',
-    email: '172',
-    role: '67',
-    action: '65979',
-  ),
-  Data(
-    profile: "9",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '6579',
-    action: '69659',
-  ),
-  Data(
-    profile: "10",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '65968',
-    action: '694689',
-  ),
-  Data(
-    profile: "11",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '64794',
-    action: '67947',
-  ),
-  Data(
-    profile: "12",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '46794',
-    action: '6479467',
-  ),
-  Data(
-    profile: "13",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '58',
-    action: '658365',
-  ),
-  Data(
-    profile: "14",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '6576',
-    action: '5686',
-  ),
-  Data(
-    profile: "15",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '568',
-    action: '3477',
-  ),
-  Data(
-    profile: "16",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '42572',
-    action: '457',
-  ),
-  Data(
-    profile: "17",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '547',
-    action: '45725',
-  ),
-  Data(
-    profile: "18",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '2457',
-    action: '257457',
-  ),
-  Data(
-    profile: "19",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '257',
-    action: '245747',
-  ),
-];
-
-class AlterDialogss extends StatefulWidget {
-  const AlterDialogss({super.key});
-
-  @override
-  State<AlterDialogss> createState() => _AlterDialogssState();
-}
-
-class _AlterDialogssState extends State<AlterDialogss> {
-  _buildDialog() {
-    print("reached here");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
