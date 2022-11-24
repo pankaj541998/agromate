@@ -44,6 +44,8 @@ class TopBar extends StatelessWidget {
                           width: 160,
                           child: ElevatedButton(
                             style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
                               shape: MaterialStateProperty.all<
                                   RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
@@ -200,7 +202,10 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/view_farm');
+                  },
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -234,12 +239,15 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/growthstage');
+                  },
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'Growth Stage',
                         style: TextStyle(
@@ -251,7 +259,10 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () {
+                    Get.toNamed('/gapanalysis');
+                  },
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],

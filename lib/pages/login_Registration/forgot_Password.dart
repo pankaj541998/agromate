@@ -138,7 +138,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Didn't receive mail ?"),
-                          ElevatedButton(
+                          TextButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Color(0xFF327C04)),

@@ -169,7 +169,7 @@ class _otpVerificationState extends State<otpVerification> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Didn't receive OTP ?"),
-                          ElevatedButton(
+                          TextButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   Color(0xFF327C04)),
