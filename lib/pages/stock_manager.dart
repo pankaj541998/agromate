@@ -46,27 +46,63 @@ class _StockManagerState extends State<StockManager> {
                         ),
                       ),
                       SizedBox(width: screenSize.width * 0.02),
-                      ToggleButtons(
-                        onPressed: (int index) {
-                          setState(() {
-                            // The button that is tapped is set to true, and the others to false.
-                            for (int i = 0; i < _selectedFruits.length; i++) {
-                              _selectedFruits[i] = i == index;
-                            }
-                          });
-                        },
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        selectedBorderColor: Color(0xFF327c04),
-                        selectedColor: Colors.white,
-                        fillColor: Color(0xFF327c04),
-                        color: Colors.black,
-                        constraints: const BoxConstraints(
-                          minHeight: 30.0,
-                          minWidth: 60.0,
-                        ),
-                        isSelected: _selectedFruits,
-                        children: options,
+                      Row(
+                        children: [
+                          InkWell(
+                            hoverColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xff327C04),
+                                border: Border.all(
+                                  color: const Color(0xff327C04),
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 3),
+                                child: Text(
+                                  'Grid',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => Get.toNamed('/stockmanagertable'),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xffF7F9EA),
+                                border: Border.all(
+                                  color: const Color(0xff327C04),
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5),
+                                ),
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 3),
+                                child: Text(
+                                  'Table',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff000000),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       Expanded(
                         flex: 3,
@@ -192,43 +228,58 @@ Widget _buildgridview(context, screenSize) {
       ),
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
-        return Card(
-          color: Color(0xfff7f9ea),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(height: 70, "assets/images/Group 6740.png"),
-                      SizedBox(width: screenSize.width * 0.03),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nitrogen",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: screenSize.height * 0.008),
-                          Text("Description"),
-                          SizedBox(height: screenSize.height * 0.008),
-                          Text("Class: Fertiliser"),
-                          SizedBox(height: screenSize.height * 0.008),
-                          Text("Type: Organic"),
-                          SizedBox(height: screenSize.height * 0.01),
-                          Text("Quantity: 200ml"),
-                        ],
-                      )
-                    ],
-                  )
-                ],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            color: Color(0xfff7f9ea),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(height: 60, "assets/images/Group6740.png"),
+                        SizedBox(width: screenSize.width * 0.03),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nitrogen",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: screenSize.height * 0.007),
+                            Text(
+                              "Description",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(height: screenSize.height * 0.007),
+                            Text(
+                              "Class: Fertiliser",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(height: screenSize.height * 0.007),
+                            Text(
+                              "Type: Organic",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(height: screenSize.height * 0.007),
+                            Text(
+                              "Quantity: 200ml",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

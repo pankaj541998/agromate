@@ -63,199 +63,287 @@ class _AddStockState extends State<AddStock> {
                     height: screenSize.height * 0.7,
                     child: SingleChildScrollView(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
                               Image.asset(
-                                  height: 70, "assets/images/Group 6740.png"),
+                                  height: 70, "assets/images/Group6740.png"),
                               SizedBox(width: screenSize.width * 0.04),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Class",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Class',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Class",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Class',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Class";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.04),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Type",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Type',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Type",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Type',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Type";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.04),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Alternative",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Alternative',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Alternative",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Alternative',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Alternative";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.04),
                             ],
@@ -263,437 +351,641 @@ class _AddStockState extends State<AddStock> {
                           SizedBox(height: screenSize.height * 0.03),
                           Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Item Code",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'ItemCode',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "ItemCode",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Item Code',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Item Code";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.03),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Description",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Description',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Description",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Description',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Description";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.03),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Unit Cost",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Unit Cost',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Unit Cost",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Unit Cost',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Unit Cost";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.03),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Stock Level",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Stock Level',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Stock Level",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Stock Level',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Stock Level";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                           SizedBox(height: screenSize.height * 0.03),
                           Row(
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Active Ingridient",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Active Ingridient',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Active Ingridient",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter Active Ingridient',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter Active Ingridient";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               SizedBox(width: screenSize.width * 0.03),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "AI / KG",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  SizedBox(
-                                    height: 70,
-                                    width: 250,
-                                    child: TextFormField(
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'AI/Kg',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(25),
-                                        FilteringTextInputFormatter.allow(
-                                            RegExp('[a-zA-Z]')),
-                                      ],
-                                      onChanged: (value) => unitcost = value,
                                       decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "AI/Kg",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Colors.red, width: 2.0),
-                                        ),
-                                        contentPadding: EdgeInsets.all(10),
-                                        hintText: 'Enter AI / KG',
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                          borderSide: BorderSide(
-                                              color: Color(0xFF707070),
-                                              width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
                                         ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
                                       ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return "Please enter AI / KG";
-                                        }
-                                        return null;
-                                      },
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                           SizedBox(height: screenSize.height * 0.03),
-                          Container(
-                            color: Color(0xfff7f9ea),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Warnings",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Precautions",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Modes of Application",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Instructions",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Key Targets",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Time of Application",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                              ],
+                          SizedBox(
+                            width: screenSize.width * 0.6,
+                            child: Card(
+                              color: Color(0xfff7f9ea),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Card(
+                                      color: Color(0xff327c04),
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            "Warnings",
+                                            style: const TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontFamily: 'Helvetica',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ))),
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Precautions",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Helvetica',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Instructions",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Helvetica',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Key Targets",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Helvetica',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Time Of Application",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Helvetica',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )),
+                                  Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        "Modes Of Application",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: 'Helvetica',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: screenSize.height * 0.03),
@@ -704,62 +996,97 @@ class _AddStockState extends State<AddStock> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Choose Warning",
-                                      style: TextStyle(fontSize: 18),
-                                    ),
                                     SizedBox(
-                                      height: 10,
-                                    ),
-                                    SizedBox(
-                                      height: 70,
-                                      width: 250,
-                                      child: TextFormField(
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(25),
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp('[a-zA-Z]')),
+                                      width: screenSize.width * 0.3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Choose Warning',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Color(0xff000000),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 15),
+                                          TextFormField(
+                                            // initialValue: 'enter heritage',
+                                            style: const TextStyle(
+                                              // color: Color(0xffffffff),
+                                              fontFamily: 'Helvetica',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            // readOnly: true,
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            decoration: InputDecoration(
+                                              fillColor: Colors.transparent,
+                                              errorMaxLines: 3,
+                                              hintText: "Choose Warning",
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 10,
+                                                      right: 10,
+                                                      top: 15,
+                                                      bottom: 15),
+                                              hintStyle: const TextStyle(
+                                                fontSize: 16,
+                                                // color: const Color(0xffffffff).withOpacity(0.8),
+                                                fontFamily: 'Helvetica',
+                                              ),
+                                              // fillColor: Colors.white,
+                                              filled: true,
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              errorStyle: const TextStyle(
+                                                fontSize: 16.0,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              isDense: true,
+                                            ),
+                                            // controller: _email,
+                                            keyboardType: TextInputType.text,
+                                            // validator: (value) {
+                                            //   if (value == null || value.isEmpty) {
+                                            //     return 'Please enter your email Id';
+                                            //   }
+                                            //   return null;
+                                            // },
+                                            // onSaved: (name) {},
+                                          ),
                                         ],
-                                        onChanged: (value) => unitcost = value,
-                                        decoration: InputDecoration(
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            borderSide: BorderSide(
-                                                color: Colors.red, width: 2.0),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            borderSide: BorderSide(
-                                                color: Colors.red, width: 2.0),
-                                          ),
-                                          contentPadding: EdgeInsets.all(10),
-                                          hintText: 'Choose Warning',
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            borderSide: BorderSide(
-                                                color: Color(0xFF707070),
-                                                width: 1.0),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                            borderSide: BorderSide(
-                                                color: Color(0xFF707070),
-                                                width: 1.0),
-                                          ),
-                                        ),
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "Please Choose Warning";
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     ),
                                     SizedBox(height: screenSize.height * 0.03),

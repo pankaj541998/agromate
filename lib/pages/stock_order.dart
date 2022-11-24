@@ -614,7 +614,7 @@ class _StockOrderState extends State<StockOrder> {
                   SizedBox(height: screenSize.height * 0.03),
                   SizedBox(
                     height: screenSize.height * 0.7,
-                    child: _buildgridview(context),
+                    child: _buildgridview(context, screenSize),
                   ),
                 ],
               ),
@@ -626,7 +626,7 @@ class _StockOrderState extends State<StockOrder> {
   }
 }
 
-Widget _buildgridview(context) {
+Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -635,221 +635,224 @@ Widget _buildgridview(context) {
       ),
       itemCount: 5,
       itemBuilder: (BuildContext ctx, index) {
-        return Card(
-          color: Color(0xfff7f9ea),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 308.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Farm",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Varkaplass",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 309.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Block",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "A",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .hectarage
-                                    //     .toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 310.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Field",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "A1A",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .farmerId
-                                    //     .toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 311.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Person",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Raj",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .fieldId
-                                    //     .toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 312.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Crop",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Potato",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .planneddate
-                                    //     .toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 313.png"),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Stage",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    "Pre Planting",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .stageId
-                                    //     .toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+        return Padding(
+          padding: EdgeInsets.all(10),
+          child: Card(
+            color: Color(0xfff7f9ea),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group308.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Farm",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Varkaplass",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group309.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Block",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "A",
+                                      // cropPlan
+                                      //     .elementAt(index)
+                                      //     .hectarage
+                                      //     .toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group310.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Field",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "A1A",
+                                      // cropPlan
+                                      //     .elementAt(index)
+                                      //     .farmerId
+                                      //     .toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group311.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Person",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Raj",
+                                      // cropPlan
+                                      //     .elementAt(index)
+                                      //     .fieldId
+                                      //     .toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group312.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Crop",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Potato",
+                                      // cropPlan
+                                      //     .elementAt(index)
+                                      //     .planneddate
+                                      //     .toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset(
+                                    height: 40, "assets/images/Group313.png"),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Stage",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "Pre Planting",
+                                      // cropPlan
+                                      //     .elementAt(index)
+                                      //     .stageId
+                                      //     .toString(),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
