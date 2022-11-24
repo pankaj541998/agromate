@@ -5,14 +5,17 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 
 import '../component/custom_Elevated_Button.dart';
 
-class InventoryClassType extends StatefulWidget {
-  const InventoryClassType({Key? key}) : super(key: key);
+const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
+
+class StockPlannerTable extends StatefulWidget {
+  const StockPlannerTable({Key? key}) : super(key: key);
 
   @override
-  State<InventoryClassType> createState() => _InventoryClassTypeState();
+  State<StockPlannerTable> createState() => _StockPlannerTableState();
 }
 
-class _InventoryClassTypeState extends State<InventoryClassType> {
+class _StockPlannerTableState extends State<StockPlannerTable> {
+  var currentDate = DateTime.now();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   String? unitcost;
@@ -20,25 +23,6 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
-
-  bool sort = true;
-  List<Data>? filterData;
-
-  onsortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        filterData!.sort((a, b) => a.id!.compareTo(b.id!));
-      } else {
-        filterData!.sort((a, b) => b.id!.compareTo(a.id!));
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    filterData = myData;
-    super.initState();
-  }
 
   buildPinAlertDialog() {
     return showDialog(
@@ -58,7 +42,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Add Inventory",
+                      "Add New Stock",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -77,14 +61,32 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                   key: _form,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Unit Cost",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Image.asset(
+                              height: 70, "assets/images/Group 6740.png"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Stock Code",
+                                "Warehouse",
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(
@@ -116,7 +118,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                           color: Colors.red, width: 2.0),
                                     ),
                                     contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Stock Code',
+                                    hintText: 'Enter Warehouse',
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -132,7 +134,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Please enter Stock Code";
+                                      return "Please enter Warehouse";
                                     }
                                     return null;
                                   },
@@ -147,7 +149,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Item Description",
+                                "Start Date",
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(
@@ -179,7 +181,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                           color: Colors.red, width: 2.0),
                                     ),
                                     contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Item Description',
+                                    hintText: 'Enter Start Date',
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -195,7 +197,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Please enter Item Description";
+                                      return "Please enter Start Date";
                                     }
                                     return null;
                                   },
@@ -217,7 +219,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Unit Cost",
+                                "Stock Name",
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(
@@ -249,7 +251,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                           color: Colors.red, width: 2.0),
                                     ),
                                     contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Unit Cost',
+                                    hintText: 'Enter Stock Name',
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -265,7 +267,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "Please enter Unit Cost";
+                                      return "Please enter Stock Name";
                                     }
                                     return null;
                                   },
@@ -276,76 +278,6 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           SizedBox(
                             width: 25,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Inventory Cost",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Inventory Cost',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Inventory Cost";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 0,
-                      ),
-                      Row(
-                        children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -409,69 +341,6 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           SizedBox(
                             width: 25,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Value",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Value',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Value";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
                         ],
                       ),
                       SizedBox(
@@ -498,20 +367,142 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
     );
   }
 
+  datatable(screenSize) {
+    return Container(
+      height: screenSize.height * 0.7,
+      padding: const EdgeInsets.all(0.0),
+      decoration: const BoxDecoration(),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: PaginatedDataTable(
+                sortColumnIndex: 0,
+                // sortAscending: sort,
+                source: RowSource(
+                  myData: myData,
+                  count: myData.length,
+                ),
+                rowsPerPage: 9,
+                columnSpacing: 0,
+                headingRowHeight: 50,
+                horizontalMargin: 0,
+                columns: [
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "ID",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Warehouse",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Stock Name",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Quantity",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Date",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final List<bool> _selectedFruits = <bool>[false, true];
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+      body: Column(
+        children: [
+          TopBar(),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+            child: IntrinsicHeight(
               child: Column(
                 children: [
                   Row(
@@ -521,11 +512,37 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           child: Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
                       Text(
-                        'Inventory Class & Types',
+                        'Stock Planner',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff000000),
                             fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: screenSize.width * 0.02),
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: ToggleButtons(
+                          onPressed: (int index) {
+                            setState(() {
+                              // The button that is tapped is set to true, and the others to false.
+                              for (int i = 0; i < _selectedFruits.length; i++) {
+                                _selectedFruits[i] = i == index;
+                              }
+                            });
+                          },
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
+                          selectedBorderColor: Color(0xFF327c04),
+                          selectedColor: Colors.white,
+                          fillColor: Color(0xFF327c04),
+                          color: Colors.black,
+                          constraints: const BoxConstraints(
+                            minHeight: 30.0,
+                            minWidth: 60.0,
+                          ),
+                          isSelected: _selectedFruits,
+                          children: options,
+                        ),
                       ),
                       Expanded(
                         flex: 3,
@@ -630,172 +647,94 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                     thickness: 1,
                   ),
                   SizedBox(height: screenSize.height * 0.03),
-                  datatable(),
+                  datatable(screenSize),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
 }
 
-datatable() {
-  return SingleChildScrollView(
-    child: Container(
-      padding: const EdgeInsets.all(0.0),
-      decoration: const BoxDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: PaginatedDataTable(
-              sortColumnIndex: 0,
-              // sortAscending: sort,
-              source: RowSource(
-                myData: myData,
-                count: myData.length,
-              ),
-              rowsPerPage: 9,
-              columnSpacing: 0,
-              headingRowHeight: 50,
-              horizontalMargin: 0,
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
+class TextDropdown extends StatefulWidget {
+  const TextDropdown({
+    Key? key,
+    this.hinttext,
+    this.prefix,
+    this.errortext,
+    this.items,
+    required this.controller,
+    required this.showDropDown,
+    this.onInput,
+  }) : super(key: key);
+  final String? errortext;
+  final TextEditingController controller;
+  final String? prefix;
+  final String? hinttext;
+  final bool showDropDown;
+  final List<String>? items;
+  final void Function(String)? onInput;
+  @override
+  State<TextDropdown> createState() => _TextDropdownState();
+}
+
+class _TextDropdownState extends State<TextDropdown> {
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    var items =
+        widget.items ?? ['Reetik', 'Hemant', 'Salman', 'Kisan', 'Chinmay'];
+    return Column(
+      children: [
+        SizedBox(
+          height: 40,
+          child: TextFormField(
+            onChanged: widget.onInput,
+            textAlignVertical: TextAlignVertical.top,
+            keyboardType: TextInputType.text,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return widget.errortext ?? "Please Enter Data";
+              }
+              return null;
+            },
+            controller: controller,
+            decoration: InputDecoration(
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              // prefixIcon: const Icon(Icons.search),
+              suffixIcon: widget.showDropDown
+                  ? PopupMenuButton<String>(
+                      icon: const Icon(
+                        Icons.expand_circle_down_rounded,
                       ),
-                      child: const Center(
-                        child: Text(
-                          "ID",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Stock Code",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Item Description",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Unit Cost",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Inventory Cost",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Quantity",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Value",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                      onSelected: (String value) {
+                        setState(() {
+                          controller.text = value;
+                        });
+                      },
+                      shape: const RoundedRectangleBorder(
+                          side: BorderSide(),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0),
+                          )),
+                      itemBuilder: (BuildContext context) {
+                        return items.map<PopupMenuItem<String>>((String value) {
+                          return PopupMenuItem(
+                              child: Text(value), value: value);
+                        }).toList();
+                      },
+                    )
+                  : null,
             ),
           ),
-        ],
-      ),
-    ),
-  );
+        ),
+      ],
+    );
+  }
 }
 
 class RowSource extends DataTableSource {
@@ -831,39 +770,29 @@ DataRow recentFileDataRow(var data) {
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.stockcode.toString()))),
+          alignment: Alignment.center, child: Text(data.warehouse.toString()))),
       DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.description.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center, child: Text(data.unitcost.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.inventorycost.toString()))),
+          alignment: Alignment.center, child: Text(data.stockname.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.quantity.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.value.toString()))),
+          alignment: Alignment.center, child: Text(data.date.toString()))),
     ],
   );
 }
 
 class Data {
   String? id;
-  String? stockcode;
-  String? description;
-  String? unitcost;
-  String? inventorycost;
-  String? value;
+  String? warehouse;
+  String? stockname;
+  String? date;
   String? quantity;
 
   Data({
     required this.id,
-    required this.stockcode,
-    required this.description,
-    required this.unitcost,
-    required this.inventorycost,
-    required this.value,
+    required this.warehouse,
+    required this.stockname,
+    required this.date,
     required this.quantity,
   });
 }
@@ -871,173 +800,135 @@ class Data {
 List<Data> myData = [
   Data(
     id: "1",
-    stockcode: 'A',
-    description: 'A1A',
-    unitcost: '464',
-    inventorycost: '23',
-    value: '134',
+    warehouse: 'A',
+    stockname: 'A1A',
+    date: '134',
     quantity: '24524',
   ),
   Data(
     id: "2",
-    stockcode: '6464646',
-    description: '30',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '124',
+    warehouse: '6464646',
+    stockname: '30',
+    date: '124',
     quantity: '`52435`',
   ),
   Data(
     id: "3",
-    stockcode: '8888',
-    description: '32',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '42',
+    warehouse: '8888',
+    stockname: '32',
+    date: '42',
     quantity: '245245',
   ),
   Data(
     id: "4",
-    stockcode: '3333333',
-    description: '33',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '245',
+    warehouse: '3333333',
+    stockname: '33',
+    date: '245',
     quantity: '245245',
   ),
   Data(
     id: "5",
-    stockcode: '987654556',
-    description: '23',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '2452',
+    warehouse: '987654556',
+    stockname: '23',
+    date: '2452',
     quantity: '245245',
   ),
   Data(
     id: "6",
-    stockcode: '46464664',
-    description: '24',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '452',
+    warehouse: '46464664',
+    stockname: '24',
+    date: '452',
     quantity: '24524',
   ),
   Data(
     id: "7",
-    stockcode: '5353535',
-    description: '36',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '245',
+    warehouse: '5353535',
+    stockname: '36',
+    date: '245',
     quantity: '13435',
   ),
   Data(
     id: "8",
-    stockcode: '244242',
-    description: '38',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '67',
+    warehouse: '244242',
+    stockname: '38',
+    date: '67',
     quantity: '65979',
   ),
   Data(
     id: "9",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '6579',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '6579',
     quantity: '69659',
   ),
   Data(
     id: "10",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '65968',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '65968',
     quantity: '694689',
   ),
   Data(
     id: "11",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '64794',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '64794',
     quantity: '67947',
   ),
   Data(
     id: "12",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '46794',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '46794',
     quantity: '6479467',
   ),
   Data(
     id: "13",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '58',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '58',
     quantity: '658365',
   ),
   Data(
     id: "14",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '6576',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '6576',
     quantity: '5686',
   ),
   Data(
     id: "15",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '568',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '568',
     quantity: '3477',
   ),
   Data(
     id: "16",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '42572',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '42572',
     quantity: '457',
   ),
   Data(
     id: "17",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '547',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '547',
     quantity: '45725',
   ),
   Data(
     id: "18",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '2457',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '2457',
     quantity: '257457',
   ),
   Data(
     id: "19",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '257',
+    warehouse: '323232323',
+    stockname: '29',
+    date: '257',
     quantity: '245747',
   ),
 ];
