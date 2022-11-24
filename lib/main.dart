@@ -22,6 +22,9 @@ import 'package:flutter_agro_new/pages/dashboard.dart';
 
 import 'pages/crop-plan/add_crop_plan.dart';
 import 'pages/crop-plan/crop_plan.dart';
+import 'pages/crop/grid_view_crop.dart';
+import 'pages/crop/table_view_crop.dart';
+import 'pages/crop/view_details.dart';
 import 'test.dart';
 
 void main() {
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/addstock',
+      initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => const login()),
         GetPage(name: '/register', page: () => const register()),
@@ -61,6 +64,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/classandtype', page: () => const InventoryClassType()),
         GetPage(name: '/crop_plan', page: () => const CropPlan()),
         GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
+        GetPage(name: '/grid_view_crop', page: () => const Crop()),
+        GetPage(name: '/view_details', page: () => const ViewDetails()),
+        GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),
         GetPage(
             name: '/modesofapplication',
             page: () => const ModesOfApplication()),

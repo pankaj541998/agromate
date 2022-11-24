@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:get/get.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({Key? key, this.initial}) : super(key: key);
@@ -17,6 +18,7 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
       initialIndex: widget.initial ?? 0,
       length: 2,
@@ -29,44 +31,52 @@ class _MyProfileState extends State<MyProfile> {
             children: [
               TopBar(),
               Padding(
-                padding: EdgeInsets.only(left: 50, top: 43, right: 50),
-                child: SizedBox(
-                  width: 530,
-                  height: 80,
-                  child: AppBar(
-                    bottom: TabBar(
-                        indicatorColor: Color(0xFF327C04),
-                        labelColor: Colors.black,
-                        unselectedLabelStyle:
-                            TextStyle(color: Color(0xFF6B6B6B)),
-                        labelStyle: TextStyle(
-                          color: Color(0xFF000000),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                        tabs: [
-                          Tab(
-                            text: 'My Profile',
+                padding:
+                    EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        InkWell(
+                            onTap: () => Get.back(),
+                            child: const Icon(Icons.arrow_back_ios)),
+                        const SizedBox(
+                          width: 530,
+                          height: 80,
+                          child: TabBar(
+                            indicatorColor: Color(0xFF327C04),
+                            labelColor: Colors.black,
+                            unselectedLabelStyle:
+                                TextStyle(color: Color(0xFF6B6B6B)),
+                            labelStyle: TextStyle(
+                              color: Color(0xFF000000),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                            tabs: [
+                              Tab(
+                                text: 'My Profile',
+                              ),
+                              Tab(
+                                text: 'Change Password',
+                              )
+                            ],
                           ),
-                          Tab(
-                            text: 'Change Password',
-                          )
-                        ]),
-                    elevation: 0,
-                    backgroundColor: Colors.white,
-                    leading: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Color(0xff000000),
-                      ),
+                        ),
+                      ],
                     ),
-                  ),
+                    SizedBox(
+                      height: 590,
+                      child: TabBarView(
+                        children: [
+                          profile(),
+                          ChangePassword(),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
-              SizedBox(
-                  height: 590,
-                  child: TabBarView(children: [profile(), ChangePassword()]))
             ],
           ),
         ),
@@ -85,29 +95,32 @@ class profile extends StatefulWidget {
 class _profileState extends State<profile> {
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Padding(
-      padding: EdgeInsets.only(left: 50, top: 43, right: 50),
+      padding: const EdgeInsets.only(left: 50, top: 43, right: 50),
       child: Column(
         children: [
           Row(
             children: [
-              Text(
+              const Text(
                 "Personal Details",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Divider(
-                  color: Color(0xFF327C04),
-                  thickness: 1,
+              Expanded(
+                child: const SizedBox(
+                  width: double.infinity,
+                  child: Divider(
+                    color: Color(0xFF327C04),
+                    thickness: 1,
+                  ),
                 ),
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Row(
@@ -117,7 +130,7 @@ class _profileState extends State<profile> {
               Expanded(
                 flex: 1,
                 child: Column(
-                  children: [
+                  children: const [
                     SizedBox(
                       height: 30,
                     ),
@@ -137,7 +150,7 @@ class _profileState extends State<profile> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 70,
               ),
               Expanded(
@@ -145,23 +158,23 @@ class _profileState extends State<profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Username',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    SizedBox(
+                    const SizedBox(
                         height: 50,
                         width: 353,
                         child: TextInputField(
                             hintText: "Username", validatorText: "")),
-                    SizedBox(
+                    const SizedBox(
                       height: 35,
                     ),
-                    Text(
+                    const Text(
                       'Email Address',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

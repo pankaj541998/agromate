@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../component/top_bar.dart';
 
 class CropPlan extends StatefulWidget {
@@ -66,29 +67,32 @@ class _CropPlanState extends State<CropPlan> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF327C04),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 9),
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.add,
-                                      color: Color(0xffffffff),
-                                      size: 20,
-                                    ),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      'Add',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Color(0xffffffff)),
-                                    )
-                                  ],
+                            InkWell(
+                              onTap: () => Get.toNamed('/add_crop_plan'),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF327C04),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 9),
+                                  child: Row(
+                                    children: const [
+                                      Icon(
+                                        Icons.add,
+                                        color: Color(0xffffffff),
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 6),
+                                      Text(
+                                        'Add',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xffffffff)),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -150,7 +154,7 @@ class _CropPlanState extends State<CropPlan> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 30),
                   datatable(),
                 ],
               ),
