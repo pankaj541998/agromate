@@ -6,7 +6,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../component/custom_Elevated_Button.dart';
+import '../../../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
 

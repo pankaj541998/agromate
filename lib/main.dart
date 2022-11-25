@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+import 'package:flutter_agro_new/pages/Inventory/modes_of_application/Inventory_modes_of_application.dart';
 
 import 'package:flutter_agro_new/pages/allocation.dart';
 
@@ -12,8 +12,8 @@ import 'package:flutter_agro_new/pages/farms/view_farm.dart';
 import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
 import 'package:flutter_agro_new/pages/growth_stages/growth_stage_details.dart';
 import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
-import 'package:flutter_agro_new/pages/inventory.dart';
-import 'package:flutter_agro_new/pages/inventory_class_type.dart';
+import 'package:flutter_agro_new/pages/Inventory/inventory.dart';
+import 'package:flutter_agro_new/pages/Inventory/class_and_type/inventory_class_type.dart';
 
 import 'package:flutter_agro_new/pages/login_Registration/forgot_password.dart';
 import 'package:flutter_agro_new/pages/login_Registration/login.dart';
@@ -22,18 +22,15 @@ import 'package:flutter_agro_new/pages/login_Registration/otp_verification.dart'
 import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
-import 'package:flutter_agro_new/pages/popup.dart';
-import 'package:flutter_agro_new/pages/stock_manager.dart';
-import 'package:flutter_agro_new/pages/stock_manager_table.dart';
-import 'package:flutter_agro_new/pages/stock_order.dart';
-import 'package:flutter_agro_new/pages/stock_planner.dart';
-import 'package:flutter_agro_new/pages/stock_planner_table.dart';
+import 'package:flutter_agro_new/pages/Inventory/stock_order/stock_order.dart';
 import 'package:flutter_agro_new/pages/user.dart';
 import 'package:get/get.dart';
-
 import 'package:flutter_agro_new/pages/dashboard.dart';
-
-import 'pages/add_stock.dart';
+import 'pages/Inventory/stock_manager/add_stock.dart';
+import 'pages/Inventory/stock_manager/stock_manager.dart';
+import 'pages/Inventory/stock_manager/stock_manager_table.dart';
+import 'pages/Inventory/stock_planner/stock_planner.dart';
+import 'pages/Inventory/stock_planner/stock_planner_table.dart';
 import 'pages/crop-plan/add_crop_plan.dart';
 import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
@@ -43,7 +40,6 @@ import 'pages/farms/select_plot.dart';
 import 'pages/tasks/add_task.dart';
 import 'pages/tasks/taska.dart';
 import 'providers/map_filter_provider.dart';
-import 'test.dart';
 import 'package:provider/provider.dart';
 
 void main() {
