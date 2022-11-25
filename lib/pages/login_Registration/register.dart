@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../component/custom_Elevated_Button.dart';
-import '../../component/text_input_field.dart';
-import '../../services/register_api.dart';
+import '../../component/text_Input_field.dart';
+import '../../component/services/register_api.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -170,6 +171,7 @@ class _RegisterState extends State<Register> {
                         height: 20,
                       ),
                       TextInputField(
+                          leadingIcon: Image.asset(""),
                           textEditingController: phonenumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -195,7 +197,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(
                           height: 50,
                           width: 500,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             title: 'Register',
                             onPressed: () {
                               registermethod();

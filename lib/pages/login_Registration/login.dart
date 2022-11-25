@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_input_field.dart';
-import 'package:flutter_agro_new/services/auth_api.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
+import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
+import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import '../../component/services/test_api.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -73,6 +76,11 @@ class _LoginState extends State<Login> {
                         height: 32,
                       ),
                       TextInputField(
+                        leadingIcon: Image.asset(
+                          "assets/images/username.png",
+                          height: 30,
+                          width: 30,
+                        ),
                         textEditingController: username,
                         validator: (value) {
                           if (value != null && value.isEmpty) {
@@ -87,6 +95,11 @@ class _LoginState extends State<Login> {
                         height: 30,
                       ),
                       TextInputField(
+                          leadingIcon: Image.asset(
+                            "assets/images/password.png",
+                            height: 30,
+                            width: 30,
+                          ),
                           textEditingController: password,
                           validator: (value) {
                             if (value != null && value.isEmpty) {
@@ -135,12 +148,12 @@ class _LoginState extends State<Login> {
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 10),
-                            ElevatedButton(
+                            SizedBox(width: 10),
+                            TextButton(
                               onPressed: () {
                                 Get.toNamed('/forgotPassword');
                               },
-                              child: const Text(
+                              Widget: const Text(
                                 "Forgot Password ?",
                                 style: TextStyle(
                                     color: Color(0xFF327C04), fontSize: 15),
@@ -155,7 +168,7 @@ class _LoginState extends State<Login> {
                       SizedBox(
                           height: 50,
                           width: 500,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             title: 'Log in',
                             onPressed: () {
                               loginPressed();

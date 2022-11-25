@@ -4,11 +4,11 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_input_field.dart';
+import 'package:flutter_agro_new/pages/login_Registration/otp_verification.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/otp_api.dart';
-import 'otp_verification.dart';
+import '../../component/services/otp_api.dart';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -100,10 +100,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                     TextInputField(
                       textEditingController: email,
-                      leadingIcon: const Icon(
-                        Icons.email_outlined,
-                        color: Color(0xFFA1B809),
-                      ),
+                      leadingIcon: Image.asset("assets/images/email.png"),
                       validator: (value) {
                         if (value == null ||
                             value.isEmpty ||
@@ -122,7 +119,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(
                       height: 50,
                       width: 500,
-                      child: customElevatedButton(
+                      child: CustomElevatedButton(
                         title: 'Send Mail',
                         onPressed: () {
                           otpSendData();
@@ -138,13 +135,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Didn't receive mail ?"),
-                          ElevatedButton(
+                          TextButton(
+                            Widget: const Text(" Resend mail"),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF327C04)),
                             ),
                             onPressed: () {},
-                            child: const Text(" Resend mail"),
                           )
                         ],
                       ),

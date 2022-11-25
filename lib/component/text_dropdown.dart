@@ -32,7 +32,7 @@ class _TextDropdownState extends State<TextDropdown> {
     return Column(
       children: [
         SizedBox(
-          height: 50,
+          height: 40,
           child: TextFormField(
             readOnly: true,
             onChanged: widget.onInput,
@@ -47,11 +47,11 @@ class _TextDropdownState extends State<TextDropdown> {
             controller: controller,
             decoration: InputDecoration(
               focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(color: Color(0xFF327C04)),
               ),
               enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
                 borderSide: BorderSide(color: Color(0xFFA1B809)),
               ),
               border: OutlineInputBorder(

@@ -482,7 +482,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                       SizedBox(
                         height: 40,
                         width: 298,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },

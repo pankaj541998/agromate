@@ -8,7 +8,7 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/auth_api.dart';
+import '../../component/services/auth_api.dart';
 
 class UpdatePassword extends StatefulWidget {
   const UpdatePassword({Key? key, this.email}) : super(key: key);
@@ -89,6 +89,8 @@ class UupdatePasswordState extends State<UpdatePassword> {
                       height: 30,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "New Password",
                       validatorText: "validatorText",
                       textEditingController: passwordcontroller,
@@ -122,6 +124,8 @@ class UupdatePasswordState extends State<UpdatePassword> {
                       height: 18,
                     ),
                     TextInputField(
+                      isInputPassword: true,
+                      leadingIcon: Image.asset("assets/images/password.png"),
                       hintText: "Confirm New Password",
                       validatorText: "",
                       validator: (value) {
@@ -141,7 +145,7 @@ class UupdatePasswordState extends State<UpdatePassword> {
                     SizedBox(
                       height: 50,
                       width: 500,
-                      child: customElevatedButton(
+                      child: CustomElevatedButton(
                         title: "Update Password",
                         onPressed: () {
                           updatePasword();

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
+import '../../component/custom_Elevated_Button.dart';
+import '../../component/text_Input_field.dart';
+
 class TableViewCrop extends StatefulWidget {
   const TableViewCrop({Key? key}) : super(key: key);
 
@@ -31,6 +34,215 @@ class _TableViewCropState extends State<TableViewCrop> {
   void initState() {
     filterData = myData;
     super.initState();
+  }
+
+  late String _selectedValue;
+  List<String> listOfValue = [
+    'Week 1',
+    'Week 2',
+    'Week 3',
+    'Week 4',
+  ];
+  buildPin() {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                contentPadding: EdgeInsets.only(top: 10.0),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Add New Crop program",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Crop",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                SizedBox(
+                                    height: 40,
+                                    width: 300,
+                                    child: TextInputField(
+                                        hintText: "", validatorText: ""))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Yield Per Hectare",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                SizedBox(
+                                    height: 40,
+                                    width: 300,
+                                    child: TextInputField(
+                                        hintText: "", validatorText: ""))
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "plant Population",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                SizedBox(
+                                    height: 40,
+                                    width: 300,
+                                    child: TextInputField(
+                                        hintText: "", validatorText: ""))
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Week",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    focusColor: Colors.white,
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10, top: 10, right: 10),
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF327C04),
+                                          width: 5.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    items: listOfValue.map((String val) {
+                                      return DropdownMenuItem(
+                                        enabled: true,
+                                        value: val,
+                                        child: Text(
+                                          val,
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedValue;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 296,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            title: "Add",
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -148,7 +360,9 @@ class _TableViewCropState extends State<TableViewCrop> {
                               ),
                               const SizedBox(width: 6),
                               InkWell(
-                                onTap: () => Get.toNamed('/add_crop_plan'),
+                                onTap: () {
+                                  buildPin();
+                                },
                                 child: const Text(
                                   'Add',
                                   style: TextStyle(
@@ -422,6 +636,26 @@ DataRow recentFileDataRow(var data) {
   );
 }
 
+_buildactions(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      InkWell(
+          onTap: () {
+            print("pressed");
+            // buildPinAlert(context);
+          },
+          child: Container(child: Icon(Icons.remove_red_eye_outlined))),
+      InkWell(
+          onTap: () {
+            print("pressed");
+            // customAlert(context);
+          },
+          child: Image.asset("assets/images/delete.png", height: 30)),
+    ],
+  );
+}
+
 class Data {
   String? id;
   String? name;
@@ -460,7 +694,105 @@ List<Data> myData = [
         ),
         Expanded(
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Alert(context) {
+                return showDialog(
+                  context: context,
+                  builder: (context) => StatefulBuilder(
+                    builder: (context, setState) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AlertDialog(
+                            content: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.cancel_outlined,
+                                  size: 60,
+                                  color: Color(0xFFFF0000),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                const Text(
+                                  "Are You Sure?",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 40,
+                                      width: 160,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              side: const BorderSide(
+                                                color: Color(0xFF327C04),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            color: Color(0XFF000000),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                      width: 160,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(
+                                              const Color(0xFF327C04),
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ))),
+                                        onPressed: () {},
+                                        child: const Text('Delete'),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              }
+            },
             child: const Icon(
               Icons.delete_outlined,
               color: Color(0xff000000),

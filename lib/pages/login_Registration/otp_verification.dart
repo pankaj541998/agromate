@@ -8,7 +8,7 @@ import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:http/http.dart' as http;
-import '../../services/otp_api.dart';
+import '../../component/services/otp_api.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({Key? key, this.email}) : super(key: key);
@@ -152,7 +152,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                     SizedBox(
                       height: 50,
                       width: 400,
-                      child: customElevatedButton(
+                      child: CustomElevatedButton(
                         title: "Submit OTP",
                         onPressed: () {
                           otpSend();
@@ -168,13 +168,13 @@ class _OtpVerificationState extends State<OtpVerification> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Didn't receive OTP ?"),
-                          ElevatedButton(
+                          TextButton(
+                            Widget: const Text(" Resend OTP"),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF327C04)),
                             ),
                             onPressed: () {},
-                            child: const Text(" Resend OTP"),
                           )
                         ],
                       ),

@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_agro_new/pages/inventory_modes_of_application.dart';
-import 'package:flutter_agro_new/pages/add_stock.dart';
+import 'package:flutter_agro_new/pages/Inventory_modes_of_application.dart';
+
+import 'package:flutter_agro_new/pages/allocation.dart';
+
+import 'package:flutter_agro_new/pages/allocate.dart';
+
+import 'package:flutter_agro_new/pages/farms/select_block.dart';
+import 'package:flutter_agro_new/pages/farms/select_field.dart';
+
+import 'package:flutter_agro_new/pages/farms/view_farm.dart';
+import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
+import 'package:flutter_agro_new/pages/growth_stages/growth_stage_details.dart';
+import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
 import 'package:flutter_agro_new/pages/inventory.dart';
 import 'package:flutter_agro_new/pages/inventory_class_type.dart';
 
@@ -11,26 +22,37 @@ import 'package:flutter_agro_new/pages/login_Registration/otp_verification.dart'
 import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
+import 'package:flutter_agro_new/pages/popup.dart';
 import 'package:flutter_agro_new/pages/stock_manager.dart';
 import 'package:flutter_agro_new/pages/stock_manager_table.dart';
 import 'package:flutter_agro_new/pages/stock_order.dart';
 import 'package:flutter_agro_new/pages/stock_planner.dart';
 import 'package:flutter_agro_new/pages/stock_planner_table.dart';
-import 'package:flutter_agro_new/pages/taska/add_task.dart';
-import 'package:flutter_agro_new/pages/taska/taska.dart';
-import 'package:flutter_agro_new/test.dart';
+import 'package:flutter_agro_new/pages/user.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_agro_new/pages/dashboard.dart';
 
+import 'pages/add_stock.dart';
 import 'pages/crop-plan/add_crop_plan.dart';
 import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
+import 'pages/farms/select_plot.dart';
+import 'pages/tasks/add_task.dart';
+import 'pages/tasks/taska.dart';
+import 'providers/map_filter_provider.dart';
+import 'test.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => MapFilterProvider())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -44,7 +66,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/test',
+      initialRoute: '/allocation',
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
@@ -54,6 +76,19 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/updatePassword', page: () => const UpdatePassword()),
         GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
+        GetPage(name: '/inventory', page: () => Inventory()),
+        GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
+        GetPage(name: '/growthstage', page: () => GrowthStage()),
+        GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
+        GetPage(name: '/crop_plan', page: () => CropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
+        GetPage(name: '/grid_view_crop', page: () => Crop()),
+        GetPage(name: '/table_view_crop', page: () => TableViewCrop()),
+        GetPage(name: '/view_details', page: () => ViewDetails()),
+        GetPage(name: '/view_farm', page: () => ViewFarm()),
+        GetPage(name: '/select_plot', page: () => SelectPlot()),
+        GetPage(name: '/select_block', page: () => SelectBlock()),
+        GetPage(name: '/select_field', page: () => SelectField()),
         GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(
@@ -74,7 +109,9 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: '/modesofapplication',
             page: () => const ModesOfApplication()),
-        GetPage(name: '/test', page: () => const TestAccordian()),
+        GetPage(name: '/user', page: () => User()),
+        GetPage(name: '/allocation', page: () => Allocation()),
+        GetPage(name: '/allocate', page: () => Allocate()),
       ],
     );
   }

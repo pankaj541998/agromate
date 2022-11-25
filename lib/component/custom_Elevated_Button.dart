@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class customElevatedButton extends StatelessWidget {
-  const customElevatedButton({
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
     Key? key,
     this.title,
     required this.onPressed,
@@ -17,13 +17,13 @@ class customElevatedButton extends StatelessWidget {
               MaterialStateProperty.all<Color>(const Color(0XFF327C04)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(15)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ))),
       onPressed: onPressed,
       child: Text(
         title!,
         style: const TextStyle(
-            fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
+            fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
       ),
     );
   }
