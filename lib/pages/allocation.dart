@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
-import 'package:flutter_agro_new/pages/stock_planner.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 
@@ -68,7 +67,7 @@ class _AllocationState extends State<Allocation> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              // onTap: () => buildPin(context),
+                              onTap: () => Get.toNamed("/allocate"),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF327C04),
@@ -613,7 +612,7 @@ customAlert(context) {
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
-                          onPressed: () {},
+                          onPressed: () => Navigator.pop(context),
                           child: const Text('Delete'),
                         ),
                       )

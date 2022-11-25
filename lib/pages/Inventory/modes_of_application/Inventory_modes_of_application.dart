@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
-import '../component/custom_Elevated_Button.dart';
+import '../../../component/custom_Elevated_Button.dart';
 
 class ModesOfApplication extends StatefulWidget {
   const ModesOfApplication({Key? key}) : super(key: key);
@@ -502,150 +502,146 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
-                      SizedBox(width: screenSize.width * 0.02),
-                      Text(
-                        'Modes Of Application',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Color(0xff000000),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                buildPinAlertDialog();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF327C04),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 9),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.add,
-                                        color: Color(0xffffffff),
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text(
-                                        'Add',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Color(0xffffffff)),
-                                      )
-                                    ],
-                                  ),
-                                ),
+      body: Column(
+        children: [
+          TopBar(),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(Icons.arrow_back_ios_rounded)),
+                    SizedBox(width: screenSize.width * 0.02),
+                    Text(
+                      'Modes Of Application',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xff000000),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              buildPinAlertDialog();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF327C04),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: SizedBox(
-                                width: 250,
-                                child: CupertinoSearchTextField(
-                                  onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
-                                  },
-                                  // controller: controller,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: const Color(0xFF327C04),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 9),
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.add,
+                                      color: Color(0xffffffff),
+                                      size: 20,
                                     ),
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: const Color(0xff327C04)
-                                        .withOpacity(0.11),
-                                  ),
-                                  itemSize: 25,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xff000000),
-                                  ),
-                                  prefixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
-                                  suffixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 15, 2),
-                                  placeholderStyle: TextStyle(
-                                    fontSize: 16,
-                                    color: const Color(0xff000000)
-                                        .withOpacity(0.38),
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                    top: 0,
-                                    bottom: 0,
-                                    right: 15,
-                                  ),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Add',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xffffffff)),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: SizedBox(
+                              width: 250,
+                              child: CupertinoSearchTextField(
+                                onChanged: (value) {
+                                  // setState(() {
+                                  //   myData = filterData!
+                                  //       .where(
+                                  //         (element) => element.name!
+                                  //             .toLowerCase()
+                                  //             .contains(
+                                  //               value.toLowerCase(),
+                                  //             ),
+                                  //       )
+                                  //       .toList();
+                                  // }
+                                  // );
+                                },
+                                // controller: controller,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color(0xFF327C04),
+                                  ),
+                                  borderRadius: BorderRadius.circular(6),
+                                  color:
+                                      const Color(0xff327C04).withOpacity(0.11),
+                                ),
+                                itemSize: 25,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff000000),
+                                ),
+                                prefixInsets:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        10, 8, 0, 8),
+                                placeholder: 'Search Celeb....',
+                                suffixInsets:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 15, 2),
+                                placeholderStyle: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      const Color(0xff000000).withOpacity(0.38),
+                                ),
+                                padding: const EdgeInsets.only(
+                                  left: 5,
+                                  top: 0,
+                                  bottom: 0,
+                                  right: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Divider(
-                    height: 5,
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
-                  SizedBox(height: screenSize.height * 0.03),
-                  datatable(),
-                ],
-              ),
-            )
-          ],
-        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Divider(
+                  height: 5,
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+                SizedBox(height: screenSize.height * 0.03),
+                datatable(screenSize),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
 }
 
-datatable() {
-  return SingleChildScrollView(
-    child: Container(
-      padding: const EdgeInsets.all(0.0),
-      decoration: const BoxDecoration(),
+datatable(screenSize) {
+  return SizedBox(
+    height: screenSize.height * 0.7,
+    child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -436,7 +436,7 @@ class _TableViewCropState extends State<TableViewCrop> {
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
             child: Column(
               children: [
-                datatable(),
+                datatable(context),
               ],
             ),
           )
@@ -445,7 +445,7 @@ class _TableViewCropState extends State<TableViewCrop> {
     );
   }
 
-  datatable() {
+  datatable(context) {
     final screenSize = MediaQuery.of(context).size;
     return SizedBox(
       height: screenSize.height * 0.7,
@@ -462,6 +462,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                   sortColumnIndex: 0,
                   sortAscending: sort,
                   source: RowSource(
+                    context: context,
                     myData: myData,
                     count: myData.length,
                   ),
@@ -592,15 +593,17 @@ class _TableViewCropState extends State<TableViewCrop> {
 class RowSource extends DataTableSource {
   var myData;
   final count;
+  BuildContext context;
   RowSource({
     required this.myData,
     required this.count,
+    required this.context,
   });
 
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index]);
+      return recentFileDataRow(myData![index], context);
     } else {
       return null;
     }
@@ -616,7 +619,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(var data, context) {
   return DataRow(
     cells: [
       DataCell(
@@ -629,7 +632,8 @@ DataRow recentFileDataRow(var data) {
           Align(alignment: Alignment.center, child: Text(data.yph.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.weeks.toString()))),
-      DataCell(Align(alignment: Alignment.center, child: data.action)),
+      DataCell(
+          Align(alignment: Alignment.center, child: _buildactions(context))),
     ],
   );
 }
@@ -641,16 +645,110 @@ _buildactions(context) {
       InkWell(
           onTap: () {
             print("pressed");
-            // buildPinAlert(context);
+            Get.toNamed("/view_details");
           },
           child: Container(child: Icon(Icons.remove_red_eye_outlined))),
+      SizedBox(
+        width: 10,
+      ),
       InkWell(
           onTap: () {
             print("pressed");
-            // customAlert(context);
+            customAlert(context);
           },
           child: Image.asset(height: 30, "assets/images/delete.png")),
     ],
+  );
+}
+
+customAlert(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AlertDialog(
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.cancel_outlined,
+                    size: 60,
+                    color: Color(0xFFFF0000),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    "Are You Sure?",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                  color: Color(0xFF327C04),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Color(0XFF000000),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFF327C04),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ))),
+                          onPressed: () {},
+                          child: const Text('Delete'),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    ),
   );
 }
 
