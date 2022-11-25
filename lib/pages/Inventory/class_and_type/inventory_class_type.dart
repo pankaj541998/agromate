@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
@@ -85,61 +86,20 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Stock Code",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Stock Code',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Stock Code";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -148,61 +108,20 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Item Description",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Item Description',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Item Description";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -211,68 +130,27 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                         ],
                       ),
                       const SizedBox(
-                        height: 0,
+                        height: 20,
                       ),
                       Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Unit Cost",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Unit Cost',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Unit Cost";
-                                    }
-                                    return null;
-                                  },
+                              Text(
+                                "Unit cost",
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -281,61 +159,20 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Inventory Cost",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Inventory Cost',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Inventory Cost";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -344,68 +181,27 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                         ],
                       ),
                       const SizedBox(
-                        height: 0,
+                        height: 20,
                       ),
                       Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Quantity",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Quantity',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Quantity";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -414,61 +210,20 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Value",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Value',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Value";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -869,173 +624,173 @@ class Data {
 List<Data> myData = [
   Data(
     id: "1",
-    stockcode: 'A',
-    description: 'A1A',
-    unitcost: '464',
-    inventorycost: '23',
-    value: '134',
-    quantity: '24524',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "2",
-    stockcode: '6464646',
-    description: '30',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '124',
-    quantity: '`52435`',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "3",
-    stockcode: '8888',
-    description: '32',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '42',
-    quantity: '245245',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "4",
-    stockcode: '3333333',
-    description: '33',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '245',
-    quantity: '245245',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "5",
-    stockcode: '987654556',
-    description: '23',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '2452',
-    quantity: '245245',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "6",
-    stockcode: '46464664',
-    description: '24',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '452',
-    quantity: '24524',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "7",
-    stockcode: '5353535',
-    description: '36',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '245',
-    quantity: '13435',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "8",
-    stockcode: '244242',
-    description: '38',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '67',
-    quantity: '65979',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "9",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '6579',
-    quantity: '69659',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "10",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '65968',
-    quantity: '694689',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "11",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '64794',
-    quantity: '67947',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "12",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '46794',
-    quantity: '6479467',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "13",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '58',
-    quantity: '658365',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
-    id: "14",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '6576',
-    quantity: '5686',
+    id: "4",
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "15",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '568',
-    quantity: '3477',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "16",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '42572',
-    quantity: '457',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "17",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '547',
-    quantity: '45725',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "18",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '2457',
-    quantity: '257457',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "19",
-    stockcode: '323232323',
-    description: '29',
-    unitcost: '512',
-    inventorycost: '172',
-    value: '257',
-    quantity: '245747',
+    stockcode: '4BL01',
+    description: 'Seed Butternut Squash Baby F1 Hybrid 1M',
+    unitcost: '730.5',
+    inventorycost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
 ];

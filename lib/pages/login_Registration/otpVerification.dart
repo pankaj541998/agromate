@@ -4,21 +4,22 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:http/http.dart' as http;
 import '../../component/services/otp_api.dart';
 
-class OtpVerification extends StatefulWidget {
-  const OtpVerification({Key? key, this.email}) : super(key: key);
+class otpVerification extends StatefulWidget {
+  const otpVerification({Key? key, this.email}) : super(key: key);
 
   @override
-  State<OtpVerification> createState() => _OtpVerificationState();
+  State<otpVerification> createState() => _otpVerificationState();
   final String? email;
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
+class _otpVerificationState extends State<otpVerification> {
   final otp = TextEditingController();
 
   Future<void> otpSend() async {
@@ -49,7 +50,7 @@ class _OtpVerificationState extends State<OtpVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFFF7F9EA),
+        color: Color(0xFFF7F9EA),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -60,17 +61,17 @@ class _OtpVerificationState extends State<OtpVerification> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Enter OTP",
                       style: TextStyle(
                           fontSize: 35,
                           color: Colors.black,
                           fontWeight: FontWeight.w500),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 5,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 500,
                       child: Divider(
                         thickness: 2,
@@ -79,14 +80,14 @@ class _OtpVerificationState extends State<OtpVerification> {
                         indent: 0,
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 10,
                     ),
-                    const Text(
+                    Text(
                       "Reset password with agromate",
                       style: TextStyle(fontSize: 16, color: Color(0xFF505050)),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 51,
                     ),
                     SizedBox(
@@ -113,16 +114,16 @@ class _OtpVerificationState extends State<OtpVerification> {
                         pinTheme: PinTheme(
                           selectedFillColor: Colors.white,
                           inactiveFillColor: Colors.white,
-                          inactiveColor: const Color(0xFFA1B809),
-                          activeColor: const Color(0xFFA1B809),
-                          selectedColor: const Color(0xFFA1B809),
+                          inactiveColor: Color(0xFFA1B809),
+                          activeColor: Color(0xFFA1B809),
+                          selectedColor: Color(0xFFA1B809),
                           shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(15),
                           fieldHeight: 60,
                           fieldWidth: 60,
                           activeFillColor: Colors.white,
                         ),
-                        animationDuration: const Duration(milliseconds: 300),
+                        animationDuration: Duration(milliseconds: 300),
                         // backgroundColor: Colors.white,
                         enableActiveFill: true,
                         // errorAnimationController: errorController,
@@ -146,7 +147,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                         appContext: context,
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 40,
                     ),
                     SizedBox(
@@ -159,7 +160,7 @@ class _OtpVerificationState extends State<OtpVerification> {
                         },
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 15,
                     ),
                     SizedBox(
@@ -167,14 +168,14 @@ class _OtpVerificationState extends State<OtpVerification> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Didn't receive OTP ?"),
+                          Text("Didn't receive OTP ?"),
                           TextButton(
-                            child: const Text(" Resend OTP"),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xFF327C04)),
+                                  Color(0xFF327C04)),
                             ),
                             onPressed: () {},
+                            child: Text(" Resend OTP"),
                           )
                         ],
                       ),

@@ -55,187 +55,194 @@ class _TableViewCropState extends State<TableViewCrop> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 contentPadding: EdgeInsets.only(top: 10.0),
-                content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(Icons.cancel_outlined))
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Add New Crop program",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Crop",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                    height: 40,
-                                    width: 300,
-                                    child: TextInputField(
-                                        hintText: "", validatorText: ""))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Yield Per Hectare",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                    height: 40,
-                                    width: 300,
-                                    child: TextInputField(
-                                        hintText: "", validatorText: ""))
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "plant Population",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                    height: 40,
-                                    width: 300,
-                                    child: TextInputField(
-                                        hintText: "", validatorText: ""))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Week",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                SizedBox(
-                                  height: 40,
-                                  width: 300,
-                                  child: DropdownButtonFormField(
-                                    focusColor: Colors.white,
-                                    isExpanded: true,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(
-                                          left: 10, top: 10, right: 10),
-                                      fillColor: Colors.white,
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                            color: Color(0xFF327C04)),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                            color: Color(0xFF327C04)),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Color(0xFF327C04),
-                                          width: 5.0,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    items: listOfValue.map((String val) {
-                                      return DropdownMenuItem(
-                                        enabled: true,
-                                        value: val,
-                                        child: Text(
-                                          val,
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedValue;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 28,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          width: 296,
-                          child: CustomElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            title: "Add",
+                content: Padding(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 25, right: 25, bottom: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.cancel_outlined))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Add New Crop program",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Crop",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          hintText: "", validatorText: ""))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Yield Per Hectare",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          hintText: "", validatorText: ""))
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "plant Population",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          hintText: "", validatorText: ""))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Week",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 300,
+                                    child: DropdownButtonFormField(
+                                      focusColor: Colors.white,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 10, top: 10, right: 10),
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF327C04),
+                                            width: 5.0,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      items: listOfValue.map((String val) {
+                                        return DropdownMenuItem(
+                                          enabled: true,
+                                          value: val,
+                                          child: Text(
+                                            val,
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedValue;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 28,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: 296,
+                            child: CustomElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              title: "Add",
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

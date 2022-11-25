@@ -97,42 +97,47 @@ class _GrowthStageDetailsState extends State<GrowthStageDetails> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: (2 / 1),
                     crossAxisCount: 5,
-                    crossAxisSpacing: 25,
+                    // crossAxisSpacing: 25,
                   ),
                   itemCount: 10,
                   itemBuilder: (BuildContext ctx, index) {
-                    return Card(
-                      color: Color(0xFFF7F9EA),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Image.asset("assets/images/seedlings_full_width.png"),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Transplant",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500),
-                              ),
-                              // SizedBox(
-                              //   height: 10,
-                              // ),
-                              Text(
-                                "Week: W3",
-                                style: TextStyle(
-                                  fontSize: 14,
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color: Color(0xFFF7F9EA),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Image.asset(
+                                "assets/images/seedlings_full_width.png"),
+                            SizedBox(
+                              width: 25,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Transplant",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              )
-                            ],
-                          )
-                        ],
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                Text(
+                                  "Week: W3",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }),

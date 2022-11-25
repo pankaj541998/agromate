@@ -73,1103 +73,1128 @@ class _AddCropPlanState extends State<AddCropPlan> {
           const SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-            child: Wrap(
-              spacing: 25,
-              runSpacing: 25,
-              children: [
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Farm',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
+            child: SizedBox(
+              height: screenSize.height * 1 - 280,
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 25,
+                  runSpacing: 25,
+                  children: [
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Farm',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Block',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.transparent,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Field',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.transparent,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Irrigation Types',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.transparent,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Crop',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.transparent,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Caltivar',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DropdownButtonFormField(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: const Color(0xff327C04).withOpacity(0.5),
-                            fontFamily: 'Helvetica',
-                          ),
-                          fillColor: Colors.transparent,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        isExpanded: true,
-                        value: questionsSelected,
-                        iconEnabledColor: Colors.transparent, // Down Arrow Icon
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Color(0xff327C04),
-                        ),
-                        iconSize: 30,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xff000000),
-                            fontFamily: 'Helvetica'),
-                        items: questions.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            questionsSelected = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Start Date',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DateTimeField(
-                        cursorColor: const Color(0xff000000),
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          hintText: "Date",
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xff161723).withOpacity(0.5),
-                            // fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          suffixIcon: const Icon(
-                            CupertinoIcons.calendar_today,
-                            color: Color(0xff327C04),
-                            size: 25,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        format: format,
-                        onShowPicker: (context, currentValue) {
-                          return showDatePicker(
-                            helpText: 'Select Date',
-                            context: context,
-                            firstDate: DateTime(1970),
-                            // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                            initialDate: currentValue ??
-                                DateTime.now()
-                                    .subtract(const Duration(days: 4745)),
-                            // lastDate: DateTime(2100));
-                            lastDate: DateTime.now(),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: ThemeData.dark().copyWith(
-                                  colorScheme: const ColorScheme.dark(
-                                    primary: Color(0xff327C04),
-                                    // onPrimary: Colors.black,
-                                    surface: Color(0xff327C04),
-                                    // onSurface: Color(0xff000000),
-                                  ),
-                                  dialogBackgroundColor:
-                                      const Color(0xff000000),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
                                 ),
-                                child: child!,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Block',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Field',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Irrigation Types',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Crop',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Caltivar',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DateTimeField(
+                            cursorColor: const Color(0xff000000),
+                            decoration: InputDecoration(
+                              errorMaxLines: 3,
+                              hintText: "Date",
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xff161723).withOpacity(0.5),
+                                // fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              suffixIcon: const Icon(
+                                CupertinoIcons.calendar_today,
+                                color: Color(0xff327C04),
+                                size: 25,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            format: format,
+                            onShowPicker: (context, currentValue) {
+                              return showDatePicker(
+                                helpText: 'Select Date',
+                                context: context,
+                                firstDate: DateTime(1970),
+                                // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                initialDate: currentValue ??
+                                    DateTime.now()
+                                        .subtract(const Duration(days: 4745)),
+                                // lastDate: DateTime(2100));
+                                lastDate: DateTime.now(),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Color(0xff327C04),
+                                        // onPrimary: Colors.black,
+                                        surface: Color(0xff327C04),
+                                        // onSurface: Color(0xff000000),
+                                      ),
+                                      dialogBackgroundColor:
+                                          const Color(0xff000000),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (date) =>
-                            date == null ? 'Date of birth is required' : null,
-                        onChanged: (date) {
-                          setState(() {});
-                        },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (date) => date == null
+                                ? 'Date of birth is required'
+                                : null,
+                            onChanged: (date) {
+                              setState(() {});
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'End Date',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      DateTimeField(
-                        cursorColor: const Color(0xff000000),
-                        decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          hintText: "Date",
-                          contentPadding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 10,
-                            right: 10,
-                          ),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xff161723).withOpacity(0.5),
-                            // fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          suffixIcon: const Icon(
-                            CupertinoIcons.calendar_today,
-                            color: Color(0xff327C04),
-                            size: 25,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'End Date',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        format: format,
-                        onShowPicker: (context, currentValue) {
-                          return showDatePicker(
-                            helpText: 'Select Date',
-                            context: context,
-                            firstDate: DateTime(1970),
-                            // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                            initialDate: currentValue ??
-                                DateTime.now()
-                                    .subtract(const Duration(days: 4745)),
-                            // lastDate: DateTime(2100));
-                            lastDate: DateTime.now(),
-                            builder: (BuildContext context, Widget? child) {
-                              return Theme(
-                                data: ThemeData.dark().copyWith(
-                                  colorScheme: const ColorScheme.dark(
-                                    primary: Color(0xff327C04),
-                                    // onPrimary: Colors.black,
-                                    surface: Color(0xff327C04),
-                                    // onSurface: Color(0xff000000),
-                                  ),
-                                  dialogBackgroundColor:
-                                      const Color(0xff000000),
+                          const SizedBox(height: 15),
+                          DateTimeField(
+                            cursorColor: const Color(0xff000000),
+                            decoration: InputDecoration(
+                              errorMaxLines: 3,
+                              hintText: "Date",
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xff161723).withOpacity(0.5),
+                                // fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              suffixIcon: const Icon(
+                                CupertinoIcons.calendar_today,
+                                color: Color(0xff327C04),
+                                size: 25,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
                                 ),
-                                child: child!,
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            format: format,
+                            onShowPicker: (context, currentValue) {
+                              return showDatePicker(
+                                helpText: 'Select Date',
+                                context: context,
+                                firstDate: DateTime(1970),
+                                // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                initialDate: currentValue ??
+                                    DateTime.now()
+                                        .subtract(const Duration(days: 4745)),
+                                // lastDate: DateTime(2100));
+                                lastDate: DateTime.now(),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Color(0xff327C04),
+                                        // onPrimary: Colors.black,
+                                        surface: Color(0xff327C04),
+                                        // onSurface: Color(0xff000000),
+                                      ),
+                                      dialogBackgroundColor:
+                                          const Color(0xff000000),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: (date) =>
-                            date == null ? 'Date of birth is required' : null,
-                        onChanged: (date) {
-                          setState(() {});
-                        },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (date) => date == null
+                                ? 'Date of birth is required'
+                                : null,
+                            onChanged: (date) {
+                              setState(() {});
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Area',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            // initialValue: 'enter heritage',
+                            style: const TextStyle(
+                              // color: Color(0xffffffff),
+                              fontFamily: 'Helvetica',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // readOnly: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              errorMaxLines: 3,
+                              hintText: "Area",
+                              contentPadding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 15, bottom: 15),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xffffffff).withOpacity(0.8),
+                                fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            // controller: _email,
+                            keyboardType: TextInputType.text,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter your email Id';
+                            //   }
+                            //   return null;
+                            // },
+                            // onSaved: (name) {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Expected Yield',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            // initialValue: 'enter heritage',
+                            style: const TextStyle(
+                              // color: Color(0xffffffff),
+                              fontFamily: 'Helvetica',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // readOnly: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              errorMaxLines: 3,
+                              hintText: "Expected Yield",
+                              contentPadding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 15, bottom: 15),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xffffffff).withOpacity(0.8),
+                                fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            // controller: _email,
+                            keyboardType: TextInputType.text,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter your email Id';
+                            //   }
+                            //   return null;
+                            // },
+                            // onSaved: (name) {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Expected Revenue',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            // initialValue: 'enter heritage',
+                            style: const TextStyle(
+                              // color: Color(0xffffffff),
+                              fontFamily: 'Helvetica',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // readOnly: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              errorMaxLines: 3,
+                              hintText: "Expected Revenue",
+                              contentPadding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 15, bottom: 15),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xffffffff).withOpacity(0.8),
+                                fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            // controller: _email,
+                            keyboardType: TextInputType.text,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter your email Id';
+                            //   }
+                            //   return null;
+                            // },
+                            // onSaved: (name) {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Harvest Days',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          TextFormField(
+                            // initialValue: 'enter heritage',
+                            style: const TextStyle(
+                              // color: Color(0xffffffff),
+                              fontFamily: 'Helvetica',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // readOnly: true,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              errorMaxLines: 3,
+                              hintText: "Harvest Days",
+                              contentPadding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 15, bottom: 15),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xffffffff).withOpacity(0.8),
+                                fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            // controller: _email,
+                            keyboardType: TextInputType.text,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter your email Id';
+                            //   }
+                            //   return null;
+                            // },
+                            // onSaved: (name) {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Area',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormField(
-                        // initialValue: 'enter heritage',
-                        style: const TextStyle(
-                          // color: Color(0xffffffff),
-                          fontFamily: 'Helvetica',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        // readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          errorMaxLines: 3,
-                          hintText: "Area",
-                          contentPadding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 15, bottom: 15),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xffffffff).withOpacity(0.8),
-                            fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        // controller: _email,
-                        keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter your email Id';
-                        //   }
-                        //   return null;
-                        // },
-                        // onSaved: (name) {},
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Expected Yield',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormField(
-                        // initialValue: 'enter heritage',
-                        style: const TextStyle(
-                          // color: Color(0xffffffff),
-                          fontFamily: 'Helvetica',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        // readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          errorMaxLines: 3,
-                          hintText: "Expected Yield",
-                          contentPadding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 15, bottom: 15),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xffffffff).withOpacity(0.8),
-                            fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        // controller: _email,
-                        keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter your email Id';
-                        //   }
-                        //   return null;
-                        // },
-                        // onSaved: (name) {},
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Expected Revenue',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormField(
-                        // initialValue: 'enter heritage',
-                        style: const TextStyle(
-                          // color: Color(0xffffffff),
-                          fontFamily: 'Helvetica',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        // readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          errorMaxLines: 3,
-                          hintText: "Expected Revenue",
-                          contentPadding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 15, bottom: 15),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xffffffff).withOpacity(0.8),
-                            fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        // controller: _email,
-                        keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter your email Id';
-                        //   }
-                        //   return null;
-                        // },
-                        // onSaved: (name) {},
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: screenSize.width * 0.28,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Harvest Days',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      TextFormField(
-                        // initialValue: 'enter heritage',
-                        style: const TextStyle(
-                          // color: Color(0xffffffff),
-                          fontFamily: 'Helvetica',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        // readOnly: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          errorMaxLines: 3,
-                          hintText: "Harvest Days",
-                          contentPadding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 15, bottom: 15),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            // color: const Color(0xffffffff).withOpacity(0.8),
-                            fontFamily: 'Helvetica',
-                          ),
-                          // fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                            fontSize: 16.0,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Color(0xff327C04),
-                            ),
-                          ),
-                          isDense: true,
-                        ),
-                        // controller: _email,
-                        keyboardType: TextInputType.text,
-                        // validator: (value) {
-                        //   if (value == null || value.isEmpty) {
-                        //     return 'Please enter your email Id';
-                        //   }
-                        //   return null;
-                        // },
-                        // onSaved: (name) {},
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           const SizedBox(height: 40),

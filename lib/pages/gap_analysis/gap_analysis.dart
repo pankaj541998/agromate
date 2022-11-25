@@ -168,9 +168,10 @@ class _GapAnalysisState extends State<GapAnalysis> {
                           children: [
                             Theme(
                               data: ThemeData(
-                                  unselectedWidgetColor: Colors.black),
+                                unselectedWidgetColor: Color(0xff327C04),
+                              ),
                               child: Checkbox(
-                                activeColor: Colors.black,
+                                activeColor: Color(0xff327C04),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(5.0))),
@@ -191,9 +192,10 @@ class _GapAnalysisState extends State<GapAnalysis> {
                           children: [
                             Theme(
                               data: ThemeData(
-                                  unselectedWidgetColor: Colors.black),
+                                unselectedWidgetColor: Color(0xff327C04),
+                              ),
                               child: Checkbox(
-                                activeColor: Colors.black,
+                                activeColor: Color(0xff327C04),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(5.0))),
@@ -214,9 +216,10 @@ class _GapAnalysisState extends State<GapAnalysis> {
                           children: [
                             Theme(
                               data: ThemeData(
-                                  unselectedWidgetColor: Colors.black),
+                                unselectedWidgetColor: Color(0xff327C04),
+                              ),
                               child: Checkbox(
-                                activeColor: Colors.black,
+                                activeColor: Color(0xff327C04),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(5.0))),
@@ -235,6 +238,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -520,10 +524,13 @@ class Question extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                  height: 30,
-                  width: 450,
-                  child: TextInputField(
-                      hintText: "Enter Text", validatorText: "validatorText")),
+                height: 30,
+                width: 450,
+                child: TextInputField(
+                  hintText: "Enter Text",
+                  validatorText: "validatorText",
+                ),
+              ),
               SizedBox(
                 width: 30,
               ),
