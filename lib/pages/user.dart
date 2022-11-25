@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
-import 'package:flutter_agro_new/pages/stock_planner.dart';
 import 'package:get/get.dart';
 
 import '../component/custom_Elevated_Button.dart';
@@ -194,9 +193,6 @@ _buildrequesttable(screenSize, context) {
   );
 }
 
-//delete
-
-//add new user
 buildPin(context) {
   return showDialog(
     context: context,
@@ -538,7 +534,6 @@ _buildactions(context) {
   );
 }
 
-//edit user
 buildPinAlert(context) {
   return showDialog(
     context: context,
@@ -646,6 +641,133 @@ buildPinAlert(context) {
   );
 }
 
+buildPinShowData(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AlertDialog(
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Name :",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(width: 2),
+                      Text("Raj Shinde")
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Divider(
+                    height: 5,
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Subject :",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(width: 2),
+                      Text("Lorem ipsum dolar (Optional)")
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Divider(
+                    height: 5,
+                    color: Colors.grey,
+                    thickness: 1,
+                  ),
+                  SizedBox(height: 25),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+                        Text(
+                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"),
+                        Text(
+                            "when an unknown printer took a galley of type and scrambled it to make a type"),
+                        Text("specimen book.")
+                      ]),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                  color: Color(0xFF327C04),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Color(0XFF000000),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color(0xFF327C04),
+                              ),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ))),
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Send'),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
 customAlert(context) {
   return showDialog(
     context: context,
@@ -721,7 +843,7 @@ customAlert(context) {
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
-                          onPressed: () {},
+                          onPressed: () => Navigator.pop(context),
                           child: const Text('Delete'),
                         ),
                       )
@@ -1084,7 +1206,7 @@ _buildactionsrequest(context) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       InkWell(
-          onTap: () {},
+          onTap: () => buildPinShowData(context),
           child: Image.asset(height: 30, "assets/images/bell.png")),
       InkWell(
           onTap: () {

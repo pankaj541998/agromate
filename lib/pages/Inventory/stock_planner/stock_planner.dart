@@ -7,7 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
-import '../component/custom_Elevated_Button.dart';
+import '../../../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
 
@@ -937,7 +937,10 @@ class _StockPlannerState extends State<StockPlanner> {
                     ],
                   ),
                   SizedBox(
-                    height: screenSize.height * 0.5,
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: screenSize.height * 0.57,
                     child: _buildgridview(context, screenSize),
                   ),
                 ],
@@ -1033,20 +1036,20 @@ Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: 2,
+        childAspectRatio: (0.5 / 0.2),
         crossAxisCount: 4,
       ),
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: Card(
             color: Color(0xfff7f9ea),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1054,9 +1057,10 @@ Widget _buildgridview(context, screenSize) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(height: 70, "assets/images/Group6740.png"),
-                        SizedBox(width: screenSize.width * 0.02),
+                        Image.asset(height: 40, "assets/images/Group6740.png"),
+                        SizedBox(width: screenSize.width * 0.01),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
@@ -1064,9 +1068,9 @@ Widget _buildgridview(context, screenSize) {
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: screenSize.height * 0.02),
+                            SizedBox(height: screenSize.height * 0.01),
                             Text("Quantity : 200ml"),
-                            SizedBox(height: screenSize.height * 0.02),
+                            SizedBox(height: screenSize.height * 0.01),
                             Text("Required : 200ml"),
                           ],
                         )
