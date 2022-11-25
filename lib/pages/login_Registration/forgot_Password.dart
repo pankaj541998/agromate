@@ -136,7 +136,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         children: [
                           const Text("Didn't receive mail ?"),
                           TextButton(
-                            Widget: const Text(" Resend mail"),
+                            child: const Text(" Resend mail"),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xFF327C04)),

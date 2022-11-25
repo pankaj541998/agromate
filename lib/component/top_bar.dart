@@ -128,7 +128,7 @@ class TopBar extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => Get.toNamed('/'),
+                onTap: () => Get.toNamed('/dashboard'),
                 child: const Image(
                   image: AssetImage('/images/dashborad_logo.png'),
                   height: 40,

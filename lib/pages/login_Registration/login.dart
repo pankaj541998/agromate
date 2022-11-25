@@ -153,7 +153,7 @@ class _LoginState extends State<Login> {
                               onPressed: () {
                                 Get.toNamed('/forgotPassword');
                               },
-                              Widget: const Text(
+                              child: const Text(
                                 "Forgot Password ?",
                                 style: TextStyle(
                                     color: Color(0xFF327C04), fontSize: 15),

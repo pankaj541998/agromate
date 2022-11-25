@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
@@ -60,7 +61,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Add Inventory",
+                      "Add Application",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -85,61 +86,20 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Stock Code",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Stock Code',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Stock Code";
-                                    }
-                                    return null;
-                                  },
+                              Text(
+                                "Name",
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -148,61 +108,20 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Item Description",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Item Description',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Item Description";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -211,68 +130,27 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                         ],
                       ),
                       const SizedBox(
-                        height: 0,
+                        height: 20,
                       ),
                       Row(
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Unit Cost",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Unit Cost',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Unit Cost";
-                                    }
-                                    return null;
-                                  },
+                              Text(
+                                "Application Cost",
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -281,198 +159,50 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Inventory Cost",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Inventory Cost',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Inventory Cost";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 0,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
+                              Text(
                                 "Quantity",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Quantity',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Quantity";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
                           ),
                           const SizedBox(
                             width: 25,
                           ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Value",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(25),
-                                    FilteringTextInputFormatter.allow(
-                                        RegExp('[a-zA-Z]')),
-                                  ],
-                                  onChanged: (value) => unitcost = value,
-                                  decoration: const InputDecoration(
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 2.0),
-                                    ),
-                                    contentPadding: EdgeInsets.all(10),
-                                    hintText: 'Enter Value',
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF707070), width: 1.0),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "Please enter Value";
-                                    }
-                                    return null;
-                                  },
+                                style: TextStyle(
+                                  fontSize: 18,
                                 ),
                               ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                  height: 40,
+                                  width: 300,
+                                  child: TextInputField(
+                                      hintText: "", validatorText: ""))
                             ],
-                          ),
-                          const SizedBox(
-                            width: 25,
                           ),
                         ],
                       ),
@@ -848,89 +578,91 @@ List<Data> myData = [
   Data(
     id: "1",
     name: 'Tractor',
-    description: 'A1A',
-    applicationcost: '464',
-    value: '134',
-    quantity: '24524',
+    description: 'To pull a plow through her corn field before planting.',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "2",
-    name: 'Drone',
-    description: '30',
-    applicationcost: '512',
-    value: '124',
-    quantity: '`52435`',
+    name: 'Fertigation',
+    description: 'Injection of fertilizers, used for soil amendments, water',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "3",
-    name: 'Pivot',
-    description: '32',
-    applicationcost: '512',
-    value: '42',
-    quantity: '245245',
+    name: 'Drone',
+    description: 'Can be used to spray chemicals as they have reservoirs',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "4",
-    name: 'Helicopter',
-    description: '33',
-    applicationcost: '512',
-    value: '245',
-    quantity: '245245',
+    name: 'Center Pivot',
+    description:
+        'Rotates around a pivot and crops are watered with sprinklers.',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "5",
-    name: 'Truck',
-    description: '23',
-    applicationcost: '512',
-    value: '2452',
-    quantity: '245245',
+    name: 'Tractor',
+    description: 'To pull a plow through her corn field before planting.',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "6",
-    name: 'Tempo',
-    description: '24',
-    applicationcost: '512',
-    value: '452',
-    quantity: '24524',
+    name: 'Fertigation',
+    description: 'Injection of fertilizers, used for soil amendments, water',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "7",
-    name: '5353535',
-    description: '36',
-    applicationcost: '512',
-    value: '245',
-    quantity: '13435',
+    name: 'Drone',
+    description: 'Can be used to spray chemicals as they have reservoirs',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "8",
-    name: '244242',
-    description: '38',
-    applicationcost: '512',
-    value: '67',
-    quantity: '65979',
+    name: 'Center Pivot',
+    description:
+        'Rotates around a pivot and crops are watered with sprinklers.',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "9",
-    name: '323232323',
-    description: '29',
-    applicationcost: '512',
-    value: '6579',
-    quantity: '69659',
+    name: 'Tractor',
+    description: 'To pull a plow through her corn field before planting.',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "10",
-    name: '323232323',
-    description: '29',
-    applicationcost: '512',
-    value: '65968',
-    quantity: '694689',
+    name: 'Fertigation',
+    description: 'Injection of fertilizers, used for soil amendments, water',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
   Data(
     id: "11",
-    name: '323232323',
-    description: '29',
-    applicationcost: '512',
-    value: '64794',
-    quantity: '67947',
+    name: 'Drone',
+    description: 'Can be used to spray chemicals as they have reservoirs',
+    applicationcost: '678.6',
+    value: '500',
+    quantity: '500',
   ),
 ];

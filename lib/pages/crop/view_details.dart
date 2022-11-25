@@ -161,12 +161,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Farmer :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' VARKPLAAS',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -178,12 +178,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Farm :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' VARKPLAAS',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -195,12 +195,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Crop Reference :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' VARKPLAAS',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -212,12 +212,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Crop :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' VARKPLAAS',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -229,12 +229,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Active week :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' 7/30/2021',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -246,12 +246,12 @@ class _ViewDetailsState extends State<ViewDetails> {
                             text: const TextSpan(
                               text: 'Hectares :',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 14, fontWeight: FontWeight.w600),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: ' 3',
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],

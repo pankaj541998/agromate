@@ -68,157 +68,172 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         color: const Color(0xFFF7F9EA),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Form(
-                  key: _form,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Register",
-                        style: TextStyle(
-                            fontSize: 35,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: 500,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Form(
+                    key: _form,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              width: 235,
-                              child: TextInputField(
-                                textEditingController: firstname,
-                                leadingIcon: const Icon(
-                                  Icons.person_outline_rounded,
-                                  color: Color(0xFF327C04),
-                                ),
-                                validator: (value) {
-                                  if (value != null && value.isEmpty) {
-                                    return "Please Enter First Name";
-                                  }
-                                  return null;
-                                },
-                                hintText: 'First Name',
-                                validatorText: 'Please Enter First Name',
-                              ),
-                            ),
-                            SizedBox(
-                              width: 235,
-                              child: TextInputField(
-                                textEditingController: lastname,
-                                leadingIcon: const Icon(
-                                  Icons.person_outline_rounded,
-                                  color: Color(0xFF327C04),
-                                ),
-                                validator: (value) {
-                                  if (value != null && value.isEmpty) {
-                                    return "Please Enter Last Name";
-                                  }
-                                  return null;
-                                },
-                                hintText: 'Last Name',
-                                validatorText: 'Please Enter Last Name',
-                              ),
+                            // InkWell(
+                            //   onTap: () => Get.back(),
+                            //   child: Icon(Icons.arrow_back_ios),
+                            // ),
+                            const Text(
+                              "Register",
+                              style: TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextInputField(
-                        textEditingController: username,
-                        leadingIcon: const Icon(Icons.person_outline_outlined),
-                        validator: (value) {
-                          if (value != null && value.isEmpty) {
-                            return "Please Enter Username";
-                          }
-                          return null;
-                        },
-                        hintText: 'Username',
-                        validatorText: 'Please Enter Username',
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextInputField(
-                          textEditingController: email,
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                !value.contains('@') ||
-                                !value.contains('.')) {
-                              return "Please Enter Valid Email Address";
-                            }
-                            return null;
-                          },
-                          hintText: 'Email address',
-                          validatorText: 'Please Enter Email address'),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextInputField(
-                          leadingIcon: Image.asset(""),
-                          textEditingController: phonenumber,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please Enter Phone Number";
-                            } else if (value.length != 10) {
-                              return "Please Enter Valid Phone Number";
-                            }
-                            return null;
-                          },
-                          hintText: 'Phone Number',
-                          validatorText: 'Please Enter Phone Number'),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const TextInputField(
-                        leadingIcon: Icon(Icons.abc),
-                        hintText: 'Role',
-                        validatorText: '',
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                          height: 50,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
                           width: 500,
-                          child: CustomElevatedButton(
-                            title: 'Register',
-                            onPressed: () {
-                              registermethod();
-                              // uploadData();
-                              //Get.toNamed('/thankyou');
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 235,
+                                child: TextInputField(
+                                  textEditingController: firstname,
+                                  leadingIcon: const Icon(
+                                    Icons.person_outline_rounded,
+                                    color: Color(0xFF327C04),
+                                  ),
+                                  validator: (value) {
+                                    if (value != null && value.isEmpty) {
+                                      return "Please Enter First Name";
+                                    }
+                                    return null;
+                                  },
+                                  hintText: 'First Name',
+                                  validatorText: 'Please Enter First Name',
+                                ),
+                              ),
+                              SizedBox(
+                                width: 235,
+                                child: TextInputField(
+                                  textEditingController: lastname,
+                                  leadingIcon: const Icon(
+                                    Icons.person_outline_rounded,
+                                    color: Color(0xFF327C04),
+                                  ),
+                                  validator: (value) {
+                                    if (value != null && value.isEmpty) {
+                                      return "Please Enter Last Name";
+                                    }
+                                    return null;
+                                  },
+                                  hintText: 'Last Name',
+                                  validatorText: 'Please Enter Last Name',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextInputField(
+                          textEditingController: username,
+                          leadingIcon:
+                              const Icon(Icons.person_outline_outlined),
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              return "Please Enter Username";
+                            }
+                            return null;
+                          },
+                          hintText: 'Username',
+                          validatorText: 'Please Enter Username',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextInputField(
+                            leadingIcon: Icon(Icons.email_outlined),
+                            textEditingController: email,
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  !value.contains('@') ||
+                                  !value.contains('.')) {
+                                return "Please Enter Valid Email Address";
+                              }
+                              return null;
                             },
-                          ))
-                    ],
+                            hintText: 'Email address',
+                            validatorText: 'Please Enter Email address'),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        TextInputField(
+                            leadingIcon: Icon(Icons.phone),
+                            textEditingController: phonenumber,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please Enter Phone Number";
+                              } else if (value.length != 10) {
+                                return "Please Enter Valid Phone Number";
+                              }
+                              return null;
+                            },
+                            hintText: 'Phone Number',
+                            validatorText: 'Please Enter Phone Number'),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const TextInputField(
+                          leadingIcon: Icon(Icons.abc),
+                          hintText: 'Role',
+                          validatorText: '',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                            height: 50,
+                            width: 500,
+                            child: CustomElevatedButton(
+                              title: 'Register',
+                              onPressed: () {
+                                registermethod();
+                                // uploadData();
+                                //Get.toNamed('/thankyou');
+                              },
+                            ))
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Image.asset(
-                "assets/images/agromatelogonew.png",
-                height: 235,
-                width: 293,
+              Expanded(
+                flex: 1,
+                child: Image.asset(
+                  "assets/images/agromatelogonew.png",
+                  height: 235,
+                  width: 293,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
