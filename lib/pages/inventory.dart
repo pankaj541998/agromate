@@ -114,7 +114,7 @@ class _InventoryState extends State<Inventory> {
                                           const Image(
                                             image: AssetImage(
                                                 'image/managament-manager-organize-svgrepo-com.png'),
-                                            height: 80,
+                                            height: 70,
                                           ),
                                           SizedBox(height: 20),
                                           Text(
@@ -157,7 +157,7 @@ class _InventoryState extends State<Inventory> {
                                           const Image(
                                             image: AssetImage(
                                                 'image/stock-svgrepo-com.png'),
-                                            height: 80,
+                                            height: 70,
                                           ),
                                           SizedBox(height: 20),
                                           Text(
@@ -206,7 +206,7 @@ class _InventoryState extends State<Inventory> {
                                           const Image(
                                             image: AssetImage(
                                                 'image/warehouse-svgrepo-com.png'),
-                                            height: 80,
+                                            height: 70,
                                           ),
                                           SizedBox(height: 20),
                                           Text(
@@ -249,7 +249,7 @@ class _InventoryState extends State<Inventory> {
                                           const Image(
                                             image: AssetImage(
                                                 'image/tractor-svgrepo-com.png'),
-                                            height: 80,
+                                            height: 70,
                                           ),
                                           SizedBox(height: 20),
                                           Text(

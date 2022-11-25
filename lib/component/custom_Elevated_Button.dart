@@ -22,7 +22,7 @@ class customElevatedButton extends StatelessWidget {
       child: Text(
         title!,
         style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
+            fontSize: 18, fontWeight: FontWeight.w300, color: Colors.white),
       ),
     );
   }

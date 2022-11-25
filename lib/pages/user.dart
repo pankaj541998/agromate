@@ -158,7 +158,7 @@ class _UserState extends State<User> {
                     ],
                   ),
                   SizedBox(
-                    height: 590,
+                    height: screenSize.height * 0.8,
                     child: TabBarView(
                       children: [
                         _buildusertable(screenSize, context),
@@ -305,158 +305,161 @@ buildPin(context) {
 }
 
 datatable(screenSize, context) {
-  return Container(
+  return SizedBox(
     height: screenSize.height * 0.7,
-    decoration: const BoxDecoration(),
     child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: PaginatedDataTable(
-              sortColumnIndex: 0,
-              // sortAscending: sort,
-              source: RowSource(
-                myData: myData,
-                count: myData.length,
-                context: context,
+      child: Container(
+        padding: const EdgeInsets.all(0.0),
+        decoration: const BoxDecoration(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: PaginatedDataTable(
+                sortColumnIndex: 0,
+                // sortAscending: sort,
+                source: RowSource(
+                  myData: myData,
+                  count: myData.length,
+                  context: context,
+                ),
+                rowsPerPage: 9,
+                columnSpacing: 0,
+                headingRowHeight: 50,
+                horizontalMargin: 0,
+                columns: [
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Profile",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Username",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Full Name",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Phone Number",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Email Address",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Role",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Action",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              rowsPerPage: 9,
-              columnSpacing: 0,
-              headingRowHeight: 50,
-              horizontalMargin: 0,
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Profile",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Username",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Full Name",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Phone Number",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Email Address",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Role",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Action",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );

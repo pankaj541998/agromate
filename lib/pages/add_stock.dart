@@ -23,6 +23,14 @@ class _AddStockState extends State<AddStock> {
 
   @override
   Widget build(BuildContext context) {
+    String questionsSelected = 'Select Your Question *';
+    var questions = [
+      'Select Your Question *',
+      'Question 1',
+      'Question 2',
+      'Question 3',
+      'Question 4',
+    ];
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -68,8 +76,8 @@ class _AddStockState extends State<AddStock> {
                           Row(
                             children: [
                               Image.asset(
-                                  height: 70, "assets/images/Group6740.png"),
-                              SizedBox(width: screenSize.width * 0.04),
+                                  height: 80, "assets/images/Group6740.png"),
+                              SizedBox(width: screenSize.width * 0.045),
                               SizedBox(
                                 width: screenSize.width * 0.2,
                                 child: Column(
@@ -78,12 +86,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Class',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -161,7 +169,7 @@ class _AddStockState extends State<AddStock> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: screenSize.width * 0.04),
+                              SizedBox(width: screenSize.width * 0.045),
                               SizedBox(
                                 width: screenSize.width * 0.2,
                                 child: Column(
@@ -170,12 +178,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Type',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -253,7 +261,7 @@ class _AddStockState extends State<AddStock> {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: screenSize.width * 0.04),
+                              SizedBox(width: screenSize.width * 0.045),
                               SizedBox(
                                 width: screenSize.width * 0.2,
                                 child: Column(
@@ -267,33 +275,24 @@ class _AddStockState extends State<AddStock> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
-                                    TextFormField(
-                                      // initialValue: 'enter heritage',
-                                      style: const TextStyle(
-                                        // color: Color(0xffffffff),
-                                        fontFamily: 'Helvetica',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      // readOnly: true,
+                                    const SizedBox(height: 8),
+                                    DropdownButtonFormField(
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       decoration: InputDecoration(
-                                        fillColor: Colors.transparent,
-                                        errorMaxLines: 3,
-                                        hintText: "Alternative",
                                         contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                            top: 15,
-                                            bottom: 15),
-                                        hintStyle: const TextStyle(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        hintStyle: TextStyle(
                                           fontSize: 16,
-                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          color: const Color(0xff327C04)
+                                              .withOpacity(0.5),
                                           fontFamily: 'Helvetica',
                                         ),
-                                        // fillColor: Colors.white,
+                                        fillColor: Colors.transparent,
                                         filled: true,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -312,7 +311,7 @@ class _AddStockState extends State<AddStock> {
                                           ),
                                         ),
                                         errorStyle: const TextStyle(
-                                          fontSize: 16.0,
+                                          fontSize: 14,
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
@@ -332,20 +331,34 @@ class _AddStockState extends State<AddStock> {
                                         ),
                                         isDense: true,
                                       ),
-                                      // controller: _email,
-                                      keyboardType: TextInputType.text,
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email Id';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                      // onSaved: (name) {},
+                                      isExpanded: true,
+                                      value: questionsSelected,
+                                      iconEnabledColor:
+                                          Colors.transparent, // Down Arrow Icon
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Color(0xff327C04),
+                                      ),
+                                      iconSize: 30,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xff000000),
+                                          fontFamily: 'Helvetica'),
+                                      items: questions.map((String items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          questionsSelected = newValue!;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
                               ),
-                              SizedBox(width: screenSize.width * 0.04),
                             ],
                           ),
                           SizedBox(height: screenSize.height * 0.03),
@@ -359,12 +372,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'ItemCode',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -451,12 +464,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Description',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -543,12 +556,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Unit Cost',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -635,12 +648,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Stock Level',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -731,12 +744,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'Active Ingridient',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -823,12 +836,12 @@ class _AddStockState extends State<AddStock> {
                                     const Text(
                                       'AI/Kg',
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         color: Color(0xff000000),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 15),
+                                    const SizedBox(height: 8),
                                     TextFormField(
                                       // initialValue: 'enter heritage',
                                       style: const TextStyle(
@@ -1005,12 +1018,12 @@ class _AddStockState extends State<AddStock> {
                                           const Text(
                                             'Choose Warning',
                                             style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               color: Color(0xff000000),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
-                                          const SizedBox(height: 15),
+                                          const SizedBox(height: 8),
                                           TextFormField(
                                             // initialValue: 'enter heritage',
                                             style: const TextStyle(
