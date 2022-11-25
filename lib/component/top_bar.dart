@@ -222,7 +222,8 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () => Get.toNamed('/inventory'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -279,7 +280,8 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () => Get.toNamed('/user'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],
@@ -296,7 +298,8 @@ class TopBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
+                  onTap: () => Get.toNamed('/allocation'),
                   child: Container(
                     height: double.maxFinite,
                     // color: Colors.orange[300],

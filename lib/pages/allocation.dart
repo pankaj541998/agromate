@@ -42,7 +42,7 @@ class _AllocationState extends State<Allocation> {
                   Row(
                     children: [
                       const SizedBox(
-                        width: 100,
+                        width: 120,
                         height: 50,
                         child: TabBar(
                           indicatorColor: Color(0xFF327C04),
@@ -56,7 +56,7 @@ class _AllocationState extends State<Allocation> {
                           ),
                           tabs: [
                             Tab(
-                              text: 'Users',
+                              text: 'Allocation',
                             ),
                           ],
                         ),
@@ -156,7 +156,7 @@ class _AllocationState extends State<Allocation> {
                     ],
                   ),
                   SizedBox(
-                    height: 590,
+                    height: screenSize.height * 0.8,
                     child: TabBarView(
                       children: [
                         _buildusertable(screenSize, context, setState),
@@ -175,7 +175,6 @@ class _AllocationState extends State<Allocation> {
 
 _buildusertable(screenSize, context, setState) {
   return Container(
-    height: screenSize.height * 0.5,
     child: SingleChildScrollView(
       child: Padding(
           padding: EdgeInsets.only(top: 15),
@@ -186,7 +185,6 @@ _buildusertable(screenSize, context, setState) {
 
 datatable(screenSize, context, setState) {
   return Container(
-    height: screenSize.height * 0.7,
     decoration: const BoxDecoration(),
     child: SingleChildScrollView(
       child: Column(

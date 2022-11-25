@@ -419,7 +419,10 @@ DataRow recentFileDataRow(var data) {
     cells: [
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
-      DataCell(Align(alignment: Alignment.center, child: FlutterLogo())),
+      DataCell(Align(
+        alignment: Alignment.center,
+        child: Image.asset(height: 20, "assets/images/Group6740.png"),
+      )),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.description.toString()))),

@@ -50,6 +50,9 @@ class _TableViewCropState extends State<TableViewCrop> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                contentPadding: EdgeInsets.only(top: 10.0),
                 content: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -627,6 +630,26 @@ DataRow recentFileDataRow(var data) {
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.weeks.toString()))),
       DataCell(Align(alignment: Alignment.center, child: data.action)),
+    ],
+  );
+}
+
+_buildactions(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      InkWell(
+          onTap: () {
+            print("pressed");
+            // buildPinAlert(context);
+          },
+          child: Container(child: Icon(Icons.remove_red_eye_outlined))),
+      InkWell(
+          onTap: () {
+            print("pressed");
+            // customAlert(context);
+          },
+          child: Image.asset(height: 30, "assets/images/delete.png")),
     ],
   );
 }
