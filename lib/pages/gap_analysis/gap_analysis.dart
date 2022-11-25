@@ -446,7 +446,7 @@ class Question extends StatelessWidget {
             children: [
               Text(
                 number,
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               SizedBox(
                 width: 20,
@@ -458,7 +458,7 @@ class Question extends StatelessWidget {
                     child: Text(
                       sentence,
                       maxLines: 2,
-                      style: TextStyle(fontSize: 18, color: Colors.black),
+                      style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
                   )
                 ],
@@ -471,68 +471,60 @@ class Question extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFF327C04)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-                    child: Text(
-                      "Yes",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      ))),
               SizedBox(
                 width: 40,
               ),
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFF327C04)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-                    child: Text(
-                      "No",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "No",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      ))),
               SizedBox(
                 width: 40,
               ),
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Color(0xFF327C04)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 8, 50, 8),
-                    child: Text(
-                      "Maybe",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Maybe",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      )))
             ],
           ),
           SizedBox(
             height: 18,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                  height: 50,
-                  width: 815,
+                  height: 30,
+                  width: 450,
                   child: TextInputField(
                       hintText: "Enter Text", validatorText: "validatorText")),
               SizedBox(
