@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -215,7 +217,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 28,
                     ),
                     Row(
@@ -224,7 +226,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                         SizedBox(
                           height: 40,
                           width: 296,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -656,7 +658,7 @@ _buildactions(context) {
             print("pressed");
             customAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/delete.png")),
+          child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }

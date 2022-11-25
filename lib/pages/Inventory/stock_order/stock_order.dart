@@ -32,10 +32,10 @@ class _StockOrderState extends State<StockOrder> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -48,7 +48,7 @@ class _StockOrderState extends State<StockOrder> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -149,7 +149,7 @@ class _StockOrderState extends State<StockOrder> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           SizedBox(
@@ -333,7 +333,7 @@ class _StockOrderState extends State<StockOrder> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           SizedBox(
@@ -517,7 +517,7 @@ class _StockOrderState extends State<StockOrder> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           SizedBox(
@@ -609,13 +609,13 @@ class _StockOrderState extends State<StockOrder> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         height: 40,
                         width: 298,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -652,9 +652,9 @@ class _StockOrderState extends State<StockOrder> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text(
+                      const Text(
                         'Stock order',
                         style: TextStyle(
                             fontSize: 20,
@@ -758,7 +758,7 @@ class _StockOrderState extends State<StockOrder> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -781,7 +781,7 @@ class _StockOrderState extends State<StockOrder> {
 Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 3,
       ),
@@ -807,14 +807,14 @@ Widget _buildgridview(context, screenSize) {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group308.png"),
+                              Image.asset("assets/images/Group308.png",
+                                  height: 40),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Farm",
                                     style: TextStyle(
@@ -831,19 +831,19 @@ Widget _buildgridview(context, screenSize) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group309.png"),
+                              Image.asset("assets/images/Group309.png",
+                                  height: 40),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Block",
                                     style: TextStyle(
@@ -864,19 +864,19 @@ Widget _buildgridview(context, screenSize) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group310.png"),
+                              Image.asset("assets/images/Group310.png",
+                                  height: 40),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Field",
                                     style: TextStyle(
@@ -904,14 +904,14 @@ Widget _buildgridview(context, screenSize) {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group311.png"),
+                              Image.asset("assets/images/Group311.png",
+                                  height: 40),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Person",
                                     style: TextStyle(
@@ -932,19 +932,19 @@ Widget _buildgridview(context, screenSize) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group312.png"),
+                              Image.asset("assets/images/Group312.png",
+                                  height: 40),
                               SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Crop",
                                     style: TextStyle(
@@ -965,19 +965,19 @@ Widget _buildgridview(context, screenSize) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group313.png"),
-                              SizedBox(
+                              Image.asset("assets/images/Group313.png",
+                                  height: 40),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Stage",
                                     style: TextStyle(

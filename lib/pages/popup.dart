@@ -101,7 +101,7 @@ class _popUpState extends State<popUp> {
                         SizedBox(
                           height: 40,
                           width: 296,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -209,7 +209,7 @@ class _popUpState extends State<popUp> {
                         SizedBox(
                           height: 40,
                           width: 296,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -361,7 +361,7 @@ class _popUpState extends State<popUp> {
                         SizedBox(
                           height: 40,
                           width: 298,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },

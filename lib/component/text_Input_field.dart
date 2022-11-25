@@ -38,7 +38,7 @@ class _TextInputFieldState extends State<TextInputField> {
     return SizedBox(
       width: 500,
       child: TextFormField(
-          cursorColor: Color(0xFF327C04),
+          cursorColor: const Color(0xFF327C04),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: obscureText,
           controller: widget.textEditingController,

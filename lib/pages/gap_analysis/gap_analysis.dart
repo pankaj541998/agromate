@@ -171,9 +171,9 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                   unselectedWidgetColor: Colors.black),
                               child: Checkbox(
                                 activeColor: Colors.black,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0))),
                                 value: check3,
                                 onChanged: (check) {
                                   setState(() {
@@ -194,9 +194,9 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                   unselectedWidgetColor: Colors.black),
                               child: Checkbox(
                                 activeColor: Colors.black,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0))),
                                 value: check1,
                                 onChanged: (check) {
                                   setState(() {
@@ -217,9 +217,9 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                   unselectedWidgetColor: Colors.black),
                               child: Checkbox(
                                 activeColor: Colors.black,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5.0))),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0))),
                                 value: check2,
                                 onChanged: (check) {
                                   setState(() {
@@ -285,7 +285,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                     SizedBox(
                       height: 40,
                       width: 170,
-                      child: customElevatedButton(
+                      child: CustomElevatedButton(
                         title: "ADD",
                         onPressed: () {
                           Navigator.pop(context);
@@ -428,11 +428,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
 }
 
 class Question extends StatelessWidget {
-  const Question({
-    super.key,
-    required this.sentence,
-    required this.number,
-  });
+  const Question({Key? key, required this.sentence, required this.number})
+      : super(key: key);
   final String sentence;
   final String number;
   @override

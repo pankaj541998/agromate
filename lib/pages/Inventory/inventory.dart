@@ -26,7 +26,7 @@ class _InventoryState extends State<Inventory> {
               child: Column(
                 children: [
                   Row(
-                    children: [
+                    children: const [
                       Text(
                         'Inventory',
                         style: TextStyle(

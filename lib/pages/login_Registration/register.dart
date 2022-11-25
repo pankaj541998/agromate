@@ -10,14 +10,14 @@ import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
 import '../../component/services/register_api.dart';
 
-class register extends StatefulWidget {
-  const register({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<register> createState() => _registerState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _registerState extends State<register> {
+class _RegisterState extends State<Register> {
   final firstname = TextEditingController();
   final lastname = TextEditingController();
   final username = TextEditingController();
@@ -35,7 +35,7 @@ class _registerState extends State<register> {
     };
     final isValid = _form.currentState?.validate();
     if (isValid!) {
-      http.Response response = await registerapi().editDataByUsername(data);
+      http.Response response = await Registerapi().editDataByUsername(data);
 
       final responseMap = jsonDecode(response.body);
       if (response.statusCode == 202) {
@@ -70,7 +70,7 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFF7F9EA),
+        color: const Color(0xFFF7F9EA),
         child: Row(
           children: [
             Expanded(
@@ -82,14 +82,14 @@ class _registerState extends State<register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Register",
                         style: TextStyle(
                             fontSize: 35,
                             color: Colors.black,
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
@@ -101,7 +101,7 @@ class _registerState extends State<register> {
                               width: 235,
                               child: TextInputField(
                                 textEditingController: firstname,
-                                leadingIcon: Icon(
+                                leadingIcon: const Icon(
                                   Icons.person_outline_rounded,
                                   color: Color(0xFF327C04),
                                 ),
@@ -119,7 +119,7 @@ class _registerState extends State<register> {
                               width: 235,
                               child: TextInputField(
                                 textEditingController: lastname,
-                                leadingIcon: Icon(
+                                leadingIcon: const Icon(
                                   Icons.person_outline_rounded,
                                   color: Color(0xFF327C04),
                                 ),
@@ -136,12 +136,12 @@ class _registerState extends State<register> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       TextInputField(
                         textEditingController: username,
-                        leadingIcon: Icon(Icons.person_outline_outlined),
+                        leadingIcon: const Icon(Icons.person_outline_outlined),
                         validator: (value) {
                           if (value != null && value.isEmpty) {
                             return "Please Enter Username";
@@ -151,7 +151,7 @@ class _registerState extends State<register> {
                         hintText: 'Username',
                         validatorText: 'Please Enter Username',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       TextInputField(
@@ -167,7 +167,7 @@ class _registerState extends State<register> {
                           },
                           hintText: 'Email address',
                           validatorText: 'Please Enter Email address'),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       TextInputField(
@@ -183,21 +183,21 @@ class _registerState extends State<register> {
                           },
                           hintText: 'Phone Number',
                           validatorText: 'Please Enter Phone Number'),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      TextInputField(
+                      const TextInputField(
                         leadingIcon: Icon(Icons.abc),
                         hintText: 'Role',
                         validatorText: '',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
                           height: 50,
                           width: 500,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             title: 'Register',
                             onPressed: () {
                               registermethod();

@@ -375,7 +375,7 @@ DataRow recentFileDataRow(var data, context, setState) {
     cells: [
       DataCell(Align(
         alignment: Alignment.center,
-        child: Image.asset(height: 30, "assets/images/albert.png"),
+        child: Image.asset("assets/images/albert.png", height: 30),
       )),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.username.toString()))),
@@ -418,13 +418,13 @@ _buildactions(context, setState) {
             print("pressed");
             buildPinAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/edit.png")),
+          child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
           onTap: () {
             print("pressed");
             customAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/delete.png")),
+          child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
@@ -518,7 +518,7 @@ buildPinAlert(context) {
                       SizedBox(
                         height: 40,
                         width: 296,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },

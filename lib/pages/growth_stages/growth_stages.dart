@@ -338,7 +338,7 @@ class _GrowthStageState extends State<GrowthStage> {
                         SizedBox(
                           height: 40,
                           width: 298,
-                          child: customElevatedButton(
+                          child: CustomElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -543,8 +543,8 @@ class _TextDropdownState extends State<TextDropdown> {
                           controller.text = value;
                         });
                       },
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: const BorderRadius.all(
                         Radius.circular(10.0),
                       )),
                       itemBuilder: (BuildContext context) {

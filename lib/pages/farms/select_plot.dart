@@ -76,7 +76,7 @@ class _SelectPlotState extends State<SelectPlot> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(size: 10, Icons.circle),
+                              Icon(Icons.circle, size: 10),
                               SizedBox(
                                 width: 10,
                               ),
@@ -92,7 +92,7 @@ class _SelectPlotState extends State<SelectPlot> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(size: 10, Icons.circle),
+                              Icon(Icons.circle, size: 10),
                               SizedBox(
                                 width: 10,
                               ),

@@ -281,7 +281,7 @@ buildPin(context) {
                       SizedBox(
                         height: 40,
                         width: 296,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -495,7 +495,7 @@ DataRow recentFileDataRow(var data, context) {
     cells: [
       DataCell(Align(
         alignment: Alignment.center,
-        child: Image.asset(height: 30, "assets/images/albert.png"),
+        child: Image.asset("assets/images/albert.png", height: 30),
       )),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.username.toString()))),
@@ -523,13 +523,13 @@ _buildactions(context) {
             print("pressed");
             buildPinAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/edit.png")),
+          child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
           onTap: () {
             print("pressed");
             customAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/delete.png")),
+          child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
@@ -622,7 +622,7 @@ buildPinAlert(context) {
                       SizedBox(
                         height: 40,
                         width: 296,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -1207,19 +1207,19 @@ _buildactionsrequest(context) {
     children: [
       InkWell(
           onTap: () => buildPinShowData(context),
-          child: Image.asset(height: 30, "assets/images/bell.png")),
+          child: Image.asset("assets/images/bell.png", height: 30)),
       InkWell(
           onTap: () {
             print("pressed");
             buildPinAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/edit.png")),
+          child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
           onTap: () {
             print("pressed");
             customAlert(context);
           },
-          child: Image.asset(height: 30, "assets/images/delete.png")),
+          child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
@@ -1419,7 +1419,7 @@ List<Data> myDataRequest = [
 ];
 
 class AlterDialogss extends StatefulWidget {
-  const AlterDialogss({super.key});
+  const AlterDialogss({Key? key}) : super(key: key);
 
   @override
   State<AlterDialogss> createState() => _AlterDialogssState();

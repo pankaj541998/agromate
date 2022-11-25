@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import '../../../component/custom_Elevated_Button.dart';
 
 class AddStock extends StatefulWidget {
-  const AddStock({super.key});
+  const AddStock({Key? key}) : super(key: key);
 
   @override
   State<AddStock> createState() => _AddStockState();
@@ -49,9 +48,9 @@ class _AddStockState extends State<AddStock> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text(
+                      const Text(
                         'Add Stock',
                         style: TextStyle(
                             fontSize: 20,
@@ -61,7 +60,7 @@ class _AddStockState extends State<AddStock> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -75,8 +74,8 @@ class _AddStockState extends State<AddStock> {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 80, "assets/images/Group6740.png"),
+                              Image.asset("assets/images/Group6740.png",
+                                  height: 80),
                               SizedBox(width: screenSize.width * 0.045),
                               SizedBox(
                                 width: screenSize.width * 0.2,
@@ -1104,7 +1103,7 @@ class _AddStockState extends State<AddStock> {
                                     ),
                                     SizedBox(height: screenSize.height * 0.03),
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(Icons.check_box_outlined),
                                         SizedBox(
                                           width: 10,
@@ -1117,7 +1116,7 @@ class _AddStockState extends State<AddStock> {
                                     ),
                                     SizedBox(height: screenSize.height * 0.03),
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(Icons.check_box_outlined),
                                         SizedBox(
                                           width: 10,
@@ -1132,7 +1131,7 @@ class _AddStockState extends State<AddStock> {
                                     SizedBox(
                                       height: 50,
                                       width: 353,
-                                      child: customElevatedButton(
+                                      child: CustomElevatedButton(
                                         onPressed: () => Navigator.pop(context),
                                         title: 'Submit',
                                       ),

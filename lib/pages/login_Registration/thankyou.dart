@@ -1,24 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
-class thankyou extends StatefulWidget {
-  const thankyou({Key? key}) : super(key: key);
+class Thankyou extends StatefulWidget {
+  const Thankyou({Key? key}) : super(key: key);
 
   @override
-  State<thankyou> createState() => _thankyouState();
+  State<Thankyou> createState() => _ThankyouState();
 }
 
-class _thankyouState extends State<thankyou> {
+class _ThankyouState extends State<Thankyou> {
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 3), () => Get.toNamed('/login'));
+    Timer(const Duration(seconds: 3), () => Get.toNamed('/login'));
     return Scaffold(
       body: Container(
-        color: Color(0xFFF7F9EA),
+        color: const Color(0xFFF7F9EA),
         child: Row(
           children: [
             Expanded(
@@ -27,7 +25,7 @@ class _thankyouState extends State<thankyou> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Thankyou for \nregistering with us",
                       style: TextStyle(

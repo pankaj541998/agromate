@@ -15,10 +15,10 @@ import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
 import 'package:flutter_agro_new/pages/Inventory/inventory.dart';
 import 'package:flutter_agro_new/pages/Inventory/class_and_type/inventory_class_type.dart';
 
-import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
+import 'package:flutter_agro_new/pages/login_Registration/forgot_password.dart';
 import 'package:flutter_agro_new/pages/login_Registration/login.dart';
-import 'package:flutter_agro_new/pages/login_Registration/my_Profile.dart';
-import 'package:flutter_agro_new/pages/login_Registration/otpVerification.dart';
+import 'package:flutter_agro_new/pages/login_Registration/my_profile.dart';
+import 'package:flutter_agro_new/pages/login_Registration/otp_verification.dart';
 import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
@@ -37,6 +37,8 @@ import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
 import 'pages/farms/select_plot.dart';
+import 'pages/tasks/add_task.dart';
+import 'pages/tasks/taska.dart';
 import 'providers/map_filter_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -62,12 +64,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: 'Poppins'),
       initialRoute: '/allocation',
       getPages: [
-        GetPage(name: '/', page: () => const login()),
-        GetPage(name: '/register', page: () => const register()),
-        GetPage(name: '/thankyou', page: () => const thankyou()),
-        GetPage(name: '/forgotPassword', page: () => forgotPassword()),
-        GetPage(name: '/otpVerification', page: () => otpVerification()),
-        GetPage(name: '/updatePassword', page: () => const updatePassword()),
+        GetPage(name: '/', page: () => const Login()),
+        GetPage(name: '/register', page: () => const Register()),
+        GetPage(name: '/thankyou', page: () => const Thankyou()),
+        GetPage(name: '/forgotPassword', page: () => const ForgotPassword()),
+        GetPage(name: '/otpVerification', page: () => const OtpVerification()),
+        GetPage(name: '/updatePassword', page: () => const UpdatePassword()),
         GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
         GetPage(name: '/inventory', page: () => Inventory()),
@@ -98,6 +100,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/grid_view_crop', page: () => const Crop()),
         GetPage(name: '/view_details', page: () => const ViewDetails()),
         GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),
+        GetPage(name: '/tasks', page: () => const Tasks()),
+        GetPage(name: '/add_tasks', page: () => const AddTask()),
         GetPage(
             name: '/modesofapplication',
             page: () => const ModesOfApplication()),

@@ -48,14 +48,14 @@ class _StockPlannerState extends State<StockPlanner> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Add New Stock",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -64,7 +64,7 @@ class _StockPlannerState extends State<StockPlanner> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -83,11 +83,11 @@ class _StockPlannerState extends State<StockPlanner> {
                           SizedBox(
                             height: 10,
                           ),
-                          Image.asset(
-                              height: 70, "assets/images/Group6740.png"),
+                          Image.asset("assets/images/Group6740.png",
+                              height: 70),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -179,7 +179,7 @@ class _StockPlannerState extends State<StockPlanner> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           SizedBox(
@@ -295,7 +295,7 @@ class _StockPlannerState extends State<StockPlanner> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
@@ -392,7 +392,7 @@ class _StockPlannerState extends State<StockPlanner> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           SizedBox(
@@ -482,18 +482,18 @@ class _StockPlannerState extends State<StockPlanner> {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         height: 40,
                         width: screenSize.width * 0.21,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -531,7 +531,7 @@ class _StockPlannerState extends State<StockPlanner> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
                       Text(
                         'Stock Planner',
@@ -718,7 +718,7 @@ class _StockPlannerState extends State<StockPlanner> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -1057,7 +1057,7 @@ Widget _buildgridview(context, screenSize) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(height: 40, "assets/images/Group6740.png"),
+                        Image.asset("assets/images/Group6740.png", height: 40),
                         SizedBox(width: screenSize.width * 0.01),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,

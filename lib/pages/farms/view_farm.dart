@@ -234,12 +234,12 @@ class _ViewFarmState extends State<ViewFarm> {
                                           // setState(() {
                                           //   _selectedValue;
                                           // });
-                                          debugPrint(value);
+                                          // debugPrint(value);
                                           readProvider.onLandholderSelected();
                                           mapController.clearLines();
                                           mapController.clearFills();
                                           readProvider.currentLandholder =
-                                              value;
+                                              value.toString();
                                           readProvider.currentLandholderId = users
                                               .singleWhere((element) =>
                                                   "${element.firstName} ${element.lastName}" ==
@@ -377,7 +377,8 @@ class _ViewFarmState extends State<ViewFarm> {
                                             mapController.removeFill(
                                                 readProvider.highlightFill!);
                                           }
-                                          readProvider.currentFarm = value;
+                                          readProvider.currentFarm =
+                                              value.toString();
                                           var farmModel = farms.singleWhere(
                                               (element) =>
                                                   element.landholderId ==
@@ -518,7 +519,8 @@ class _ViewFarmState extends State<ViewFarm> {
                                                 readProvider
                                                     .highlightFillBlock!);
                                           }
-                                          readProvider.currentBlock = value;
+                                          readProvider.currentBlock =
+                                              value.toString();
                                           var blockModel = block.singleWhere(
                                               (element) =>
                                                   element.blockName ==
@@ -659,81 +661,82 @@ class _ViewFarmState extends State<ViewFarm> {
                                         // }).toList(),
                                         onChanged: (value) async {
                                           readProvider.enableCropDropdown();
-                                                  if (watchProvider.highlightFillField !=
-                                                        null &&
-                                                    watchProvider.highlightLinesField !=
-                                                        null) {
-                                                  mapController.removeLines(
-                                                      readProvider.highlightLinesField!);
-                                                  mapController.removeFill(
-                                                      readProvider.highlightFillField!);
-                                                }
-                                                  readProvider.currentField = value;
-                                                  //==
-                                                  var fieldModel = field
-                                                      .singleWhere((element) =>
-                                                          element.fieldName ==
-                                                              watchProvider
-                                                                  .currentField &&
-                                                          element.farmId ==
-                                                              watchProvider
-                                                                  .currentFarmId &&
-                                                          element.landholderId ==
-                                                              watchProvider
-                                                                  .currentLandholderId &&
-                                                                  element.blockId == watchProvider.currentBlockId);
-                                                  readProvider.currentFieldId = 
-                                                      fieldModel.id;
+                                          if (watchProvider
+                                                      .highlightFillField !=
+                                                  null &&
+                                              watchProvider
+                                                      .highlightLinesField !=
+                                                  null) {
+                                            mapController.removeLines(
+                                                readProvider
+                                                    .highlightLinesField!);
+                                            mapController.removeFill(
+                                                readProvider
+                                                    .highlightFillField!);
+                                          }
+                                          readProvider.currentField =
+                                              value.toString();
+                                          //==
+                                          var fieldModel = field.singleWhere(
+                                              (element) =>
+                                                  element.fieldName ==
+                                                      watchProvider
+                                                          .currentField &&
+                                                  element.farmId ==
+                                                      watchProvider
+                                                          .currentFarmId &&
+                                                  element.landholderId ==
+                                                      watchProvider
+                                                          .currentLandholderId &&
+                                                  element.blockId ==
+                                                      watchProvider
+                                                          .currentBlockId);
+                                          readProvider.currentFieldId =
+                                              fieldModel.id;
 
-                                                      var latLngs = jsonDecode(
-                                                        fieldModel.fieldLatLngs!)
-                                                    as List;
-                                                double avgLat = 0;
-                                                double avgLng = 0;
-                                                for (List latLng in latLngs) {
-                                                  avgLat += latLng.first;
-                                                  avgLng += latLng.last;
-                                                }
-                                                avgLat /= latLngs.length;
-                                                avgLng /= latLngs.length;
-                                                mapController.animateCamera(
-                                                    CameraUpdate.newLatLngZoom(
-                                                        LatLng(avgLat, avgLng),
-                                                        13));
-                                                //highlight farm
-                                                String outlineColor = "#ffffff";
-                                                var linesGeo = latLngs;
-                                                linesGeo.add(latLngs.first);
+                                          var latLngs = jsonDecode(
+                                              fieldModel.fieldLatLngs!) as List;
+                                          double avgLat = 0;
+                                          double avgLng = 0;
+                                          for (List latLng in latLngs) {
+                                            avgLat += latLng.first;
+                                            avgLng += latLng.last;
+                                          }
+                                          avgLat /= latLngs.length;
+                                          avgLng /= latLngs.length;
+                                          mapController.animateCamera(
+                                              CameraUpdate.newLatLngZoom(
+                                                  LatLng(avgLat, avgLng), 13));
+                                          //highlight farm
+                                          String outlineColor = "#ffffff";
+                                          var linesGeo = latLngs;
+                                          linesGeo.add(latLngs.first);
 
-                                                var highlightLines = await mapController
-                                                    .addLines(linesGeo
-                                                        .map((latLng) => LineOptions(
-                                                            geometry: linesGeo
-                                                                .map((e) =>
-                                                                    LatLng(
-                                                                        e.first,
-                                                                        e.last))
-                                                                .toList(),
-                                                            lineColor:
-                                                                outlineColor))
-                                                        .toList());
-                                                readProvider.highlightLinesField =
-                                                    highlightLines;
+                                          var highlightLines = await mapController
+                                              .addLines(linesGeo
+                                                  .map((latLng) => LineOptions(
+                                                      geometry: linesGeo
+                                                          .map((e) => LatLng(
+                                                              e.first, e.last))
+                                                          .toList(),
+                                                      lineColor: outlineColor))
+                                                  .toList());
+                                          readProvider.highlightLinesField =
+                                              highlightLines;
 
-                                                var fill = await mapController
-                                                    .addFill(FillOptions(
-                                                  geometry: [
-                                                    latLngs.map((e) {
-                                                      return LatLng(
-                                                          e.first, e.last);
-                                                    }).toList()
-                                                  ],
-                                                  fillColor: outlineColor,
-                                                  fillOutlineColor:
-                                                      outlineColor,
-                                                  fillOpacity: 0.3,
-                                                ));
-                                                readProvider.highlightFillField = fill;
+                                          var fill = await mapController
+                                              .addFill(FillOptions(
+                                            geometry: [
+                                              latLngs.map((e) {
+                                                return LatLng(e.first, e.last);
+                                              }).toList()
+                                            ],
+                                            fillColor: outlineColor,
+                                            fillOutlineColor: outlineColor,
+                                            fillOpacity: 0.3,
+                                          ));
+                                          readProvider.highlightFillField =
+                                              fill;
                                           // setState(() {
                                           //   _selectedValue3;
                                           // });
@@ -936,8 +939,8 @@ class _ViewFarmState extends State<ViewFarm> {
             body: Column(
               children: [
                 TopBar(),
-                const Expanded(
-                  child: Center(
+                Expanded(
+                  child: const Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),

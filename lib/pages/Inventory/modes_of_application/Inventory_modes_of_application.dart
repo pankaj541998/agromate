@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,14 +52,14 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Add Inventory",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -66,7 +68,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -83,11 +85,11 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Stock Code",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -102,7 +104,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -140,17 +142,17 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Item Description",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -165,7 +167,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -203,12 +205,12 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -216,11 +218,11 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Unit Cost",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -235,7 +237,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -273,17 +275,17 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Inventory Cost",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -298,7 +300,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -336,12 +338,12 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -349,11 +351,11 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Quantity",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -368,7 +370,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -406,17 +408,17 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Value",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -431,7 +433,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -469,18 +471,18 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         height: 40,
                         width: 298,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },

@@ -4,22 +4,21 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:http/http.dart' as http;
 import '../../component/services/otp_api.dart';
 
-class otpVerification extends StatefulWidget {
-  otpVerification({Key? key, this.email}) : super(key: key);
+class OtpVerification extends StatefulWidget {
+  const OtpVerification({Key? key, this.email}) : super(key: key);
 
   @override
-  State<otpVerification> createState() => _otpVerificationState();
+  State<OtpVerification> createState() => _OtpVerificationState();
   final String? email;
 }
 
-class _otpVerificationState extends State<otpVerification> {
+class _OtpVerificationState extends State<OtpVerification> {
   final otp = TextEditingController();
 
   Future<void> otpSend() async {
@@ -37,7 +36,7 @@ class _otpVerificationState extends State<otpVerification> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => updatePassword(email: widget.email)));
+              builder: (context) => UpdatePassword(email: widget.email)));
     } else {
       Flushbar(
         message: responseMap.values.last.toString(),
@@ -50,7 +49,7 @@ class _otpVerificationState extends State<otpVerification> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFF7F9EA),
+        color: const Color(0xFFF7F9EA),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -61,17 +60,17 @@ class _otpVerificationState extends State<otpVerification> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Enter OTP",
                       style: TextStyle(
                           fontSize: 35,
                           color: Colors.black,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 500,
                       child: Divider(
                         thickness: 2,
@@ -80,14 +79,14 @@ class _otpVerificationState extends State<otpVerification> {
                         indent: 0,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "Reset password with agromate",
                       style: TextStyle(fontSize: 16, color: Color(0xFF505050)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
                     SizedBox(
@@ -114,16 +113,16 @@ class _otpVerificationState extends State<otpVerification> {
                         pinTheme: PinTheme(
                           selectedFillColor: Colors.white,
                           inactiveFillColor: Colors.white,
-                          inactiveColor: Color(0xFFA1B809),
-                          activeColor: Color(0xFFA1B809),
-                          selectedColor: Color(0xFFA1B809),
+                          inactiveColor: const Color(0xFFA1B809),
+                          activeColor: const Color(0xFFA1B809),
+                          selectedColor: const Color(0xFFA1B809),
                           shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(15),
                           fieldHeight: 60,
                           fieldWidth: 60,
                           activeFillColor: Colors.white,
                         ),
-                        animationDuration: Duration(milliseconds: 300),
+                        animationDuration: const Duration(milliseconds: 300),
                         // backgroundColor: Colors.white,
                         enableActiveFill: true,
                         // errorAnimationController: errorController,
@@ -147,20 +146,20 @@ class _otpVerificationState extends State<otpVerification> {
                         appContext: context,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     SizedBox(
                       height: 50,
                       width: 400,
-                      child: customElevatedButton(
+                      child: CustomElevatedButton(
                         title: "Submit OTP",
                         onPressed: () {
                           otpSend();
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     SizedBox(
@@ -168,14 +167,14 @@ class _otpVerificationState extends State<otpVerification> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Didn't receive OTP ?"),
+                          const Text("Didn't receive OTP ?"),
                           TextButton(
+                            Widget: const Text(" Resend OTP"),
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xFF327C04)),
+                                  const Color(0xFF327C04)),
                             ),
                             onPressed: () {},
-                            child: Text(" Resend OTP"),
                           )
                         ],
                       ),

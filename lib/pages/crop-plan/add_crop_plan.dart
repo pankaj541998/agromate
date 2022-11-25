@@ -17,9 +17,10 @@ class _AddCropPlanState extends State<AddCropPlan> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _date = TextEditingController();
     final format = DateFormat("dd-MM-yyyy");
+
     String questionsSelected = 'Select Your Question *';
+
     var questions = [
       'Select Your Question *',
       'Question 1',
@@ -104,7 +105,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             color: const Color(0xff327C04).withOpacity(0.5),
                             fontFamily: 'Helvetica',
                           ),
-                          fillColor: Colors.transparent,
+                          fillColor: Colors.white,
                           filled: true,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),

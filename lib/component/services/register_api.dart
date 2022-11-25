@@ -1,16 +1,10 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 
-class registerapi {
+class Registerapi {
   Future editDataByUsername(Map<String, dynamic> updata) async {
-    final _chuckerHttpClient = await http.Client();
-
-    final prefs = await SharedPreferences.getInstance();
+    final _chuckerHttpClient = http.Client();
 
     http.Response response = await _chuckerHttpClient.post(
       Uri.parse(
@@ -23,14 +17,13 @@ class registerapi {
     if (response.statusCode == 200) {
       print(response.body);
       return null;
-    } else
+    } else {
       throw (Exception("Search Error"));
+    }
   }
 
   Future register(Map<String, dynamic> updata) async {
-    final _chuckerHttpClient = await http.Client();
-
-    final prefs = await SharedPreferences.getInstance();
+    final _chuckerHttpClient = http.Client();
 
     http.Response response = await _chuckerHttpClient.post(
       Uri.parse(

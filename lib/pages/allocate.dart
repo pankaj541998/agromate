@@ -647,7 +647,7 @@ class _AllocateState extends State<Allocate> {
                       SizedBox(
                         width: 296,
                         height: 40,
-                        child: customElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () {},
                           title: "Submit",
                         ),
@@ -668,11 +668,8 @@ class _AllocateState extends State<Allocate> {
 }
 
 class Question extends StatelessWidget {
-  const Question({
-    super.key,
-    required this.sentence,
-    required this.number,
-  });
+  const Question({Key? key, required this.sentence, required this.number})
+      : super(key: key);
   final String sentence;
   final String number;
   @override

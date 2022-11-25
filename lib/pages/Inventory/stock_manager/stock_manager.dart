@@ -33,17 +33,14 @@ class _StockManagerState extends State<StockManager> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      InkWell(
-                        // onTap: () => Get.toNamed('/stockplannertable'),
-                        child: Text(
-                          'Stock Manager',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.bold),
-                        ),
+                      const Text(
+                        'Stock Manager',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff000000),
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: screenSize.width * 0.02),
                       Row(
@@ -199,7 +196,7 @@ class _StockManagerState extends State<StockManager> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -222,7 +219,7 @@ class _StockManagerState extends State<StockManager> {
 Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 4,
       ),
@@ -244,7 +241,7 @@ Widget _buildgridview(context, screenSize) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Image.asset(height: 60, "assets/images/Group6740.png"),
+                        Image.asset("assets/images/Group6740.png", height: 60),
                         SizedBox(width: screenSize.width * 0.03),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

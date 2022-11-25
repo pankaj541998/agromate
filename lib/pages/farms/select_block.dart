@@ -5,7 +5,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
 class SelectBlock extends StatefulWidget {
-  SelectBlock({Key? key}) : super(key: key);
+  const SelectBlock({Key? key}) : super(key: key);
 
   @override
   State<SelectBlock> createState() => _SelectBlockState();
@@ -76,7 +76,7 @@ class _SelectBlockState extends State<SelectBlock> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(size: 10, Icons.circle),
+                              Icon(Icons.circle, size: 10),
                               SizedBox(
                                 width: 10,
                               ),
@@ -92,7 +92,7 @@ class _SelectBlockState extends State<SelectBlock> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(size: 10, Icons.circle),
+                              Icon(Icons.circle, size: 10),
                               SizedBox(
                                 width: 10,
                               ),
