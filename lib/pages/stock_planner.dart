@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../component/custom_Elevated_Button.dart';
 
@@ -36,14 +35,14 @@ class _StockPlannerState extends State<StockPlanner> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Add New Stock",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -52,7 +51,7 @@ class _StockPlannerState extends State<StockPlanner> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -67,7 +66,7 @@ class _StockPlannerState extends State<StockPlanner> {
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Unit Cost",
                             style: TextStyle(fontSize: 18),
@@ -75,11 +74,11 @@ class _StockPlannerState extends State<StockPlanner> {
                           SizedBox(
                             height: 10,
                           ),
-                          Image.asset(
-                              height: 70, "assets/images/Group 6740.png"),
+                          // Image.asset(
+                          //     height: 70, "assets/images/Group 6740.png"),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -87,11 +86,11 @@ class _StockPlannerState extends State<StockPlanner> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Warehouse",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -106,7 +105,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -144,17 +143,17 @@ class _StockPlannerState extends State<StockPlanner> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Start Date",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -169,7 +168,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -207,12 +206,12 @@ class _StockPlannerState extends State<StockPlanner> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -220,11 +219,11 @@ class _StockPlannerState extends State<StockPlanner> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Stock Name",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -239,7 +238,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -277,17 +276,17 @@ class _StockPlannerState extends State<StockPlanner> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Quantity",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -302,7 +301,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -340,12 +339,12 @@ class _StockPlannerState extends State<StockPlanner> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
@@ -389,11 +388,11 @@ class _StockPlannerState extends State<StockPlanner> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
                       InkWell(
                         onTap: () => Get.toNamed('/stockplannertable'),
-                        child: Text(
+                        child: const Text(
                           'Stock Planner',
                           style: TextStyle(
                               fontSize: 20,
@@ -413,9 +412,9 @@ class _StockPlannerState extends State<StockPlanner> {
                         },
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        selectedBorderColor: Color(0xFF327c04),
+                        selectedBorderColor: const Color(0xFF327c04),
                         selectedColor: Colors.white,
-                        fillColor: Color(0xFF327c04),
+                        fillColor: const Color(0xFF327c04),
                         color: Colors.black,
                         constraints: const BoxConstraints(
                           minHeight: 30.0,
@@ -521,7 +520,7 @@ class _StockPlannerState extends State<StockPlanner> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -534,7 +533,7 @@ class _StockPlannerState extends State<StockPlanner> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Chemical'),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           SizedBox(
                               width: 300,
                               height: 50,
@@ -555,7 +554,7 @@ class _StockPlannerState extends State<StockPlanner> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('Date'),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           StatefulBuilder(
                             builder: (context, setState) {
                               return InkWell(
@@ -564,14 +563,14 @@ class _StockPlannerState extends State<StockPlanner> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                       border: Border.all(),
-                                      borderRadius: BorderRadius.all(
+                                      borderRadius: const BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
-                                        Expanded(child: Text("22/11/22")),
-                                        Icon(
+                                        Expanded(child: const Text("22/11/22")),
+                                        const Icon(
                                           Icons.expand_circle_down_rounded,
                                           size: 19,
                                         )
@@ -695,16 +694,16 @@ class _TextDropdownState extends State<TextDropdown> {
 Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 4,
       ),
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
         return Card(
-          color: Color(0xfff7f9ea),
+          color: const Color(0xfff7f9ea),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -715,20 +714,20 @@ Widget _buildgridview(context, screenSize) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(height: 70, "assets/images/Group 6740.png"),
+                      // Image.asset(height: 70, "assets/images/Group 6740.png"),
                       SizedBox(width: screenSize.width * 0.03),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Nitrogen",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: screenSize.height * 0.03),
-                          Text("Quantity : 200ml"),
+                          const Text("Quantity : 200ml"),
                           SizedBox(height: screenSize.height * 0.03),
-                          Text("Required : 200ml"),
+                          const Text("Required : 200ml"),
                         ],
                       )
                     ],

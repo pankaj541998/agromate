@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -141,7 +143,7 @@ class _ViewDetailsState extends State<ViewDetails> {
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 const Divider(
                   height: 5,
                   color: Colors.grey,

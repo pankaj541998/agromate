@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/pages/stock_planner.dart';
 
 import '../component/custom_Elevated_Button.dart';
-import '../component/text_Input_field.dart';
 
 class StockOrder extends StatefulWidget {
   const StockOrder({Key? key}) : super(key: key);
@@ -33,14 +31,14 @@ class _StockOrderState extends State<StockOrder> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Add New Crop Program",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -49,7 +47,7 @@ class _StockOrderState extends State<StockOrder> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -66,11 +64,11 @@ class _StockOrderState extends State<StockOrder> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Farm",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -85,7 +83,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -123,17 +121,17 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Block",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -148,7 +146,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -186,12 +184,12 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -199,11 +197,11 @@ class _StockOrderState extends State<StockOrder> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Field",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -218,7 +216,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -256,17 +254,17 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Crop",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -281,7 +279,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -319,12 +317,12 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -332,11 +330,11 @@ class _StockOrderState extends State<StockOrder> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Warehouse",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -351,7 +349,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -389,17 +387,17 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Person",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -414,7 +412,7 @@ class _StockOrderState extends State<StockOrder> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => crop = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -452,12 +450,12 @@ class _StockOrderState extends State<StockOrder> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
@@ -500,9 +498,9 @@ class _StockOrderState extends State<StockOrder> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text(
+                      const Text(
                         'Stock order',
                         style: TextStyle(
                             fontSize: 20,
@@ -606,7 +604,7 @@ class _StockOrderState extends State<StockOrder> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -629,16 +627,16 @@ class _StockOrderState extends State<StockOrder> {
 Widget _buildgridview(context) {
   return GridView.builder(
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 3,
       ),
       itemCount: 5,
       itemBuilder: (BuildContext ctx, index) {
         return Card(
-          color: Color(0xfff7f9ea),
+          color: const Color(0xfff7f9ea),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
+              borderRadius: const BorderRadius.all(Radius.circular(30))),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -654,14 +652,14 @@ Widget _buildgridview(context) {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 308.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 308.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Farm",
                                     style: TextStyle(
@@ -678,19 +676,19 @@ Widget _buildgridview(context) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 309.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 309.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Block",
                                     style: TextStyle(
@@ -711,19 +709,19 @@ Widget _buildgridview(context) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 310.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 310.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Field",
                                     style: TextStyle(
@@ -751,14 +749,14 @@ Widget _buildgridview(context) {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 311.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 311.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Person",
                                     style: TextStyle(
@@ -779,19 +777,19 @@ Widget _buildgridview(context) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 312.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 312.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Crop",
                                     style: TextStyle(
@@ -812,19 +810,19 @@ Widget _buildgridview(context) {
                               )
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 40, "assets/images/Group 313.png"),
-                              SizedBox(
+                              // Image.asset(
+                              //     height: 40, "assets/images/Group 313.png"),
+                              const SizedBox(
                                 width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                                children: const [
                                   Text(
                                     "Stage",
                                     style: TextStyle(

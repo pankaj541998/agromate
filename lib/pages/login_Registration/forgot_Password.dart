@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_Input_field.dart';
-import 'package:flutter_agro_new/pages/login_Registration/otpVerification.dart';
+import 'package:flutter_agro_new/component/text_input_field.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../services/otp_api.dart';
+import 'otp_verification.dart';
 
-class forgotPassword extends StatefulWidget {
-  forgotPassword({Key? key}) : super(key: key);
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
-  State<forgotPassword> createState() => _forgotPasswordState();
+  State<ForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _forgotPasswordState extends State<forgotPassword> {
+class _ForgotPasswordState extends State<ForgotPassword> {
   final email = TextEditingController();
 
   Future<void> otpSendData() async {
@@ -34,7 +34,7 @@ class _forgotPasswordState extends State<forgotPassword> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => otpVerification(
+          builder: (context) => OtpVerification(
             email: email.text,
           ),
         ),
@@ -51,7 +51,7 @@ class _forgotPasswordState extends State<forgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFF7F9EA),
+        color: const Color(0xFFF7F9EA),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -62,17 +62,17 @@ class _forgotPasswordState extends State<forgotPassword> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Forgot Password",
                       style: TextStyle(
                           fontSize: 35,
                           color: Colors.black,
                           fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 500,
                       child: Divider(
                         thickness: 2,
@@ -81,26 +81,26 @@ class _forgotPasswordState extends State<forgotPassword> {
                         indent: 0,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "Reset password with agromate",
                       style: TextStyle(fontSize: 16, color: Color(0xFF505050)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
-                    Text(
+                    const Text(
                       "Enter your email and instructions will be sent to you!",
                       style: TextStyle(fontSize: 18, color: Color(0xFF000000)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     TextInputField(
                       textEditingController: email,
-                      leadingIcon: Icon(
+                      leadingIcon: const Icon(
                         Icons.email_outlined,
                         color: Color(0xFFA1B809),
                       ),
@@ -116,7 +116,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                       hintText: 'Email address',
                       validatorText: 'Please Enter Email address',
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 29,
                     ),
                     SizedBox(
@@ -129,7 +129,7 @@ class _forgotPasswordState extends State<forgotPassword> {
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     SizedBox(
@@ -137,14 +137,14 @@ class _forgotPasswordState extends State<forgotPassword> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Didn't receive mail ?"),
+                          const Text("Didn't receive mail ?"),
                           ElevatedButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all<Color>(
-                                  Color(0xFF327C04)),
+                                  const Color(0xFF327C04)),
                             ),
                             onPressed: () {},
-                            child: Text(" Resend mail"),
+                            child: const Text(" Resend mail"),
                           )
                         ],
                       ),

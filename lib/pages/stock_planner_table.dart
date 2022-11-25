@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,14 +36,14 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
             children: [
               AlertDialog(
                 insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                    borderRadius: const BorderRadius.all(Radius.circular(10))),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Add New Stock",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -50,7 +52,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.cancel_outlined,
                         color: Color(0xFF4E944F),
                       ),
@@ -65,7 +67,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           Text(
                             "Unit Cost",
                             style: TextStyle(fontSize: 18),
@@ -73,11 +75,11 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                           SizedBox(
                             height: 10,
                           ),
-                          Image.asset(
-                              height: 70, "assets/images/Group 6740.png"),
+                          // Image.asset(
+                          //     height: 70, "assets/images/Group 6740.png"),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Row(
@@ -85,11 +87,11 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Warehouse",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -104,10 +106,12 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
+                                          // ignore: unnecessary_const
+                                          const BorderRadius.all(
+                                              Radius.circular(10)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 2.0),
                                     ),
@@ -142,17 +146,17 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Start Date",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -167,7 +171,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -205,12 +209,12 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 0,
                       ),
                       Row(
@@ -218,11 +222,11 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Stock Name",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -237,7 +241,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -275,17 +279,17 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 "Quantity",
                                 style: TextStyle(fontSize: 18),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               SizedBox(
@@ -300,7 +304,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                         RegExp('[a-zA-Z]')),
                                   ],
                                   onChanged: (value) => unitcost = value,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(10)),
@@ -338,12 +342,12 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 25,
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
@@ -509,9 +513,9 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text(
+                      const Text(
                         'Stock Planner',
                         style: TextStyle(
                             fontSize: 20,
@@ -532,9 +536,9 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                           },
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
-                          selectedBorderColor: Color(0xFF327c04),
+                          selectedBorderColor: const Color(0xFF327c04),
                           selectedColor: Colors.white,
-                          fillColor: Color(0xFF327c04),
+                          fillColor: const Color(0xFF327c04),
                           color: Colors.black,
                           constraints: const BoxConstraints(
                             minHeight: 30.0,
@@ -641,7 +645,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,

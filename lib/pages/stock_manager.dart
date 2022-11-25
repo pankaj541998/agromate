@@ -33,17 +33,14 @@ class _StockManagerState extends State<StockManager> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      InkWell(
-                        // onTap: () => Get.toNamed('/stockplannertable'),
-                        child: Text(
-                          'Stock Manager',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.bold),
-                        ),
+                      const Text(
+                        'Stock Manager',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff000000),
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: screenSize.width * 0.02),
                       ToggleButtons(
@@ -57,9 +54,9 @@ class _StockManagerState extends State<StockManager> {
                         },
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        selectedBorderColor: Color(0xFF327c04),
+                        selectedBorderColor: const Color(0xFF327c04),
                         selectedColor: Colors.white,
-                        fillColor: Color(0xFF327c04),
+                        fillColor: const Color(0xFF327c04),
                         color: Colors.black,
                         constraints: const BoxConstraints(
                           minHeight: 30.0,
@@ -163,7 +160,7 @@ class _StockManagerState extends State<StockManager> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -186,16 +183,16 @@ class _StockManagerState extends State<StockManager> {
 Widget _buildgridview(context, screenSize) {
   return GridView.builder(
       shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 4,
       ),
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
         return Card(
-          color: Color(0xfff7f9ea),
+          color: const Color(0xfff7f9ea),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(5),
@@ -206,24 +203,24 @@ Widget _buildgridview(context, screenSize) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(height: 70, "assets/images/Group 6740.png"),
+                      // Image.asset(height: 70, "assets/images/Group 6740.png"),
                       SizedBox(width: screenSize.width * 0.03),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Nitrogen",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: screenSize.height * 0.008),
-                          Text("Description"),
+                          const Text("Description"),
                           SizedBox(height: screenSize.height * 0.008),
-                          Text("Class: Fertiliser"),
+                          const Text("Class: Fertiliser"),
                           SizedBox(height: screenSize.height * 0.008),
-                          Text("Type: Organic"),
+                          const Text("Type: Organic"),
                           SizedBox(height: screenSize.height * 0.01),
-                          Text("Quantity: 200ml"),
+                          const Text("Quantity: 200ml"),
                         ],
                       )
                     ],

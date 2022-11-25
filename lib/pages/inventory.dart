@@ -26,7 +26,7 @@ class _InventoryState extends State<Inventory> {
               child: Column(
                 children: [
                   Row(
-                    children: [
+                    children: const [
                       Text(
                         'Inventory',
                         style: TextStyle(
@@ -37,7 +37,7 @@ class _InventoryState extends State<Inventory> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -52,7 +52,7 @@ class _InventoryState extends State<Inventory> {
                           Expanded(
                             child: InkWell(
                               child: Card(
-                                color: Color(0xFFf7f9ea),
+                                color: const Color(0xFFf7f9ea),
                                 elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -62,8 +62,8 @@ class _InventoryState extends State<Inventory> {
                                       EdgeInsets.all(screenSize.width * 0.02),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Image(
+                                    children: const [
+                                      Image(
                                         image: AssetImage(
                                             'image/calendar-svgrepo-com.png'),
                                         height: 100,
@@ -94,7 +94,7 @@ class _InventoryState extends State<Inventory> {
                           Expanded(
                             child: InkWell(
                               child: Card(
-                                color: Color(0xFFf7f9ea),
+                                color: const Color(0xFFf7f9ea),
                                 elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -104,8 +104,8 @@ class _InventoryState extends State<Inventory> {
                                       EdgeInsets.all(screenSize.width * 0.02),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Image(
+                                    children: const [
+                                      Image(
                                         image: AssetImage(
                                             'image/managament-manager-organize-svgrepo-com.png'),
                                         height: 100,
@@ -136,7 +136,7 @@ class _InventoryState extends State<Inventory> {
                           Expanded(
                             child: InkWell(
                               child: Card(
-                                color: Color(0xFFf7f9ea),
+                                color: const Color(0xFFf7f9ea),
                                 elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -146,8 +146,8 @@ class _InventoryState extends State<Inventory> {
                                       EdgeInsets.all(screenSize.width * 0.02),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Image(
+                                    children: const [
+                                      Image(
                                         image: AssetImage(
                                             'image/stock-svgrepo-com.png'),
                                         height: 100,
@@ -184,7 +184,7 @@ class _InventoryState extends State<Inventory> {
                           Expanded(
                             child: InkWell(
                               child: Card(
-                                color: Color(0xFFf7f9ea),
+                                color: const Color(0xFFf7f9ea),
                                 elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -194,8 +194,8 @@ class _InventoryState extends State<Inventory> {
                                       EdgeInsets.all(screenSize.width * 0.02),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Image(
+                                    children: const [
+                                      Image(
                                         image: AssetImage(
                                             'image/warehouse-svgrepo-com.png'),
                                         height: 100,
@@ -226,7 +226,7 @@ class _InventoryState extends State<Inventory> {
                           Expanded(
                             child: InkWell(
                               child: Card(
-                                color: Color(0xFFf7f9ea),
+                                color: const Color(0xFFf7f9ea),
                                 elevation: 5,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -236,8 +236,8 @@ class _InventoryState extends State<Inventory> {
                                       EdgeInsets.all(screenSize.width * 0.02),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Image(
+                                    children: const [
+                                      Image(
                                         image: AssetImage(
                                             'image/tractor-svgrepo-com.png'),
                                         height: 100,

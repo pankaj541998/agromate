@@ -1,25 +1,21 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_Input_field.dart';
-import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
+import 'package:flutter_agro_new/component/text_input_field.dart';
 import 'package:flutter_agro_new/services/auth_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../services/test_api.dart';
-
-class login extends StatefulWidget {
-  const login({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<login> createState() => _loginState();
+  State<Login> createState() => _LoginState();
 }
 
-class _loginState extends State<login> {
+class _LoginState extends State<Login> {
   bool check = false;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final username = TextEditingController();
@@ -54,7 +50,7 @@ class _loginState extends State<login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFF7F9EA),
+        color: const Color(0xFFF7F9EA),
         child: Row(
           children: [
             Expanded(
@@ -66,14 +62,14 @@ class _loginState extends State<login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Login",
                         style: TextStyle(
                             fontSize: 35,
                             color: Colors.black,
                             fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
                       TextInputField(
@@ -87,7 +83,7 @@ class _loginState extends State<login> {
                         hintText: 'Username',
                         validatorText: 'Please Enter Username',
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       TextInputField(
@@ -103,7 +99,7 @@ class _loginState extends State<login> {
                           isInputPassword: true,
                           hintText: 'Password',
                           validatorText: 'Please Enter Password'),
-                      SizedBox(
+                      const SizedBox(
                         height: 19,
                       ),
                       SizedBox(
@@ -115,22 +111,23 @@ class _loginState extends State<login> {
                               children: [
                                 Theme(
                                   data: ThemeData(
-                                      unselectedWidgetColor: Color(0xFF4E944F)),
+                                      unselectedWidgetColor:
+                                          const Color(0xFF4E944F)),
                                   child: Checkbox(
-                                    activeColor: Color(0xFF4E944F),
+                                    activeColor: const Color(0xFF4E944F),
                                     checkColor: Colors.white,
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
+                                        borderRadius: const BorderRadius.all(
                                             Radius.circular(5.0))),
                                     value: check,
                                     onChanged: (value) {
                                       setState(() {
-                                        this.check = value!;
+                                        check = value!;
                                       });
                                     },
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   "Remember Me",
                                   style: TextStyle(
                                       fontSize: 15,
@@ -138,12 +135,12 @@ class _loginState extends State<login> {
                                 ),
                               ],
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             ElevatedButton(
                               onPressed: () {
                                 Get.toNamed('/forgotPassword');
                               },
-                              child: Text(
+                              child: const Text(
                                 "Forgot Password ?",
                                 style: TextStyle(
                                     color: Color(0xFF327C04), fontSize: 15),
@@ -152,7 +149,7 @@ class _loginState extends State<login> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 51,
                       ),
                       SizedBox(

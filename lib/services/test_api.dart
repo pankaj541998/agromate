@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../services/globals.dart';
 
-class testapi {
-  testapi();
+class Testapi {
+  Testapi();
 
   Future<http.Response> testAppAPI(Map<String, dynamic> data) async {
     var body = data;

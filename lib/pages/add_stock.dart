@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import '../component/custom_Elevated_Button.dart';
 
 class AddStock extends StatefulWidget {
-  const AddStock({super.key});
+  const AddStock({Key? key}) : super(key: key);
 
   @override
   State<AddStock> createState() => _AddStockState();
@@ -41,9 +40,9 @@ class _AddStockState extends State<AddStock> {
                     children: [
                       InkWell(
                           onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      Text(
+                      const Text(
                         'Add Stock',
                         style: TextStyle(
                             fontSize: 20,
@@ -53,7 +52,7 @@ class _AddStockState extends State<AddStock> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -66,17 +65,17 @@ class _AddStockState extends State<AddStock> {
                         children: [
                           Row(
                             children: [
-                              Image.asset(
-                                  height: 70, "assets/images/Group 6740.png"),
+                              // Image.asset(
+                              //     height: 70, "assets/images/Group 6740.png"),
                               SizedBox(width: screenSize.width * 0.04),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Class",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -91,7 +90,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -135,11 +134,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Type",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -154,7 +153,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -198,11 +197,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Alternative",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -217,7 +216,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -266,11 +265,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Item Code",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -285,7 +284,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -329,11 +328,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Description",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -348,7 +347,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -392,11 +391,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Unit Cost",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -411,7 +410,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -455,11 +454,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Stock Level",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -474,7 +473,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -522,11 +521,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Active Ingridient",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -541,7 +540,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -585,11 +584,11 @@ class _AddStockState extends State<AddStock> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "AI / KG",
                                     style: TextStyle(fontSize: 18),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
@@ -604,7 +603,7 @@ class _AddStockState extends State<AddStock> {
                                             RegExp('[a-zA-Z]')),
                                       ],
                                       onChanged: (value) => unitcost = value,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         errorBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
@@ -648,9 +647,9 @@ class _AddStockState extends State<AddStock> {
                           ),
                           SizedBox(height: screenSize.height * 0.03),
                           Container(
-                            color: Color(0xfff7f9ea),
+                            color: const Color(0xfff7f9ea),
                             child: Row(
-                              children: [
+                              children: const [
                                 Text(
                                   "Warnings",
                                   style: TextStyle(fontSize: 18),
@@ -704,11 +703,11 @@ class _AddStockState extends State<AddStock> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Choose Warning",
                                       style: TextStyle(fontSize: 18),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     SizedBox(
@@ -723,7 +722,7 @@ class _AddStockState extends State<AddStock> {
                                               RegExp('[a-zA-Z]')),
                                         ],
                                         onChanged: (value) => unitcost = value,
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           errorBorder: OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(10)),
@@ -764,7 +763,7 @@ class _AddStockState extends State<AddStock> {
                                     ),
                                     SizedBox(height: screenSize.height * 0.03),
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(Icons.check_box_outlined),
                                         SizedBox(
                                           width: 10,
@@ -777,7 +776,7 @@ class _AddStockState extends State<AddStock> {
                                     ),
                                     SizedBox(height: screenSize.height * 0.03),
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(Icons.check_box_outlined),
                                         SizedBox(
                                           width: 10,

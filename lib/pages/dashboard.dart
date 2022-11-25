@@ -900,11 +900,11 @@ class DougnutChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ChartData> chartData = [
-      ChartData('David', 1600),
-      ChartData('Steve', 120),
-      ChartData('Jack', 220),
-      ChartData('jain', 250),
-      ChartData('Others', 320)
+      ChartData('David', 20),
+      ChartData('Steve', 20),
+      ChartData('Jack', 20),
+      ChartData('jain', 20),
+      ChartData('Others', 20)
     ];
     return SizedBox(
       height: 210,

@@ -1,14 +1,13 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-
-import '../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
 
 class StockManagerTable extends StatefulWidget {
-  const StockManagerTable({super.key});
+  const StockManagerTable({Key? key}) : super(key: key);
 
   @override
   State<StockManagerTable> createState() => _StockManagerTableState();
@@ -63,18 +62,18 @@ class _StockManagerTableState extends State<StockManagerTable> {
                   Row(
                     children: [
                       InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: Icon(Icons.arrow_back_ios_rounded)),
-                      SizedBox(width: screenSize.width * 0.02),
-                      InkWell(
-                        // onTap: () => Get.toNamed('/stockplannertable'),
-                        child: Text(
-                          'Stock Manager',
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.bold),
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back_ios_rounded,
                         ),
+                      ),
+                      SizedBox(width: screenSize.width * 0.02),
+                      const Text(
+                        'Stock Manager',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xff000000),
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(width: screenSize.width * 0.02),
                       ToggleButtons(
@@ -88,9 +87,9 @@ class _StockManagerTableState extends State<StockManagerTable> {
                         },
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        selectedBorderColor: Color(0xFF327c04),
+                        selectedBorderColor: const Color(0xFF327c04),
                         selectedColor: Colors.white,
-                        fillColor: Color(0xFF327c04),
+                        fillColor: const Color(0xFF327c04),
                         color: Colors.black,
                         constraints: const BoxConstraints(
                           minHeight: 30.0,
@@ -196,7 +195,7 @@ class _StockManagerTableState extends State<StockManagerTable> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
@@ -384,7 +383,7 @@ DataRow recentFileDataRow(var data) {
     cells: [
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
-      DataCell(Align(alignment: Alignment.center, child: FlutterLogo())),
+      const DataCell(Align(alignment: Alignment.center, child: FlutterLogo())),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.description.toString()))),

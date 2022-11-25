@@ -13,15 +13,16 @@ class customElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          backgroundColor: MaterialStateProperty.all<Color>(Color(0XFF327C04)),
+          backgroundColor:
+              MaterialStateProperty.all<Color>(const Color(0XFF327C04)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderRadius: const BorderRadius.all(Radius.circular(15)),
           ))),
       onPressed: onPressed,
       child: Text(
         title!,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 20, fontWeight: FontWeight.w500, color: Colors.white),
       ),
     );

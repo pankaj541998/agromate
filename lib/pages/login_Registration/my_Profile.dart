@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_Input_field.dart';
+import 'package:flutter_agro_new/component/text_input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
@@ -65,11 +65,11 @@ class _MyProfileState extends State<MyProfile> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 590,
                       child: TabBarView(
                         children: [
-                          profile(),
+                          Profile(),
                           ChangePassword(),
                         ],
                       ),
@@ -85,14 +85,14 @@ class _MyProfileState extends State<MyProfile> {
   }
 }
 
-class profile extends StatefulWidget {
-  profile({Key? key}) : super(key: key);
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
 
   @override
-  State<profile> createState() => _profileState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _profileState extends State<profile> {
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -179,15 +179,15 @@ class _profileState extends State<profile> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
-                    SizedBox(
+                    const SizedBox(
                         height: 50,
                         width: 353,
                         child: TextInputField(
                             hintText: "Email Address", validatorText: "")),
-                    SizedBox(
+                    const SizedBox(
                       height: 35,
                     ),
                     SizedBox(
@@ -201,14 +201,14 @@ class _profileState extends State<profile> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 60,
               ),
               Expanded(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Full Name",
                       style:
@@ -250,7 +250,7 @@ class _profileState extends State<profile> {
 }
 
 class ChangePassword extends StatefulWidget {
-  ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
@@ -260,39 +260,39 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 50, top: 43, right: 50),
+      padding: const EdgeInsets.only(left: 50, top: 43, right: 50),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text(
+              const Text(
                 "Generate Password",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.75,
-                child: Divider(
+                child: const Divider(
                   color: Color(0xFF327C04),
                   thickness: 1,
                 ),
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 33,
           ),
-          Text(
+          const Text(
             "Current Password",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
             width: 353,
             child: TextInputField(
@@ -301,17 +301,17 @@ class _ChangePasswordState extends State<ChangePassword> {
               isInputPassword: true,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
-          Text(
+          const Text(
             "Enter New Password",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
             width: 353,
             child: TextInputField(
@@ -320,17 +320,17 @@ class _ChangePasswordState extends State<ChangePassword> {
               isInputPassword: true,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
-          Text(
+          const Text(
             "Confirm New Password",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
             width: 353,
             child: TextInputField(
@@ -339,7 +339,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               isInputPassword: true,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           SizedBox(
