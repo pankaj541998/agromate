@@ -113,10 +113,8 @@ class _RegisterState extends State<Register> {
                                 width: 235,
                                 child: TextInputField(
                                   textEditingController: firstname,
-                                  leadingIcon: const Icon(
-                                    Icons.person_outline_rounded,
-                                    color: Color(0xFF327C04),
-                                  ),
+                                  leadingIcon: Image.asset(
+                                      "assets/images/firstname.png"),
                                   validator: (value) {
                                     if (value != null && value.isEmpty) {
                                       return "Please Enter First Name";
@@ -131,10 +129,8 @@ class _RegisterState extends State<Register> {
                                 width: 235,
                                 child: TextInputField(
                                   textEditingController: lastname,
-                                  leadingIcon: const Icon(
-                                    Icons.person_outline_rounded,
-                                    color: Color(0xFF327C04),
-                                  ),
+                                  leadingIcon: Image.asset(
+                                      "assets/images/firstname.png"),
                                   validator: (value) {
                                     if (value != null && value.isEmpty) {
                                       return "Please Enter Last Name";
@@ -154,7 +150,7 @@ class _RegisterState extends State<Register> {
                         TextInputField(
                           textEditingController: username,
                           leadingIcon:
-                              const Icon(Icons.person_outline_outlined),
+                              Image.asset("assets/images/username.png"),
                           validator: (value) {
                             if (value != null && value.isEmpty) {
                               return "Please Enter Username";
@@ -168,7 +164,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextInputField(
-                            leadingIcon: Icon(Icons.email_outlined),
+                            leadingIcon: Image.asset("assets/images/email.png"),
                             textEditingController: email,
                             validator: (value) {
                               if (value == null ||
@@ -185,7 +181,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextInputField(
-                            leadingIcon: Icon(Icons.phone),
+                            leadingIcon: Image.asset("assets/images/Phone.png"),
                             textEditingController: phonenumber,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -200,8 +196,8 @@ class _RegisterState extends State<Register> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const TextInputField(
-                          leadingIcon: Icon(Icons.abc),
+                        TextInputField(
+                          leadingIcon: Image.asset("assets/images/role.png"),
                           hintText: 'Role',
                           validatorText: '',
                         ),
