@@ -1,12 +1,18 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/models/ModeModel.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../component/custom_Elevated_Button.dart';
+
+late ModeModel modes;
 
 class ModesOfApplication extends StatefulWidget {
   const ModesOfApplication({Key? key}) : super(key: key);
@@ -26,6 +32,17 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
 
   bool sort = true;
   List<Data>? filterData;
+
+  Future<ModeModel> fetchModes() async {
+    var client = http.Client();
+    final response = await client
+        .get(Uri.parse('https://agromate.website/laravel/api/get/mode'));
+    final parsed = jsonDecode(response.body);
+    // print(response.body);
+    modes = ModeModel.fromJson(parsed);
+    // print(registeredusers.data!.elementAt(1).firstName!);
+    return modes;
+  }
 
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
@@ -360,7 +377,25 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                   thickness: 1,
                 ),
                 SizedBox(height: screenSize.height * 0.03),
-                datatable(screenSize),
+                FutureBuilder<ModeModel>(
+                  future: fetchModes(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        debugPrint(snapshot.data.toString());
+                        return datatable(screenSize);
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+                //datatable(screenSize),
               ],
             ),
           )
@@ -383,8 +418,8 @@ datatable(screenSize) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSource(
-                myData: myData,
-                count: myData.length,
+                myData: modes.data,
+                count: modes.data!.length,
               ),
               rowsPerPage: 9,
               columnSpacing: 0,
@@ -535,19 +570,19 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(ModeData data) {
   return DataRow(
     cells: [
       DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
+          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.name.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.description.toString()))),
+          alignment: Alignment.center, child: Text(data.mode.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.applicationcost.toString()))),
+          child: Text(data.itemDescription.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.applicationCost.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.quantity.toString()))),
       DataCell(Align(
