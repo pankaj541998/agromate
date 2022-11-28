@@ -1,8 +1,12 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -101,7 +105,8 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final username = TextEditingController();
   final email = TextEditingController();
-  final fullname = TextEditingController();
+  final firstname = TextEditingController();
+  final lastname = TextEditingController();
   final phone = TextEditingController();
 
   @override
@@ -120,7 +125,8 @@ class _ProfileState extends State<Profile> {
     username.text = profileData.username ?? "";
     email.text = profileData.email ?? "";
     phone.text = profileData.phone?.toString() ?? "";
-    fullname.text = profileData.fullName ?? "";
+    firstname.text = profileData.firstName ?? "";
+    lastname.text = profileData.lastName ?? "";
   }
 
   Future<dynamic> submitData() async {
@@ -128,10 +134,12 @@ class _ProfileState extends State<Profile> {
 
     int userid = prefs.getInt('user_id') ?? 1;
     print("reached");
+    print(firstname.text);
     var response =
         await http.post(Uri.parse(ApiConstant.profileUpdateAPI), body: {
       "phone": phone.text,
-      "fullname": fullname.text,
+      "first_name": firstname.text,
+      "last_name": lastname.text,
       "user_id": userid.toString(),
     });
     var data = response.body;
@@ -275,21 +283,53 @@ class _ProfileState extends State<Profile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Full Name",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "First Name",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                                height: 40,
+                                width: 150,
+                                child: TextInputField(
+                                    textEditingController: firstname,
+                                    hintText: "First Name",
+                                    validatorText: "")),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 53,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Last Name",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                                height: 40,
+                                width: 150,
+                                child: TextInputField(
+                                    textEditingController: lastname,
+                                    hintText: "Last Name",
+                                    validatorText: "")),
+                          ],
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 40,
-                        width: 353,
-                        child: TextInputField(
-                            textEditingController: fullname,
-                            hintText: "Full Name",
-                            validatorText: "")),
                     SizedBox(
                       height: 35,
                     ),
@@ -327,100 +367,155 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final confirmpassword = TextEditingController();
+  final currentpassword = TextEditingController();
+  final newpassword = TextEditingController();
+
+  final GlobalKey<FormState> _passwordkey = GlobalKey<FormState>();
+
+  Future<void> updatePasword() async {
+    print("uppassword called");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int? userId = prefs.getInt('user_id');
+    Map<String, dynamic> updata = {
+      "user_id": userId.toString(),
+      "curr_password": currentpassword.text,
+      "new_password": confirmpassword.text,
+    };
+
+    http.Response response = await AuthServices.changePassword(updata);
+    Map responseMap = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      Flushbar(
+        message: "Password Changed Successfully",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+      Get.toNamed('/login');
+    } else {
+      Flushbar(
+        message: responseMap.values.first,
+        duration: const Duration(seconds: 3),
+      ).show(context);
+    }
+  }
+
+  void _validateData() {
+    final isValid = _passwordkey.currentState?.validate();
+    if (isValid!) {
+      updatePasword();
+    } else {
+      Flushbar(
+        message: "Password not matched",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+
+      Timer(Duration(seconds: 2), () {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 50, top: 43, right: 50),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Text(
-                "Generate Password",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.67,
-                child: const Divider(
-                  color: Color(0xFF327C04),
-                  thickness: 1,
+      child: Form(
+        key: _passwordkey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Text(
+                  "Generate Password",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 33,
-          ),
-          const Text(
-            "Current Password",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const SizedBox(
-            height: 40,
-            width: 353,
-            child: TextInputField(
-              hintText: "Enter Current Password",
-              validatorText: "",
-              isInputPassword: true,
+                const SizedBox(
+                  width: 15,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.67,
+                  child: const Divider(
+                    color: Color(0xFF327C04),
+                    thickness: 1,
+                  ),
+                )
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Text(
-            "Enter New Password",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const SizedBox(
-            height: 40,
-            width: 353,
-            child: TextInputField(
-              hintText: "Enter New Password",
-              validatorText: "",
-              isInputPassword: true,
+            const SizedBox(
+              height: 33,
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Text(
-            "Confirm New Password",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          const SizedBox(
-            height: 40,
-            width: 353,
-            child: TextInputField(
-              hintText: "Confirm New Password",
-              validatorText: "",
-              isInputPassword: true,
+            const Text(
+              "Current Password",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          SizedBox(
-            height: 40,
-            width: 353,
-            child: CustomElevatedButton(
-              onPressed: () {},
-              title: "Save Changes",
+            const SizedBox(
+              height: 15,
             ),
-          )
-        ],
+            SizedBox(
+              height: 40,
+              width: 353,
+              child: TextInputField(
+                textEditingController: currentpassword,
+                hintText: "Enter Current Password",
+                validatorText: "",
+                isInputPassword: true,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              "Enter New Password",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              height: 40,
+              width: 353,
+              child: TextInputField(
+                textEditingController: newpassword,
+                hintText: "Enter New Password",
+                validatorText: "",
+                isInputPassword: true,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              "Confirm New Password",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            SizedBox(
+              height: 40,
+              width: 353,
+              child: TextInputField(
+                textEditingController: confirmpassword,
+                hintText: "Confirm New Password",
+                validatorText: "",
+                isInputPassword: true,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 40,
+              width: 353,
+              child: CustomElevatedButton(
+                onPressed: () {
+                  _validateData();
+                },
+                title: "Save Changes",
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
