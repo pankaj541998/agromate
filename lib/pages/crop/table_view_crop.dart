@@ -1,12 +1,20 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/component/services/crop_porogram_api.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/models/cropPorgramModel.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
+
+late CropProgramModel cropdata;
 
 class TableViewCrop extends StatefulWidget {
   const TableViewCrop({Key? key}) : super(key: key);
@@ -15,10 +23,26 @@ class TableViewCrop extends StatefulWidget {
   State<TableViewCrop> createState() => _TableViewCropState();
 }
 
+final GlobalKey<FormState> _form = GlobalKey<FormState>();
+Future<CropProgramModel> fetchCropProgram() async {
+  var client = http.Client();
+  final response = await client
+      .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
+  final parsed = jsonDecode(response.body);
+  print(response.body);
+  cropdata = CropProgramModel.fromJson(parsed);
+
+  return cropdata;
+}
+
 class _TableViewCropState extends State<TableViewCrop> {
   TextEditingController controller = TextEditingController();
   bool sort = true;
   List<Data>? filterData;
+  final crop = TextEditingController();
+  final plantPopulation = TextEditingController();
+  final yield = TextEditingController();
+  final weeks = TextEditingController();
 
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
@@ -43,6 +67,7 @@ class _TableViewCropState extends State<TableViewCrop> {
     'Week 3',
     'Week 4',
   ];
+
   buildPin() {
     return showDialog(
       context: context,
@@ -104,7 +129,9 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 40,
                                       width: 300,
                                       child: TextInputField(
-                                          hintText: "", validatorText: ""))
+                                          textEditingController: crop,
+                                          hintText: "",
+                                          validatorText: ""))
                                 ],
                               ),
                               SizedBox(
@@ -126,7 +153,9 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 40,
                                       width: 300,
                                       child: TextInputField(
-                                          hintText: "", validatorText: ""))
+                                          textEditingController: yield,
+                                          hintText: "",
+                                          validatorText: ""))
                                 ],
                               ),
                             ],
@@ -152,7 +181,10 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 40,
                                       width: 300,
                                       child: TextInputField(
-                                          hintText: "", validatorText: ""))
+                                          textEditingController:
+                                              plantPopulation,
+                                          hintText: "",
+                                          validatorText: ""))
                                 ],
                               ),
                               SizedBox(
@@ -234,7 +266,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                             width: 296,
                             child: CustomElevatedButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                               },
                               title: "Add",
                             ),
@@ -288,7 +320,9 @@ class _TableViewCropState extends State<TableViewCrop> {
                           InkWell(
                             hoverColor: Colors.transparent,
                             splashColor: Colors.transparent,
-                            onTap: () => Get.toNamed('/grid_view_crop'),
+                            onTap: () {
+                              Get.toNamed('/grid_view_crop');
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 color: const Color(0xffF7F9EA),
@@ -445,7 +479,29 @@ class _TableViewCropState extends State<TableViewCrop> {
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
             child: Column(
               children: [
-                datatable(context),
+                FutureBuilder<CropProgramModel>(
+                  future: fetchCropProgram(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        debugPrint(snapshot.data.toString());
+                        return datatable(
+                          context,
+                        );
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+
+                // datatable(context),
               ],
             ),
           )
@@ -472,8 +528,8 @@ class _TableViewCropState extends State<TableViewCrop> {
                   sortAscending: sort,
                   source: RowSource(
                     context: context,
-                    myData: myData,
-                    count: myData.length,
+                    myData: cropdata.data,
+                    count: cropdata.data!.length,
                   ),
                   rowsPerPage: 8,
                   columnSpacing: 0,
@@ -628,17 +684,18 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, context) {
+DataRow recentFileDataRow(ProgData data, context) {
   return DataRow(
     cells: [
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.id.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.name ?? "Name"))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.pp.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.yph.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center, child: Text(data.crop.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.population.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center, child: Text(data.yield.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.weeks.toString()))),
       DataCell(
