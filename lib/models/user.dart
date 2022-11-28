@@ -8,8 +8,8 @@ class User {
   int? roleType;
   String? password;
   int? otp;
-  Null? ipAddress;
-  Null? lastLoginTime;
+  String? ipAddress;
+  String? lastLoginTime;
   String? timezone;
   int? isVeify;
   int? isDelete;

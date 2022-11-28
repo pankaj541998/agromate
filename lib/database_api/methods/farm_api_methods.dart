@@ -16,12 +16,12 @@ class FarmApiMethods {
   }
 
   static List<FarmModel> _parseFarms(String responseBody) {
-    final parsed = jsonDecode(responseBody);
+    final parsed = jsonDecode(responseBody)['data'];
     return parsed.map<FarmModel>((json) => FarmModel.fromJson(json)).toList();
   }
 
   //post
- static Future<bool> postFarm({
+  static Future<bool> postFarm({
     required int landholderId,
     required String farmName,
     required String farmLatLngs,
