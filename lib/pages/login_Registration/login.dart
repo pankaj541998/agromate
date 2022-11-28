@@ -4,12 +4,14 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
-import 'package:flutter_agro_new/pages/login_Registration/forgot_Password.dart';
 import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../component/services/test_api.dart';
+import '../../models/MyProfileModel.dart';
+
+late Profile profileData;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -34,6 +36,9 @@ class _LoginState extends State<Login> {
       http.Response response = await AuthServices.login(data);
       final responseMap = jsonDecode(response.body);
       if (response.statusCode == 200) {
+        var data = Profile.fromJson(responseMap);
+        profileData = data;
+        _saveOptions();
         Get.toNamed('/dashboard');
       } else {
         Flushbar(
@@ -47,6 +52,24 @@ class _LoginState extends State<Login> {
         message: "Please Enter Username And Password",
       ).show(context);
     }
+  }
+
+  _saveOptions() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('firstName', profileData.firstName!);
+    await prefs.setString('lastName', profileData.lastName!);
+    await prefs.setString('fullName', profileData.fullName!);
+    await prefs.setString('phone', profileData.phone!);
+    await prefs.setString('email', profileData.email!);
+    await prefs.setString('username', profileData.username!);
+    await prefs.setString('role_name', profileData.roleName!);
+    await prefs.setInt('user_id', profileData.userId!);
+    setState(() {});
+  }
+
+  _removedata() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('video');
   }
 
   @override
