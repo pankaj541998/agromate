@@ -35,7 +35,7 @@ class BlockApiMethods {
   }
 
   static List<BlockModel> _parseBlocks(String responseBody) {
-    final parsed = jsonDecode(responseBody);
+    final parsed = jsonDecode(responseBody)['data'];
     return parsed.map<BlockModel>((json) => BlockModel.fromJson(json)).toList();
   }
 }

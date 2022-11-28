@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 
 import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
+import 'view_details.dart';
 
 late CropProgramModel cropdata;
 
@@ -668,7 +669,7 @@ class RowSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index], context);
+      return recentFileDataRow(myData![index], context, index);
     } else {
       return null;
     }
@@ -684,7 +685,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(ProgData data, context) {
+DataRow recentFileDataRow(ProgData data, context, index) {
   return DataRow(
     cells: [
       DataCell(
@@ -698,20 +699,39 @@ DataRow recentFileDataRow(ProgData data, context) {
           alignment: Alignment.center, child: Text(data.yield.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.weeks.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: _buildactions(context))),
+      DataCell(Align(
+          alignment: Alignment.center, child: _buildactions(context, index))),
     ],
   );
 }
 
-_buildactions(context) {
+_buildactions(context, index) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       InkWell(
           onTap: () {
+            debugPrint(index.toString());
+            String weeks = cropdata.data!.elementAt(index).weeks!;
+            debugPrint(weeks);
+            int id = cropdata.data!.elementAt(index).id!;
+            debugPrint(id.toString());
             print("pressed");
-            Get.toNamed("/view_details");
+            // Get.toNamed("/view_details");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewDetails(
+                  weeks: cropdata.data!.elementAt(index).weeks!,
+                  id: cropdata.data!.elementAt(index).id!.toString(),
+                ),
+              ),
+            );
+            // Navigator.pushNamed(context, ViewDetails(arguments: [
+            //       cropdata.data!.elementAt(index).id!,
+            //       cropdata.data!.elementAt(index).weeks!
+            //     ]),
+            //     );
           },
           child: Container(child: Icon(Icons.remove_red_eye_outlined))),
       SizedBox(

@@ -6,10 +6,13 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
 class ViewDetails extends StatefulWidget {
-  const ViewDetails({Key? key}) : super(key: key);
+  const ViewDetails({Key? key, this.weeks, this.id}) : super(key: key);
 
   @override
   State<ViewDetails> createState() => _ViewDetailsState();
+
+  final String? weeks;
+  final String? id;
 }
 
 class _ViewDetailsState extends State<ViewDetails> {
@@ -56,6 +59,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                             splashColor: Colors.transparent,
                             onTap: () {
                               Get.back();
+                              debugPrint(widget.weeks);
+                              debugPrint(widget.id);
                             },
                             child: const Icon(
                               Icons.arrow_back_ios,
@@ -273,6 +278,7 @@ class _ViewDetailsState extends State<ViewDetails> {
   }
 
   datatable() {
+    // int w = widget.weeks as int;
     final screenSize = MediaQuery.of(context).size;
     return SizedBox(
       height: screenSize.height * 0.6,
@@ -459,6 +465,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                         ),
                       ),
                     ),
+                    // for (int length = 0; length < 2; length++)
                     DataColumn(
                       label: Expanded(
                         child: Container(
@@ -466,9 +473,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                           decoration: BoxDecoration(
                             color: const Color(0xff327C04).withOpacity(0.11),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
-                              "W1",
+                              // "W ${length}"
+                              "w",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 14),
@@ -477,6 +485,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                         ),
                       ),
                     ),
+
                     DataColumn(
                       label: Expanded(
                         child: Container(
@@ -608,8 +617,7 @@ DataRow recentFileDataRow(var data) {
           alignment: Alignment.center, child: Text(data.prepi.toString()))),
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.pi.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.w1.toString()))),
+      DataCell(Align(alignment: Alignment.center, child: Text("hi"))),
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.w2.toString()))),
       DataCell(

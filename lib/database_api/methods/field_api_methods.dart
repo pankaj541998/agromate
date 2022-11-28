@@ -35,7 +35,7 @@ class FieldApiMethods {
   }
 
   static List<FieldModel> _parseField(String responseBody) {
-    final parsed = jsonDecode(responseBody);
+    final parsed = jsonDecode(responseBody)['data'];
     return parsed.map<FieldModel>((json) => FieldModel.fromJson(json)).toList();
   }
 }

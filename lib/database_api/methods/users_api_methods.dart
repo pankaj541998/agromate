@@ -12,7 +12,7 @@ class UserApiMethods {
   }
 
   static List<UserModel> _parseUsers(String responseBody) {
-    final parsed = jsonDecode(responseBody);
+    final parsed = jsonDecode(responseBody)['data'];
     return parsed.map<UserModel>((json) => UserModel.fromJson(json)).toList();
   }
 }

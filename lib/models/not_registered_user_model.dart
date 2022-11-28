@@ -29,33 +29,34 @@ class NotRegData {
   String? email;
   String? contactNumber;
   int? roleType;
-  Null? password;
-  Null? otp;
-  Null? ipAddress;
-  Null? lastLoginTime;
+  String? password;
+  String? otp;
+  String? ipAddress;
+  String? lastLoginTime;
   String? timezone;
   int? isVeify;
   int? isDelete;
-  Null? createdAt;
-  Null? updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
-  NotRegData(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.userName,
-      this.email,
-      this.contactNumber,
-      this.roleType,
-      this.password,
-      this.otp,
-      this.ipAddress,
-      this.lastLoginTime,
-      this.timezone,
-      this.isVeify,
-      this.isDelete,
-      this.createdAt,
-      this.updatedAt});
+  NotRegData({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.userName,
+    this.email,
+    this.contactNumber,
+    this.roleType,
+    this.password,
+    this.otp,
+    this.ipAddress,
+    this.lastLoginTime,
+    this.timezone,
+    this.isVeify,
+    this.isDelete,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   NotRegData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

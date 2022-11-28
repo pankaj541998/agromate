@@ -1,9 +1,27 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/models/cropPorgramModel.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../../component/text_Input_field.dart';
+
+late CropProgramModel cropdata;
+
+final GlobalKey<FormState> _form = GlobalKey<FormState>();
+Future<CropProgramModel> fetchCropProgram() async {
+  var client = http.Client();
+  final response = await client
+      .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
+  final parsed = jsonDecode(response.body);
+  print(response.body);
+  cropdata = CropProgramModel.fromJson(parsed);
+
+  return cropdata;
+}
 
 class Crop extends StatefulWidget {
   const Crop({Key? key}) : super(key: key);
@@ -348,89 +366,208 @@ class _CropState extends State<Crop> {
             child: SizedBox(
               height: screenSize.height * 1 - 180,
               child: SingleChildScrollView(
-                child: Wrap(
-                  spacing: 25,
-                  runSpacing: 25,
-                  children: List<Widget>.generate(
-                    12,
-                    (int index) => SizedBox(
-                      width: screenSize.width * 0.16,
-                      child: InkWell(
-                        onTap: () => Get.toNamed('/view_details'),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color:
-                                      const Color(0xff000000).withOpacity(0.04),
-                                  offset: const Offset(0.0, 1.0),
-                                  blurRadius: 8.0,
-                                  spreadRadius: 5.0), //BoxShadow
-                              const BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ), //BoxShadow
-                            ],
+                child: FutureBuilder<CropProgramModel>(
+                  future: fetchCropProgram(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        debugPrint(snapshot.data.toString());
+                        return _buildgridview(context, cropdata);
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Image.asset('images/potato.png', width: 40),
-                                    const SizedBox(width: 10),
-                                    const Text(
-                                      'Potato',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Color(0xff000000),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  'Plant Population : 80000',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xff000000),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  'Yield Per Hectares : 8000',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xff000000),
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                  'Weeks : 20',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xff000000),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
+
+                //     child: Wrap(
+                //     spacing: 25,
+                //     runSpacing: 25,
+                //     children: List<Widget>.generate(
+                //       12,
+                //       (int index) => SizedBox(
+                //         width: screenSize.width * 0.16,
+                //         child: InkWell(
+                //           onTap: () => Get.toNamed('/view_details'),
+                //           child: Container(
+                //             decoration: BoxDecoration(
+                //               borderRadius: BorderRadius.circular(10),
+                //               boxShadow: [
+                //                 BoxShadow(
+                //                     color:
+                //                         const Color(0xff000000).withOpacity(0.04),
+                //                     offset: const Offset(0.0, 1.0),
+                //                     blurRadius: 8.0,
+                //                     spreadRadius: 5.0), //BoxShadow
+                //                 const BoxShadow(
+                //                   color: Colors.white,
+                //                   offset: Offset(0.0, 0.0),
+                //                   blurRadius: 0.0,
+                //                   spreadRadius: 0.0,
+                //                 ), //BoxShadow
+                //               ],
+                //             ),
+                //             child: Padding(
+                //               padding: const EdgeInsets.all(15.0),
+                //               child: Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Row(
+                //                     children: [
+                //                       Image.asset('images/potato.png', width: 40),
+                //                       const SizedBox(width: 10),
+                //                       const Text(
+                //                         'Potato',
+                //                         style: TextStyle(
+                //                           fontSize: 16,
+                //                           color: Color(0xff000000),
+                //                           fontWeight: FontWeight.w500,
+                //                         ),
+                //                       )
+                //                     ],
+                //                   ),
+                //                   const SizedBox(height: 10),
+                //                   const Text(
+                //                     'Plant Population : 80000',
+                //                     style: TextStyle(
+                //                       fontSize: 14,
+                //                       color: Color(0xff000000),
+                //                     ),
+                //                   ),
+                //                   const SizedBox(height: 10),
+                //                   const Text(
+                //                     'Yield Per Hectares : 8000',
+                //                     style: TextStyle(
+                //                       fontSize: 14,
+                //                       color: Color(0xff000000),
+                //                     ),
+                //                   ),
+                //                   const SizedBox(height: 10),
+                //                   const Text(
+                //                     'Weeks : 20',
+                //                     style: TextStyle(
+                //                       fontSize: 14,
+                //                       color: Color(0xff000000),
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
+}
+
+Widget _buildgridview(context, cropdata) {
+  return GridView.builder(
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: (0.5 / 0.4),
+          crossAxisCount: 5,
+          mainAxisSpacing: 2,
+          crossAxisSpacing: 3),
+      itemCount: cropdata.data!.length,
+      itemBuilder: (BuildContext ctx, index) {
+        //  var element = CropProgram.cropPrograms.elementAt(index);
+        return GestureDetector(
+          onTap: () {
+            Get.toNamed("/view_details");
+            // Navigator.pushNamed(context, MyRoutes.adminCropDetailsRoute,
+            //     arguments: [
+            //       cropdata.data!.elementAt(index).id!,
+            //       cropdata.data!.elementAt(index).weeks!
+            //     ]);
+          },
+          child: Card(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset('images/potato.png', width: 40),
+                      const SizedBox(width: 10),
+                      Text(
+                        cropdata.data!.elementAt(index).crop!,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff000000),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Text(
+                        'Plant Population : ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                      ),
+                      Text(
+                        cropdata.data!.elementAt(index).population!,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Text(
+                        'Yield Per Hectares : ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                      ),
+                      Text(
+                        cropdata.data!.elementAt(index).yield!,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Text(
+                        'Weeks : ',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xff000000),
+                        ),
+                      ),
+                      Text(
+                        cropdata.data!.elementAt(index).weeks!,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
 }

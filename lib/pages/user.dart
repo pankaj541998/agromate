@@ -19,7 +19,8 @@ import '../component/text_Input_field.dart';
 late RegisteredUserModel registeredusers;
 late NotRegisteredUserModel notregisteredusers;
 final email = TextEditingController();
-final useremail = TextEditingController();
+final useremailTextEditingController = TextEditingController();
+final roleTextEditingController = TextEditingController();
 // final email = TextEditingController();
 String role = 'Admin';
 int roleIndex = 0;
@@ -58,9 +59,9 @@ Future<NotRegisteredUserModel> fetchNotRegisteredUsers() async {
   final response = await client.get(
       Uri.parse('https://agromate.website/laravel/api/not_registered_user'));
   final parsed = jsonDecode(response.body);
-  print(response.body);
   notregisteredusers = NotRegisteredUserModel.fromJson(parsed);
   // print(registeredusers.data!.elementAt(1).firstName!);
+
   return notregisteredusers;
 }
 
@@ -153,6 +154,7 @@ class _UserState extends State<User> {
                             InkWell(
                               onTap: () {
                                 buildPin(context);
+                                // fetchNotRegisteredUsers();
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -647,7 +649,7 @@ class RowSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index], context);
+      return recentFileDataRow(myData![index], context, index);
     } else {
       return null;
     }
@@ -663,7 +665,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(RegData data, context) {
+DataRow recentFileDataRow(RegData data, context, index) {
   return DataRow(
     cells: [
       DataCell(Align(
@@ -671,9 +673,10 @@ DataRow recentFileDataRow(RegData data, context) {
         child: Image.asset("assets/images/albert.png", height: 30),
       )),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.firstName.toString()))),
+          alignment: Alignment.center, child: Text(data.userName.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.lastName.toString()))),
+          alignment: Alignment.center,
+          child: Text("${data.firstName} ${data.lastName}"))),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.contactNumber.toString()))),
@@ -684,20 +687,25 @@ DataRow recentFileDataRow(RegData data, context) {
           child: Text(
             Roles.values.elementAt(data.roleType!).name,
           ))),
-      DataCell(
-          Align(alignment: Alignment.center, child: _buildactions(context))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: _buildactions(context, data, index))),
     ],
   );
 }
 
-_buildactions(context) {
+_buildactions(context, data, index) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       InkWell(
           onTap: () {
-            print("pressed");
-            buildPinAlert(context);
+            // debugPrint(registeredUserModel.data?.elementAt(index).userName);
+            debugPrint("pressed $index");
+            String email = registeredusers.data!.elementAt(index).email!;
+            int roleIndex = registeredusers.data!.elementAt(index).roleType!;
+            String role = Roles.values.elementAt(roleIndex).name;
+            buildPinAlert(context, email: email, role: role);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
@@ -710,7 +718,9 @@ _buildactions(context) {
   );
 }
 
-buildPinAlert(context) {
+buildPinAlert(context, {required String email, required String role}) {
+  roleTextEditingController.text = role;
+  useremailTextEditingController.text = email;
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -736,7 +746,7 @@ buildPinAlert(context) {
                   Row(
                     children: [
                       Text(
-                        "Edit New User",
+                        "Edit User",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
@@ -764,7 +774,8 @@ buildPinAlert(context) {
                           height: 40,
                           width: 300,
                           child: TextInputField(
-                              textEditingController: useremail,
+                              textEditingController:
+                                  useremailTextEditingController,
                               hintText: "",
                               validatorText: ""))
                     ],
@@ -787,8 +798,10 @@ buildPinAlert(context) {
                       SizedBox(
                           height: 40,
                           width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
+                          child: TextInputField(
+                              textEditingController: roleTextEditingController,
+                              hintText: "",
+                              validatorText: ""))
                     ],
                   ),
                   SizedBox(
@@ -1347,7 +1360,7 @@ class RowSourceRequest extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRowrequest(myDataRequest![index], context);
+      return recentFileDataRowrequest(myDataRequest![index], context, index);
     } else {
       return null;
     }
@@ -1363,7 +1376,7 @@ class RowSourceRequest extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRowrequest(NotRegData data, context) {
+DataRow recentFileDataRowrequest(NotRegData data, context, index) {
   return DataRow(
     cells: [
       DataCell(Align(
@@ -1376,12 +1389,13 @@ DataRow recentFileDataRowrequest(NotRegData data, context) {
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.isVeify.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: _buildactionsrequest(context))),
+          alignment: Alignment.center,
+          child: _buildactionsrequest(context, index))),
     ],
   );
 }
 
-_buildactionsrequest(context) {
+_buildactionsrequest(context, index) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -1391,7 +1405,10 @@ _buildactionsrequest(context) {
       InkWell(
           onTap: () {
             print("pressed");
-            buildPinAlert(context);
+            String email = notregisteredusers.data!.elementAt(index).email!;
+            int roleIndex = notregisteredusers.data!.elementAt(index).roleType!;
+            String role = Roles.values.elementAt(roleIndex).name;
+            buildPinAlert(context, email: email, role: role);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
