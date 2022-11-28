@@ -1,10 +1,16 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
-import 'package:flutter_agro_new/component/text_input_field.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
+
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/pages/login_Registration/login.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../../constants.dart';
 
 class MyProfile extends StatefulWidget {
   MyProfile({Key? key, this.initial}) : super(key: key);
@@ -93,7 +99,58 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final username = TextEditingController();
+  final email = TextEditingController();
+  final fullname = TextEditingController();
+  final phone = TextEditingController();
+
   @override
+  void initState() {
+    setValues();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    setValues();
+    super.didChangeDependencies();
+  }
+
+  setValues() {
+    username.text = profileData.username ?? "";
+    email.text = profileData.email ?? "";
+    phone.text = profileData.phone?.toString() ?? "";
+    fullname.text = profileData.fullName ?? "";
+  }
+
+  Future<dynamic> submitData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int userid = prefs.getInt('user_id') ?? 1;
+    print("reached");
+    var response =
+        await http.post(Uri.parse(ApiConstant.profileUpdateAPI), body: {
+      "phone": phone.text,
+      "fullname": fullname.text,
+      "user_id": userid.toString(),
+    });
+    var data = response.body;
+    print('response is ' + data);
+
+    if (response.statusCode == 200) {
+      // String responseString = response.body;
+      // User.fromJson(jsonDecode(responseString) as Map<String, dynamic>);
+      Flushbar(
+        message: "Changes Saved Successfully",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+    } else
+      return Flushbar(
+        message: "Unable to save Changes",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+  }
+
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Padding(
@@ -167,11 +224,14 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(
                       height: 15,
                     ),
-                    const SizedBox(
+                    SizedBox(
                         height: 40,
                         width: 353,
                         child: TextInputField(
-                            hintText: "Username", validatorText: "")),
+                            readonly: true,
+                            textEditingController: username,
+                            hintText: "Username",
+                            validatorText: "")),
                     const SizedBox(
                       height: 35,
                     ),
@@ -187,7 +247,10 @@ class _ProfileState extends State<Profile> {
                         height: 40,
                         width: 353,
                         child: TextInputField(
-                            hintText: "Email Address", validatorText: "")),
+                            readonly: true,
+                            textEditingController: email,
+                            hintText: "Email Address",
+                            validatorText: "")),
                     const SizedBox(
                       height: 35,
                     ),
@@ -195,7 +258,9 @@ class _ProfileState extends State<Profile> {
                       height: 40,
                       width: 353,
                       child: CustomElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          submitData();
+                        },
                         title: 'Save Changes',
                       ),
                     )
@@ -209,7 +274,7 @@ class _ProfileState extends State<Profile> {
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "Full Name",
                       style:
@@ -222,7 +287,9 @@ class _ProfileState extends State<Profile> {
                         height: 40,
                         width: 353,
                         child: TextInputField(
-                            hintText: "Full Name", validatorText: "")),
+                            textEditingController: fullname,
+                            hintText: "Full Name",
+                            validatorText: "")),
                     SizedBox(
                       height: 35,
                     ),
@@ -238,7 +305,9 @@ class _ProfileState extends State<Profile> {
                         height: 40,
                         width: 353,
                         child: TextInputField(
-                            hintText: "Phone Number", validatorText: "")),
+                            textEditingController: phone,
+                            hintText: "Phone Number",
+                            validatorText: "")),
                   ],
                 ),
               )

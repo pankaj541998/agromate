@@ -9,6 +9,7 @@ class TextInputField extends StatefulWidget {
     required this.validatorText,
     this.textEditingController,
     this.leadingIcon,
+    this.readonly = false,
     this.isInputPassword = false,
   }) : super(key: key);
 
@@ -18,6 +19,7 @@ class TextInputField extends StatefulWidget {
   final String validatorText;
   final Widget? leadingIcon;
   final bool isInputPassword;
+  final bool readonly;
   final dynamic inputFormatters;
 
   @override
@@ -38,6 +40,7 @@ class _TextInputFieldState extends State<TextInputField> {
     return SizedBox(
       width: 500,
       child: TextFormField(
+          readOnly: widget.readonly,
           cursorColor: const Color(0xFF327C04),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: obscureText,
@@ -62,7 +65,7 @@ class _TextInputFieldState extends State<TextInputField> {
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.red),
             ),
-            hintStyle: const TextStyle(color: Color(0x80000000), fontSize: 18),
+            hintStyle: const TextStyle(color: Color(0x80000000), fontSize: 14),
             hintText: widget.hintText,
             prefixIcon: widget.leadingIcon == null
                 ? null
