@@ -59,9 +59,9 @@ class _ViewFarmState extends State<ViewFarm> {
   String name = 'User Name';
   String role = 'Role';
   late MapboxMapController mapController;
-  double targetLat = 8.097604;
-  double targetLng = 25.851859;
-  double zoom = 0;
+  double targetLat = -19.423650;
+  double targetLng = 29.602095;
+  double zoom = 6;
 
   final FutureGroup futureGroup = FutureGroup();
 
