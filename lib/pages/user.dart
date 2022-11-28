@@ -1,12 +1,37 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_agro_new/component/services/constants.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/models/cropPorgramModel.dart';
+import 'package:flutter_agro_new/models/not_registered_user_model.dart';
+import 'package:flutter_agro_new/models/registered_users_model.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
+
+late RegisteredUserModel registeredusers;
+late NotRegisteredUserModel notregisteredusers;
+final email = TextEditingController();
+final useremail = TextEditingController();
+// final email = TextEditingController();
+String role = 'Admin';
+int roleIndex = 0;
+int no = 0;
+
+enum Roles {
+  Admin,
+  Landholder,
+  Agronomist,
+  Manager,
+  Farmer,
+}
 
 class User extends StatefulWidget {
   User({Key? key, this.initial}) : super(key: key);
@@ -15,6 +40,63 @@ class User extends StatefulWidget {
   State<User> createState() => _UserState();
 
   int? initial;
+}
+
+Future<RegisteredUserModel> fetchRegisteredUsers() async {
+  var client = http.Client();
+  final response = await client
+      .get(Uri.parse('https://agromate.website/laravel/api/registered_user'));
+  final parsed = jsonDecode(response.body);
+  // print(response.body);
+  registeredusers = RegisteredUserModel.fromJson(parsed);
+  // print(registeredusers.data!.elementAt(1).firstName!);
+  return registeredusers;
+}
+
+Future<NotRegisteredUserModel> fetchNotRegisteredUsers() async {
+  var client = http.Client();
+  final response = await client.get(
+      Uri.parse('https://agromate.website/laravel/api/not_registered_user'));
+  final parsed = jsonDecode(response.body);
+  print(response.body);
+  notregisteredusers = NotRegisteredUserModel.fromJson(parsed);
+  // print(registeredusers.data!.elementAt(1).firstName!);
+  return notregisteredusers;
+}
+
+Future<String> addUser() async {
+  debugPrint("reached");
+  Map<String, String> updata = {
+    "email": email.text.toString(),
+    "role_type": '$roleIndex'
+  };
+  return await addNewUser(updata);
+}
+
+Future<String> addNewUser(Map<String, String> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse(
+      ApiConstant.addUserAPI,
+    ),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
+
+Future<int> deleteClassApi(int id) async {
+  final http.Response response = await http.delete(
+    Uri.parse('https://agromate.website/laravel/api/delete/$id/class'),
+  );
+  return response.statusCode;
 }
 
 class _UserState extends State<User> {
@@ -69,7 +151,9 @@ class _UserState extends State<User> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: () => buildPin(context),
+                              onTap: () {
+                                buildPin(context);
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF327C04),
@@ -160,8 +244,50 @@ class _UserState extends State<User> {
                     height: screenSize.height * 0.8,
                     child: TabBarView(
                       children: [
-                        _buildusertable(screenSize, context),
-                        _buildrequesttable(screenSize, context),
+                        FutureBuilder<RegisteredUserModel>(
+                          future: fetchRegisteredUsers(),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                debugPrint(snapshot.data.toString());
+                                return _buildusertable(screenSize, context);
+                              } else {
+                                return Center(
+                                  child: Text(
+                                    '${snapshot.error} occured',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              }
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        ),
+                        //_buildusertable(screenSize, context),
+                        FutureBuilder<NotRegisteredUserModel>(
+                          future: fetchNotRegisteredUsers(),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                debugPrint(snapshot.data.toString());
+                                return _buildrequesttable(screenSize, context);
+                              } else {
+                                return Center(
+                                  child: Text(
+                                    '${snapshot.error} occured',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              }
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        ),
+                        // _buildrequesttable(screenSize, context),
                       ],
                     ),
                   )
@@ -246,8 +372,10 @@ buildPin(context) {
                       SizedBox(
                           height: 40,
                           width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
+                          child: TextInputField(
+                              textEditingController: email,
+                              hintText: "",
+                              validatorText: ""))
                     ],
                   ),
                   SizedBox(
@@ -266,10 +394,52 @@ buildPin(context) {
                         height: 15,
                       ),
                       SizedBox(
-                          height: 40,
-                          width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
+                        height: 40,
+                        width: 300,
+                        child: StatefulBuilder(
+                          builder: (context, setState) {
+                            return PopupMenuButton<int>(
+                              offset: const Offset(1, 0),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 3),
+                                width: 250,
+                                decoration: BoxDecoration(
+                                    border:
+                                        Border.all(color: Colors.green[800]!),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Row(
+                                    children: [
+                                      Expanded(child: Text(role)),
+                                      const Icon(Icons.arrow_drop_down)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              itemBuilder: (BuildContext context) =>
+                                  Roles.values
+                                      .map(
+                                        (e) => PopupMenuItem<int>(
+                                          value: e.index,
+                                          child: Text(e.name),
+                                          onTap: () =>
+                                              setState(() => role = e.name),
+                                        ),
+                                      )
+                                      .toList(),
+                              onSelected: (value) {
+                                roleIndex = value;
+                                debugPrint('role index: $roleIndex');
+                              },
+                            );
+                          },
+                        ),
+
+                        // TextInputField(hintText: "", validatorText: "")
+                      )
                     ],
                   ),
                   SizedBox(
@@ -284,6 +454,9 @@ buildPin(context) {
                         child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
+                            print(email);
+                            print(roleIndex);
+                            addUser();
                           },
                           title: "Add User",
                         ),
@@ -316,8 +489,8 @@ datatable(screenSize, context) {
                 sortColumnIndex: 0,
                 // sortAscending: sort,
                 source: RowSource(
-                  myData: myData,
-                  count: myData.length,
+                  myData: registeredusers.data,
+                  count: registeredusers.data!.length,
                   context: context,
                 ),
                 rowsPerPage: 9,
@@ -490,7 +663,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, context) {
+DataRow recentFileDataRow(RegData data, context) {
   return DataRow(
     cells: [
       DataCell(Align(
@@ -498,16 +671,19 @@ DataRow recentFileDataRow(var data, context) {
         child: Image.asset("assets/images/albert.png", height: 30),
       )),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.username.toString()))),
+          alignment: Alignment.center, child: Text(data.firstName.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.fullname.toString()))),
+          alignment: Alignment.center, child: Text(data.lastName.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.phonenumber.toString()))),
+          child: Text(data.contactNumber.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.email.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.role.toString()))),
+          alignment: Alignment.center,
+          child: Text(
+            Roles.values.elementAt(data.roleType!).name,
+          ))),
       DataCell(
           Align(alignment: Alignment.center, child: _buildactions(context))),
     ],
@@ -587,8 +763,10 @@ buildPinAlert(context) {
                       SizedBox(
                           height: 40,
                           width: 300,
-                          child:
-                              TextInputField(hintText: "", validatorText: ""))
+                          child: TextInputField(
+                              textEditingController: useremail,
+                              hintText: "",
+                              validatorText: ""))
                     ],
                   ),
                   SizedBox(
@@ -1067,8 +1245,8 @@ datatablerequest(screenSize, BuildContext context) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSourceRequest(
-                  myDataRequest: myDataRequest,
-                  count: myDataRequest.length,
+                  myDataRequest: notregisteredusers.data,
+                  count: notregisteredusers.data!.length,
                   context: context),
               rowsPerPage: 9,
               columnSpacing: 0,
@@ -1185,16 +1363,18 @@ class RowSourceRequest extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRowrequest(var data, context) {
+DataRow recentFileDataRowrequest(NotRegData data, context) {
   return DataRow(
     cells: [
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.email.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.role.toString()))),
-      DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.phonenumber.toString()))),
+          child: Text(
+            Roles.values.elementAt(data.roleType!).name,
+          ))),
+      DataCell(Align(
+          alignment: Alignment.center, child: Text(data.isVeify.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: _buildactionsrequest(context))),
     ],

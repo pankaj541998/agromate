@@ -1,13 +1,13 @@
 class CropProgramModel {
-  List<Data>? data;
+  List<ProgData>? data;
 
   CropProgramModel({this.data});
 
   CropProgramModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <ProgData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new ProgData.fromJson(v));
       });
     }
   }
@@ -21,7 +21,7 @@ class CropProgramModel {
   }
 }
 
-class Data {
+class ProgData {
   int? id;
   String? crop;
   String? population;
@@ -30,7 +30,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data(
+  ProgData(
       {this.id,
       this.crop,
       this.population,
@@ -39,7 +39,7 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  ProgData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     crop = json['crop'];
     population = json['population'];
