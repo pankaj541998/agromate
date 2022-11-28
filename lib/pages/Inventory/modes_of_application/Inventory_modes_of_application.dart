@@ -9,10 +9,16 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/models/ModeModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
 
 late ModeModel modes;
+final nameTextEditingController = TextEditingController();
+final descriptionTextEditingController = TextEditingController();
+final costTextEditingController = TextEditingController();
+final quantityTextEditingController = TextEditingController();
+final valueTextEditingController = TextEditingController();
 
 class ModesOfApplication extends StatefulWidget {
   const ModesOfApplication({Key? key}) : super(key: key);
@@ -32,6 +38,37 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
 
   bool sort = true;
   List<Data>? filterData;
+
+  Future<String> addMode() async {
+    debugPrint("reached");
+    Map<String, String> updata = {
+      "mode": nameTextEditingController.text.toString(),
+      "item_description": descriptionTextEditingController.text.toString(),
+      "application_cost": costTextEditingController.text.toString(),
+      "quantity": quantityTextEditingController.text.toString(),
+      "value": valueTextEditingController.text.toString()
+      // "email": email.text.toString(),
+      // "role_type": '$roleIndex'
+    };
+    return await addNewMode(updata);
+  }
+
+  Future<String> addNewMode(Map<String, String> updata) async {
+    final _chuckerHttpClient = await http.Client();
+    print(updata);
+    final prefs = await SharedPreferences.getInstance();
+    http.Response response = await _chuckerHttpClient.post(
+      Uri.parse('https://agromate.website/laravel/api/mode'),
+      body: updata,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return 'null';
+    } else {
+      return 'throw (Exception("Search Error"))';
+    }
+  }
 
   Future<ModeModel> fetchModes() async {
     var client = http.Client();
@@ -116,7 +153,10 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                   height: 40,
                                   width: 300,
                                   child: TextInputField(
-                                      hintText: "", validatorText: ""))
+                                      textEditingController:
+                                          nameTextEditingController,
+                                      hintText: "",
+                                      validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -138,7 +178,10 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                   height: 40,
                                   width: 300,
                                   child: TextInputField(
-                                      hintText: "", validatorText: ""))
+                                      textEditingController:
+                                          descriptionTextEditingController,
+                                      hintText: "",
+                                      validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -167,7 +210,10 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                   height: 40,
                                   width: 300,
                                   child: TextInputField(
-                                      hintText: "", validatorText: ""))
+                                      textEditingController:
+                                          costTextEditingController,
+                                      hintText: "",
+                                      validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -189,7 +235,10 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                   height: 40,
                                   width: 300,
                                   child: TextInputField(
-                                      hintText: "", validatorText: ""))
+                                      textEditingController:
+                                          quantityTextEditingController,
+                                      hintText: "",
+                                      validatorText: ""))
                             ],
                           ),
                           const SizedBox(
@@ -218,7 +267,10 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                   height: 40,
                                   width: 300,
                                   child: TextInputField(
-                                      hintText: "", validatorText: ""))
+                                      textEditingController:
+                                          valueTextEditingController,
+                                      hintText: "",
+                                      validatorText: ""))
                             ],
                           ),
                         ],
@@ -232,6 +284,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                         child: CustomElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
+                            addMode();
                           },
                           title: "Submit",
                         ),

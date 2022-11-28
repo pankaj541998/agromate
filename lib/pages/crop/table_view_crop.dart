@@ -10,12 +10,17 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/models/cropPorgramModel.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
 import 'view_details.dart';
 
 late CropProgramModel cropdata;
+final cropTextEditingController = TextEditingController();
+final populationTextEditingController = TextEditingController();
+final yieldTextEditingController = TextEditingController();
+final weeksTextEditingController = TextEditingController();
 
 class TableViewCrop extends StatefulWidget {
   const TableViewCrop({Key? key}) : super(key: key);
@@ -25,6 +30,37 @@ class TableViewCrop extends StatefulWidget {
 }
 
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+Future<String> addCropProgram() async {
+  debugPrint("reached");
+  Map<String, String> updata = {
+    "crop": cropTextEditingController.text.toString(),
+    "population": populationTextEditingController.text.toString(),
+    "yield": yieldTextEditingController.text.toString(),
+    "weeks": weeksTextEditingController.text.toString()
+    // "email": email.text.toString(),
+    // "role_type": '$roleIndex'
+  };
+  return await addNewCropProgram(updata);
+}
+
+Future<String> addNewCropProgram(Map<String, String> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse('https://agromate.website/laravel/api/program'),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
+
 Future<CropProgramModel> fetchCropProgram() async {
   var client = http.Client();
   final response = await client
@@ -130,7 +166,8 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 40,
                                       width: 300,
                                       child: TextInputField(
-                                          textEditingController: crop,
+                                          textEditingController:
+                                              cropTextEditingController,
                                           hintText: "",
                                           validatorText: ""))
                                 ],
@@ -154,7 +191,8 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 40,
                                       width: 300,
                                       child: TextInputField(
-                                          textEditingController: yield,
+                                          textEditingController:
+                                              yieldTextEditingController,
                                           hintText: "",
                                           validatorText: ""))
                                 ],
@@ -183,9 +221,9 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       width: 300,
                                       child: TextInputField(
                                           textEditingController:
-                                              plantPopulation,
+                                              populationTextEditingController,
                                           hintText: "",
-                                          validatorText: ""))
+                                          validatorText: "")),
                                 ],
                               ),
                               SizedBox(
@@ -204,52 +242,13 @@ class _TableViewCropState extends State<TableViewCrop> {
                                     height: 15,
                                   ),
                                   SizedBox(
-                                    height: 40,
-                                    width: 300,
-                                    child: DropdownButtonFormField(
-                                      focusColor: Colors.white,
-                                      isExpanded: true,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            left: 10, top: 10, right: 10),
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFF327C04)),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFF327C04)),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFF327C04),
-                                            width: 5.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      items: listOfValue.map((String val) {
-                                        return DropdownMenuItem(
-                                          enabled: true,
-                                          value: val,
-                                          child: Text(
-                                            val,
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedValue;
-                                        });
-                                      },
-                                    ),
-                                  ),
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          textEditingController:
+                                              weeksTextEditingController,
+                                          hintText: "",
+                                          validatorText: "")),
                                 ],
                               ),
                             ],
@@ -267,6 +266,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                             width: 296,
                             child: CustomElevatedButton(
                               onPressed: () {
+                                addCropProgram();
                                 // Navigator.pop(context);
                               },
                               title: "Add",
@@ -727,11 +727,6 @@ _buildactions(context, index) {
                 ),
               ),
             );
-            // Navigator.pushNamed(context, ViewDetails(arguments: [
-            //       cropdata.data!.elementAt(index).id!,
-            //       cropdata.data!.elementAt(index).weeks!
-            //     ]),
-            //     );
           },
           child: Container(child: Icon(Icons.remove_red_eye_outlined))),
       SizedBox(
