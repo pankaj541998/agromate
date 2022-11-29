@@ -5,12 +5,12 @@ import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/pages/login_Registration/login.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -109,24 +109,21 @@ class _ProfileState extends State<Profile> {
   final lastname = TextEditingController();
   final phone = TextEditingController();
 
+  final myprofile = GlobalKey<FormState>();
+
   @override
   void initState() {
     setValues();
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    setValues();
-    super.didChangeDependencies();
-  }
-
-  setValues() {
-    username.text = profileData.username ?? "";
-    email.text = profileData.email ?? "";
-    phone.text = profileData.phone?.toString() ?? "";
-    firstname.text = profileData.firstName ?? "";
-    lastname.text = profileData.lastName ?? "";
+  setValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    firstname.text = prefs.getString('firstName')!;
+    lastname.text = prefs.getString('lastName')!;
+    phone.text = prefs.getString('phone')!;
+    email.text = prefs.getString('email')!;
+    username.text = prefs.getString('username')!;
   }
 
   Future<dynamic> submitData() async {
@@ -163,197 +160,238 @@ class _ProfileState extends State<Profile> {
     final screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(left: 50, top: 43, right: 50),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const Text(
-                "Personal Details",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: const SizedBox(
-                  width: double.infinity,
-                  child: Divider(
-                    color: Color(0xFF327C04),
-                    thickness: 1,
+      child: Form(
+        key: myprofile,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Text(
+                  "Personal Details",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: const SizedBox(
+                    width: double.infinity,
+                    child: Divider(
+                      color: Color(0xFF327C04),
+                      thickness: 1,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      CircleAvatar(
+                        child: Image.asset("assets/images/profilepic.png"),
+                        radius: 72.5,
+                      ),
+                      SizedBox(
+                        height: 23,
+                      ),
+                      Text(
+                        "Profile Picture",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    CircleAvatar(
-                      child: Image.asset("assets/images/profilepic.png"),
-                      radius: 72.5,
-                    ),
-                    SizedBox(
-                      height: 23,
-                    ),
-                    Text(
-                      "Profile Picture",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
-                  ],
+                const SizedBox(
+                  width: 70,
                 ),
-              ),
-              const SizedBox(
-                width: 70,
-              ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Username',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Username',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                          width: 353,
+                          child: TextInputField(
+                              readonly: true,
+                              textEditingController: username,
+                              hintText: "Username",
+                              validatorText: "")),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      const Text(
+                        'Email Address',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                          width: 353,
+                          child: TextInputField(
+                              readonly: true,
+                              textEditingController: email,
+                              hintText: "Email Address",
+                              validatorText: "")),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      SizedBox(
                         height: 40,
                         width: 353,
-                        child: TextInputField(
-                            readonly: true,
-                            textEditingController: username,
-                            hintText: "Username",
-                            validatorText: "")),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    const Text(
-                      'Email Address',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 40,
-                        width: 353,
-                        child: TextInputField(
-                            readonly: true,
-                            textEditingController: email,
-                            hintText: "Email Address",
-                            validatorText: "")),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    SizedBox(
-                      height: 40,
-                      width: 353,
-                      child: CustomElevatedButton(
-                        onPressed: () {
-                          submitData();
-                        },
-                        title: 'Save Changes',
-                      ),
-                    )
-                  ],
+                        child: CustomElevatedButton(
+                          onPressed: () {
+                            final isValid = myprofile.currentState?.validate();
+                            if (isValid!) {
+                              submitData();
+                            }
+                          },
+                          title: 'Save Changes',
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 60,
-              ),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "First Name",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            SizedBox(
-                                height: 40,
+                const SizedBox(
+                  width: 60,
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "First Name",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
                                 width: 150,
                                 child: TextInputField(
-                                    textEditingController: firstname,
-                                    hintText: "First Name",
-                                    validatorText: "")),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 53,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Last Name",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            SizedBox(
-                                height: 40,
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(20),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z]')),
+                                  ],
+                                  textEditingController: firstname,
+                                  hintText: "First Name",
+                                  validatorText: "",
+                                  validator: (value) {
+                                    if (value != null && value.isEmpty) {
+                                      return "Please Enter First Name";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 53,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Last Name",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
                                 width: 150,
                                 child: TextInputField(
-                                    textEditingController: lastname,
-                                    hintText: "Last Name",
-                                    validatorText: "")),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    Text(
-                      "Phone Number",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 40,
+                                  textEditingController: lastname,
+                                  hintText: "Last Name",
+                                  validatorText: "",
+                                  validator: (value) {
+                                    if (value != null && value.isEmpty) {
+                                      return "Please Enter Last Name";
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(20),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z]')),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 35,
+                      ),
+                      Text(
+                        "Phone Number",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
                         width: 353,
                         child: TextInputField(
-                            textEditingController: phone,
-                            hintText: "Phone Number",
-                            validatorText: "")),
-                  ],
-                ),
-              )
-            ],
-          )
-        ],
+                          textEditingController: phone,
+                          hintText: "Phone Number",
+                          validatorText: "",
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please Enter Phone Number";
+                            } else if (value.length != 10) {
+                              return "Please Enter Valid Phone Number";
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -373,7 +411,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   final GlobalKey<FormState> _passwordkey = GlobalKey<FormState>();
 
-  Future<void> updatePasword() async {
+  Future<void> changePasword() async {
     print("uppassword called");
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -391,10 +429,10 @@ class _ChangePasswordState extends State<ChangePassword> {
         message: "Password Changed Successfully",
         duration: const Duration(seconds: 3),
       ).show(context);
-      Get.toNamed('/login');
+      Get.toNamed('/');
     } else {
       Flushbar(
-        message: responseMap.values.first,
+        message: responseMap.values.last,
         duration: const Duration(seconds: 3),
       ).show(context);
     }
@@ -403,7 +441,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   void _validateData() {
     final isValid = _passwordkey.currentState?.validate();
     if (isValid!) {
-      updatePasword();
+      changePasword();
     } else {
       Flushbar(
         message: "Password not matched",
@@ -479,6 +517,18 @@ class _ChangePasswordState extends State<ChangePassword> {
                 hintText: "Enter New Password",
                 validatorText: "",
                 isInputPassword: true,
+                validator: (val) {
+                  if (val!.isEmpty) {
+                    return 'Password is Empty';
+                  }
+                  if (!RegExp(
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$')
+                      .hasMatch(val)) {
+                    return 'password should contain atleast one Uppercase,\n one Lowercase, one numeric & one special character';
+                  } else {
+                    return null;
+                  }
+                },
               ),
             ),
             const SizedBox(
@@ -495,6 +545,16 @@ class _ChangePasswordState extends State<ChangePassword> {
               height: 40,
               width: 353,
               child: TextInputField(
+                validator: (value) {
+                  if (value != null && value.isEmpty) {
+                    return "Password cannot be empty";
+                  } else if (value != null && value.length < 6) {
+                    return "Password length should be atleast 6";
+                  } else if (value != newpassword.text) {
+                    return "Password Not Matched";
+                  }
+                  return null;
+                },
                 textEditingController: confirmpassword,
                 hintText: "Confirm New Password",
                 validatorText: "",

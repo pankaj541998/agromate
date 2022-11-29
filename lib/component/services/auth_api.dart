@@ -31,6 +31,18 @@ class AuthServices {
   static Future<http.Response> changePassword(Map<String, dynamic> data) async {
     var body = data;
     print("api call reached and body $body");
+    var url = Uri.parse(baseURL + 'update_user_password');
+    http.Response response = await http.post(
+      url,
+      body: body,
+    );
+    print(response.body);
+    return response;
+  }
+
+  static Future<http.Response> updatePassword(Map<String, dynamic> data) async {
+    var body = data;
+    print("api call reached and body $body");
     var url = Uri.parse(baseURL + 'updatepassword');
     http.Response response = await http.post(
       url,
