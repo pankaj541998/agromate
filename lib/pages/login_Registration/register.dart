@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -123,6 +124,11 @@ class _RegisterState extends State<Register> {
                                   },
                                   hintText: 'First Name',
                                   validatorText: 'Please Enter First Name',
+                                  inputFormatters: [
+                                    new LengthLimitingTextInputFormatter(20),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z]')),
+                                  ],
                                 ),
                               ),
                               SizedBox(
@@ -139,6 +145,11 @@ class _RegisterState extends State<Register> {
                                   },
                                   hintText: 'Last Name',
                                   validatorText: 'Please Enter Last Name',
+                                  inputFormatters: [
+                                    new LengthLimitingTextInputFormatter(20),
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp('[a-zA-Z]')),
+                                  ],
                                 ),
                               ),
                             ],
@@ -159,6 +170,11 @@ class _RegisterState extends State<Register> {
                           },
                           hintText: 'Username',
                           validatorText: 'Please Enter Username',
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(20),
+                            FilteringTextInputFormatter.allow(
+                                RegExp('[a-zA-Z, 0-9]')),
+                          ],
                         ),
                         const SizedBox(
                           height: 20,
@@ -181,22 +197,28 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextInputField(
-                            leadingIcon: Image.asset("assets/images/Phone.png"),
-                            textEditingController: phonenumber,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please Enter Phone Number";
-                              } else if (value.length != 10) {
-                                return "Please Enter Valid Phone Number";
-                              }
-                              return null;
-                            },
-                            hintText: 'Phone Number',
-                            validatorText: 'Please Enter Phone Number'),
+                          leadingIcon: Image.asset("assets/images/Phone.png"),
+                          textEditingController: phonenumber,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please Enter Phone Number";
+                            } else if (value.length != 10) {
+                              return "Please Enter Valid Phone Number";
+                            }
+                            return null;
+                          },
+                          hintText: 'Phone Number',
+                          validatorText: 'Please Enter Phone Number',
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          ],
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
                         TextInputField(
+                          readonly: true,
                           leadingIcon: Image.asset("assets/images/role.png"),
                           hintText: 'Role',
                           validatorText: '',
