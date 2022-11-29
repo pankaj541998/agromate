@@ -27,35 +27,6 @@ class ViewFarm extends StatefulWidget {
 }
 
 class _ViewFarmState extends State<ViewFarm> {
-  late String _selectedValue;
-  late String _selectedValue1;
-  late String _selectedValue2;
-  late String _selectedValue3;
-  List<String> listOfValue = [
-    'Kishan 1',
-    'Kishan 2',
-    'Kishan 3',
-    'Kishan 4',
-  ];
-  List<String> listOfValue1 = [
-    'VARKPLAAS 1',
-    'VARKPLAAS 2',
-    'VARKPLAAS 3',
-    'VARKPLAAS 4',
-  ];
-  List<String> listOfValue2 = [
-    'A',
-    'B',
-    'C',
-    'D',
-  ];
-  List<String> listOfValue3 = [
-    'A1A',
-    'B2B',
-    'C3C',
-    'D4D',
-  ];
-
   //start
   String name = 'User Name';
   String role = 'Role';
@@ -124,6 +95,7 @@ class _ViewFarmState extends State<ViewFarm> {
                                   backgroundColor: const Color(0xff327C04)),
                               onPressed: watchProvider.isFarmDropdownEnabled
                                   ? () {
+                                      Get.toNamed('/plot_farm');
                                       // context.read<HomeProvider>().changeActiveElement(
                                       //     HomePageElements.plotFarm);
                                     }
@@ -428,6 +400,7 @@ class _ViewFarmState extends State<ViewFarm> {
                                               //     .read<HomeProvider>()
                                               //     .changeActiveElement(
                                               //         HomePageElements.plotBlock);
+                                              Get.toNamed('/plot_block');
                                             },
                                             icon: const Icon(
                                               Icons.add_circle_outline_rounded,
@@ -566,6 +539,7 @@ class _ViewFarmState extends State<ViewFarm> {
                                               //     .read<HomeProvider>()
                                               //     .changeActiveElement(
                                               //         HomePageElements.plotField);
+                                              Get.toNamed('/plot_field');
                                             },
                                             icon: const Icon(Icons
                                                 .add_circle_outline_rounded),
@@ -599,7 +573,9 @@ class _ViewFarmState extends State<ViewFarm> {
                                                   ? false
                                                   : true,
                                           child: IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Get.toNamed('/crop_plan');
+                                            },
                                             icon: const Icon(Icons
                                                 .add_circle_outline_rounded),
                                           ),

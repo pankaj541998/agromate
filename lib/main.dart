@@ -5,8 +5,8 @@ import 'package:flutter_agro_new/pages/allocation.dart';
 
 import 'package:flutter_agro_new/pages/allocate.dart';
 
-import 'package:flutter_agro_new/pages/farms/select_block.dart';
-import 'package:flutter_agro_new/pages/farms/select_field.dart';
+import 'package:flutter_agro_new/pages/farms/plot_block.dart';
+import 'package:flutter_agro_new/pages/farms/plot_field.dart';
 
 import 'package:flutter_agro_new/pages/farms/view_farm.dart';
 import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
@@ -36,7 +36,7 @@ import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
-import 'pages/farms/select_plot.dart';
+import 'pages/farms/plot_farm.dart';
 import 'pages/tasks/add_task.dart';
 import 'pages/tasks/taska.dart';
 import 'providers/map_box_provider.dart';
@@ -84,9 +84,9 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/table_view_crop', page: () => TableViewCrop()),
         GetPage(name: '/view_details', page: () => ViewDetails()),
         GetPage(name: '/view_farm', page: () => ViewFarm()),
-        GetPage(name: '/select_plot', page: () => SelectPlot()),
-        GetPage(name: '/select_block', page: () => SelectBlock()),
-        GetPage(name: '/select_field', page: () => SelectField()),
+        GetPage(name: '/plot_farm', page: () => PlotFarm()),
+        GetPage(name: '/plot_block', page: () => PlotBlock()),
+        GetPage(name: '/plot_field', page: () => PlotField()),
         GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(
