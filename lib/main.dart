@@ -39,13 +39,15 @@ import 'pages/crop/view_details.dart';
 import 'pages/farms/select_plot.dart';
 import 'pages/tasks/add_task.dart';
 import 'pages/tasks/taska.dart';
+import 'providers/map_box_provider.dart';
 import 'providers/map_filter_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => MapFilterProvider())
+      ChangeNotifierProvider(create: (context) => MapFilterProvider()),
+      ChangeNotifierProvider(create: (context) => MapBoxProvider()),
     ],
     child: const MyApp(),
   ));
