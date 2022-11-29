@@ -74,10 +74,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/updatePassword', page: () => const UpdatePassword()),
         GetPage(name: '/dashboard', page: () => const DashBoard()),
         GetPage(name: '/myprofile', page: () => MyProfile()),
-        GetPage(name: '/inventory', page: () => Inventory()),
+        GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
         GetPage(name: '/growthstage', page: () => GrowthStage()),
         GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
+
         GetPage(name: '/crop_plan', page: () => CropPlan()),
         GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
         GetPage(name: '/grid_view_crop', page: () => Crop()),
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/plot_farm', page: () => PlotFarm()),
         GetPage(name: '/plot_block', page: () => PlotBlock()),
         GetPage(name: '/plot_field', page: () => PlotField()),
+
         GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(

@@ -19,30 +19,38 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final email = TextEditingController();
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   Future<void> otpSendData() async {
     print("reached");
     Map<String, dynamic> updata = {
       "email": email.text,
     };
-
-    http.Response response = await OTPServices().otp(updata);
-    Map responseMap = jsonDecode(response.body);
-    if (response.statusCode == 200) {
-      print("go to otp now");
-      Get.toNamed('/otpVerification');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OtpVerification(
-            email: email.text,
+    final isValid = _form.currentState?.validate();
+    if (isValid!) {
+      http.Response response = await OTPServices().otp(updata);
+      Map responseMap = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        print("go to otp now");
+        Get.toNamed('/otpVerification');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpVerification(
+              email: email.text,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        Flushbar(
+          duration: const Duration(seconds: 2),
+          message: responseMap.values.first,
+        ).show(context);
+      }
     } else {
       Flushbar(
         duration: const Duration(seconds: 2),
-        message: responseMap.values.first,
+        message: "Please Enter a valid email",
       ).show(context);
     }
   }
@@ -61,7 +69,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               flex: 1,
               child: Center(
                 child: Form(
+
                   key: _email,
+
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,12 +97,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                       const SizedBox(
                         height: 10,
+
                       ),
                       const Text(
                         "Reset password with agromate",
                         style:
                             TextStyle(fontSize: 16, color: Color(0xFF505050)),
                       ),
+
                       const SizedBox(
                         height: 51,
                       ),
@@ -128,10 +140,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         child: CustomElevatedButton(
                           title: 'Send Mail',
                           onPressed: () {
+
                             final isValid = _email.currentState?.validate();
                             if (isValid!) {
                               otpSendData();
                             }
+
                           },
                         ),
                       ),

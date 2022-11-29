@@ -346,12 +346,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Inventory Type",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Inventory Type",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -364,12 +368,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Stock Code",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Stock Code",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -382,12 +390,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Inventory Class",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Inventory Class",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -400,12 +412,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Description",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Description",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -418,12 +434,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Unit",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Unit",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -436,12 +456,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Stock Level",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Stock Level",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -454,12 +478,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Required",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Required",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -472,12 +500,16 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "Pre PI",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Pre PI",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
@@ -490,19 +522,23 @@ class _ViewDetailsState extends State<ViewDetails> {
                             decoration: BoxDecoration(
                               color: const Color(0xff327C04).withOpacity(0.11),
                             ),
-                            child: const Center(
-                              child: Text(
-                                "PI",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 14),
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "PI",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                      for (int length = 0;
-                          length < int.parse(widget.weeks!);
+                      for (int length = 1;
+                          length <= int.parse(widget.weeks!);
                           length++)
                         DataColumn(
                           label: Expanded(
@@ -514,8 +550,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                               ),
                               child: Center(
                                 child: Text(
-                                  // "W ${length}"
-                                  "w",
+                                  "W${length}",
+                                  // "w",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
@@ -681,10 +717,10 @@ DataRow recentFileDataRow(var data, int weeks) {
               child: Text(data.prepi.toString())))),
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.pi.toString()))),
-      for (int length = 0; length < weeks; length++)
+      for (int length = 1; length <= weeks; length++)
         DataCell(Align(
             alignment: Alignment.center,
-            child: Padding(padding: EdgeInsets.all(10), child: Text("hi")))),
+            child: Padding(padding: EdgeInsets.all(10), child: Text("500")))),
       // DataCell(
       //     Align(alignment: Alignment.center, child: Text(data.w2.toString()))),
       // DataCell(

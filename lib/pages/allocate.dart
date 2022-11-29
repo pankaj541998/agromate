@@ -29,10 +29,10 @@ class _AllocateState extends State<Allocate> {
   late String _selectedValue6;
   late String _selectedValue7;
   List<String> listOfValue = [
-    'Kishan',
-    'Kishan',
-    'Kishan',
-    'Kishan',
+    'Kishan 1',
+    'Kishan 2',
+    'Kishan 3',
+    'Kishan 4',
   ];
   List<String> listOfValue1 = [
     'Farm 1',
@@ -317,7 +317,7 @@ class _AllocateState extends State<Allocate> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Landholder",
+                            "Manager",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),

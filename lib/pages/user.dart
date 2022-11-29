@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ final roleTextEditingController = TextEditingController();
 String role = 'Admin';
 int roleIndex = 0;
 int no = 0;
+final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
 enum Roles {
   Admin,
@@ -326,149 +328,166 @@ buildPin(context) {
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AlertDialog(
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.cancel_outlined))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Add New user",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 35,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Enter Email Address",
-                        style: TextStyle(
-                          fontSize: 18,
+        return Form(
+          key: _form,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Add New user",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                          height: 40,
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 35,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Enter Email Address",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                            width: 300,
+                            child: TextInputField(
+                                textEditingController: email,
+                                validator: (value) {
+                                  if (value != null && value.isEmpty) {
+                                    return "Please Enter Email";
+                                  }
+                                  return null;
+                                },
+                                hintText: "Email",
+                                validatorText: "Please Enter Email"))
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Role",
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                          height: 50,
                           width: 300,
-                          child: TextInputField(
-                              textEditingController: email,
-                              hintText: "",
-                              validatorText: ""))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Role",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 300,
-                        child: StatefulBuilder(
-                          builder: (context, setState) {
-                            return PopupMenuButton<int>(
-                              offset: const Offset(1, 0),
-                              child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3),
-                                width: 250,
-                                decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Colors.green[800]!),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: Text(role)),
-                                      const Icon(Icons.arrow_drop_down)
-                                    ],
+                          child: StatefulBuilder(
+                            builder: (context, setState) {
+                              return PopupMenuButton<int>(
+                                offset: const Offset(1, 0),
+                                child: Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 3),
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: Colors.green[800]!),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(child: Text(role)),
+                                        const Icon(Icons.arrow_drop_down)
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              itemBuilder: (BuildContext context) =>
-                                  Roles.values
-                                      .map(
-                                        (e) => PopupMenuItem<int>(
-                                          value: e.index,
-                                          child: Text(e.name),
-                                          onTap: () =>
-                                              setState(() => role = e.name),
-                                        ),
-                                      )
-                                      .toList(),
-                              onSelected: (value) {
-                                roleIndex = value;
-                                debugPrint('role index: $roleIndex');
-                              },
-                            );
-                          },
-                        ),
+                                itemBuilder: (BuildContext context) =>
+                                    Roles.values
+                                        .map(
+                                          (e) => PopupMenuItem<int>(
+                                            value: e.index,
+                                            child: Text(e.name),
+                                            onTap: () =>
+                                                setState(() => role = e.name),
+                                          ),
+                                        )
+                                        .toList(),
+                                onSelected: (value) {
+                                  roleIndex = value;
+                                  debugPrint('role index: $roleIndex');
+                                },
+                              );
+                            },
+                          ),
 
-                        // TextInputField(hintText: "", validatorText: "")
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 28,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 296,
-                        child: CustomElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            print(email);
-                            print(roleIndex);
-                            addUser();
-                          },
-                          title: "Add User",
+                          // TextInputField(hintText: "", validatorText: "")
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 296,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              final isValid = _form.currentState?.validate();
+                              if (isValid!) {
+                                print(email);
+                                print(roleIndex);
+                                addUser();
+                                Navigator.pop(context);
+                                Get.toNamed("/user");
+                              } else {
+                                Flushbar(
+                                  duration: const Duration(seconds: 2),
+                                  message: "Please Enter Email and Role",
+                                ).show(context);
+                              }
+                            },
+                            title: "Add User",
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     ),
@@ -1386,8 +1405,8 @@ DataRow recentFileDataRowrequest(NotRegData data, context, index) {
           child: Text(
             Roles.values.elementAt(data.roleType!).name,
           ))),
-      DataCell(Align(
-          alignment: Alignment.center, child: Text(data.isVeify.toString()))),
+      const DataCell(
+          Align(alignment: Alignment.center, child: Text("Not Registered"))),
       DataCell(Align(
           alignment: Alignment.center,
           child: _buildactionsrequest(context, index))),

@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
 
+final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
 class Allocation extends StatefulWidget {
   Allocation({Key? key, this.initial}) : super(key: key);
 
@@ -510,397 +512,401 @@ buildPinAlert(context) {
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setState) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AlertDialog(
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: Icon(Icons.cancel_outlined))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Edit User",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 35,
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Enter Email Address",
-                            style: TextStyle(
-                              fontSize: 18,
+        return Form(
+          key: _form,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Edit User",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 35,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Enter Email Address",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                                height: 40,
+                                width: 300,
+                                child: TextInputField(
+                                    hintText: "Enter Email",
+                                    validatorText: "Enter Email"))
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Role",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
                               height: 40,
                               width: 300,
-                              child: TextInputField(
-                                  hintText: "", validatorText: ""))
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Role",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 300,
-                            child: DropdownButtonFormField(
-                              focusColor: Colors.white,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 10, top: 10, right: 10),
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF327C04),
-                                    width: 5.0,
+                              child: DropdownButtonFormField(
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
+                                items: listOfValue.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue;
+                                  });
+                                },
                               ),
-                              items: listOfValue.map((String val) {
-                                return DropdownMenuItem(
-                                  enabled: true,
-                                  value: val,
-                                  child: Text(
-                                    val,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedValue;
-                                });
-                              },
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Landholder",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 300,
-                            child: DropdownButtonFormField(
-                              focusColor: Colors.white,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 10, top: 10, right: 10),
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF327C04),
-                                    width: 5.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              items: listOfValue1.map((String val) {
-                                return DropdownMenuItem(
-                                  enabled: true,
-                                  value: val,
-                                  child: Text(
-                                    val,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedValue1;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Farm",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 300,
-                            child: DropdownButtonFormField(
-                              focusColor: Colors.white,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 10, top: 10, right: 10),
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF327C04),
-                                    width: 5.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              items: listOfValue2.map((String val) {
-                                return DropdownMenuItem(
-                                  enabled: true,
-                                  value: val,
-                                  child: Text(
-                                    val,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedValue2;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Block",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 300,
-                            child: DropdownButtonFormField(
-                              focusColor: Colors.white,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 10, top: 10, right: 10),
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF327C04),
-                                    width: 5.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              items: listOfValue3.map((String val) {
-                                return DropdownMenuItem(
-                                  enabled: true,
-                                  value: val,
-                                  child: Text(
-                                    val,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedValue3;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Field",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 300,
-                            child: DropdownButtonFormField(
-                              focusColor: Colors.white,
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.only(
-                                    left: 10, top: 10, right: 10),
-                                fillColor: Colors.white,
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color(0xFF327C04)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFF327C04),
-                                    width: 5.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              items: listOfValue4.map((String val) {
-                                return DropdownMenuItem(
-                                  enabled: true,
-                                  value: val,
-                                  child: Text(
-                                    val,
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedValue4;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 28,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 296,
-                        child: CustomElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          title: "Update",
+                          ],
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Landholder",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue1.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue1;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Farm",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue2.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue2;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Block",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue3.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue3;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Field",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              width: 300,
+                              child: DropdownButtonFormField(
+                                focusColor: Colors.white,
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 10, top: 10, right: 10),
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: Color(0xFF327C04)),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF327C04),
+                                      width: 5.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                items: listOfValue4.map((String val) {
+                                  return DropdownMenuItem(
+                                    enabled: true,
+                                    value: val,
+                                    child: Text(
+                                      val,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedValue4;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 296,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            title: "Update",
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     ),
