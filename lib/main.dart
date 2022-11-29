@@ -5,8 +5,8 @@ import 'package:flutter_agro_new/pages/allocation.dart';
 
 import 'package:flutter_agro_new/pages/allocate.dart';
 
-import 'package:flutter_agro_new/pages/farms/select_block.dart';
-import 'package:flutter_agro_new/pages/farms/select_field.dart';
+import 'package:flutter_agro_new/pages/farms/plot_block.dart';
+import 'package:flutter_agro_new/pages/farms/plot_field.dart';
 
 import 'package:flutter_agro_new/pages/farms/view_farm.dart';
 import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
@@ -36,16 +36,18 @@ import 'pages/crop-plan/crop_plan.dart';
 import 'pages/crop/grid_view_crop.dart';
 import 'pages/crop/table_view_crop.dart';
 import 'pages/crop/view_details.dart';
-import 'pages/farms/select_plot.dart';
+import 'pages/farms/plot_farm.dart';
 import 'pages/tasks/add_task.dart';
 import 'pages/tasks/taska.dart';
+import 'providers/map_box_provider.dart';
 import 'providers/map_filter_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => MapFilterProvider())
+      ChangeNotifierProvider(create: (context) => MapFilterProvider()),
+      ChangeNotifierProvider(create: (context) => MapBoxProvider()),
     ],
     child: const MyApp(),
   ));
@@ -76,15 +78,17 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
         GetPage(name: '/growthstage', page: () => GrowthStage()),
         GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
-        GetPage(name: '/crop_plan', page: () => const CropPlan()),
-        GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
-        GetPage(name: '/grid_view_crop', page: () => const Crop()),
-        GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),
-        GetPage(name: '/view_details', page: () => const ViewDetails()),
-        GetPage(name: '/view_farm', page: () => const ViewFarm()),
-        GetPage(name: '/select_plot', page: () => SelectPlot()),
-        GetPage(name: '/select_block', page: () => const SelectBlock()),
-        GetPage(name: '/select_field', page: () => SelectField()),
+
+        GetPage(name: '/crop_plan', page: () => CropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
+        GetPage(name: '/grid_view_crop', page: () => Crop()),
+        GetPage(name: '/table_view_crop', page: () => TableViewCrop()),
+        GetPage(name: '/view_details', page: () => ViewDetails()),
+        GetPage(name: '/view_farm', page: () => ViewFarm()),
+        GetPage(name: '/plot_farm', page: () => PlotFarm()),
+        GetPage(name: '/plot_block', page: () => PlotBlock()),
+        GetPage(name: '/plot_field', page: () => PlotField()),
+
         GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(

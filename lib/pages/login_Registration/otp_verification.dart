@@ -45,6 +45,20 @@ class _OtpVerificationState extends State<OtpVerification> {
     }
   }
 
+  void _validateData() {
+    final isValid = _otpKey.currentState?.validate();
+    if (isValid!) {
+      otpSend();
+    } else {
+      Flushbar(
+        message: "Please Enter OTP",
+        duration: const Duration(seconds: 3),
+      ).show(context);
+    }
+  }
+
+  final _otpKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,130 +70,138 @@ class _OtpVerificationState extends State<OtpVerification> {
             Expanded(
               flex: 1,
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Enter OTP",
-                      style: TextStyle(
-                          fontSize: 35,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const SizedBox(
-                      width: 500,
-                      child: Divider(
-                        thickness: 2,
-                        color: Color(0xFF327C04),
-                        endIndent: 280,
-                        indent: 0,
+                child: Form(
+                  key: _otpKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Enter OTP",
+                        style: TextStyle(
+                            fontSize: 35,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Text(
-                      "Reset password with agromate",
-                      style: TextStyle(fontSize: 16, color: Color(0xFF505050)),
-                    ),
-                    const SizedBox(
-                      height: 51,
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: PinCodeTextField(
-                        cursorHeight: 20,
-                        cursorColor: Colors.green,
-                        validator: (value) {
-                          if (value != null && value.isEmpty) {
-                            return "Please Enter OTP";
-                          } else if (value != null && value.length < 4) {
-                            return "OTP length should be atleast 4";
-                          }
-                          return null;
-                        },
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(4),
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        length: 4,
-                        obscureText: false, autoFocus: true,
-                        animationType: AnimationType.fade,
-                        pinTheme: PinTheme(
-                          selectedFillColor: Colors.white,
-                          inactiveFillColor: Colors.white,
-                          inactiveColor: const Color(0xFFA1B809),
-                          activeColor: const Color(0xFFA1B809),
-                          selectedColor: const Color(0xFFA1B809),
-                          shape: PinCodeFieldShape.box,
-                          borderRadius: BorderRadius.circular(15),
-                          fieldHeight: 60,
-                          fieldWidth: 60,
-                          activeFillColor: Colors.white,
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const SizedBox(
+                        width: 500,
+                        child: Divider(
+                          thickness: 2,
+                          color: Color(0xFF327C04),
+                          endIndent: 280,
+                          indent: 0,
                         ),
-                        animationDuration: const Duration(milliseconds: 300),
-                        // backgroundColor: Colors.white,
-                        enableActiveFill: true,
-                        // errorAnimationController: errorController,
-                        controller: otp,
-                        onCompleted: (v) {
-                          print("Completed");
-                        },
-                        onChanged: (value) {
-                          print(value);
-                          setState(() {
-                            // currentText = value;
-                          });
-                        },
-                        beforeTextPaste: (text) {
-                          print("Allowing to paste $text");
-                          //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                          //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                          return true;
-                        },
-                        keyboardType: TextInputType.number,
-                        appContext: context,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: 400,
-                      child: CustomElevatedButton(
-                        title: "Submit OTP",
-                        onPressed: () {
-                          otpSend();
-                        },
+                      const SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      width: 400,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Didn't receive OTP ?"),
-                          TextButton(
-                            child: const Text(" Resend OTP"),
-                            style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xFF327C04)),
-                            ),
-                            onPressed: () {},
-                          )
-                        ],
+                      const Text(
+                        "Reset password with agromate",
+                        style:
+                            TextStyle(fontSize: 16, color: Color(0xFF505050)),
                       ),
-                    )
-                  ],
+                      const SizedBox(
+                        height: 51,
+                      ),
+                      SizedBox(
+                        width: 400,
+                        child: PinCodeTextField(
+                          cursorHeight: 20,
+                          cursorColor: Colors.green,
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              return "Please Enter OTP";
+                            } else if (value != null && value.length < 4) {
+                              return "OTP length should be atleast 4";
+                            }
+                            return null;
+                          },
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(4),
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          length: 4,
+                          obscureText: false, autoFocus: true,
+                          animationType: AnimationType.fade,
+                          pinTheme: PinTheme(
+                            selectedFillColor: Colors.white,
+                            inactiveFillColor: Colors.white,
+                            inactiveColor: const Color(0xFFA1B809),
+                            activeColor: const Color(0xFFA1B809),
+                            selectedColor: const Color(0xFFA1B809),
+                            shape: PinCodeFieldShape.box,
+                            borderRadius: BorderRadius.circular(15),
+                            fieldHeight: 60,
+                            fieldWidth: 60,
+                            activeFillColor: Colors.white,
+                          ),
+                          animationDuration: const Duration(milliseconds: 300),
+                          // backgroundColor: Colors.white,
+                          enableActiveFill: true,
+                          // errorAnimationController: errorController,
+                          controller: otp,
+                          onCompleted: (v) {
+                            print("Completed");
+                          },
+                          onChanged: (value) {
+                            print(value);
+                            setState(() {
+                              // currentText = value;
+                            });
+                          },
+                          beforeTextPaste: (text) {
+                            print("Allowing to paste $text");
+                            //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                            //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                            return true;
+                          },
+                          keyboardType: TextInputType.number,
+                          appContext: context,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 400,
+                        child: CustomElevatedButton(
+                          title: "Submit OTP",
+                          onPressed: () {
+                            final isValid = _otpKey.currentState?.validate();
+                            if (isValid!) {
+                              _validateData();
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                        width: 400,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Didn't receive OTP ?"),
+                            TextButton(
+                              child: const Text(" Resend OTP"),
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        const Color(0xFF327C04)),
+                              ),
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

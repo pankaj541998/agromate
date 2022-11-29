@@ -55,6 +55,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     }
   }
 
+  final _email = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +69,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               flex: 1,
               child: Center(
                 child: Form(
-                  key: _form,
+
+                  key: _email,
+
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,12 +97,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                       const SizedBox(
                         height: 10,
+
                       ),
                       const Text(
                         "Reset password with agromate",
                         style:
                             TextStyle(fontSize: 16, color: Color(0xFF505050)),
                       ),
+
                       const SizedBox(
                         height: 51,
                       ),
@@ -134,7 +140,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         child: CustomElevatedButton(
                           title: 'Send Mail',
                           onPressed: () {
-                            otpSendData();
+
+                            final isValid = _email.currentState?.validate();
+                            if (isValid!) {
+                              otpSendData();
+                            }
+
                           },
                         ),
                       ),
