@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:async/async.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/dropdown_btn.dart';
 import '../../constants.dart';
 import '../../database_api/methods/block_api_methods.dart';
 import '../../database_api/methods/farm_api_methods.dart';
@@ -26,35 +27,6 @@ class ViewFarm extends StatefulWidget {
 }
 
 class _ViewFarmState extends State<ViewFarm> {
-  late String _selectedValue;
-  late String _selectedValue1;
-  late String _selectedValue2;
-  late String _selectedValue3;
-  List<String> listOfValue = [
-    'Kishan 1',
-    'Kishan 2',
-    'Kishan 3',
-    'Kishan 4',
-  ];
-  List<String> listOfValue1 = [
-    'VARKPLAAS 1',
-    'VARKPLAAS 2',
-    'VARKPLAAS 3',
-    'VARKPLAAS 4',
-  ];
-  List<String> listOfValue2 = [
-    'A',
-    'B',
-    'C',
-    'D',
-  ];
-  List<String> listOfValue3 = [
-    'A1A',
-    'B2B',
-    'C3C',
-    'D4D',
-  ];
-
   //start
   String name = 'User Name';
   String role = 'Role';
@@ -75,9 +47,24 @@ class _ViewFarmState extends State<ViewFarm> {
     futureGroup.close();
   }
 
+  TextStyle headline4TextStyle = const TextStyle(
+    color: Colors.black,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w400,
+    fontSize: 20,
+  );
+
+  TextStyle headline3TextStyle = const TextStyle(
+    color: Colors.black,
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+  );
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    var watchProvider = context.watch<MapFilterProvider>();
     return FutureBuilder<List>(
         future: futureGroup.future,
         builder: (context, snapshot) {
@@ -89,178 +76,184 @@ class _ViewFarmState extends State<ViewFarm> {
             var block = data.elementAt(2) as List<BlockModel>;
             var field = data.elementAt(3) as List<FieldModel>;
             return Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TopBar(), //menu
-                    const SizedBox(height: 45),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize.width * 0.05),
-                      child: Column(
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Farm",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                  width: 144,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        Get.toNamed('/select_plot');
-                                      },
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  const Color(0xFF327C04))),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            size: 19,
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            'Plot Farm',
-                                            style: TextStyle(fontSize: 16),
-                                          )
-                                        ],
-                                      )),
-                                )
-                              ]),
-                          const Divider(
-                            thickness: 1,
-                            color: Color(0xFFD6D6D6),
-                          ),
-                          const SizedBox(
-                            height: 23,
-                          ),
-                          //dropdown button
-                          Builder(builder: (context) {
-                            var readProvider =
-                                context.read<MapFilterProvider>();
-                            var watchProvider =
-                                context.watch<MapFilterProvider>();
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                body: Column(
+              children: [
+                TopBar(),
+                const SizedBox(height: 30),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize.width * 0.05),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text('Farms', style: headline4TextStyle),
+                            const Spacer(),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff327C04)),
+                              onPressed: watchProvider.isFarmDropdownEnabled
+                                  ? () {
+                                      Get.toNamed('/plot_farm');
+                                      // context.read<HomeProvider>().changeActiveElement(
+                                      //     HomePageElements.plotFarm);
+                                    }
+                                  : null,
+                              icon: const Icon(Icons.add),
+                              label: const Text('Plot Farm'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Builder(builder: (context) {
+                          var readProvider = context.read<MapFilterProvider>();
+                          return SizedBox(
+                            width: double.maxFinite,
+                            height: 80,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       "Select Landholder",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                      style: headline3TextStyle,
                                     ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                      width: 260,
-                                      child: DropdownButtonFormField(
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            top: 10,
-                                            right: 10,
-                                          ),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
+                                    const SizedBox(height: 4),
+                                    DropdownBtn(
+                                      items: users
+                                          .where((element) =>
+                                              element.roleIndex ==
+                                              Roles.Landholder.index)
+                                          .map((e) {
+                                        return "${e.firstName} ${e.lastName}";
+                                      }).toList(),
+                                      hint: watchProvider.currentLandholder ??
+                                          'Landholder',
+                                      onItemSelected: (value) {
+                                        readProvider.onLandholderSelected();
+                                        mapController.clearLines();
+                                        mapController.clearFills();
+                                        readProvider.currentLandholder = value;
+                                        readProvider.currentLandholderId = users
+                                            .singleWhere((element) =>
+                                                "${element.firstName} ${element.lastName}" ==
+                                                watchProvider.currentLandholder)
+                                            .id;
+
+                                        var landholderFarms = farms
+                                            .where((farmModel) =>
+                                                farmModel.landholderId ==
+                                                watchProvider
+                                                    .currentLandholderId)
+                                            .toList();
+                                        for (FarmModel farmModel
+                                            in landholderFarms) {
+                                          var latLngs =
+                                              jsonDecode(farmModel.farmLatLngs!)
+                                                  as List;
+                                          String outlineColor = "#D5D8DC";
+                                          var linesGeo = latLngs;
+                                          linesGeo.add(latLngs.first);
+                                          mapController.addLines(linesGeo
+                                              .map((latLng) => LineOptions(
+                                                  geometry: linesGeo
+                                                      .map((e) => LatLng(
+                                                          e.first, e.last))
+                                                      .toList(),
+                                                  lineColor: outlineColor))
+                                              .toList());
+
+                                          mapController.addFill(
+                                            FillOptions(
+                                              geometry: [
+                                                latLngs.map((e) {
+                                                  return LatLng(
+                                                      e.first, e.last);
+                                                }).toList()
+                                              ],
+                                              fillColor: "#566573",
+                                              fillOutlineColor: outlineColor,
+                                              fillOpacity: 0.6,
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        items: users
-                                            .where((element) =>
-                                                element.roleIndex ==
-                                                Roles.Landholder.index)
-                                            .map((e) {
-                                          return DropdownMenuItem(
-                                            child: Text(
-                                                "${e.firstName} ${e.lastName}"),
-                                            enabled: true,
-                                            value:
-                                                "${e.firstName} ${e.lastName}",
                                           );
-                                        }).toList(),
-                                        hint: Text(
-                                          watchProvider.currentLandholder ??
-                                              'Landholder',
-                                        ),
+                                        }
+                                        var cam = jsonDecode(landholderFarms
+                                            .first.farmLatLngs!) as List;
 
-                                        // listOfValue.map((String val) {
-                                        //   return DropdownMenuItem(
-                                        //     enabled: true,
-                                        //     value: val,
-                                        //     child: Text(
-                                        //       val,
-                                        //     ),
-                                        //   );
-                                        // }).toList(),
-                                        onChanged: (value) {
-                                          // setState(() {
-                                          //   _selectedValue;
-                                          // });
-                                          // debugPrint(value);
-                                          readProvider.onLandholderSelected();
-                                          mapController.clearLines();
-                                          mapController.clearFills();
-                                          readProvider.currentLandholder =
-                                              value.toString();
-                                          readProvider.currentLandholderId = users
-                                              .singleWhere((element) =>
-                                                  "${element.firstName} ${element.lastName}" ==
-                                                  watchProvider
-                                                      .currentLandholder)
-                                              .id;
+                                        mapController.animateCamera(
+                                            CameraUpdate.newLatLngZoom(
+                                                LatLng(cam.first.first,
+                                                    cam.first.last),
+                                                12));
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 18),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Select Farm",
+                                      style: headline3TextStyle,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    DropdownBtn(
+                                      isEnabled:
+                                          watchProvider.isFarmDropdownEnabled,
+                                      items: farms
+                                          .where((element) =>
+                                              element.landholderId ==
+                                              watchProvider.currentLandholderId)
+                                          .map((e) {
+                                        return e.farmName.toString();
+                                      }).toList(),
+                                      hint: watchProvider.currentFarm ?? "Farm",
+                                      onItemSelected: (value) async {
+                                        readProvider.enableBlockDropdown();
+                                        if (watchProvider.highlightFill !=
+                                                null &&
+                                            watchProvider.highlightLines !=
+                                                null) {
+                                          mapController.removeLines(
+                                              readProvider.highlightLines!);
+                                          mapController.removeFill(
+                                              readProvider.highlightFill!);
+                                        }
+                                        readProvider.currentFarm = value;
+                                        var farmModel = farms.singleWhere(
+                                            (element) =>
+                                                element.landholderId ==
+                                                    watchProvider
+                                                        .currentLandholderId &&
+                                                element.farmName ==
+                                                    watchProvider.currentFarm);
+                                        readProvider.currentFarmId =
+                                            farmModel.id;
+                                        var latLngs =
+                                            jsonDecode(farmModel.farmLatLngs!)
+                                                as List;
+                                        double avgLat = 0;
+                                        double avgLng = 0;
+                                        for (List latLng in latLngs) {
+                                          avgLat += latLng.first;
+                                          avgLng += latLng.last;
+                                        }
+                                        avgLat /= latLngs.length;
+                                        avgLng /= latLngs.length;
+                                        mapController.animateCamera(
+                                            CameraUpdate.newLatLngZoom(
+                                                LatLng(avgLat, avgLng), 13));
+                                        //highlight farm
+                                        String outlineColor = "#F9E79F";
+                                        var linesGeo = latLngs;
+                                        linesGeo.add(latLngs.first);
 
-                                          var landholderFarms = farms
-                                              .where((farmModel) =>
-                                                  farmModel.landholderId ==
-                                                  watchProvider
-                                                      .currentLandholderId)
-                                              .toList();
-                                          for (FarmModel farmModel
-                                              in landholderFarms) {
-                                            var latLngs = jsonDecode(
-                                                farmModel.farmLatLngs!) as List;
-                                            String outlineColor = "#D5D8DC";
-                                            var linesGeo = latLngs;
-                                            linesGeo.add(latLngs.first);
-                                            mapController.addLines(linesGeo
+                                        var highlightLines = await mapController
+                                            .addLines(linesGeo
                                                 .map((latLng) => LineOptions(
                                                     geometry: linesGeo
                                                         .map((e) => LatLng(
@@ -268,679 +261,365 @@ class _ViewFarmState extends State<ViewFarm> {
                                                         .toList(),
                                                     lineColor: outlineColor))
                                                 .toList());
+                                        readProvider.highlightLines =
+                                            highlightLines;
 
-                                            mapController.addFill(
-                                              FillOptions(
-                                                geometry: [
-                                                  latLngs.map((e) {
-                                                    return LatLng(
-                                                        e.first, e.last);
-                                                  }).toList()
-                                                ],
-                                                fillColor: "#566573",
-                                                fillOutlineColor: outlineColor,
-                                                fillOpacity: 0.6,
-                                              ),
-                                            );
-                                          }
-                                          var cam = jsonDecode(landholderFarms
-                                              .first.farmLatLngs!) as List;
-
-                                          mapController.animateCamera(
-                                              CameraUpdate.newLatLngZoom(
-                                                  LatLng(cam.first.first,
-                                                      cam.first.last),
-                                                  12));
-                                        },
-                                      ),
+                                        var fill = await mapController
+                                            .addFill(FillOptions(
+                                          geometry: [
+                                            latLngs.map((e) {
+                                              return LatLng(e.first, e.last);
+                                            }).toList()
+                                          ],
+                                          fillColor: outlineColor,
+                                          fillOutlineColor: outlineColor,
+                                          fillOpacity: 0.3,
+                                        ));
+                                        readProvider.highlightFill = fill;
+                                      },
                                     ),
                                   ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Select Farm",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                      width: 260,
-                                      child: DropdownButtonFormField(
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 10, top: 10, right: 10),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        items: farms
-                                            .where((element) =>
-                                                element.landholderId ==
-                                                watchProvider
-                                                    .currentLandholderId)
-                                            .map((e) {
-                                          return DropdownMenuItem(
-                                              enabled: true,
-                                              value: e.farmName.toString(),
-                                              child: Text(
-                                                e.farmName.toString(),
-                                              ));
-                                        }).toList(),
-                                        hint: Text(watchProvider.currentFarm ??
-                                            "Farm"),
-                                        // listOfValue1.map((String val) {
-                                        //   return DropdownMenuItem(
-                                        //     enabled: true,
-                                        //     value: val,
-                                        //     child: Text(
-                                        //       val,
-                                        //     ),
-                                        //   );
-                                        // }).toList(),
-                                        onChanged: (value) async {
-                                          // setState(() {
-                                          //   _selectedValue1;
-                                          // });
-                                          readProvider.enableBlockDropdown();
-                                          if (watchProvider.highlightFill !=
-                                                  null &&
-                                              watchProvider.highlightLines !=
-                                                  null) {
-                                            mapController.removeLines(
-                                                readProvider.highlightLines!);
-                                            mapController.removeFill(
-                                                readProvider.highlightFill!);
-                                          }
-                                          readProvider.currentFarm =
-                                              value.toString();
-                                          var farmModel = farms.singleWhere(
-                                              (element) =>
-                                                  element.landholderId ==
-                                                      watchProvider
-                                                          .currentLandholderId &&
-                                                  element.farmName ==
-                                                      watchProvider
-                                                          .currentFarm);
-                                          readProvider.currentFarmId =
-                                              farmModel.id;
-                                          var latLngs =
-                                              jsonDecode(farmModel.farmLatLngs!)
-                                                  as List;
-                                          double avgLat = 0;
-                                          double avgLng = 0;
-                                          for (List latLng in latLngs) {
-                                            avgLat += latLng.first;
-                                            avgLng += latLng.last;
-                                          }
-                                          avgLat /= latLngs.length;
-                                          avgLng /= latLngs.length;
-                                          mapController.animateCamera(
-                                              CameraUpdate.newLatLngZoom(
-                                                  LatLng(avgLat, avgLng), 13));
-                                          //highlight farm
-                                          String outlineColor = "#F9E79F";
-                                          var linesGeo = latLngs;
-                                          linesGeo.add(latLngs.first);
-
-                                          var highlightLines = await mapController
-                                              .addLines(linesGeo
-                                                  .map((latLng) => LineOptions(
-                                                      geometry: linesGeo
-                                                          .map((e) => LatLng(
-                                                              e.first, e.last))
-                                                          .toList(),
-                                                      lineColor: outlineColor))
-                                                  .toList());
-                                          readProvider.highlightLines =
-                                              highlightLines;
-
-                                          var fill = await mapController
-                                              .addFill(FillOptions(
-                                            geometry: [
-                                              latLngs.map((e) {
-                                                return LatLng(e.first, e.last);
-                                              }).toList()
-                                            ],
-                                            fillColor: outlineColor,
-                                            fillOutlineColor: outlineColor,
-                                            fillOpacity: 0.3,
-                                          ));
-                                          readProvider.highlightFill = fill;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                const SizedBox(width: 18),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Select Block",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
+                                      style: headline3TextStyle,
                                     ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                      width: 260,
-                                      child: DropdownButtonFormField(
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 10, top: 10, right: 10),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        items: block
-                                            .where((element) =>
-                                                element.landholderId ==
-                                                    watchProvider
-                                                        .currentLandholderId &&
-                                                element.farmId ==
-                                                    watchProvider.currentFarmId)
-                                            .map((e) {
-                                          return DropdownMenuItem(
-                                              enabled: true,
-                                              value: e.blockName.toString(),
-                                              child:
-                                                  Text(e.blockName.toString()));
-                                        }).toList(),
-                                        // listOfValue2.map((String val) {
-                                        //   return DropdownMenuItem(
-                                        //     enabled: true,
-                                        //     value: val,
-                                        //     child: Text(
-                                        //       val,
-                                        //     ),
-                                        //   );
-                                        // }).toList(),
-                                        hint: const Text('Block'),
-                                        onChanged: (value) async {
-                                          readProvider.enableFieldDropdown();
-                                          if (watchProvider
-                                                      .highlightFillBlock !=
-                                                  null &&
-                                              watchProvider
-                                                      .highlightLinesBlock !=
-                                                  null) {
-                                            mapController.removeLines(
-                                                readProvider
-                                                    .highlightLinesBlock!);
-                                            mapController.removeFill(
-                                                readProvider
-                                                    .highlightFillBlock!);
-                                          }
-                                          readProvider.currentBlock =
-                                              value.toString();
-                                          var blockModel = block.singleWhere(
-                                              (element) =>
-                                                  element.blockName ==
-                                                      watchProvider
-                                                          .currentBlock &&
-                                                  element.farmId ==
-                                                      watchProvider
-                                                          .currentFarmId &&
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        DropdownBtn(
+                                          isEnabled: watchProvider
+                                              .isBlockDropdownEnabled,
+                                          items: block
+                                              .where((element) =>
                                                   element.landholderId ==
                                                       watchProvider
-                                                          .currentLandholderId);
-                                          readProvider.currentBlockId =
-                                              blockModel.id;
+                                                          .currentLandholderId &&
+                                                  element.farmId ==
+                                                      watchProvider
+                                                          .currentFarmId)
+                                              .map((e) {
+                                            return e.blockName.toString();
+                                          }).toList(),
+                                          hint: 'Block',
+                                          onItemSelected: (value) async {
+                                            readProvider.enableFieldDropdown();
+                                            if (watchProvider
+                                                        .highlightFillBlock !=
+                                                    null &&
+                                                watchProvider
+                                                        .highlightLinesBlock !=
+                                                    null) {
+                                              mapController.removeLines(
+                                                  readProvider
+                                                      .highlightLinesBlock!);
+                                              mapController.removeFill(
+                                                  readProvider
+                                                      .highlightFillBlock!);
+                                            }
+                                            readProvider.currentBlock = value;
+                                            var blockModel = block.singleWhere(
+                                                (element) =>
+                                                    element.blockName ==
+                                                        watchProvider
+                                                            .currentBlock &&
+                                                    element.farmId ==
+                                                        watchProvider
+                                                            .currentFarmId &&
+                                                    element.landholderId ==
+                                                        watchProvider
+                                                            .currentLandholderId);
+                                            readProvider.currentBlockId =
+                                                blockModel.id;
 
-                                          var latLngs = jsonDecode(
-                                              blockModel.blockLatLngs!) as List;
-                                          double avgLat = 0;
-                                          double avgLng = 0;
-                                          for (List latLng in latLngs) {
-                                            avgLat += latLng.first;
-                                            avgLng += latLng.last;
-                                          }
-                                          avgLat /= latLngs.length;
-                                          avgLng /= latLngs.length;
-                                          mapController.animateCamera(
-                                              CameraUpdate.newLatLngZoom(
-                                                  LatLng(avgLat, avgLng), 13));
-                                          //highlight farm
-                                          String outlineColor = "#ff4000";
-                                          var linesGeo = latLngs;
-                                          linesGeo.add(latLngs.first);
+                                            var latLngs = jsonDecode(
+                                                    blockModel.blockLatLngs!)
+                                                as List;
+                                            double avgLat = 0;
+                                            double avgLng = 0;
+                                            for (List latLng in latLngs) {
+                                              avgLat += latLng.first;
+                                              avgLng += latLng.last;
+                                            }
+                                            avgLat /= latLngs.length;
+                                            avgLng /= latLngs.length;
+                                            mapController.animateCamera(
+                                                CameraUpdate.newLatLngZoom(
+                                                    LatLng(avgLat, avgLng),
+                                                    13));
+                                            //highlight farm
+                                            String outlineColor = "#ff4000";
+                                            var linesGeo = latLngs;
+                                            linesGeo.add(latLngs.first);
 
-                                          var highlightLines = await mapController
-                                              .addLines(linesGeo
-                                                  .map((latLng) => LineOptions(
-                                                      geometry: linesGeo
-                                                          .map((e) => LatLng(
-                                                              e.first, e.last))
-                                                          .toList(),
-                                                      lineColor: outlineColor))
-                                                  .toList());
-                                          readProvider.highlightLinesBlock =
-                                              highlightLines;
+                                            var highlightLines = await mapController
+                                                .addLines(linesGeo
+                                                    .map((latLng) =>
+                                                        LineOptions(
+                                                            geometry: linesGeo
+                                                                .map((e) =>
+                                                                    LatLng(
+                                                                        e.first,
+                                                                        e.last))
+                                                                .toList(),
+                                                            lineColor:
+                                                                outlineColor))
+                                                    .toList());
+                                            readProvider.highlightLinesBlock =
+                                                highlightLines;
 
-                                          var fill = await mapController
-                                              .addFill(FillOptions(
-                                            geometry: [
-                                              latLngs.map((e) {
-                                                return LatLng(e.first, e.last);
-                                              }).toList()
-                                            ],
-                                            fillColor: outlineColor,
-                                            fillOutlineColor: outlineColor,
-                                            fillOpacity: 0.4,
-                                          ));
-                                          readProvider.highlightFillBlock =
-                                              fill;
-                                          // setState(() {
-                                          //   _selectedValue2;
-                                          // });
-                                        },
-                                      ),
-                                    ),
+                                            var fill = await mapController
+                                                .addFill(FillOptions(
+                                              geometry: [
+                                                latLngs.map((e) {
+                                                  return LatLng(
+                                                      e.first, e.last);
+                                                }).toList()
+                                              ],
+                                              fillColor: outlineColor,
+                                              fillOutlineColor: outlineColor,
+                                              fillOpacity: 0.4,
+                                            ));
+                                            readProvider.highlightFillBlock =
+                                                fill;
+                                          },
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              watchProvider.currentFarm == null
+                                                  ? false
+                                                  : true,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              // context
+                                              //     .read<HomeProvider>()
+                                              //     .changeActiveElement(
+                                              //         HomePageElements.plotBlock);
+                                              Get.toNamed('/plot_block');
+                                            },
+                                            icon: const Icon(
+                                              Icons.add_circle_outline_rounded,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
                                   ],
                                 ),
+                                const SizedBox(width: 18),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       "Select Field",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500),
+                                      style: headline3TextStyle,
                                     ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                      width: 260,
-                                      child: DropdownButtonFormField(
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 10, top: 10, right: 10),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFFA1B809)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        items: field
-                                            .where((element) =>
-                                                element.landholderId ==
-                                                    watchProvider
-                                                        .currentLandholderId &&
-                                                element.farmId ==
-                                                    watchProvider
-                                                        .currentFarmId &&
-                                                element.blockId ==
-                                                    watchProvider
-                                                        .currentBlockId)
-                                            .map((e) {
-                                          return DropdownMenuItem(
-                                            child: Text(e.fieldName.toString()),
-                                            value: e.fieldName.toString(),
-                                            enabled: true,
-                                          );
-                                        }).toList(),
-                                        hint: Text(watchProvider.currentField ??
-                                            'Field'),
-
-                                        // listOfValue3.map((String val) {
-                                        //   return DropdownMenuItem(
-                                        //     enabled: true,
-                                        //     value: val,
-                                        //     child: Text(
-                                        //       val,
-                                        //     ),
-                                        //   );
-                                        // }).toList(),
-                                        onChanged: (value) async {
-                                          readProvider.enableCropDropdown();
-                                          if (watchProvider
-                                                      .highlightFillField !=
-                                                  null &&
-                                              watchProvider
-                                                      .highlightLinesField !=
-                                                  null) {
-                                            mapController.removeLines(
-                                                readProvider
-                                                    .highlightLinesField!);
-                                            mapController.removeFill(
-                                                readProvider
-                                                    .highlightFillField!);
-                                          }
-                                          readProvider.currentField =
-                                              value.toString();
-                                          //==
-                                          var fieldModel = field.singleWhere(
-                                              (element) =>
-                                                  element.fieldName ==
-                                                      watchProvider
-                                                          .currentField &&
-                                                  element.farmId ==
-                                                      watchProvider
-                                                          .currentFarmId &&
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        DropdownBtn(
+                                          isEnabled: watchProvider
+                                              .isFieldDropdownEnabled,
+                                          items: field
+                                              .where((element) =>
                                                   element.landholderId ==
                                                       watchProvider
                                                           .currentLandholderId &&
+                                                  element.farmId ==
+                                                      watchProvider
+                                                          .currentFarmId &&
                                                   element.blockId ==
                                                       watchProvider
-                                                          .currentBlockId);
-                                          readProvider.currentFieldId =
-                                              fieldModel.id;
+                                                          .currentBlockId)
+                                              .map((e) {
+                                            return e.fieldName.toString();
+                                          }).toList(),
+                                          hint: watchProvider.currentField ??
+                                              'Field',
+                                          onItemSelected: (value) async {
+                                            readProvider.enableCropDropdown();
+                                            if (watchProvider
+                                                        .highlightFillField !=
+                                                    null &&
+                                                watchProvider
+                                                        .highlightLinesField !=
+                                                    null) {
+                                              mapController.removeLines(
+                                                  readProvider
+                                                      .highlightLinesField!);
+                                              mapController.removeFill(
+                                                  readProvider
+                                                      .highlightFillField!);
+                                            }
+                                            readProvider.currentField = value;
+                                            //==
+                                            var fieldModel = field.singleWhere(
+                                                (element) =>
+                                                    element.fieldName ==
+                                                        watchProvider
+                                                            .currentField &&
+                                                    element.farmId ==
+                                                        watchProvider
+                                                            .currentFarmId &&
+                                                    element.landholderId ==
+                                                        watchProvider
+                                                            .currentLandholderId &&
+                                                    element.blockId ==
+                                                        watchProvider
+                                                            .currentBlockId);
+                                            readProvider.currentFieldId =
+                                                fieldModel.id;
 
-                                          var latLngs = jsonDecode(
-                                              fieldModel.fieldLatLngs!) as List;
-                                          double avgLat = 0;
-                                          double avgLng = 0;
-                                          for (List latLng in latLngs) {
-                                            avgLat += latLng.first;
-                                            avgLng += latLng.last;
-                                          }
-                                          avgLat /= latLngs.length;
-                                          avgLng /= latLngs.length;
-                                          mapController.animateCamera(
-                                              CameraUpdate.newLatLngZoom(
-                                                  LatLng(avgLat, avgLng), 13));
-                                          //highlight farm
-                                          String outlineColor = "#ffffff";
-                                          var linesGeo = latLngs;
-                                          linesGeo.add(latLngs.first);
+                                            var latLngs = jsonDecode(
+                                                    fieldModel.fieldLatLngs!)
+                                                as List;
+                                            double avgLat = 0;
+                                            double avgLng = 0;
+                                            for (List latLng in latLngs) {
+                                              avgLat += latLng.first;
+                                              avgLng += latLng.last;
+                                            }
+                                            avgLat /= latLngs.length;
+                                            avgLng /= latLngs.length;
+                                            mapController.animateCamera(
+                                                CameraUpdate.newLatLngZoom(
+                                                    LatLng(avgLat, avgLng),
+                                                    13));
+                                            //highlight farm
+                                            String outlineColor = "#ffffff";
+                                            var linesGeo = latLngs;
+                                            linesGeo.add(latLngs.first);
 
-                                          var highlightLines = await mapController
-                                              .addLines(linesGeo
-                                                  .map((latLng) => LineOptions(
-                                                      geometry: linesGeo
-                                                          .map((e) => LatLng(
-                                                              e.first, e.last))
-                                                          .toList(),
-                                                      lineColor: outlineColor))
-                                                  .toList());
-                                          readProvider.highlightLinesField =
-                                              highlightLines;
+                                            var highlightLines = await mapController
+                                                .addLines(linesGeo
+                                                    .map((latLng) =>
+                                                        LineOptions(
+                                                            geometry: linesGeo
+                                                                .map((e) =>
+                                                                    LatLng(
+                                                                        e.first,
+                                                                        e.last))
+                                                                .toList(),
+                                                            lineColor:
+                                                                outlineColor))
+                                                    .toList());
+                                            readProvider.highlightLinesField =
+                                                highlightLines;
 
-                                          var fill = await mapController
-                                              .addFill(FillOptions(
-                                            geometry: [
-                                              latLngs.map((e) {
-                                                return LatLng(e.first, e.last);
-                                              }).toList()
-                                            ],
-                                            fillColor: outlineColor,
-                                            fillOutlineColor: outlineColor,
-                                            fillOpacity: 0.3,
-                                          ));
-                                          readProvider.highlightFillField =
-                                              fill;
-                                          // setState(() {
-                                          //   _selectedValue3;
-                                          // });
-                                        },
-                                      ),
-                                    ),
+                                            var fill = await mapController
+                                                .addFill(FillOptions(
+                                              geometry: [
+                                                latLngs.map((e) {
+                                                  return LatLng(
+                                                      e.first, e.last);
+                                                }).toList()
+                                              ],
+                                              fillColor: outlineColor,
+                                              fillOutlineColor: outlineColor,
+                                              fillOpacity: 0.3,
+                                            ));
+                                            readProvider.highlightFillField =
+                                                fill;
+                                          },
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              watchProvider.currentBlock == null
+                                                  ? false
+                                                  : true,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              // context
+                                              //     .read<HomeProvider>()
+                                              //     .changeActiveElement(
+                                              //         HomePageElements.plotField);
+                                              Get.toNamed('/plot_field');
+                                            },
+                                            icon: const Icon(Icons
+                                                .add_circle_outline_rounded),
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
-                            );
-                          }),
-
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          SizedBox(
-                            width: double.maxFinite,
-                            height: 480,
-                            child: MapboxMap(
-                              compassEnabled: false,
-                              initialCameraPosition: CameraPosition(
-                                target: LatLng(
-                                  targetLat,
-                                  targetLng,
                                 ),
-                                zoom: zoom,
-                              ),
-                              accessToken:
-                                  "pk.eyJ1IjoiYXRpc2gtYWdyb21hdGUiLCJhIjoiY2w5NWE1M20zMXRkcjNucW03M2ZjYXY2NyJ9.PXTKE0nl-2xg-pOhCikRIw",
-                              styleString: MapboxStyles.SATELLITE_STREETS,
-                              onMapCreated: (controller) {
-                                mapController = controller;
-                              },
+                                const SizedBox(width: 18),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Select Crop",
+                                      style: headline3TextStyle,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        DropdownBtn(
+                                          isEnabled: watchProvider
+                                              .isCropDropdownEnabled,
+                                          items: const ['Crop 1', 'Crop 2'],
+                                          hint: 'Crop',
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              watchProvider.currentField == null
+                                                  ? false
+                                                  : true,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Get.toNamed('/crop_plan');
+                                            },
+                                            icon: const Icon(Icons
+                                                .add_circle_outline_rounded),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
+                          );
+                        }),
+                        Expanded(
+                          child: MapboxMap(
+                            compassEnabled: false,
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                targetLat,
+                                targetLng,
+                              ),
+                              zoom: zoom,
+                            ),
+                            accessToken:
+                                "pk.eyJ1IjoiYXRpc2gtYWdyb21hdGUiLCJhIjoiY2w5NWE1M20zMXRkcjNucW03M2ZjYXY2NyJ9.PXTKE0nl-2xg-pOhCikRIw",
+                            styleString: MapboxStyles.SATELLITE_STREETS,
+                            onMapCreated: (controller) {
+                              mapController = controller;
+                            },
                           ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Landholder :",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "kishan",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Crop Name :",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "potato",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 100,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Farmers : Kishan, Raj",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      // Text(
-                                      //   "Kishan, Raj",
-                                      //   style: TextStyle(
-                                      //     fontSize: 18,
-                                      //   ),
-                                      // )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Growth Stage :",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "Vegatation",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 100,
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Landholder :",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "kishan",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Yield :",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "2000",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 38,
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            );
+                const SizedBox(height: 6),
+              ],
+            ));
           }
           return Scaffold(
             body: Column(
               children: [
                 TopBar(),
-                Expanded(
-                  child: const Center(
+                const Expanded(
+                  child: Center(
                     child: CircularProgressIndicator(),
                   ),
                 ),
