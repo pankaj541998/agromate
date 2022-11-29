@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +36,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
-
+  int no = 0;
   bool sort = true;
   List<Data>? filterData;
 
@@ -102,37 +103,38 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AlertDialog(
-                insetPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Add Application",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.cancel_outlined,
-                        color: Color(0xFF4E944F),
+          return Form(
+            key: _form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  insetPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Add Application",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    )
-                  ],
-                ),
-                content: Form(
-                  key: _form,
-                  child: Column(
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.cancel_outlined,
+                          color: Color(0xFF4E944F),
+                        ),
+                      )
+                    ],
+                  ),
+                  content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
@@ -150,9 +152,19 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 height: 15,
                               ),
                               SizedBox(
-                                  height: 40,
                                   width: 300,
                                   child: TextInputField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(25),
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp('[a-zA-Z]')),
+                                      ],
+                                      validator: (value) {
+                                        if (value != null && value.isEmpty) {
+                                          return "Please Enter Name";
+                                        }
+                                        return null;
+                                      },
                                       textEditingController:
                                           nameTextEditingController,
                                       hintText: "",
@@ -175,9 +187,19 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 height: 15,
                               ),
                               SizedBox(
-                                  height: 40,
                                   width: 300,
                                   child: TextInputField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(25),
+                                        FilteringTextInputFormatter.allow(
+                                            RegExp('[a-zA-Z]')),
+                                      ],
+                                      validator: (value) {
+                                        if (value != null && value.isEmpty) {
+                                          return "Please Enter Description";
+                                        }
+                                        return null;
+                                      },
                                       textEditingController:
                                           descriptionTextEditingController,
                                       hintText: "",
@@ -207,9 +229,18 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 height: 15,
                               ),
                               SizedBox(
-                                  height: 40,
                                   width: 300,
                                   child: TextInputField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(6),
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      validator: (value) {
+                                        if (value != null && value.isEmpty) {
+                                          return "Please Enter Application Cost";
+                                        }
+                                        return null;
+                                      },
                                       textEditingController:
                                           costTextEditingController,
                                       hintText: "",
@@ -232,9 +263,18 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 height: 15,
                               ),
                               SizedBox(
-                                  height: 40,
                                   width: 300,
                                   child: TextInputField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(6),
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      validator: (value) {
+                                        if (value != null && value.isEmpty) {
+                                          return "Please Enter Quantity";
+                                        }
+                                        return null;
+                                      },
                                       textEditingController:
                                           quantityTextEditingController,
                                       hintText: "",
@@ -264,9 +304,18 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 height: 15,
                               ),
                               SizedBox(
-                                  height: 40,
                                   width: 300,
                                   child: TextInputField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(6),
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      validator: (value) {
+                                        if (value != null && value.isEmpty) {
+                                          return "Please Enter Value";
+                                        }
+                                        return null;
+                                      },
                                       textEditingController:
                                           valueTextEditingController,
                                       hintText: "",
@@ -283,8 +332,17 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                         width: 298,
                         child: CustomElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
-                            addMode();
+                            final isValid = _form.currentState?.validate();
+
+                            if (isValid!) {
+                              Navigator.pop(context);
+                              addMode();
+                            } else {
+                              Flushbar(
+                                duration: const Duration(seconds: 2),
+                                message: "Please Enter All Details",
+                              ).show(context);
+                            }
                           },
                           title: "Submit",
                         ),
@@ -292,8 +350,8 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -607,7 +665,7 @@ class RowSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index]);
+      return recentFileDataRow(myData![index], index);
     } else {
       return null;
     }
@@ -623,11 +681,11 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(ModeData data) {
+DataRow recentFileDataRow(ModeData data, int index) {
+  int no = index + 1;
   return DataRow(
     cells: [
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.mode.toString()))),
       DataCell(Align(

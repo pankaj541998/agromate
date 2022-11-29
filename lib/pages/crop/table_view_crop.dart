@@ -3,8 +3,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/services/crop_porogram_api.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/models/cropPorgramModel.dart';
@@ -110,175 +112,236 @@ class _TableViewCropState extends State<TableViewCrop> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                contentPadding: EdgeInsets.only(top: 10.0),
-                content: Padding(
-                  padding:
-                      EdgeInsets.only(top: 0, left: 25, right: 25, bottom: 25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.cancel_outlined))
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Add New Crop program",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          Column(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Crop",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  SizedBox(
-                                      height: 40,
-                                      width: 300,
-                                      child: TextInputField(
-                                          textEditingController:
-                                              cropTextEditingController,
-                                          hintText: "",
-                                          validatorText: ""))
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Yield Per Hectare",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  SizedBox(
-                                      height: 40,
-                                      width: 300,
-                                      child: TextInputField(
-                                          textEditingController:
-                                              yieldTextEditingController,
-                                          hintText: "",
-                                          validatorText: ""))
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "plant Population",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  SizedBox(
-                                      height: 40,
-                                      width: 300,
-                                      child: TextInputField(
-                                          textEditingController:
-                                              populationTextEditingController,
-                                          hintText: "",
-                                          validatorText: "")),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Week",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 15,
-                                  ),
-                                  SizedBox(
-                                      height: 40,
-                                      width: 300,
-                                      child: TextInputField(
-                                          textEditingController:
-                                              weeksTextEditingController,
-                                          hintText: "",
-                                          validatorText: "")),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            width: 296,
-                            child: CustomElevatedButton(
-                              onPressed: () {
-                                addCropProgram();
-                                // Navigator.pop(context);
-                              },
-                              title: "Add",
+          return Form(
+            key: _form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  contentPadding: EdgeInsets.only(top: 10.0),
+                  content: Padding(
+                    padding: EdgeInsets.only(
+                        top: 0, left: 25, right: 25, bottom: 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(Icons.cancel_outlined))
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Add New Crop program",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Crop",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  25),
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[a-zA-Z]')),
+                                            ],
+                                            textEditingController:
+                                                cropTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter Crop Name";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: ""))
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Yield Per Hectare",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  6),
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            textEditingController:
+                                                yieldTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter Yield Per Hectare";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: ""))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Plant Population",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  6),
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            textEditingController:
+                                                populationTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter Plant Population";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: "")),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Week",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  6),
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            textEditingController:
+                                                weeksTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter Weeks";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: "")),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 28,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 296,
+                              child: CustomElevatedButton(
+                                onPressed: () {
+                                  final isValid =
+                                      _form.currentState?.validate();
+                                  if (isValid!) {
+                                    addCropProgram();
+                                  } else {
+                                    Flushbar(
+                                      duration: const Duration(seconds: 2),
+                                      message: "Please Enter All Details",
+                                    ).show(context);
+                                  }
+                                  // addCropProgram();
+                                  // Navigator.pop(context);
+                                },
+                                title: "Add",
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -385,33 +448,31 @@ class _TableViewCropState extends State<TableViewCrop> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF327C04),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 9),
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.add,
-                                color: Color(0xffffffff),
-                                size: 20,
-                              ),
-                              const SizedBox(width: 6),
-                              InkWell(
-                                onTap: () {
-                                  buildPin();
-                                },
-                                child: const Text(
+                      InkWell(
+                        onTap: () => buildPin(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF327C04),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 9),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  color: Color(0xffffffff),
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 6),
+                                const Text(
                                   'Add',
                                   style: TextStyle(
                                       fontSize: 16, color: Color(0xffffffff)),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -685,11 +746,11 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(ProgData data, context, index) {
+DataRow recentFileDataRow(ProgData data, context, int index) {
+  int no = index + 1;
   return DataRow(
     cells: [
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.crop.toString()))),
       DataCell(Align(
