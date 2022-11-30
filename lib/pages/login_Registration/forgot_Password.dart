@@ -69,9 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               flex: 1,
               child: Center(
                 child: Form(
-
-                  key: _email,
-
+                  key: _form,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,14 +95,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                       const SizedBox(
                         height: 10,
-
                       ),
                       const Text(
                         "Reset password with agromate",
                         style:
                             TextStyle(fontSize: 16, color: Color(0xFF505050)),
                       ),
-
                       const SizedBox(
                         height: 51,
                       ),
@@ -140,12 +136,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         child: CustomElevatedButton(
                           title: 'Send Mail',
                           onPressed: () {
-
-                            final isValid = _email.currentState?.validate();
-                            if (isValid!) {
-                              otpSendData();
-                            }
-
+                            otpSendData();
                           },
                         ),
                       ),

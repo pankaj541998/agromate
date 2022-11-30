@@ -16,9 +16,9 @@ class Registerapi {
     print(response.body);
     if (response.statusCode == 200) {
       print(response.body);
-      return null;
+      return response;
     } else {
-      throw (Exception("Search Error"));
+      return response;
     }
   }
 

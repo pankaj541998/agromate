@@ -30,7 +30,7 @@ class NotRegData {
   String? contactNumber;
   int? roleType;
   String? password;
-  String? otp;
+  int? otp;
   String? ipAddress;
   String? lastLoginTime;
   String? timezone;

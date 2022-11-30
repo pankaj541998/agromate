@@ -196,7 +196,7 @@ class _GrowthStageState extends State<GrowthStage> {
                           ),
                           validator: (value) {
                             if (value != null && value.isEmpty) {
-                              return "Password cannot be empty";
+                              return "Field cannot be  Empty";
                             }
                             return null;
                           },
