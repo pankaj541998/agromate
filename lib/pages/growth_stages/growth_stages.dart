@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
+import '../../models/cropPorgramModel.dart';
+import 'crop_program_model.dart';
+
 class GrowthStage extends StatefulWidget {
-  GrowthStage({
+  const GrowthStage({
     Key? key,
   }) : super(key: key);
 
@@ -16,6 +22,18 @@ class GrowthStage extends StatefulWidget {
 final crop = TextEditingController();
 
 class _GrowthStageState extends State<GrowthStage> {
+  Future<List<GrowthStageCropProgramModel>>
+      fetchGrowthStageCropPrograms() async {
+    final response = await http.Client()
+        .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
+    final parsed = jsonDecode(response.body)['data'];
+    List<GrowthStageCropProgramModel> mapped = parsed
+        .map<GrowthStageCropProgramModel>(
+            (json) => GrowthStageCropProgramModel.fromJson(json))
+        .toList();
+    return mapped;
+  }
+
   late String _selectedValue1;
   late String _selectedValue2;
   late String _selectedValue3;
@@ -412,25 +430,40 @@ class _GrowthStageState extends State<GrowthStage> {
               SizedBox(
                 height: 30,
               ),
-              GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: (1.3 / 1),
-                    crossAxisCount: 5,
-                    crossAxisSpacing: 25,
-                  ),
-                  itemCount: 10,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return InkWell(
-                      onTap: () {
-                        Get.toNamed('/growthstagedetails');
-                      },
-                      child: CropCard(
-                        cropname: "Onion",
-                        cropimage: "assets/images/onion.png",
-                      ),
-                    );
-                  }),
+              FutureBuilder<List<GrowthStageCropProgramModel>>(
+                  future: fetchGrowthStageCropPrograms(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      List<GrowthStageCropProgramModel> data = snapshot.data!;
+                      return GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: (1.3 / 1),
+                            crossAxisCount: 5,
+                            crossAxisSpacing: 25,
+                          ),
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            return InkWell(
+                              onTap: () {
+                                // Get.toNamed('/growthstagedetails');
+                                Navigator.pushNamed(
+                                  context,
+                                  '/growthstagedetails',
+                                  arguments: data.elementAt(index),
+                                );
+                              },
+                              child: CropCard(
+                                cropname: data.elementAt(index).cropName,
+                                cropimage: "assets/images/onion.png",
+                              ),
+                            );
+                          });
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  })
             ],
           ),
         ),
