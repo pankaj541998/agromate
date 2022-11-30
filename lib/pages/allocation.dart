@@ -181,7 +181,7 @@ class _AllocationState extends State<Allocation> {
                                             count: myData.length,
                                             context: context,
                                           ),
-                                          rowsPerPage: 9,
+                                          rowsPerPage: 7,
                                           columnSpacing: 0,
                                           headingRowHeight: 50,
                                           horizontalMargin: 0,

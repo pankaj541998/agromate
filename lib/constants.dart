@@ -35,5 +35,5 @@ class ApiConstant {
   static const String addFarm = base + 'farm';
   static const String updateFarm = base + 'update/farm';
 
-  static const String profileUpdateAPI = base + 'update_user';
+  static const String profileUpdateAPI = base + 'update_user_profile';
 }

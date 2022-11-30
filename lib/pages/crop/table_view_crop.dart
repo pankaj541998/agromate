@@ -77,7 +77,8 @@ Future<CropProgramModel> fetchCropProgram() async {
 class _TableViewCropState extends State<TableViewCrop> {
   TextEditingController controller = TextEditingController();
   bool sort = true;
-  List<Data>? filterData;
+  int no = 0;
+  List<ProgData>? filterData;
   final crop = TextEditingController();
   final plantPopulation = TextEditingController();
   final yield = TextEditingController();
@@ -86,16 +87,16 @@ class _TableViewCropState extends State<TableViewCrop> {
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
       if (ascending) {
-        filterData!.sort((a, b) => a.name!.compareTo(b.name!));
+        filterData!.sort((a, b) => a.id!.compareTo(b.id!));
       } else {
-        filterData!.sort((a, b) => b.name!.compareTo(a.name!));
+        filterData!.sort((a, b) => b.id!.compareTo(a.id!));
       }
     }
   }
 
   @override
   void initState() {
-    filterData = myData;
+    // filterData = myData;
     super.initState();
   }
 
@@ -483,10 +484,10 @@ class _TableViewCropState extends State<TableViewCrop> {
                           child: CupertinoSearchTextField(
                             onChanged: (value) {
                               setState(() {
-                                myData = filterData!
+                                myData = cropdata.data!
                                     .where(
                                       (element) =>
-                                          element.name!.toLowerCase().contains(
+                                          element.crop!.toLowerCase().contains(
                                                 value.toLowerCase(),
                                               ),
                                     )
@@ -508,7 +509,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                             ),
                             prefixInsets: const EdgeInsetsDirectional.fromSTEB(
                                 10, 8, 0, 8),
-                            placeholder: 'Search Celeb....',
+                            placeholder: 'Search',
                             suffixInsets: const EdgeInsetsDirectional.fromSTEB(
                                 0, 0, 15, 2),
                             placeholderStyle: TextStyle(
@@ -590,10 +591,10 @@ class _TableViewCropState extends State<TableViewCrop> {
                   sortAscending: sort,
                   source: RowSource(
                     context: context,
-                    myData: cropdata.data,
-                    count: cropdata.data!.length,
+                    myData: myData,
+                    count: myData.length,
                   ),
-                  rowsPerPage: 8,
+                  rowsPerPage: 7,
                   columnSpacing: 0,
                   headingRowHeight: 50,
                   horizontalMargin: 0,
@@ -912,393 +913,4 @@ class Data {
   });
 }
 
-List<Data> myData = [
-  Data(
-    id: '1',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {
-              Alert(context) {
-                return showDialog(
-                  context: context,
-                  builder: (context) => StatefulBuilder(
-                    builder: (context, setState) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AlertDialog(
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.cancel_outlined,
-                                  size: 60,
-                                  color: Color(0xFFFF0000),
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                const Text(
-                                  "Are You Sure?",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 40,
-                                      width: 160,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.white),
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                              side: const BorderSide(
-                                                color: Color(0xFF327C04),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            color: Color(0XFF000000),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    SizedBox(
-                                      height: 40,
-                                      width: 160,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(
-                                              const Color(0xFF327C04),
-                                            ),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ))),
-                                        onPressed: () {},
-                                        child: const Text('Delete'),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              }
-            },
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '2',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '3',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '4',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '5',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '6',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '7',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '8',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '9',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  Data(
-    id: '8',
-    name: "Buffer",
-    pp: '4BL01',
-    yph: 'Chemical',
-    weeks: 'Bladbuff - ml',
-    action: Row(
-      children: [
-        Expanded(
-          child: InkWell(
-            onTap: () => Get.toNamed('/view_details'),
-            child: const Icon(
-              Icons.remove_red_eye_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-        Expanded(
-          child: InkWell(
-            onTap: () {},
-            child: const Icon(
-              Icons.delete_outlined,
-              color: Color(0xff000000),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-];
+List<ProgData> myData = cropdata.data!;
