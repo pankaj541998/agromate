@@ -129,6 +129,31 @@ Future<String> updateUserAPI(Map<String, String> updata) async {
   }
 }
 
+Future<String> resendMail() async {
+  debugPrint("reached");
+  Map<String, String> updata = {
+    "user_id": '$id',
+  };
+  return await resendMailAPI(updata);
+}
+
+Future<String> resendMailAPI(Map<String, String> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse("https://agromate.website/laravel/api/user_remainder_mail"),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
+
 Future<int> deleteApi(int id) async {
   final http.Response response = await http.get(
     Uri.parse('https://agromate.website/laravel/api/user_delete/$id'),
@@ -791,6 +816,7 @@ buildPinAlert(context,
   lastNameTextEditingController.text = lastname;
   phoneTextEditingController.text = phone;
   roleTextEditingController.text = role;
+  debugPrint(role);
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -919,7 +945,8 @@ buildPinAlert(context,
                             width: 300,
                             child: DropdownBtn(
                               items: Roles.values.map((e) => e.name).toList(),
-                              hint: "Roles.values.elementAt(role).name",
+                              hint:
+                                  Roles.values.elementAt(int.parse(role)).name,
                             ),
                           ),
 /*
@@ -1018,7 +1045,7 @@ buildPinAlert(context,
   );
 }
 
-buildPinShowData(context) {
+buildPinShowData(context, id) {
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -1031,53 +1058,7 @@ buildPinShowData(context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Name :",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(width: 2),
-                      Text("Raj Shinde")
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Divider(
-                    height: 5,
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Subject :",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      SizedBox(width: 2),
-                      Text("Lorem ipsum dolar (Optional)")
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Divider(
-                    height: 5,
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
-                  SizedBox(height: 25),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
-                        Text(
-                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"),
-                        Text(
-                            "when an unknown printer took a galley of type and scrambled it to make a type"),
-                        Text("specimen book.")
-                      ]),
+                  Text("Resend Mail"),
                   SizedBox(
                     height: 30,
                   ),
@@ -1129,7 +1110,12 @@ buildPinShowData(context) {
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            debugPrint("separation");
+                            debugPrint(id.toString());
+                            resendMail();
+                            Navigator.pop(context);
+                          },
                           child: const Text('Send'),
                         ),
                       )
@@ -1592,7 +1578,10 @@ _buildactionsrequest(context, index) {
     children: [
       InkWell(
           onTap: () {
-            buildPinShowData(context);
+            int id = notregisteredusers.data!.elementAt(index).id!;
+            debugPrint(id.toString());
+
+            buildPinShowData(context, id);
           },
           child: Image.asset("assets/images/bell.png", height: 30)),
       // InkWell(
