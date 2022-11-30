@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/pages/growth_stages/crop_program_model.dart';
 import 'package:get/get.dart';
 
 class GrowthStageDetails extends StatefulWidget {
-  GrowthStageDetails({Key? key}) : super(key: key);
+  const GrowthStageDetails({Key? key}) : super(key: key);
 
   @override
   State<GrowthStageDetails> createState() => _GrowthStageDetailsState();
@@ -13,11 +13,16 @@ class GrowthStageDetails extends StatefulWidget {
 class _GrowthStageDetailsState extends State<GrowthStageDetails> {
   @override
   Widget build(BuildContext context) {
+    GrowthStageCropProgramModel? growthStageModel = ModalRoute.of(context)!
+        .settings
+        .arguments as GrowthStageCropProgramModel?;
+    debugPrint("GrowthStageDetails page $growthStageModel");
+
     return Scaffold(
         body: Column(
       children: [
         TopBar(),
-        SizedBox(
+        const SizedBox(
           height: 45,
         ),
         Padding(
