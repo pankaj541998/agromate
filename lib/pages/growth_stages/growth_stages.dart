@@ -7,6 +7,7 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 
+import '../../component/dropdown_btn.dart';
 import '../../models/cropPorgramModel.dart';
 import 'crop_program_model.dart';
 
@@ -35,7 +36,7 @@ class _GrowthStageState extends State<GrowthStage> {
   }
 
   late String _selectedValue1;
-  late String _selectedValue2;
+  String? _selectedValue2;
   late String _selectedValue3;
   List<String> listOfValue2 = [
     'Week 1',
@@ -54,11 +55,18 @@ class _GrowthStageState extends State<GrowthStage> {
     'carrot',
     'potato',
   ];
-  buildPin(context) {
+
+  buildPin(context, List<GrowthStageCropProgramModel> data) {
+    String selectedCropName = 'Select Crop';
+    String selectedStartWeek = 'Select Week';
+    String selectedEndWeek = 'Select Week';
+    var growthNameController = TextEditingController();
+    var descriptionController = TextEditingController();
+    int? selectedCropId;
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
+        builder: (context, setDdState) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -100,10 +108,65 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                              height: 40,
-                              width: 300,
-                              child: DropdownButtonFormField(
-                                hint: Text("Select Crop"),
+                                height: 40,
+                                width: 300,
+                                child: PopupMenuButton<String>(
+                                  offset: const Offset(0, 48),
+                                  itemBuilder: (BuildContext context) {
+                                    return data
+                                        .map((e) => PopupMenuItem<String>(
+                                              value: e.cropName,
+                                              child: Text(e.cropName),
+                                              onTap: () => setDdState(
+                                                () {
+                                                  selectedCropName = e.cropName;
+                                                  selectedCropId = e.id;
+                                                },
+                                              ),
+                                            ))
+                                        .toList();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              child: Text(selectedCropName)),
+                                          const Icon(
+                                            Icons.keyboard_arrow_down,
+                                            size: 19,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+
+                                // DropdownBtn(
+                                //   hint: selectedCropName,
+                                //   isEnabled: true,
+                                //   items: data
+                                //       .map((cropProgramModel) =>
+                                //           cropProgramModel.cropName)
+                                //       .toList(),
+                                //   onItemSelected: (value) {
+                                //     setDdState(
+                                //       () {
+                                //         selectedCropName = value;
+                                //       },
+                                //     );
+                                //   },
+                                // ),
+
+                                /*
+                              DropdownButtonFormField(
+                                hint: Text(_selectedValue2 ?? "Select Crop"),
                                 focusColor: Colors.white,
                                 isExpanded: true,
                                 decoration: InputDecoration(
@@ -128,22 +191,20 @@ class _GrowthStageState extends State<GrowthStage> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                                items: listOfValue1.map((String val) {
-                                  return DropdownMenuItem(
-                                    enabled: true,
-                                    value: val,
-                                    child: Text(
-                                      val,
-                                    ),
-                                  );
-                                }).toList(),
+                                items: data
+                                    .map((cropProgramModel) => DropdownMenuItem(
+                                        enabled: true,
+                                        value: cropProgramModel.cropName,
+                                        child: Text(cropProgramModel.cropName)))
+                                    .toList(),
                                 onChanged: (value) {
                                   setState(() {
                                     _selectedValue2;
                                   });
                                 },
                               ),
-                            ),
+                            */
+                                ),
                           ],
                         ),
                         SizedBox(
@@ -165,7 +226,10 @@ class _GrowthStageState extends State<GrowthStage> {
                                 height: 40,
                                 width: 300,
                                 child: TextInputField(
-                                    hintText: "", validatorText: ""))
+                                    textEditingController: growthNameController,
+                                    outlineColor: Colors.grey,
+                                    hintText: "",
+                                    validatorText: ""))
                           ],
                         ),
                       ],
@@ -184,6 +248,7 @@ class _GrowthStageState extends State<GrowthStage> {
                         height: 100,
                         width: 629,
                         child: TextFormField(
+                          controller: descriptionController,
                           maxLines: 5,
                           cursorColor: Color(0xFF327C04),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -192,13 +257,11 @@ class _GrowthStageState extends State<GrowthStage> {
                             fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFF327C04)),
+                              borderSide: const BorderSide(color: Colors.grey),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFF327C04)),
+                              borderSide: const BorderSide(color: Colors.grey),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -237,9 +300,17 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                              height: 40,
-                              width: 300,
-                              child: DropdownButtonFormField(
+                                height: 40,
+                                width: 300,
+                                child: DropdownBtn(
+                                    items: data
+                                        .where((element) =>
+                                            element.id == selectedCropId)
+                                        .map((e) => e.weeks)
+                                        .toList(),
+                                    hint: selectedStartWeek)
+                                /*
+                              DropdownButtonFormField(
                                 hint: Text("Select Week"),
                                 focusColor: Colors.white,
                                 isExpanded: true,
@@ -280,7 +351,8 @@ class _GrowthStageState extends State<GrowthStage> {
                                   });
                                 },
                               ),
-                            ),
+                            */
+                                ),
                           ],
                         ),
                         SizedBox(
@@ -299,9 +371,12 @@ class _GrowthStageState extends State<GrowthStage> {
                               height: 15,
                             ),
                             SizedBox(
-                              height: 40,
-                              width: 300,
-                              child: DropdownButtonFormField(
+                                height: 40,
+                                width: 300,
+                                child: DropdownBtn(
+                                    items: [], hint: selectedEndWeek)
+/*
+                              DropdownButtonFormField(
                                 hint: Text("Select Week"),
                                 focusColor: Colors.white,
                                 isExpanded: true,
@@ -342,7 +417,8 @@ class _GrowthStageState extends State<GrowthStage> {
                                   });
                                 },
                               ),
-                            ),
+                            */
+                                ),
                           ],
                         ),
                       ],
@@ -382,91 +458,92 @@ class _GrowthStageState extends State<GrowthStage> {
       children: [
         TopBar(),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 50, right: 50, top: 26, bottom: 21),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Crop",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(
-                    height: 30,
-                    width: 92,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          buildPin(context);
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Color(0xFF327C04))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+            padding:
+                const EdgeInsets.only(left: 50, right: 50, top: 26, bottom: 21),
+            child: FutureBuilder<List<GrowthStageCropProgramModel>>(
+                future: fetchGrowthStageCropPrograms(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    List<GrowthStageCropProgramModel> data = snapshot.data!;
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 19,
+                            Text(
+                              "Crop",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
                             ),
                             SizedBox(
-                              width: 5,
+                              height: 30,
+                              width: 92,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    buildPin(context, data);
+                                  },
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Color(0xFF327C04))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 19,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        'ADD',
+                                        style: TextStyle(fontSize: 16),
+                                      )
+                                    ],
+                                  )),
                             ),
-                            Text(
-                              'ADD',
-                              style: TextStyle(fontSize: 16),
-                            )
                           ],
-                        )),
-                  ),
-                ],
-              ),
-              Divider(
-                thickness: 1,
-                color: Color(0xFFD6D6D6),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              FutureBuilder<List<GrowthStageCropProgramModel>>(
-                  future: fetchGrowthStageCropPrograms(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      List<GrowthStageCropProgramModel> data = snapshot.data!;
-                      return GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: (1.3 / 1),
-                            crossAxisCount: 5,
-                            crossAxisSpacing: 25,
-                          ),
-                          itemCount: data.length,
-                          itemBuilder: (BuildContext ctx, index) {
-                            return InkWell(
-                              onTap: () {
-                                // Get.toNamed('/growthstagedetails');
-                                Navigator.pushNamed(
-                                  context,
-                                  '/growthstagedetails',
-                                  arguments: data.elementAt(index),
-                                );
-                              },
-                              child: CropCard(
-                                cropname: data.elementAt(index).cropName,
-                                cropimage: "assets/images/onion.png",
-                              ),
-                            );
-                          });
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  })
-            ],
-          ),
-        ),
+                        ),
+                        Divider(
+                          thickness: 1,
+                          color: Color(0xFFD6D6D6),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: (1.3 / 1),
+                              crossAxisCount: 5,
+                              crossAxisSpacing: 25,
+                            ),
+                            itemCount: data.length,
+                            itemBuilder: (BuildContext ctx, index) {
+                              return InkWell(
+                                onTap: () {
+                                  // Get.toNamed('/growthstagedetails');
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/growthstagedetails',
+                                    arguments: data.elementAt(index),
+                                  );
+                                },
+                                child: CropCard(
+                                  cropname: data.elementAt(index).cropName,
+                                  cropimage: "assets/images/onion.png",
+                                ),
+                              );
+                            })
+                      ],
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                })),
       ],
     ));
   }

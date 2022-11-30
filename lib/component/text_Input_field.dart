@@ -11,6 +11,7 @@ class TextInputField extends StatefulWidget {
     this.leadingIcon,
     this.readonly = false,
     this.isInputPassword = false,
+    this.outlineColor = const Color(0xFF327C04),
   }) : super(key: key);
 
   final dynamic validator;
@@ -21,6 +22,7 @@ class TextInputField extends StatefulWidget {
   final bool isInputPassword;
   final bool readonly;
   final dynamic inputFormatters;
+  final Color outlineColor;
 
   @override
   State<TextInputField> createState() => _TextInputFieldState();
@@ -51,11 +53,11 @@ class _TextInputFieldState extends State<TextInputField> {
             fillColor: Colors.white,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Color(0xFF327C04)),
+              borderSide: BorderSide(color: widget.outlineColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Color(0xFF327C04)),
+              borderSide: BorderSide(color: widget.outlineColor),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
