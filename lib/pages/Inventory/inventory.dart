@@ -44,7 +44,7 @@ class _InventoryState extends State<Inventory> {
                   ),
                   SizedBox(height: screenSize.height * 0.03),
                   SizedBox(
-                    height: screenSize.height * 0.7,
+                    height: screenSize.height * 0.75,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
@@ -70,7 +70,7 @@ class _InventoryState extends State<Inventory> {
                                         children: [
                                           const Image(
                                             image: AssetImage(
-                                                'image/calendar-svgrepo-com.png'),
+                                                'images/calendar-svgrepo-com.png'),
                                             height: 80,
                                           ),
                                           SizedBox(height: 20),
@@ -113,7 +113,7 @@ class _InventoryState extends State<Inventory> {
                                         children: [
                                           const Image(
                                             image: AssetImage(
-                                                'image/managament-manager-organize-svgrepo-com.png'),
+                                                'images/managament-manager-organize-svgrepo-com.png'),
                                             height: 80,
                                           ),
                                           SizedBox(height: 20),
@@ -156,7 +156,7 @@ class _InventoryState extends State<Inventory> {
                                         children: [
                                           const Image(
                                             image: AssetImage(
-                                                'image/stock-svgrepo-com.png'),
+                                                'images/stock-svgrepo-com.png'),
                                             height: 80,
                                           ),
                                           SizedBox(height: 20),
@@ -205,7 +205,7 @@ class _InventoryState extends State<Inventory> {
                                         children: [
                                           const Image(
                                             image: AssetImage(
-                                                'image/warehouse-svgrepo-com.png'),
+                                                'images/warehouse-svgrepo-com.png'),
                                             height: 80,
                                           ),
                                           SizedBox(height: 20),
@@ -248,7 +248,7 @@ class _InventoryState extends State<Inventory> {
                                         children: [
                                           const Image(
                                             image: AssetImage(
-                                                'image/tractor-svgrepo-com.png'),
+                                                'images/tractor-svgrepo-com.png'),
                                             height: 80,
                                           ),
                                           SizedBox(height: 20),

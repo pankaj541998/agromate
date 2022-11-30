@@ -38,13 +38,14 @@ class _RegisterState extends State<Register> {
     if (isValid!) {
       http.Response response = await Registerapi().editDataByUsername(data);
 
-      final responseMap = jsonDecode(response.body);
-      if (response.statusCode == 202) {
+      Map responseMap = jsonDecode(response.body);
+      if (response.statusCode == 200) {
         Get.toNamed('/thankyou');
       } else {
+        print("else entered");
         Flushbar(
           duration: const Duration(seconds: 2),
-          message: responseMap.values.first,
+          message: "Email ID does not exist",
         ).show(context);
       }
     } else {
@@ -214,15 +215,15 @@ class _RegisterState extends State<Register> {
                             FilteringTextInputFormatter.allow(RegExp('[0-9]')),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextInputField(
-                          readonly: true,
-                          leadingIcon: Image.asset("assets/images/role.png"),
-                          hintText: 'Role',
-                          validatorText: '',
-                        ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
+                        // TextInputField(
+                        //   readonly: true,
+                        //   leadingIcon: Image.asset("assets/images/role.png"),
+                        //   hintText: 'Role',
+                        //   validatorText: '',
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),

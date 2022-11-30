@@ -177,7 +177,6 @@ class _AllocationState extends State<Allocation> {
                                           sortColumnIndex: 0,
                                           // sortAscending: sort,
                                           source: RowSource(
-                                            setState: setState,
                                             myData: myData,
                                             count: myData.length,
                                             context: context,
@@ -371,26 +370,21 @@ class _AllocationState extends State<Allocation> {
   }
 }
 
-_buildusertable(screenSize, context, Function() setState) {}
+_buildusertable(screenSize, context) {}
 
-datatable(screenSize, context, setState) {}
+datatable(screenSize, context) {}
 
 class RowSource extends DataTableSource {
   var myData;
   final count;
-  final setState;
   BuildContext context;
 
-  RowSource(
-      {required this.myData,
-      required this.count,
-      required this.context,
-      required this.setState});
+  RowSource({required this.myData, required this.count, required this.context});
 
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index], context, setState);
+      return recentFileDataRow(myData![index], context);
     } else {
       return null;
     }
@@ -406,7 +400,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, context, setState) {
+DataRow recentFileDataRow(var data, context) {
   return DataRow(
     cells: [
       DataCell(Align(
@@ -424,14 +418,13 @@ DataRow recentFileDataRow(var data, context, setState) {
           alignment: Alignment.center, child: Text(data.email.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.role.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: _buildactions(context, setState))),
+      DataCell(
+          Align(alignment: Alignment.center, child: _buildactions(context))),
     ],
   );
 }
 
-_buildactions(context, setState) {
+_buildactions(context) {
   bool switchit = true;
 
   return Row(
@@ -448,8 +441,7 @@ _buildactions(context, setState) {
         inactiveColor: Colors.grey,
         value: switchit,
         onToggle: (val) {
-          switchit = val;
-          setState();
+          switchit = !val;
         },
       ),
       SizedBox(

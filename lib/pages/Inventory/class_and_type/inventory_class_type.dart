@@ -263,7 +263,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
         children: [
           TopBar(),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
@@ -378,13 +378,13 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 7),
                 Divider(
                   height: 5,
                   color: Colors.grey,
                   thickness: 1,
                 ),
-                SizedBox(height: screenSize.height * 0.03),
+                SizedBox(height: screenSize.height * 0.02),
                 datatable(screenSize),
               ],
             ),
@@ -397,156 +397,154 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
 
 datatable(screenSize) {
   return SizedBox(
-    height: screenSize.height * 0.7,
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: PaginatedDataTable(
-              sortColumnIndex: 0,
-              // sortAscending: sort,
-              source: RowSource(
-                myData: myData,
-                count: myData.length,
-              ),
-              rowsPerPage: 9,
-              columnSpacing: 0,
-              headingRowHeight: 50,
-              horizontalMargin: 0,
-              columns: [
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "ID",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Stock Code",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Item Description",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Unit Cost",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Inventory Cost",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Quantity",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Expanded(
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: const Color(0xff327C04).withOpacity(0.11),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Value",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+    height: screenSize.height * 0.72,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: PaginatedDataTable(
+            sortColumnIndex: 0,
+            // sortAscending: sort,
+            source: RowSource(
+              myData: myData,
+              count: myData.length,
             ),
+            rowsPerPage: 7,
+            columnSpacing: 0,
+            headingRowHeight: 50,
+            horizontalMargin: 0,
+            columns: [
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "ID",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Stock Code",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Item Description",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Unit Cost",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Inventory Cost",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Quantity",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xff327C04).withOpacity(0.11),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        "Value",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }

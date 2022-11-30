@@ -315,330 +315,315 @@ class _ViewDetailsState extends State<ViewDetails> {
     return SizedBox(
       height: screenSize.height * 0.6,
       child: SingleChildScrollView(
-        child: Dismissible(
-          onDismissed: (direction) {},
-          key: ValueKey(cropdata),
-          child: Container(
-            padding: const EdgeInsets.all(0.0),
-            decoration: const BoxDecoration(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: PaginatedDataTable(
-                    sortColumnIndex: 0,
-                    sortAscending: sort,
-                    source: RowSource(
-                      weeks: int.parse(weeks),
-                      myData: myData,
-                      count: myData.length,
-                    ),
-                    rowsPerPage: 8,
-                    columnSpacing: 0,
-                    headingRowHeight: 50,
-                    horizontalMargin: 0,
-                    columns: [
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Inventory Type",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Stock Code",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Inventory Class",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Description",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Unit",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Stock Level",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Required",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Pre PI",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Expanded(
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: const Color(0xff327C04).withOpacity(0.11),
-                            ),
-                            child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "PI",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      for (int length = 1;
-                          length <= int.parse(widget.weeks!);
-                          length++)
-                        DataColumn(
-                          label: Expanded(
-                            child: Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color:
-                                    const Color(0xff327C04).withOpacity(0.11),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "W${length}",
-                                  // "w",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                      // DataColumn(
-                      //   label: Expanded(
-                      //     child: Container(
-                      //       height: 50,
-                      //       decoration: BoxDecoration(
-                      //         color: const Color(0xff327C04).withOpacity(0.11),
-                      //       ),
-                      //       child: const Center(
-                      //         child: Text(
-                      //           "W2",
-                      //           textAlign: TextAlign.center,
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.w500, fontSize: 14),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // DataColumn(
-                      //   label: Expanded(
-                      //     child: Container(
-                      //       height: 50,
-                      //       decoration: BoxDecoration(
-                      //         color: const Color(0xff327C04).withOpacity(0.11),
-                      //       ),
-                      //       child: const Center(
-                      //         child: Text(
-                      //           "W3",
-                      //           textAlign: TextAlign.center,
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.w500, fontSize: 14),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // DataColumn(
-                      //   label: Expanded(
-                      //     child: Container(
-                      //       height: 50,
-                      //       decoration: BoxDecoration(
-                      //         color: const Color(0xff327C04).withOpacity(0.11),
-                      //       ),
-                      //       child: const Center(
-                      //         child: Text(
-                      //           "W4",
-                      //           textAlign: TextAlign.center,
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.w500, fontSize: 14),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // DataColumn(
-                      //   label: Expanded(
-                      //     child: Container(
-                      //       height: 50,
-                      //       decoration: BoxDecoration(
-                      //         color: const Color(0xff327C04).withOpacity(0.11),
-                      //       ),
-                      //       child: const Center(
-                      //         child: Text(
-                      //           "W5",
-                      //           textAlign: TextAlign.center,
-                      //           style: TextStyle(
-                      //               fontWeight: FontWeight.w500, fontSize: 14),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
+        child: Container(
+          padding: const EdgeInsets.all(0.0),
+          decoration: const BoxDecoration(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: PaginatedDataTable(
+                  sortColumnIndex: 0,
+                  sortAscending: sort,
+                  source: RowSource(
+                    weeks: int.parse(weeks),
+                    myData: myData,
+                    count: myData.length,
                   ),
+                  rowsPerPage: 8,
+                  columnSpacing: 0,
+                  headingRowHeight: 50,
+                  horizontalMargin: 0,
+                  columns: [
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Inventory Type",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Stock Code",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Inventory Class",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Description",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Unit",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Stock Level",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Required",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "Pre PI",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Expanded(
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff327C04).withOpacity(0.11),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "PI",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    for (int length = 1;
+                        length <= int.parse(widget.weeks!);
+                        length++)
+                      DataColumn(
+                        label: Expanded(
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff327C04).withOpacity(0.11),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "W${length}",
+                                // "w",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    // DataColumn(
+                    //   label: Expanded(
+                    //     child: Container(
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xff327C04).withOpacity(0.11),
+                    //       ),
+                    //       child: const Center(
+                    //         child: Text(
+                    //           "W2",
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.w500, fontSize: 14),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // DataColumn(
+                    //   label: Expanded(
+                    //     child: Container(
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xff327C04).withOpacity(0.11),
+                    //       ),
+                    //       child: const Center(
+                    //         child: Text(
+                    //           "W3",
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.w500, fontSize: 14),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // DataColumn(
+                    //   label: Expanded(
+                    //     child: Container(
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xff327C04).withOpacity(0.11),
+                    //       ),
+                    //       child: const Center(
+                    //         child: Text(
+                    //           "W4",
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.w500, fontSize: 14),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // DataColumn(
+                    //   label: Expanded(
+                    //     child: Container(
+                    //       height: 50,
+                    //       decoration: BoxDecoration(
+                    //         color: const Color(0xff327C04).withOpacity(0.11),
+                    //       ),
+                    //       child: const Center(
+                    //         child: Text(
+                    //           "W5",
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.w500, fontSize: 14),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/services/constants.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/models/cropPorgramModel.dart';
@@ -22,9 +23,13 @@ late NotRegisteredUserModel notregisteredusers;
 final email = TextEditingController();
 final useremailTextEditingController = TextEditingController();
 final roleTextEditingController = TextEditingController();
+final firstNameTextEditingController = TextEditingController();
+final lastNameTextEditingController = TextEditingController();
+final phoneTextEditingController = TextEditingController();
 // final email = TextEditingController();
 String role = 'Admin';
 int roleIndex = 0;
+int id = 0;
 int no = 0;
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -95,9 +100,38 @@ Future<String> addNewUser(Map<String, String> updata) async {
   }
 }
 
-Future<int> deleteClassApi(int id) async {
-  final http.Response response = await http.delete(
-    Uri.parse('https://agromate.website/laravel/api/delete/$id/class'),
+Future<String> updateUser() async {
+  debugPrint("reached");
+  Map<String, String> updata = {
+    "first_name": firstNameTextEditingController.text.toString(),
+    "last_name": lastNameTextEditingController.text.toString(),
+    "user_id": '$id',
+    "phone": phoneTextEditingController.text.toString(),
+    "role_type": '$roleIndex'
+  };
+  return await updateUserAPI(updata);
+}
+
+Future<String> updateUserAPI(Map<String, String> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse("https://agromate.website/laravel/api/update_user"),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
+
+Future<int> deleteApi(int id) async {
+  final http.Response response = await http.get(
+    Uri.parse('https://agromate.website/laravel/api/user_delete/$id'),
   );
   return response.statusCode;
 }
@@ -658,6 +692,7 @@ datatable(screenSize, context) {
 class RowSource extends DataTableSource {
   var myData;
   final count;
+  String? role;
   BuildContext context;
   RowSource({
     required this.myData,
@@ -721,25 +756,41 @@ _buildactions(context, data, index) {
           onTap: () {
             // debugPrint(registeredUserModel.data?.elementAt(index).userName);
             debugPrint("pressed $index");
-            String email = registeredusers.data!.elementAt(index).email!;
-            int roleIndex = registeredusers.data!.elementAt(index).roleType!;
-            String role = Roles.values.elementAt(roleIndex).name;
-            buildPinAlert(context, email: email, role: role);
+            String firstname =
+                registeredusers.data!.elementAt(index).firstName!;
+            String lastname = registeredusers.data!.elementAt(index).lastName!;
+            String phone =
+                registeredusers.data!.elementAt(index).contactNumber!;
+            String role =
+                registeredusers.data!.elementAt(index).roleType.toString();
+            debugPrint(role);
+            buildPinAlert(context,
+                firstname: firstname,
+                lastname: lastname,
+                phone: phone,
+                role: role);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
           onTap: () {
-            print("pressed");
-            customAlert(context);
+            int id = registeredusers.data!.elementAt(index).id!;
+            debugPrint(id.toString());
+            customAlert(context, id);
           },
           child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
 
-buildPinAlert(context, {required String email, required String role}) {
+buildPinAlert(context,
+    {required String firstname,
+    required String lastname,
+    required String phone,
+    required String role}) {
+  firstNameTextEditingController.text = firstname;
+  lastNameTextEditingController.text = lastname;
+  phoneTextEditingController.text = phone;
   roleTextEditingController.text = role;
-  useremailTextEditingController.text = email;
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -777,50 +828,157 @@ buildPinAlert(context, {required String email, required String role}) {
                   SizedBox(
                     width: 35,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        "Enter Email Address",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Enter First Name",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                              width: 300,
+                              child: TextInputField(
+                                  textEditingController:
+                                      firstNameTextEditingController,
+                                  hintText: "",
+                                  validatorText: ""))
+                        ],
                       ),
-                      SizedBox(
-                        height: 15,
+                      SizedBox(width: 18),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Enter Last Name",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                              width: 300,
+                              child: TextInputField(
+                                  textEditingController:
+                                      lastNameTextEditingController,
+                                  hintText: "",
+                                  validatorText: ""))
+                        ],
                       ),
-                      SizedBox(
-                          height: 40,
-                          width: 300,
-                          child: TextInputField(
-                              textEditingController:
-                                  useremailTextEditingController,
-                              hintText: "",
-                              validatorText: ""))
                     ],
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        "Role",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Phone Number",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                              width: 300,
+                              child: TextInputField(
+                                  textEditingController:
+                                      phoneTextEditingController,
+                                  hintText: "",
+                                  validatorText: ""))
+                        ],
                       ),
-                      SizedBox(
-                        height: 15,
+                      SizedBox(width: 18),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Role",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: 300,
+                            child: DropdownBtn(
+                              items: Roles.values.map((e) => e.name).toList(),
+                              hint: "Roles.values.elementAt(role).name",
+                            ),
+                          ),
+/*
+                          SizedBox(
+                            height: 50,
+                            width: 300,
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return 
+                                
+                                PopupMenuButton<int>(
+                                  offset: const Offset(1, 0),
+                                  child: Container(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 3),
+                                    width: 250,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.green[800]!),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              child: Text(Roles.values
+                                                  .elementAt(int.parse(role))
+                                                  .name)),
+                                          const Icon(Icons.arrow_drop_down)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  itemBuilder: (BuildContext context) =>
+                                      Roles.values
+                                          .map(
+                                            (e) => PopupMenuItem<int>(
+                                              value: e.index,
+                                              child: Text(e.name),
+                                              onTap: () =>
+                                                  setState(() => role = e.name),
+                                            ),
+                                          )
+                                          .toList(),
+                                  onSelected: (value) {
+                                    roleIndex = value;
+                                    debugPrint('role index: $roleIndex');
+                                  },
+                                );
+                              
+                              },
+                            ),
+
+                            // TextInputField(hintText: "", validatorText: "")
+                          ),
+                        */
+                        ],
                       ),
-                      SizedBox(
-                          height: 40,
-                          width: 300,
-                          child: TextInputField(
-                              textEditingController: roleTextEditingController,
-                              hintText: "",
-                              validatorText: ""))
                     ],
                   ),
                   SizedBox(
@@ -834,6 +992,15 @@ buildPinAlert(context, {required String email, required String role}) {
                         width: 296,
                         child: CustomElevatedButton(
                           onPressed: () {
+                            debugPrint(
+                                firstNameTextEditingController.text.toString());
+                            debugPrint(
+                                lastNameTextEditingController.text.toString());
+                            debugPrint(
+                                phoneTextEditingController.text.toString());
+                            debugPrint(
+                                roleTextEditingController.text.toString());
+                            updateUser();
                             Navigator.pop(context);
                           },
                           title: "Update",
@@ -978,7 +1145,7 @@ buildPinShowData(context) {
   );
 }
 
-customAlert(context) {
+customAlert(context, id) {
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -1053,7 +1220,12 @@ customAlert(context) {
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            setState(() {
+                              deleteApi(id).then((value) =>
+                                  Navigator.pushNamed(context, '/user'));
+                            });
+                          },
                           child: const Text('Delete'),
                         ),
                       )
@@ -1419,23 +1591,25 @@ _buildactionsrequest(context, index) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       InkWell(
-          onTap: () => buildPinShowData(context),
+          onTap: () {
+            buildPinShowData(context);
+          },
           child: Image.asset("assets/images/bell.png", height: 30)),
-      InkWell(
-          onTap: () {
-            print("pressed");
-            String email = notregisteredusers.data!.elementAt(index).email!;
-            int roleIndex = notregisteredusers.data!.elementAt(index).roleType!;
-            String role = Roles.values.elementAt(roleIndex).name;
-            buildPinAlert(context, email: email, role: role);
-          },
-          child: Image.asset("assets/images/edit.png", height: 30)),
-      InkWell(
-          onTap: () {
-            print("pressed");
-            customAlert(context);
-          },
-          child: Image.asset("assets/images/delete.png", height: 30)),
+      // InkWell(
+      //     onTap: () {
+      //       print("pressed");
+      //       String email = notregisteredusers.data!.elementAt(index).email!;
+      //       int roleIndex = notregisteredusers.data!.elementAt(index).roleType!;
+      //       String role = Roles.values.elementAt(roleIndex).name;
+      //       buildPinAlert(context, email: email, role: role);
+      //     },
+      //     child: Image.asset("assets/images/edit.png", height: 30)),
+      // InkWell(
+      //     onTap: () {
+      //       print("pressed");
+      //       customAlert(context);
+      //     },
+      //     child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
