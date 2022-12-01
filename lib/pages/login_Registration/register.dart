@@ -45,7 +45,7 @@ class _RegisterState extends State<Register> {
         print("else entered");
         Flushbar(
           duration: const Duration(seconds: 2),
-          message: "Email ID does not exist",
+          message: responseMap.values.first,
         ).show(context);
       }
     } else {
