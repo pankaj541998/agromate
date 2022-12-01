@@ -256,7 +256,14 @@ class _CropState extends State<Crop> {
                                   final isValid =
                                       _form.currentState?.validate();
                                   if (isValid!) {
-                                    addCropProgram();
+                                    addCropProgram().then((value) =>
+                                        Navigator.pushNamed(
+                                            context, '/grid_view_crop'));
+                                    Flushbar(
+                                      duration: const Duration(seconds: 2),
+                                      message:
+                                          "Crop Program Added Successfully",
+                                    ).show(context);
                                   } else {
                                     Flushbar(
                                       duration: const Duration(seconds: 2),

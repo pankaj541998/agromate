@@ -448,7 +448,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                   prefixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
+                                  placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),

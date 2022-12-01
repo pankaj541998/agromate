@@ -130,11 +130,9 @@ Future<String> updateUserAPI(Map<String, String> updata) async {
   }
 }
 
-Future<String> resendMail() async {
+Future<String> resendMail(id) async {
   debugPrint("reached");
-  Map<String, String> updata = {
-    "user_id": '$id',
-  };
+  Map<String, String> updata = {"user_id": id};
   return await resendMailAPI(updata);
 }
 
@@ -526,9 +524,13 @@ buildPin(context) {
                               if (isValid!) {
                                 print(email);
                                 print(roleIndex);
-                                addUser();
-                                Navigator.pop(context);
-                                Get.toNamed("/user");
+                                Flushbar(
+                                  duration: const Duration(seconds: 2),
+                                  message: "New User Added Successfully",
+                                ).show(context);
+
+                                addUser().then((value) =>
+                                    Navigator.pushNamed(context, '/user'));
                               } else {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),
@@ -968,63 +970,18 @@ buildPinAlert(context,
                               items: Roles.values.map((e) => e.name).toList(),
                               hint:
                                   Roles.values.elementAt(int.parse(role)).name,
-                            ),
-                          ),
-/*
-                          SizedBox(
-                            height: 50,
-                            width: 300,
-                            child: StatefulBuilder(
-                              builder: (context, setState) {
-                                return 
-                                
-                                PopupMenuButton<int>(
-                                  offset: const Offset(1, 0),
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 3),
-                                    width: 250,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.green[800]!),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(Roles.values
-                                                  .elementAt(int.parse(role))
-                                                  .name)),
-                                          const Icon(Icons.arrow_drop_down)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  itemBuilder: (BuildContext context) =>
-                                      Roles.values
-                                          .map(
-                                            (e) => PopupMenuItem<int>(
-                                              value: e.index,
-                                              child: Text(e.name),
-                                              onTap: () =>
-                                                  setState(() => role = e.name),
-                                            ),
-                                          )
-                                          .toList(),
-                                  onSelected: (value) {
-                                    roleIndex = value;
-                                    debugPrint('role index: $roleIndex');
-                                  },
-                                );
-                              
+                              onItemSelected: (value) {
+                                debugPrint(value);
+                                roleTextEditingController.text = Roles.values
+                                    .singleWhere(
+                                        (element) => element.name == value)
+                                    .index
+                                    .toString();
+                                debugPrint(
+                                    roleTextEditingController.toString());
                               },
                             ),
-
-                            // TextInputField(hintText: "", validatorText: "")
                           ),
-                        */
                         ],
                       ),
                     ],
@@ -1049,7 +1006,8 @@ buildPinAlert(context,
                             debugPrint(
                                 roleTextEditingController.text.toString());
                             setState(() {
-                              updateUser(id.toString(), roleIndex.toString())
+                              updateUser(id.toString(),
+                                      roleTextEditingController.text.toString())
                                   .then((value) =>
                                       Navigator.pushNamed(context, '/user'));
                             });
@@ -1139,7 +1097,7 @@ buildPinShowData(context, id) {
                           onPressed: () {
                             debugPrint("separation");
                             debugPrint(id.toString());
-                            resendMail();
+                            resendMail(id.toString());
                             Navigator.pop(context);
                           },
                           child: const Text('Send'),

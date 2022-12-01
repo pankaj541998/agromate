@@ -322,7 +322,11 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   final isValid =
                                       _form.currentState?.validate();
                                   if (isValid!) {
-                                    addCropProgram();
+                                    setState(() {
+                                      addCropProgram().then((value) =>
+                                          Navigator.pushNamed(
+                                              context, '/table_view_crop'));
+                                    });
                                   } else {
                                     Flushbar(
                                       duration: const Duration(seconds: 2),
@@ -791,15 +795,6 @@ _buildactions(context, index) {
             );
           },
           child: Container(child: Icon(Icons.remove_red_eye_outlined))),
-      SizedBox(
-        width: 10,
-      ),
-      InkWell(
-          onTap: () {
-            print("pressed");
-            customAlert(context);
-          },
-          child: Image.asset("assets/images/delete.png", height: 30)),
     ],
   );
 }
@@ -879,7 +874,9 @@ customAlert(context) {
                                   RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                          },
                           child: const Text('Delete'),
                         ),
                       )

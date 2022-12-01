@@ -141,37 +141,8 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         width: 500,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              children: [
-                                Theme(
-                                  data: ThemeData(
-                                      unselectedWidgetColor:
-                                          const Color(0xFF4E944F)),
-                                  child: Checkbox(
-                                    activeColor: const Color(0xFF4E944F),
-                                    checkColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5.0))),
-                                    value: check,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        check = value!;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const Text(
-                                  "Remember Me",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 10),
                             TextButton(
                               onPressed: () {
                                 Get.toNamed('/forgotPassword');
