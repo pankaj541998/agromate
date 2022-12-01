@@ -24,6 +24,7 @@ final classTextEditingController = TextEditingController();
 final classdescriptionTextEditingController = TextEditingController();
 final typeTextEditingController = TextEditingController();
 final typedescriptionTextEditingController = TextEditingController();
+final controller = TextEditingController();
 
 class InventoryClassType extends StatefulWidget {
   InventoryClassType({Key? key, this.initial}) : super(key: key);
@@ -418,20 +419,19 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                 width: 250,
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
+                                    setState(() {
+                                      myData = classdata.data!
+                                          .where(
+                                            (element) => element.iclass!
+                                                .toLowerCase()
+                                                .contains(
+                                                  value.toLowerCase(),
+                                                ),
+                                          )
+                                          .toList();
+                                    });
                                   },
-                                  // controller: controller,
+                                  controller: controller,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: const Color(0xFF327C04),
@@ -626,8 +626,8 @@ datatable(screenSize, context) {
                 sortColumnIndex: 0,
                 // sortAscending: sort,
                 source: RowSource(
-                  myData: classdata.data,
-                  count: classdata.data!.length,
+                  myData: myData,
+                  count: myData.length,
                   context: context,
                 ),
                 rowsPerPage: 9,
@@ -841,8 +841,8 @@ datatablerequest(screenSize, BuildContext context) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSourceRequest(
-                  myDataRequest: typedata.data,
-                  count: typedata.data!.length,
+                  myDataRequest: myData,
+                  count: myData.length,
                   context: context),
               rowsPerPage: 9,
               columnSpacing: 0,
@@ -1704,3 +1704,5 @@ buildPinType(context, id,
     ),
   );
 }
+
+List<ClassData> myData = classdata.data!;
