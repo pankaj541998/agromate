@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
+      initialRoute: '/classandtype',
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
@@ -78,7 +78,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/gapanalysis', page: () => GapAnalysis()),
         GetPage(name: '/growthstage', page: () => GrowthStage()),
         GetPage(name: '/growthstagedetails', page: () => GrowthStageDetails()),
-
         GetPage(name: '/crop_plan', page: () => CropPlan()),
         GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
         GetPage(name: '/grid_view_crop', page: () => Crop()),
@@ -88,7 +87,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/plot_farm', page: () => PlotFarm()),
         GetPage(name: '/plot_block', page: () => PlotBlock()),
         GetPage(name: '/plot_field', page: () => PlotField()),
-
         GetPage(name: '/inventory', page: () => const Inventory()),
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(
@@ -98,7 +96,7 @@ class MyApp extends StatelessWidget {
             name: '/stockmanagertable', page: () => const StockManagerTable()),
         GetPage(name: '/addstock', page: () => const AddStock()),
         GetPage(name: '/stockorder', page: () => const StockOrder()),
-        GetPage(name: '/classandtype', page: () => const InventoryClassType()),
+        GetPage(name: '/classandtype', page: () => InventoryClassType()),
         GetPage(name: '/crop_plan', page: () => const CropPlan()),
         GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
         GetPage(name: '/grid_view_crop', page: () => const Crop()),

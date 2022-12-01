@@ -165,6 +165,7 @@ class _CropPlanState extends State<CropPlan> {
   }
 
   datatable() {
+
     return Container(
       padding: const EdgeInsets.all(0.0),
       decoration: const BoxDecoration(),
@@ -403,7 +404,7 @@ class RowSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index]);
+      return recentFileDataRow(myData![index], index);
     } else {
       return null;
     }
@@ -419,9 +420,12 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(var data, int index) {
+  int no = index + 1;
+
   return DataRow(
     cells: [
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.name ?? "Name"))),
       DataCell(Align(
