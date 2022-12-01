@@ -100,29 +100,29 @@ Future<String> addNewUser(Map<String, String> updata) async {
   }
 }
 
-Future<String> updateUser() async {
+Future<String> updateUser(id, roleIndex) async {
   debugPrint("reached");
   Map<String, String> updata = {
     "first_name": firstNameTextEditingController.text.toString(),
     "last_name": lastNameTextEditingController.text.toString(),
-    "user_id": '$id',
+    "user_id": id,
     "phone": phoneTextEditingController.text.toString(),
-    "role_type": '$roleIndex'
+    "role_type": roleIndex
   };
   return await updateUserAPI(updata);
 }
 
 Future<String> updateUserAPI(Map<String, String> updata) async {
   final _chuckerHttpClient = await http.Client();
-  print(updata);
+
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
     Uri.parse("https://agromate.website/laravel/api/update_user"),
     body: updata,
   );
-  print(response.body);
+
   if (response.statusCode == 200) {
-    print(response.body);
+    print("update api response is ${response.body}");
     return 'null';
   } else {
     return 'throw (Exception("Search Error"))';
@@ -280,7 +280,7 @@ class _UserState extends State<User> {
                                   prefixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
+                                  placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),
@@ -573,7 +573,7 @@ datatable(screenSize, context) {
                   count: registeredusers.data!.length,
                   context: context,
                 ),
-                rowsPerPage: 9,
+                rowsPerPage: 7,
                 columnSpacing: 0,
                 headingRowHeight: 50,
                 horizontalMargin: 0,
@@ -813,7 +813,8 @@ _buildactions(context, data, index) {
                 firstname: firstname,
                 lastname: lastname,
                 phone: phone,
-                role: role);
+                role: role,
+                id: registeredusers.data!.elementAt(index).id!);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
@@ -831,7 +832,8 @@ buildPinAlert(context,
     {required String firstname,
     required String lastname,
     required String phone,
-    required String role}) {
+    required String role,
+    int? id}) {
   firstNameTextEditingController.text = firstname;
   lastNameTextEditingController.text = lastname;
   phoneTextEditingController.text = phone;
@@ -1047,8 +1049,13 @@ buildPinAlert(context,
                                 phoneTextEditingController.text.toString());
                             debugPrint(
                                 roleTextEditingController.text.toString());
-                            updateUser();
-                            Navigator.pop(context);
+                            setState(() {
+                              updateUser(id.toString(), roleIndex.toString())
+                                  .then((value) =>
+                                      Navigator.pushNamed(context, '/user'));
+                            });
+                            // updateUser(id.toString());
+                            // Navigator.pop(context);
                           },
                           title: "Update",
                         ),
@@ -1458,7 +1465,7 @@ datatablerequest(screenSize, BuildContext context) {
                   myDataRequest: notregisteredusers.data,
                   count: notregisteredusers.data!.length,
                   context: context),
-              rowsPerPage: 9,
+              rowsPerPage: 7,
               columnSpacing: 0,
               headingRowHeight: 50,
               horizontalMargin: 0,

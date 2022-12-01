@@ -38,7 +38,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
   TextEditingController controller = TextEditingController();
   int no = 0;
   bool sort = true;
-  List<Data>? filterData;
+  List<ModeData>? filterData;
 
   Future<String> addMode() async {
     debugPrint("reached");
@@ -94,7 +94,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
 
   @override
   void initState() {
-    filterData = myData;
+    // filterData = modes.data!;
     super.initState();
   }
 
@@ -428,20 +428,21 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               width: 250,
                               child: CupertinoSearchTextField(
                                 onChanged: (value) {
-                                  // setState(() {
-                                  //   myData = filterData!
-                                  //       .where(
-                                  //         (element) => element.name!
-                                  //             .toLowerCase()
-                                  //             .contains(
-                                  //               value.toLowerCase(),
-                                  //             ),
-                                  //       )
-                                  //       .toList();
-                                  // }
-                                  // );
+                                  print("searched value is $value");
+
+                                  setState(() {
+                                    myData = modes.data!
+                                        .where(
+                                          (element) => element.mode!
+                                              .toLowerCase()
+                                              .contains(
+                                                value.toLowerCase(),
+                                              ),
+                                        )
+                                        .toList();
+                                  });
                                 },
-                                // controller: controller,
+                                controller: controller,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: const Color(0xFF327C04),
@@ -458,7 +459,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                                 prefixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         10, 8, 0, 8),
-                                placeholder: 'Search Celeb....',
+                                placeholder: 'Search',
                                 suffixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 15, 2),
@@ -492,15 +493,11 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                   future: fetchModes(),
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
+                      print("data is mydata is ${myData.first.mode}");
+                      print("data length is ${myData.length}");
+
                       if (snapshot.hasData) {
-                        debugPrint(snapshot.data.toString());
                         return datatable(screenSize);
-                        return Center(
-                          child: Text(
-                            '${snapshot.error} occured',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        );
                       }
                     }
                     return const Center(child: CircularProgressIndicator());
@@ -529,10 +526,10 @@ datatable(screenSize) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSource(
-                myData: modes.data,
-                count: modes.data!.length,
+                myData: myData,
+                count: myData.length,
               ),
-              rowsPerPage: 9,
+              rowsPerPage: 7,
               columnSpacing: 0,
               headingRowHeight: 50,
               horizontalMargin: 0,
@@ -720,95 +717,96 @@ class Data {
   });
 }
 
-List<Data> myData = [
-  Data(
-    id: "1",
-    name: 'Tractor',
-    description: 'To pull a plow through her corn field before planting.',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "2",
-    name: 'Fertigation',
-    description: 'Injection of fertilizers, used for soil amendments, water',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "3",
-    name: 'Drone',
-    description: 'Can be used to spray chemicals as they have reservoirs',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "4",
-    name: 'Center Pivot',
-    description:
-        'Rotates around a pivot and crops are watered with sprinklers.',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "5",
-    name: 'Tractor',
-    description: 'To pull a plow through her corn field before planting.',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "6",
-    name: 'Fertigation',
-    description: 'Injection of fertilizers, used for soil amendments, water',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "7",
-    name: 'Drone',
-    description: 'Can be used to spray chemicals as they have reservoirs',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "8",
-    name: 'Center Pivot',
-    description:
-        'Rotates around a pivot and crops are watered with sprinklers.',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "9",
-    name: 'Tractor',
-    description: 'To pull a plow through her corn field before planting.',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "10",
-    name: 'Fertigation',
-    description: 'Injection of fertilizers, used for soil amendments, water',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-  Data(
-    id: "11",
-    name: 'Drone',
-    description: 'Can be used to spray chemicals as they have reservoirs',
-    applicationcost: '678.6',
-    value: '500',
-    quantity: '500',
-  ),
-];
+List<ModeData> myData = modes.data!;
+// List<Data> myData = [
+//   Data(
+//     id: "1",
+//     name: 'Tractor',
+//     description: 'To pull a plow through her corn field before planting.',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "2",
+//     name: 'Fertigation',
+//     description: 'Injection of fertilizers, used for soil amendments, water',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "3",
+//     name: 'Drone',
+//     description: 'Can be used to spray chemicals as they have reservoirs',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "4",
+//     name: 'Center Pivot',
+//     description:
+//         'Rotates around a pivot and crops are watered with sprinklers.',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "5",
+//     name: 'Tractor',
+//     description: 'To pull a plow through her corn field before planting.',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "6",
+//     name: 'Fertigation',
+//     description: 'Injection of fertilizers, used for soil amendments, water',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "7",
+//     name: 'Drone',
+//     description: 'Can be used to spray chemicals as they have reservoirs',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "8",
+//     name: 'Center Pivot',
+//     description:
+//         'Rotates around a pivot and crops are watered with sprinklers.',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "9",
+//     name: 'Tractor',
+//     description: 'To pull a plow through her corn field before planting.',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "10",
+//     name: 'Fertigation',
+//     description: 'Injection of fertilizers, used for soil amendments, water',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+//   Data(
+//     id: "11",
+//     name: 'Drone',
+//     description: 'Can be used to spray chemicals as they have reservoirs',
+//     applicationcost: '678.6',
+//     value: '500',
+//     quantity: '500',
+//   ),
+// ];
