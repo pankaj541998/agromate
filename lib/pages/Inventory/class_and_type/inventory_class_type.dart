@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/pages/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,18 +72,18 @@ Future<int> deleteTypeApi(int id) async {
   return response.statusCode;
 }
 
-Future<String> updateClass() async {
+Future<String> updateClass(id) async {
   debugPrint("reached");
-  Map<String, String> updata = {
+  Map<String, dynamic> updata = {
     "iclass": classTextEditingController.text.toString(),
     "class_description": classdescriptionTextEditingController.text.toString(),
-    "class_id": ''
+    "class_id": id,
     // $id
   };
   return await updateClassAPI(updata);
 }
 
-Future<String> updateClassAPI(Map<String, String> updata) async {
+Future<String> updateClassAPI(Map<String, dynamic> updata) async {
   final _chuckerHttpClient = await http.Client();
   print(updata);
   final prefs = await SharedPreferences.getInstance();
@@ -99,13 +100,13 @@ Future<String> updateClassAPI(Map<String, String> updata) async {
   }
 }
 
-Future<String> updateType() async {
+Future<String> updateType(id, iclass) async {
   debugPrint("reached");
   Map<String, String> updata = {
     "type": typeTextEditingController.text.toString(),
     "type_description": typedescriptionTextEditingController.text.toString(),
-    "classid": '',
-    "type_id": ''
+    "classid": iclass,
+    "type_id": id
     // $id
   };
   return await updateTypeAPI(updata);
@@ -383,7 +384,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           children: [
                             InkWell(
                               onTap: () {
-                                buildPinAlertDialog();
+                                buildPinAddClass(context);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -447,7 +448,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                                   prefixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
+                                  placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),
@@ -745,7 +746,8 @@ _buildactions(context, data, index) {
             String iclass = classdata.data!.elementAt(index).iclass!.toString();
             String description =
                 classdata.data!.elementAt(index).classDescription!.toString();
-            buildPinClass(context, iclass: iclass, description: description);
+            buildPinClass(context, id,
+                iclass: iclass, description: description);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
@@ -773,7 +775,7 @@ _buildactionstype(context, data, index) {
                 typedata.data!.elementAt(index).typeDescription!.toString();
             debugPrint(type);
 
-            buildPinType(context,
+            buildPinType(context, id,
                 iclass: iclass, description: description, type: type);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
@@ -1161,9 +1163,14 @@ customAlertType(context, id) {
   );
 }
 
-buildPinClass(context, {required String iclass, required String description}) {
+buildPinClass(context, id,
+    {required String iclass, required String description}) {
   classTextEditingController.text = iclass;
   classdescriptionTextEditingController.text = description;
+  debugPrint(id.toString());
+  debugPrint(iclass);
+  debugPrint(description);
+
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -1228,12 +1235,6 @@ buildPinClass(context, {required String iclass, required String description}) {
                                   SizedBox(
                                       width: 300,
                                       child: TextInputField(
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(
-                                                25),
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp('[a-zA-Z]')),
-                                          ],
                                           textEditingController:
                                               classTextEditingController,
                                           hintText: "",
@@ -1266,11 +1267,6 @@ buildPinClass(context, {required String iclass, required String description}) {
                                       height: 100,
                                       width: 600,
                                       child: TextInputField(
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(6),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly
-                                          ],
                                           textEditingController:
                                               classdescriptionTextEditingController,
                                           hintText: "",
@@ -1301,6 +1297,11 @@ buildPinClass(context, {required String iclass, required String description}) {
                               onPressed: () {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
+                                  setState(() {
+                                    updateClass(id.toString()).then((value) =>
+                                        Navigator.pushNamed(
+                                            context, '/classandtype'));
+                                  });
                                   // addCropProgram();
                                 } else {
                                   Flushbar(
@@ -1311,7 +1312,7 @@ buildPinClass(context, {required String iclass, required String description}) {
                                 // addCropProgram();
                                 // Navigator.pop(context);
                               },
-                              title: "Add",
+                              title: "Update",
                             ),
                           ),
                         ],
@@ -1328,13 +1329,177 @@ buildPinClass(context, {required String iclass, required String description}) {
   );
 }
 
-buildPinType(context,
+buildPinAddClass(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Form(
+          key: _form,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                contentPadding: EdgeInsets.only(top: 10.0),
+                content: Padding(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 25, right: 25, bottom: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.cancel_outlined))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Add Class",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Class",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      width: 300,
+                                      child: TextInputField(
+                                          textEditingController:
+                                              classTextEditingController,
+                                          hintText: "",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter Class Name";
+                                            }
+                                            return null;
+                                          },
+                                          validatorText: ""))
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Item Description",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      height: 100,
+                                      width: 600,
+                                      child: TextInputField(
+                                          textEditingController:
+                                              classdescriptionTextEditingController,
+                                          hintText: "",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter Item Description";
+                                            }
+                                            return null;
+                                          },
+                                          validatorText: ""))
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 28,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: 296,
+                            child: CustomElevatedButton(
+                              onPressed: () {
+                                final isValid = _form.currentState?.validate();
+                                if (isValid!) {
+                                  setState(() {
+                                    updateClass(id.toString()).then((value) =>
+                                        Navigator.pushNamed(
+                                            context, '/classandtype'));
+                                  });
+                                  // addCropProgram();
+                                } else {
+                                  Flushbar(
+                                    duration: const Duration(seconds: 2),
+                                    message: "Please Enter All Details",
+                                  ).show(context);
+                                }
+                                // addCropProgram();
+                                // Navigator.pop(context);
+                              },
+                              title: "Update",
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}
+
+buildPinType(context, id,
     {required String iclass,
     required String description,
     required String type}) {
   classTextEditingController.text = iclass;
   typeTextEditingController.text = type;
   typedescriptionTextEditingController.text = description;
+  debugPrint(id.toString());
+  debugPrint(iclass);
+  debugPrint(type);
+  debugPrint(description);
+
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -1404,8 +1569,6 @@ buildPinType(context,
                                               inputFormatters: [
                                                 LengthLimitingTextInputFormatter(
                                                     25),
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp('[a-zA-Z]')),
                                               ],
                                               textEditingController:
                                                   classTextEditingController,
@@ -1479,11 +1642,6 @@ buildPinType(context,
                                       height: 100,
                                       width: 600,
                                       child: TextInputField(
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(6),
-                                            FilteringTextInputFormatter
-                                                .digitsOnly
-                                          ],
                                           textEditingController:
                                               typedescriptionTextEditingController,
                                           hintText: "",
@@ -1514,6 +1672,11 @@ buildPinType(context,
                               onPressed: () {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
+                                  setState(() {
+                                    updateType(id.toString(), iclass).then(
+                                        (value) => Navigator.pushNamed(
+                                            context, '/classandtype'));
+                                  });
                                   // addCropProgram();
                                 } else {
                                   Flushbar(
@@ -1521,10 +1684,11 @@ buildPinType(context,
                                     message: "Please Enter All Details",
                                   ).show(context);
                                 }
+
                                 // addCropProgram();
                                 // Navigator.pop(context);
                               },
-                              title: "Add",
+                              title: "Update",
                             ),
                           ),
                         ],

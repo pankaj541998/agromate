@@ -133,7 +133,7 @@ class _AllocationState extends State<Allocation> {
                                   prefixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
+                                  placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),

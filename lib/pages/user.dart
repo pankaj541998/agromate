@@ -101,40 +101,38 @@ Future<String> addNewUser(Map<String, String> updata) async {
   }
 }
 
-Future<String> updateUser() async {
+Future<String> updateUser(id, roleIndex) async {
   debugPrint("reached");
   Map<String, String> updata = {
     "first_name": firstNameTextEditingController.text.toString(),
     "last_name": lastNameTextEditingController.text.toString(),
-    "user_id": '$id',
+    "user_id": id,
     "phone": phoneTextEditingController.text.toString(),
-    "role_type": '$roleIndex'
+    "role_type": roleIndex
   };
   return await updateUserAPI(updata);
 }
 
 Future<String> updateUserAPI(Map<String, String> updata) async {
   final _chuckerHttpClient = await http.Client();
-  print(updata);
+
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
     Uri.parse("https://agromate.website/laravel/api/update_user"),
     body: updata,
   );
-  print(response.body);
+
   if (response.statusCode == 200) {
-    print(response.body);
+    print("update api response is ${response.body}");
     return 'null';
   } else {
     return 'throw (Exception("Search Error"))';
   }
 }
 
-Future<String> resendMail() async {
+Future<String> resendMail(id) async {
   debugPrint("reached");
-  Map<String, String> updata = {
-    "user_id": '$id',
-  };
+  Map<String, String> updata = {"user_id": id};
   return await resendMailAPI(updata);
 }
 
@@ -526,9 +524,13 @@ buildPin(context) {
                               if (isValid!) {
                                 print(email);
                                 print(roleIndex);
-                                addUser();
-                                Navigator.pop(context);
-                                Get.toNamed("/user");
+                                Flushbar(
+                                  duration: const Duration(seconds: 2),
+                                  message: "New User Added Successfully",
+                                ).show(context);
+
+                                addUser().then((value) =>
+                                    Navigator.pushNamed(context, '/user'));
                               } else {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),
@@ -812,7 +814,8 @@ _buildactions(context, data, index) {
                 firstname: firstname,
                 lastname: lastname,
                 phone: phone,
-                role: role);
+                role: role,
+                id: registeredusers.data!.elementAt(index).id!);
           },
           child: Image.asset("assets/images/edit.png", height: 30)),
       InkWell(
@@ -830,7 +833,8 @@ buildPinAlert(context,
     {required String firstname,
     required String lastname,
     required String phone,
-    required String role}) {
+    required String role,
+    int? id}) {
   firstNameTextEditingController.text = firstname;
   lastNameTextEditingController.text = lastname;
   phoneTextEditingController.text = phone;
@@ -966,63 +970,18 @@ buildPinAlert(context,
                               items: Roles.values.map((e) => e.name).toList(),
                               hint:
                                   Roles.values.elementAt(int.parse(role)).name,
-                            ),
-                          ),
-/*
-                          SizedBox(
-                            height: 50,
-                            width: 300,
-                            child: StatefulBuilder(
-                              builder: (context, setState) {
-                                return 
-                                
-                                PopupMenuButton<int>(
-                                  offset: const Offset(1, 0),
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 3),
-                                    width: 250,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.green[800]!),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                              child: Text(Roles.values
-                                                  .elementAt(int.parse(role))
-                                                  .name)),
-                                          const Icon(Icons.arrow_drop_down)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  itemBuilder: (BuildContext context) =>
-                                      Roles.values
-                                          .map(
-                                            (e) => PopupMenuItem<int>(
-                                              value: e.index,
-                                              child: Text(e.name),
-                                              onTap: () =>
-                                                  setState(() => role = e.name),
-                                            ),
-                                          )
-                                          .toList(),
-                                  onSelected: (value) {
-                                    roleIndex = value;
-                                    debugPrint('role index: $roleIndex');
-                                  },
-                                );
-                              
+                              onItemSelected: (value) {
+                                debugPrint(value);
+                                roleTextEditingController.text = Roles.values
+                                    .singleWhere(
+                                        (element) => element.name == value)
+                                    .index
+                                    .toString();
+                                debugPrint(
+                                    roleTextEditingController.toString());
                               },
                             ),
-
-                            // TextInputField(hintText: "", validatorText: "")
                           ),
-                        */
                         ],
                       ),
                     ],
@@ -1046,8 +1005,14 @@ buildPinAlert(context,
                                 phoneTextEditingController.text.toString());
                             debugPrint(
                                 roleTextEditingController.text.toString());
-                            updateUser();
-                            Navigator.pop(context);
+                            setState(() {
+                              updateUser(id.toString(),
+                                      roleTextEditingController.text.toString())
+                                  .then((value) =>
+                                      Navigator.pushNamed(context, '/user'));
+                            });
+                            // updateUser(id.toString());
+                            // Navigator.pop(context);
                           },
                           title: "Update",
                         ),
@@ -1132,7 +1097,7 @@ buildPinShowData(context, id) {
                           onPressed: () {
                             debugPrint("separation");
                             debugPrint(id.toString());
-                            resendMail();
+                            resendMail(id.toString());
                             Navigator.pop(context);
                           },
                           child: const Text('Send'),

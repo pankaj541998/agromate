@@ -131,7 +131,7 @@ class _CropPlanState extends State<CropPlan> {
                                 prefixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         10, 8, 0, 8),
-                                placeholder: 'Search Celeb....',
+                                placeholder: 'Search',
                                 suffixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 15, 2),
@@ -165,7 +165,6 @@ class _CropPlanState extends State<CropPlan> {
   }
 
   datatable() {
-
     return Container(
       padding: const EdgeInsets.all(0.0),
       decoration: const BoxDecoration(),
@@ -186,6 +185,24 @@ class _CropPlanState extends State<CropPlan> {
               headingRowHeight: 50,
               horizontalMargin: 0,
               columns: [
+                DataColumn(
+                  label: Expanded(
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff327C04).withOpacity(0.11),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Sr.No",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 DataColumn(
                   label: Expanded(
                     child: Container(
