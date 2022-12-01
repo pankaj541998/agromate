@@ -23,6 +23,7 @@ import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:flutter_agro_new/pages/Inventory/stock_order/stock_order.dart';
+import 'package:flutter_agro_new/pages/tasks/weeklytask.dart';
 import 'package:flutter_agro_new/pages/user.dart';
 import 'package:get/get.dart';
 import 'package:flutter_agro_new/pages/dashboard.dart';
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/user', page: () => User()),
         GetPage(name: '/allocation', page: () => Allocation()),
         GetPage(name: '/allocate', page: () => Allocate()),
+        GetPage(name: '/weeklytasks', page: () => WeeklyTasks()),
       ],
     );
   }

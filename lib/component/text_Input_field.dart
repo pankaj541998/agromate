@@ -40,7 +40,7 @@ class _TextInputFieldState extends State<TextInputField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      // width: 500,
+      width: 500,
       child: TextFormField(
           readOnly: widget.readonly,
           cursorColor: const Color(0xFF327C04),
