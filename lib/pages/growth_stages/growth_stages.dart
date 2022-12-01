@@ -64,6 +64,10 @@ class _GrowthStageState extends State<GrowthStage> {
     var growthNameController = TextEditingController();
     var descriptionController = TextEditingController();
     int? selectedCropId;
+
+    bool showSubmitBtn = true;
+    bool showSubmitBtnLoader = false;
+
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -321,48 +325,80 @@ class _GrowthStageState extends State<GrowthStage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                          height: 40,
-                          width: 298,
-                          child: CustomElevatedButton(
-                            onPressed: () {
-                              // Navigator.pop(context);
-                              debugPrint('selectedCropName $selectedCropName');
-                              debugPrint('selectedCropId $selectedCropId');
-                              debugPrint(
-                                  'growthNameController ${growthNameController.text}');
-                              debugPrint(
-                                  'growthDescController ${descriptionController.text}');
-                              debugPrint(
-                                  'selectedStartWeek $selectedStartWeek');
-                              debugPrint('selectedEndWeek $selectedEndWeek');
-                              postGrowthStage(
-                                cropProgramId: selectedCropId.toString(),
-                                growthName: growthNameController.text,
-                                description: descriptionController.text,
-                                startWeek: selectedStartWeek,
-                                endWeek: selectedEndWeek,
-                              ).then((posted) {
-                                if (posted) {
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              "Successfully added growth stage")));
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              "Successfully added growth stage")));
-                                }
-                              });
-                            },
-                            title: "Submit",
-                          ),
-                        ),
+                            height: 40,
+                            width: 298,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Visibility(
+                                  visible: showSubmitBtnLoader,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: showSubmitBtn,
+                                  child: Expanded(
+                                    child: CustomElevatedButton(
+                                      onPressed: () {
+                                        // Navigator.pop(context);
+                                        setDdState(() {
+                                          showSubmitBtn = false;
+                                          showSubmitBtnLoader = true;
+                                        });
+                                        debugPrint(
+                                            'selectedCropName $selectedCropName');
+                                        debugPrint(
+                                            'selectedCropId $selectedCropId');
+                                        debugPrint(
+                                            'growthNameController ${growthNameController.text}');
+                                        debugPrint(
+                                            'growthDescController ${descriptionController.text}');
+                                        debugPrint(
+                                            'selectedStartWeek $selectedStartWeek');
+                                        debugPrint(
+                                            'selectedEndWeek $selectedEndWeek');
+                                        postGrowthStage(
+                                          cropProgramId:
+                                              selectedCropId.toString(),
+                                          growthName: growthNameController.text,
+                                          description:
+                                              descriptionController.text,
+                                          startWeek: selectedStartWeek,
+                                          endWeek: selectedEndWeek,
+                                        ).then((posted) {
+                                          if (posted) {
+                                            setDdState(() {
+                                              showSubmitBtn = true;
+                                              showSubmitBtnLoader = false;
+                                            });
+                                            Navigator.pop(context);
+                                            ScaffoldMessenger.of(context)
+                                                .clearSnackBars();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Successfully added growth stage")));
+                                          } else {
+                                            setDdState(() {
+                                              showSubmitBtn = true;
+                                              showSubmitBtnLoader = false;
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .clearSnackBars();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Successfully added growth stage")));
+                                          }
+                                        });
+                                      },
+                                      title: "Submit",
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                       ],
                     )
                   ],
@@ -442,7 +478,7 @@ class _GrowthStageState extends State<GrowthStage> {
                         GridView.builder(
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               childAspectRatio: (1.3 / 1),
                               crossAxisCount: 5,
                               crossAxisSpacing: 25,
@@ -451,7 +487,6 @@ class _GrowthStageState extends State<GrowthStage> {
                             itemBuilder: (BuildContext ctx, index) {
                               return InkWell(
                                 onTap: () {
-                                  // Get.toNamed('/growthstagedetails');
                                   Navigator.pushNamed(
                                     context,
                                     '/growthstagedetails',
