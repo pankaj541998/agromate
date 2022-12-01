@@ -587,6 +587,24 @@ datatable(screenSize, context) {
                         ),
                         child: const Center(
                           child: Text(
+                            "Sr.No",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
                             "Profile",
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -744,9 +762,11 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(RegData data, context, index) {
+DataRow recentFileDataRow(RegData data, context, int index) {
+  int no = index + 1;
   return DataRow(
     cells: [
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
         alignment: Alignment.center,
         child: Image.asset("assets/images/albert.png", height: 30),
@@ -1452,6 +1472,24 @@ datatablerequest(screenSize, BuildContext context) {
                       ),
                       child: const Center(
                         child: Text(
+                          "Sr.No",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                DataColumn(
+                  label: Expanded(
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff327C04).withOpacity(0.11),
+                      ),
+                      child: const Center(
+                        child: Text(
                           "Email Address",
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -1553,9 +1591,12 @@ class RowSourceRequest extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRowrequest(NotRegData data, context, index) {
+DataRow recentFileDataRowrequest(NotRegData data, context, int index) {
+  int no = index + 1;
+
   return DataRow(
     cells: [
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.email.toString()))),
       DataCell(Align(

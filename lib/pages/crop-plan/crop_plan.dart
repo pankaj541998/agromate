@@ -198,6 +198,24 @@ class _CropPlanState extends State<CropPlan> {
                         ),
                         child: const Center(
                           child: Text(
+                            "Sr.No",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
                             "Farm",
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -408,7 +426,7 @@ class RowSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     if (index < rowCount) {
-      return recentFileDataRow(myData![index]);
+      return recentFileDataRow(myData![index], index);
     } else {
       return null;
     }
@@ -424,9 +442,12 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(var data, int index) {
+  int no = index + 1;
+
   return DataRow(
     cells: [
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(
           Align(alignment: Alignment.center, child: Text(data.name ?? "Name"))),
       DataCell(Align(
