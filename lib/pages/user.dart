@@ -280,7 +280,7 @@ class _UserState extends State<User> {
                                   prefixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           10, 8, 0, 8),
-                                  placeholder: 'Search Celeb....',
+                                  placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),
@@ -573,7 +573,7 @@ datatable(screenSize, context) {
                   count: registeredusers.data!.length,
                   context: context,
                 ),
-                rowsPerPage: 9,
+                rowsPerPage: 7,
                 columnSpacing: 0,
                 headingRowHeight: 50,
                 horizontalMargin: 0,
@@ -1458,7 +1458,7 @@ datatablerequest(screenSize, BuildContext context) {
                   myDataRequest: notregisteredusers.data,
                   count: notregisteredusers.data!.length,
                   context: context),
-              rowsPerPage: 9,
+              rowsPerPage: 7,
               columnSpacing: 0,
               headingRowHeight: 50,
               horizontalMargin: 0,
