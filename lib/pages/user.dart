@@ -21,6 +21,7 @@ import '../component/text_Input_field.dart';
 late RegisteredUserModel registeredusers;
 late NotRegisteredUserModel notregisteredusers;
 final email = TextEditingController();
+TextEditingController controller = TextEditingController();
 final useremailTextEditingController = TextEditingController();
 final roleTextEditingController = TextEditingController();
 final firstNameTextEditingController = TextEditingController();
@@ -250,20 +251,19 @@ class _UserState extends State<User> {
                                 width: 250,
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
-                                    // setState(() {
-                                    //   myDataRequest = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
+                                    setState(() {
+                                      myDataRequest = registeredusers.data!
+                                          .where(
+                                            (element) => element.email!
+                                                .toLowerCase()
+                                                .contains(
+                                                  value.toLowerCase(),
+                                                ),
+                                          )
+                                          .toList();
+                                    });
                                   },
-                                  // controller: controller,
+                                  controller: controller,
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       color: const Color(0xFF327C04),
@@ -313,7 +313,6 @@ class _UserState extends State<User> {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
                               if (snapshot.hasData) {
-                                debugPrint(snapshot.data.toString());
                                 return _buildusertable(screenSize, context);
                               } else {
                                 return Center(
@@ -569,8 +568,8 @@ datatable(screenSize, context) {
                 sortColumnIndex: 0,
                 // sortAscending: sort,
                 source: RowSource(
-                  myData: registeredusers.data,
-                  count: registeredusers.data!.length,
+                  myData: myDataRequest,
+                  count: myDataRequest.length,
                   context: context,
                 ),
                 rowsPerPage: 7,
@@ -1247,200 +1246,6 @@ customAlert(context, id) {
   );
 }
 
-class Data {
-  String? profile;
-  String? username;
-  String? fullname;
-  String? phonenumber;
-  String? email;
-  String? role;
-  String? action;
-
-  Data({
-    required this.profile,
-    required this.username,
-    required this.fullname,
-    required this.phonenumber,
-    required this.email,
-    required this.role,
-    required this.action,
-  });
-}
-
-List<Data> myData = [
-  Data(
-    profile: "1",
-    username: 'Raj',
-    fullname: 'Raj Shinde',
-    phonenumber: '9987171941',
-    email: 'rajshinde06@gmail.com',
-    role: 'Agronomist',
-    action: '24524',
-  ),
-  Data(
-    profile: "2",
-    username: 'pankaj',
-    fullname: 'pankaj Gupta',
-    phonenumber: '9821667219',
-    email: 'pankajgipta@gmail.com',
-    role: 'Landholder',
-    action: '`52435`',
-  ),
-  Data(
-    profile: "3",
-    username: 'Kishan',
-    fullname: 'Kishan Bhuta',
-    phonenumber: '9835654981',
-    email: 'kishbhutaa@gmial.com',
-    role: 'Farmer',
-    action: '245245',
-  ),
-  Data(
-    profile: "4",
-    username: 'Dhurmil',
-    fullname: 'Dhurmil Shah',
-    phonenumber: '9767485497',
-    email: 'dhurshah@gmail.com',
-    role: 'Farmer',
-    action: '245245',
-  ),
-  Data(
-    profile: "5",
-    username: 'Pooja',
-    fullname: 'pooja tambe',
-    phonenumber: '8828291148',
-    email: 'tambepoo@gmail.com',
-    role: 'Manager',
-    action: '245245',
-  ),
-  Data(
-    profile: "6",
-    username: 'Jothi',
-    fullname: 'Jyoti Shetty',
-    phonenumber: '9147624864',
-    email: 'jyotty@gmail.com',
-    role: 'Manager',
-    action: '24524',
-  ),
-  Data(
-    profile: "7",
-    username: 'Salman',
-    fullname: 'Salman Khan',
-    phonenumber: '9870368665',
-    email: 'Salmannkhann786@gmail.com',
-    role: 'Farmer',
-    action: '13435',
-  ),
-  Data(
-    profile: "8",
-    username: 'Chetan',
-    fullname: 'Chetan Jadhav',
-    phonenumber: '9826458246',
-    email: 'chetan245@gmail.com',
-    role: 'Agronomist',
-    action: '65979',
-  ),
-  Data(
-    profile: "9",
-    username: 'Sandeep',
-    fullname: 'Sandeep Vishwakarma',
-    phonenumber: '8865455892',
-    email: 'sandeep23@gmail.com',
-    role: 'landholder',
-    action: '69659',
-  ),
-  Data(
-    profile: "11",
-    username: 'Uzer',
-    fullname: 'Uzer Malik',
-    phonenumber: '8820682321',
-    email: 'uzer654@gmail.com',
-    role: 'Farmer',
-    action: '67947',
-  ),
-  Data(
-    profile: "11",
-    username: 'Uzer',
-    fullname: 'Uzer Malik',
-    phonenumber: '8820682321',
-    email: 'uzer654@gmail.com',
-    role: 'Farmer',
-    action: '67947',
-  ),
-  Data(
-    profile: "12",
-    username: 'Maussafar',
-    fullname: 'Maussafar Sidddique',
-    phonenumber: '9965363186',
-    email: 'mussafar@gmail.com',
-    role: 'Landlord',
-    action: '6479467',
-  ),
-  Data(
-    profile: "13",
-    username: 'Mamta',
-    fullname: 'Mamta Vaishnav',
-    phonenumber: '9847524724',
-    email: 'amvy29@gmail.com',
-    role: 'manageer',
-    action: '658365',
-  ),
-  Data(
-    profile: "14",
-    username: 'Pooja',
-    fullname: 'pooja tambe',
-    phonenumber: '8828291148',
-    email: 'tambepoo@gmail.com',
-    role: 'Landlord',
-    action: '5686',
-  ),
-  Data(
-    profile: "15",
-    username: 'Jyoti',
-    fullname: 'Jyoti Shetty',
-    phonenumber: '9147624864',
-    email: 'jyotty@gmail.com',
-    role: 'Manager',
-    action: '3477',
-  ),
-  Data(
-    profile: "16",
-    username: 'Salman',
-    fullname: 'Salman Khan',
-    phonenumber: '9870368665',
-    email: 'Salmannkhann786@gmail.com',
-    role: 'Farmer',
-    action: '457',
-  ),
-  Data(
-    profile: "17",
-    username: 'Chetan',
-    fullname: 'Chetan Jadhav',
-    phonenumber: '9826458246',
-    email: 'chetan245@gmail.com',
-    role: 'Agronomist',
-    action: '45725',
-  ),
-  Data(
-    profile: "9",
-    username: 'Sandeep',
-    fullname: 'Sandeep Vishwakarma',
-    phonenumber: '8865455892',
-    email: 'sandeep23@gmail.com',
-    role: 'landholder',
-    action: '69659',
-  ),
-  Data(
-    profile: "10",
-    username: 'Reethik',
-    fullname: 'Reethik Bhuta',
-    phonenumber: '9870456298',
-    email: 'reethikb@gmail.com',
-    role: 'Farmer',
-    action: '694689',
-  ),
-];
-
 datatablerequest(screenSize, BuildContext context) {
   return Container(
     height: screenSize.height * 0.7,
@@ -1455,8 +1260,8 @@ datatablerequest(screenSize, BuildContext context) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSourceRequest(
-                  myDataRequest: notregisteredusers.data,
-                  count: notregisteredusers.data!.length,
+                  myDataRequest: secondTabResult,
+                  count: secondTabResult.length,
                   context: context),
               rowsPerPage: 7,
               columnSpacing: 0,
@@ -1620,7 +1425,6 @@ _buildactionsrequest(context, index) {
       InkWell(
           onTap: () {
             int id = notregisteredusers.data!.elementAt(index).id!;
-            debugPrint(id.toString());
 
             buildPinShowData(context, id);
           },
@@ -1664,179 +1468,8 @@ class DataRequest {
   });
 }
 
-List<Data> myDataRequest = [
-  Data(
-    profile: "1",
-    username: 'Raj',
-    fullname: 'Raj Shinde',
-    phonenumber: '9987171941',
-    email: 'rajshinde06@gmail.com',
-    role: 'Agronomist',
-    action: '24524',
-  ),
-  Data(
-    profile: "2",
-    username: 'pankaj',
-    fullname: 'pankaj Gupta',
-    phonenumber: '9821667219',
-    email: 'pankajgipta@gmail.com',
-    role: 'Landholder',
-    action: '`52435`',
-  ),
-  Data(
-    profile: "3",
-    username: 'Kishan',
-    fullname: 'Kishan Bhuta',
-    phonenumber: '9835654981',
-    email: 'kishbhutaa@gmial.com',
-    role: 'Farmer',
-    action: '245245',
-  ),
-  Data(
-    profile: "4",
-    username: 'Dhurmil',
-    fullname: '33',
-    phonenumber: '512',
-    email: '172',
-    role: '245',
-    action: '245245',
-  ),
-  Data(
-    profile: "5",
-    username: 'Pooja',
-    fullname: '23',
-    phonenumber: '512',
-    email: '172',
-    role: '2452',
-    action: '245245',
-  ),
-  Data(
-    profile: "6",
-    username: 'Jothi',
-    fullname: '24',
-    phonenumber: '512',
-    email: '172',
-    role: '452',
-    action: '24524',
-  ),
-  Data(
-    profile: "7",
-    username: 'Salman',
-    fullname: '36',
-    phonenumber: '512',
-    email: '172',
-    role: '245',
-    action: '13435',
-  ),
-  Data(
-    profile: "8",
-    username: '244242',
-    fullname: '38',
-    phonenumber: '512',
-    email: '172',
-    role: '67',
-    action: '65979',
-  ),
-  Data(
-    profile: "9",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '6579',
-    action: '69659',
-  ),
-  Data(
-    profile: "10",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '65968',
-    action: '694689',
-  ),
-  Data(
-    profile: "11",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '64794',
-    action: '67947',
-  ),
-  Data(
-    profile: "12",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '46794',
-    action: '6479467',
-  ),
-  Data(
-    profile: "13",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '58',
-    action: '658365',
-  ),
-  Data(
-    profile: "14",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '6576',
-    action: '5686',
-  ),
-  Data(
-    profile: "15",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '568',
-    action: '3477',
-  ),
-  Data(
-    profile: "16",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '42572',
-    action: '457',
-  ),
-  Data(
-    profile: "17",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '547',
-    action: '45725',
-  ),
-  Data(
-    profile: "18",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '2457',
-    action: '257457',
-  ),
-  Data(
-    profile: "19",
-    username: '323232323',
-    fullname: '29',
-    phonenumber: '512',
-    email: '172',
-    role: '257',
-    action: '245747',
-  ),
-];
+List<RegData> myDataRequest = registeredusers.data!;
+List<NotRegData> secondTabResult = notregisteredusers.data!;
 
 class AlterDialogss extends StatefulWidget {
   const AlterDialogss({Key? key}) : super(key: key);
