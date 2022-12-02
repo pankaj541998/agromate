@@ -1,6 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -362,7 +363,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Irrigation Types',
+                            'Crop Reference',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),
@@ -370,22 +371,29 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             ),
                           ),
                           const SizedBox(height: 15),
-                          DropdownButtonFormField(
+                          TextFormField(
+                            // initialValue: 'enter heritage',
+                            style: const TextStyle(
+                              // color: Color(0xffffffff),
+                              fontFamily: 'Helvetica',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            // readOnly: true,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              errorMaxLines: 3,
+                              hintText: "Crop Reference",
                               contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
+                                  left: 10, right: 10, top: 15, bottom: 15),
+                              hintStyle: const TextStyle(
                                 fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
+                                // color: const Color(0xffffffff).withOpacity(0.8),
                                 fontFamily: 'Helvetica',
                               ),
-                              fillColor: Colors.transparent,
+                              // fillColor: Colors.white,
                               filled: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -402,7 +410,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 ),
                               ),
                               errorStyle: const TextStyle(
-                                fontSize: 14,
+                                fontSize: 16.0,
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -420,30 +428,15 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               ),
                               isDense: true,
                             ),
-                            isExpanded: true,
-                            value: questionsSelected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                questionsSelected = newValue!;
-                              });
-                            },
+                            // controller: _email,
+                            keyboardType: TextInputType.text,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter your email Id';
+                            //   }
+                            //   return null;
+                            // },
+                            // onSaved: (name) {},
                           ),
                         ],
                       ),
@@ -750,7 +743,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'End Date',
+                            'Expected End Date',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),

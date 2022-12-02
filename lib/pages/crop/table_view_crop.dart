@@ -20,9 +20,11 @@ import 'view_details.dart';
 
 late CropProgramModel cropdata;
 final cropTextEditingController = TextEditingController();
+final cropseasonTextEditingController = TextEditingController();
 final populationTextEditingController = TextEditingController();
 final yieldTextEditingController = TextEditingController();
 final weeksTextEditingController = TextEditingController();
+final harvestTextEditingController = TextEditingController();
 
 class TableViewCrop extends StatefulWidget {
   const TableViewCrop({Key? key}) : super(key: key);
@@ -39,7 +41,9 @@ Future<String> addCropProgram() async {
     "crop": cropTextEditingController.text.toString(),
     "population": populationTextEditingController.text.toString(),
     "yield": yieldTextEditingController.text.toString(),
-    "weeks": weeksTextEditingController.text.toString()
+    "weeks": weeksTextEditingController.text.toString(),
+    "cropseason": cropseasonTextEditingController.text.toString(),
+    "harvest": harvestTextEditingController.text.toString()
     // "email": email.text.toString(),
     // "role_type": '$roleIndex'
   };
@@ -80,6 +84,7 @@ class _TableViewCropState extends State<TableViewCrop> {
   int no = 0;
   List<ProgData>? filterData;
   final crop = TextEditingController();
+  final cropseason = TextEditingController();
   final plantPopulation = TextEditingController();
   final yield = TextEditingController();
   final weeks = TextEditingController();
@@ -96,7 +101,7 @@ class _TableViewCropState extends State<TableViewCrop> {
 
   @override
   void initState() {
-    // filterData = myData;
+    harvestTextEditingController.text = "14";
     super.initState();
   }
 
@@ -168,6 +173,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 15,
                                     ),
                                     SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -196,7 +202,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Yield Per Hectare",
+                                      "Plant population",
                                       style: TextStyle(
                                         fontSize: 18,
                                       ),
@@ -205,47 +211,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        width: 300,
-                                        child: TextInputField(
-                                            inputFormatters: [
-                                              LengthLimitingTextInputFormatter(
-                                                  6),
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            textEditingController:
-                                                yieldTextEditingController,
-                                            hintText: "",
-                                            validator: (value) {
-                                              if (value != null &&
-                                                  value.isEmpty) {
-                                                return "Please Enter Yield Per Hectare";
-                                              }
-                                              return null;
-                                            },
-                                            validatorText: ""))
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Plant Population",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -260,11 +226,11 @@ class _TableViewCropState extends State<TableViewCrop> {
                                             validator: (value) {
                                               if (value != null &&
                                                   value.isEmpty) {
-                                                return "Please Enter Plant Population";
+                                                return "Please Enter plant population";
                                               }
                                               return null;
                                             },
-                                            validatorText: "")),
+                                            validatorText: ""))
                                   ],
                                 ),
                                 SizedBox(
@@ -283,6 +249,89 @@ class _TableViewCropState extends State<TableViewCrop> {
                                       height: 15,
                                     ),
                                     SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  6),
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[0-9]')),
+                                            ],
+                                            textEditingController:
+                                                weeksTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter week";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: "Please Enter Week"))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Crop Season Description",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                25),
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[a-zA-Z]')),
+                                          ],
+                                          textEditingController:
+                                              cropseasonTextEditingController,
+                                          hintText: "",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter Crop Season Description";
+                                            }
+                                            return null;
+                                          },
+                                          validatorText:
+                                              "Please Enter Crop Season Description"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Yield Per Hectare",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -292,21 +341,50 @@ class _TableViewCropState extends State<TableViewCrop> {
                                                   .digitsOnly
                                             ],
                                             textEditingController:
-                                                weeksTextEditingController,
+                                                yieldTextEditingController,
                                             hintText: "",
                                             validator: (value) {
                                               if (value != null &&
                                                   value.isEmpty) {
-                                                return "Please Enter Weeks";
+                                                return "Please Enter yield Per Hectare";
                                               }
                                               return null;
                                             },
                                             validatorText: "")),
                                   ],
                                 ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Harvest Days",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: TextInputField(
+                                            textEditingController:
+                                                harvestTextEditingController,
+                                            hintText: "Harvest Days",
+                                            validatorText:
+                                                "Please Enter harvest Days")),
+                                  ],
+                                ),
                               ],
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         const SizedBox(
                           height: 28,
@@ -322,11 +400,14 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   final isValid =
                                       _form.currentState?.validate();
                                   if (isValid!) {
-                                    setState(() {
-                                      addCropProgram().then((value) =>
-                                          Navigator.pushNamed(
-                                              context, '/table_view_crop'));
-                                    });
+                                    addCropProgram().then((value) =>
+                                        Navigator.pushNamed(
+                                            context, '/grid_view_crop'));
+                                    Flushbar(
+                                      duration: const Duration(seconds: 2),
+                                      message:
+                                          "Crop Program Added Successfully",
+                                    ).show(context);
                                   } else {
                                     Flushbar(
                                       duration: const Duration(seconds: 2),

@@ -54,7 +54,7 @@ class _CropPlanState extends State<CropPlan> {
                     Expanded(
                       flex: 3,
                       child: const Text(
-                        'Crop Plans',
+                        'Crop Schedule',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff000000),
@@ -284,7 +284,7 @@ class _CropPlanState extends State<CropPlan> {
                       ),
                       child: const Center(
                         child: Text(
-                          "Irrigation Type",
+                          "Crop Reference",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),
@@ -302,7 +302,7 @@ class _CropPlanState extends State<CropPlan> {
                       ),
                       child: const Center(
                         child: Text(
-                          "Catlivr",
+                          "Cultivar",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),
@@ -338,7 +338,7 @@ class _CropPlanState extends State<CropPlan> {
                       ),
                       child: const Center(
                         child: Text(
-                          "End date",
+                          "Expected End date",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),

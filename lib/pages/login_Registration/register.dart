@@ -40,12 +40,12 @@ class _RegisterState extends State<Register> {
 
       Map responseMap = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        Get.toNamed('/thankyou');
+        Navigator.pushNamed(context, '/thankyou');
       } else {
         print("else entered");
         Flushbar(
           duration: const Duration(seconds: 2),
-          message: "Email ID does not exist",
+          message: responseMap.values.first,
         ).show(context);
       }
     } else {

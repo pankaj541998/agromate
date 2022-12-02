@@ -35,6 +35,13 @@ class Crop extends StatefulWidget {
 }
 
 class _CropState extends State<Crop> {
+  final harvestTextEditingController = TextEditingController();
+  @override
+  void initState() {
+    harvestTextEditingController.text = "14";
+    super.initState();
+  }
+
   late String _selectedValue;
   List<String> listOfValue = [
     'Week 1',
@@ -102,6 +109,7 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -130,7 +138,7 @@ class _CropState extends State<Crop> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Yield Per Hectare",
+                                      "Plant population",
                                       style: TextStyle(
                                         fontSize: 18,
                                       ),
@@ -139,47 +147,7 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        width: 300,
-                                        child: TextInputField(
-                                            inputFormatters: [
-                                              LengthLimitingTextInputFormatter(
-                                                  6),
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            textEditingController:
-                                                yieldTextEditingController,
-                                            hintText: "",
-                                            validator: (value) {
-                                              if (value != null &&
-                                                  value.isEmpty) {
-                                                return "Please Enter Yield Per Hectare";
-                                              }
-                                              return null;
-                                            },
-                                            validatorText: ""))
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Column(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Plant Population",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -194,11 +162,11 @@ class _CropState extends State<Crop> {
                                             validator: (value) {
                                               if (value != null &&
                                                   value.isEmpty) {
-                                                return "Please Enter Plant Population";
+                                                return "Please Enter plant population";
                                               }
                                               return null;
                                             },
-                                            validatorText: "")),
+                                            validatorText: ""))
                                   ],
                                 ),
                                 SizedBox(
@@ -217,6 +185,89 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: TextInputField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  6),
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[0-9]')),
+                                            ],
+                                            textEditingController:
+                                                weeksTextEditingController,
+                                            hintText: "",
+                                            validator: (value) {
+                                              if (value != null &&
+                                                  value.isEmpty) {
+                                                return "Please Enter week";
+                                              }
+                                              return null;
+                                            },
+                                            validatorText: "Please Enter Week"))
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Crop Season Description",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                      width: 300,
+                                      child: TextInputField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                25),
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[a-zA-Z]')),
+                                          ],
+                                          textEditingController:
+                                              cropseasonTextEditingController,
+                                          hintText: "",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter Crop Season Description";
+                                            }
+                                            return null;
+                                          },
+                                          validatorText:
+                                              "Please Enter Crop Season Description"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Yield Per Hectare",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -226,21 +277,50 @@ class _CropState extends State<Crop> {
                                                   .digitsOnly
                                             ],
                                             textEditingController:
-                                                weeksTextEditingController,
+                                                yieldTextEditingController,
                                             hintText: "",
                                             validator: (value) {
                                               if (value != null &&
                                                   value.isEmpty) {
-                                                return "Please Enter Weeks";
+                                                return "Please Enter yield Per Hectare";
                                               }
                                               return null;
                                             },
                                             validatorText: "")),
                                   ],
                                 ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Harvest Days",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: TextInputField(
+                                            textEditingController:
+                                                harvestTextEditingController,
+                                            hintText: "Harvest Days",
+                                            validatorText:
+                                                "Please Enter harvest Days")),
+                                  ],
+                                ),
                               ],
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         const SizedBox(
                           height: 28,
