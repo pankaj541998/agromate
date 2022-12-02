@@ -210,7 +210,7 @@ class _InventoryState extends State<Inventory> {
                                           ),
                                           SizedBox(height: 20),
                                           Text(
-                                            'Inventory Class & Types',
+                                            'Inventory Category & Types',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w800),

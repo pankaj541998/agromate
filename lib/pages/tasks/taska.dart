@@ -386,6 +386,8 @@ class _TasksState extends State<Tasks> {
                         children: [
                           Image.asset(
                             "assets/images/cabbage.png",
+                            height: 40,
+                            width: 40,
                           )
                         ],
                       ),
@@ -395,11 +397,11 @@ class _TasksState extends State<Tasks> {
                         children: [
                           Text(
                             "Crop : Cabbage",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 14),
                           ),
                           Text("Plant Population  : 10000",
-                              style: TextStyle(fontSize: 18)),
-                          Text("Weeks : 12", style: TextStyle(fontSize: 18))
+                              style: TextStyle(fontSize: 14)),
+                          Text("Weeks : 12", style: TextStyle(fontSize: 14))
                         ],
                       )
                     ],

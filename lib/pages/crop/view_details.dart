@@ -16,22 +16,31 @@ import '../../models/cropPorgramModel.dart';
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
 late CropProgramModel cropdata;
-String WeekSelected = 'Select Category';
-var weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+String WeekSelected = 'Select Week';
+var wee = ['Select Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 String CategorySelected = 'Select Category';
 var categories = ['Select Category', 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
-String ActiveIngridientSelected = 'Select Category';
+String ActiveIngridientSelected = 'Select Ingredient';
 var active = [
+  'Select Ingredient',
   'Active Ingridient 1',
   'Active Ingridient 2',
   'Active Ingridient 3',
   'Active Ingridient 4',
   'Active Ingridient 5'
 ];
-String StatusSelected = 'Select Category';
-var status = ['To Do', 'On Going', 'Completed'];
-String UnitsSelected = 'Select Category';
-var units = ['Kilogram', 'Gram', 'Liter', "Milliliter", "Pounds", "Tonnes"];
+String StatusSelected = 'Select Status';
+var status = ['Select Status', 'To Do', 'On Going', 'Completed'];
+String UnitsSelected = 'Select Unit';
+var units = [
+  'Select Unit',
+  'Kilogram',
+  'Gram',
+  'Liter',
+  "Milliliter",
+  "Pounds",
+  "Tonnes"
+];
 
 class ViewDetails extends StatefulWidget {
   ViewDetails({Key? key, this.weeks, this.id}) : super(key: key);
@@ -64,7 +73,7 @@ class _ViewDetailsState extends State<ViewDetails> {
     final response = await client
         .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
     final parsed = jsonDecode(response.body);
-    print(response.body);
+    // print(response.body);
     cropdata = CropProgramModel.fromJson(parsed);
 
     return cropdata;
@@ -197,7 +206,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         fontSize: 16,
                                         color: Color(0xff000000),
                                         fontFamily: 'Helvetica'),
-                                    items: categories.map((String items) {
+                                    items: wee.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
                                         child: Text(items),
@@ -289,7 +298,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         fontSize: 16,
                                         color: Color(0xff000000),
                                         fontFamily: 'Helvetica'),
-                                    items: categories.map((String items) {
+                                    items: status.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
                                         child: Text(items),
@@ -591,7 +600,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         fontSize: 16,
                                         color: Color(0xff000000),
                                         fontFamily: 'Helvetica'),
-                                    items: categories.map((String items) {
+                                    items: active.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
                                         child: Text(items),
@@ -707,7 +716,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       isDense: true,
                                     ),
                                     isExpanded: true,
-                                    value: WeekSelected,
+                                    value: UnitsSelected,
                                     iconEnabledColor:
                                         Colors.transparent, // Down Arrow Icon
                                     icon: const Icon(
@@ -719,7 +728,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         fontSize: 16,
                                         color: Color(0xff000000),
                                         fontFamily: 'Helvetica'),
-                                    items: categories.map((String items) {
+                                    items: units.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
                                         child: Text(items),
@@ -727,7 +736,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                     }).toList(),
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        WeekSelected = newValue!;
+                                        UnitsSelected = newValue!;
                                       });
                                     },
                                   ),
@@ -749,6 +758,11 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 onPressed: () {
                                   final isValid =
                                       _form.currentState?.validate();
+                                  debugPrint(WeekSelected);
+                                  debugPrint(StatusSelected);
+                                  debugPrint(CategorySelected);
+                                  debugPrint(ActiveIngridientSelected);
+                                  debugPrint(UnitsSelected);
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
@@ -756,10 +770,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                                     //           context, '/table_view_crop'));
                                     // });
                                   } else {
-                                    Flushbar(
-                                      duration: const Duration(seconds: 2),
-                                      message: "Please Enter All Details",
-                                    ).show(context);
+                                    // Flushbar(
+                                    //   duration: const Duration(seconds: 2),
+                                    //   message: "Please Enter All Details",
+                                    // ).show(context);
                                   }
                                   // addCropProgram();
                                   // Navigator.pop(context);
@@ -954,7 +968,7 @@ class _ViewDetailsState extends State<ViewDetails> {
             SizedBox(
               height: screenSize.height * 0.7,
               child: TabBarView(children: [
-                _gridview(context),
+                _gridview(context, widget.weeks = 12.toString()),
                 FutureBuilder<CropProgramModel>(
                   future: fetchCropProgram(),
                   builder: (ctx, snapshot) {
@@ -1316,14 +1330,193 @@ class _ViewDetailsState extends State<ViewDetails> {
   }
 }
 
-_gridview(context) {
-  return Padding(
-    padding: EdgeInsets.all(20),
-    child: _buildgridview(context),
+buildPin(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AlertDialog(
+              // insetPadding:
+              //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Week 1/Day 2",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(
+                        Icons.cancel_outlined,
+                      ))
+                ],
+              ),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Title : Plowing",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Text(
+                        "Status : Ongoing",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Divider(
+                    thickness: 1,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Date : 08/06/2022",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Description : Turn over the uppermost soil, bringing fresh nutrients to the surface while \nburying weeds and crop remains to decay",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Category  : Fertilizer",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 250,
+                      ),
+                      Text(
+                        "Chemical : Ammonia",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Active Ingredients : Nitrogen",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 250,
+                      ),
+                      Text(
+                        "Quantity : 500 Kg",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Time of application : Moderate Wind speed",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Modes of application : Tractor",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Warnings :  ",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.star),
+                      Text(
+                        "         May cause sensitisation by skin contact",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Precautions : ",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      Icon(Icons.star),
+                      Text(
+                        "      Wear a mask",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [],
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    ),
   );
 }
 
-Widget _buildgridview(context) {
+_gridview(context, weeks) {
+  return Padding(
+    padding: EdgeInsets.all(20),
+    child: _buildgridview(context, weeks),
+  );
+}
+
+Widget _buildgridview(context, weeks) {
   final screenSize = MediaQuery.of(context).size;
 
   return GridView.builder(
@@ -1337,132 +1530,146 @@ Widget _buildgridview(context) {
       itemBuilder: (BuildContext ctx, index) {
         //  var element = CropProgram.cropPrograms.elementAt(index);
         return Card(
+          elevation: 2,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Week"),
-                Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: const Color(0xFFEBF2EB),
-                  child: SizedBox(
-                    height: screenSize.height * 0.2,
-                    width: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 17, left: 17.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.check_circle_outline),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "GAP Questions",
-                                style: TextStyle(fontSize: 14),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Answer these Questions",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                                child: FlutterLogo(),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                Icons.calendar_today_outlined,
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "22/12/22",
-                                style: TextStyle(fontSize: 14),
-                              )
-                            ],
-                          )
-                        ],
+                Text("Week ${index + 1}"),
+                SizedBox(
+                  height: screenSize.height * 0.2,
+                  child: Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    color: const Color(0xFFEBF2EB),
+                    child: SizedBox(
+                      height: screenSize.height * 0.15,
+                      width: 300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.check_circle_outline),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "GAP Questions",
+                                  style: TextStyle(fontSize: 14),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Answer these Questions",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                  child: Image.asset(
+                                      "assets/images/taskperson.png"),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(
+                                  Icons.calendar_today_outlined,
+                                  size: 18,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "22/12/22",
+                                  style: TextStyle(fontSize: 14),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: const Color(0xFFEBF2EB),
-                  child: SizedBox(
-                    height: screenSize.height * 0.2,
-                    width: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 17, left: 17.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                SizedBox(
+                  height: screenSize.height * 0.2,
+                  child: InkWell(
+                    onTap: () => buildPin(context),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: const Color(0xFFEBF2EB),
+                      child: SizedBox(
+                        height: screenSize.height * 0.15,
+                        width: 300,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Icon(Icons.check_circle_outline),
+                              Row(
+                                children: [
+                                  const Icon(Icons.check_circle_outline),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "Title",
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ],
+                              ),
                               SizedBox(
-                                width: 10,
+                                height: 10,
                               ),
                               Text(
-                                "Title",
-                                style: TextStyle(fontSize: 14),
+                                "Description",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                    child: Image.asset(
+                                        "assets/images/taskperson.png"),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.calendar_today_outlined,
+                                    size: 18,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "22/22/22",
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ],
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Description",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                                child: FlutterLogo(),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Icon(
-                                Icons.calendar_today_outlined,
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "22/22/22",
-                                style: TextStyle(fontSize: 14),
-                              )
-                            ],
-                          )
-                        ],
+                        ),
                       ),
                     ),
                   ),
