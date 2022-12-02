@@ -25,6 +25,7 @@ final classdescriptionTextEditingController = TextEditingController();
 final typeTextEditingController = TextEditingController();
 final typedescriptionTextEditingController = TextEditingController();
 final controller = TextEditingController();
+bool _isVisible = false;
 
 class InventoryClassType extends StatefulWidget {
   InventoryClassType({Key? key, this.initial}) : super(key: key);
@@ -118,6 +119,32 @@ Future<String> updateTypeAPI(Map<String, String> updata) async {
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
     Uri.parse("https://agromate.website/laravel/api/update_type"),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
+
+Future<String> addClass() async {
+  debugPrint("reached");
+  Map<String, dynamic> updata = {
+    "iclass": classTextEditingController.text.toString(),
+    "class_description": classdescriptionTextEditingController.text.toString(),
+  };
+  return await addClassAPI(updata);
+}
+
+Future<String> addClassAPI(Map<String, dynamic> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse("https://agromate.website/laravel/api/class"),
     body: updata,
   );
   print(response.body);
@@ -382,6 +409,8 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Visibility(
+                                visible: _isVisible, child: FlutterLogo()),
                             InkWell(
                               onTap: () {
                                 buildPinAddClass(context);
@@ -540,7 +569,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
                               if (snapshot.hasData) {
-                                debugPrint(snapshot.data.toString());
+                                debugPrint("type table called");
                                 return _buildrequesttable(screenSize, context);
                               } else {
                                 return Center(
@@ -828,6 +857,8 @@ class RowSourceRequest extends DataTableSource {
 }
 
 datatablerequest(screenSize, BuildContext context) {
+  debugPrint("type table reached");
+
   return Container(
     height: screenSize.height * 0.7,
     decoration: const BoxDecoration(),
@@ -841,10 +872,10 @@ datatablerequest(screenSize, BuildContext context) {
               sortColumnIndex: 0,
               // sortAscending: sort,
               source: RowSourceRequest(
-                  myDataRequest: myData,
-                  count: myData.length,
+                  myDataRequest: typedata.data!,
+                  count: typedata.data!.length,
                   context: context),
-              rowsPerPage: 9,
+              rowsPerPage: 7,
               columnSpacing: 0,
               headingRowHeight: 50,
               horizontalMargin: 0,
@@ -950,7 +981,14 @@ datatablerequest(screenSize, BuildContext context) {
 
 DataRow recentFileDataRowrequest(TypeData data, context, int index) {
   int no = index + 1;
-
+  debugPrint("type row called");
+  debugPrint(classdata.data.toString());
+  classdata.data!.forEach((element) {
+    debugPrint("${data.classid}, ${element.id}, ${element.iclass}");
+  });
+  // String? name = classdata.data
+  //     .singleWhere((element) => element.id.toString() == data.classid)
+  //     .iclass;
   return DataRow(
     cells: [
       DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
@@ -1414,7 +1452,7 @@ buildPinAddClass(context) {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Item Description",
+                                    "Class Description",
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -1428,6 +1466,202 @@ buildPinAddClass(context) {
                                       child: TextInputField(
                                           textEditingController:
                                               classdescriptionTextEditingController,
+                                          hintText: "",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter Class Description";
+                                            }
+                                            return null;
+                                          },
+                                          validatorText: ""))
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 28,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: 296,
+                            child: CustomElevatedButton(
+                              onPressed: () {
+                                final isValid = _form.currentState?.validate();
+                                if (isValid!) {
+                                  setState(() {
+                                    addClass().then((value) =>
+                                        Navigator.pushNamed(
+                                            context, '/classandtype'));
+                                  });
+                                  // addCropProgram();
+                                } else {
+                                  Flushbar(
+                                    duration: const Duration(seconds: 2),
+                                    message: "Please Enter All Details",
+                                  ).show(context);
+                                }
+                                // addCropProgram();
+                                // Navigator.pop(context);
+                              },
+                              title: "Update",
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}
+
+buildPinAddType(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Form(
+          key: _form,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                contentPadding: EdgeInsets.only(top: 10.0),
+                content: Padding(
+                  padding:
+                      EdgeInsets.only(top: 0, left: 25, right: 25, bottom: 25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.cancel_outlined))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "Add Type",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Class",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      SizedBox(
+                                          width: 300,
+                                          child: TextInputField(
+                                              textEditingController:
+                                                  classTextEditingController,
+                                              hintText: "",
+                                              validator: (value) {
+                                                if (value != null &&
+                                                    value.isEmpty) {
+                                                  return "Please Enter Class Name";
+                                                }
+                                                return null;
+                                              },
+                                              validatorText: ""))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Type",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      SizedBox(
+                                          width: 300,
+                                          child: TextInputField(
+                                              textEditingController:
+                                                  typeTextEditingController,
+                                              hintText: "",
+                                              validator: (value) {
+                                                if (value != null &&
+                                                    value.isEmpty) {
+                                                  return "Please Enter Type Name";
+                                                }
+                                                return null;
+                                              },
+                                              validatorText: ""))
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Item Description",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  SizedBox(
+                                      width: 620,
+                                      child: TextInputField(
+                                          showContentPadding: true,
+                                          textEditingController:
+                                              typedescriptionTextEditingController,
                                           hintText: "",
                                           validator: (value) {
                                             if (value != null &&
@@ -1457,7 +1691,7 @@ buildPinAddClass(context) {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
                                   setState(() {
-                                    updateClass(id.toString()).then((value) =>
+                                    addClass().then((value) =>
                                         Navigator.pushNamed(
                                             context, '/classandtype'));
                                   });

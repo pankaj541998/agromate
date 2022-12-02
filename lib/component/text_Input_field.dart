@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 class TextInputField extends StatefulWidget {
-  const TextInputField({
-    Key? key,
-    this.validator,
-    this.inputFormatters,
-    required this.hintText,
-    required this.validatorText,
-    this.textEditingController,
-    this.leadingIcon,
-    this.readonly = false,
-    this.isInputPassword = false,
-    this.outlineColor = const Color(0xFF327C04),
-  }) : super(key: key);
+  TextInputField(
+      {Key? key,
+      this.validator,
+      this.inputFormatters,
+      required this.hintText,
+      required this.validatorText,
+      this.textEditingController,
+      this.leadingIcon,
+      this.readonly = false,
+      this.isInputPassword = false,
+      this.outlineColor = const Color(0xFF327C04),
+      this.showContentPadding})
+      : super(key: key);
 
   final dynamic validator;
   final TextEditingController? textEditingController;
@@ -23,6 +24,8 @@ class TextInputField extends StatefulWidget {
   final bool readonly;
   final dynamic inputFormatters;
   final Color outlineColor;
+
+  bool? showContentPadding;
 
   @override
   State<TextInputField> createState() => _TextInputFieldState();
@@ -48,7 +51,9 @@ class _TextInputFieldState extends State<TextInputField> {
           obscureText: obscureText,
           controller: widget.textEditingController,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(left: 5, right: 5),
+            contentPadding: widget.showContentPadding ?? false
+                ? EdgeInsets.all(10)
+                : EdgeInsets.all(4),
             filled: true,
             fillColor: Colors.white,
             enabledBorder: OutlineInputBorder(
