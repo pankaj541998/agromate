@@ -10,6 +10,7 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/cropPorgramModel.dart';
 
@@ -77,6 +78,34 @@ class _ViewDetailsState extends State<ViewDetails> {
     cropdata = CropProgramModel.fromJson(parsed);
 
     return cropdata;
+  }
+
+  Future<String> addTask() async {
+    debugPrint("reached");
+    Map<String, dynamic> updata = {
+      "iclass": "",
+      // classTextEditingController.text.toString(),
+      "class_description": ""
+      // classdescriptionTextEditingController.text.toString(),
+    };
+    return await addTaskAPI(updata);
+  }
+
+  Future<String> addTaskAPI(Map<String, dynamic> updata) async {
+    final _chuckerHttpClient = await http.Client();
+    print(updata);
+    final prefs = await SharedPreferences.getInstance();
+    http.Response response = await _chuckerHttpClient.post(
+      Uri.parse("https://agromate.website/laravel/api/programtask"),
+      body: updata,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return 'null';
+    } else {
+      return 'throw (Exception("Search Error"))';
+    }
   }
 
   @override

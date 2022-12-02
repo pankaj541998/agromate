@@ -981,21 +981,15 @@ datatablerequest(screenSize, BuildContext context) {
 
 DataRow recentFileDataRowrequest(TypeData data, context, int index) {
   int no = index + 1;
-  debugPrint("type row called");
-  debugPrint(classdata.data.toString());
-  classdata.data!.forEach((element) {
-    debugPrint("${data.classid}, ${element.id}, ${element.iclass}");
-  });
-  // String? name = classdata.data
-  //     .singleWhere((element) => element.id.toString() == data.classid)
-  //     .iclass;
+
   return DataRow(
     cells: [
       DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.type.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.classid.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.inventoryclass?.iclass.toString() ?? ""))),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.typeDescription.toString()))),
