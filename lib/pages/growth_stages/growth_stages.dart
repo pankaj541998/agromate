@@ -37,8 +37,10 @@ class _GrowthStageState extends State<GrowthStage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
-        body: ListView(
+        body: Column(
       children: [
         TopBar(),
         Padding(
@@ -69,30 +71,35 @@ class _GrowthStageState extends State<GrowthStage> {
                         SizedBox(
                           height: 30,
                         ),
-                        GridView.builder(
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: (1.3 / 1),
-                              crossAxisCount: 5,
-                              crossAxisSpacing: 25,
-                            ),
-                            itemCount: data.length,
-                            itemBuilder: (BuildContext ctx, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/growthstagedetails',
-                                    arguments: data.elementAt(index),
-                                  );
-                                },
-                                child: CropCard(
-                                  cropname: data.elementAt(index).cropName,
-                                  cropimage: "assets/images/onion.png",
+                        SizedBox(
+                          height: screenSize.height * 0.7,
+                          child: SingleChildScrollView(
+                            child: GridView.builder(
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: (1.3 / 1),
+                                  crossAxisCount: 5,
+                                  crossAxisSpacing: 25,
                                 ),
-                              );
-                            })
+                                itemCount: data.length,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/growthstagedetails',
+                                        arguments: data.elementAt(index),
+                                      );
+                                    },
+                                    child: CropCard(
+                                      cropname: data.elementAt(index).cropName,
+                                      cropimage: "assets/images/onion.png",
+                                    ),
+                                  );
+                                }),
+                          ),
+                        )
                       ],
                     );
                   }

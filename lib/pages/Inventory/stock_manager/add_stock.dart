@@ -30,6 +30,22 @@ class _AddStockState extends State<AddStock> {
       'Question 3',
       'Question 4',
     ];
+    String ClassSelected = 'Select Category';
+    var iclass = [
+      'Select Category',
+      'Category 1',
+      'Category 2',
+      'Category 3',
+      'Category 4',
+    ];
+    String TypeSelected = 'Select Type';
+    var type = [
+      'Select Type',
+      'Type 1',
+      'Type 2',
+      'Type 3',
+      'Type 4',
+    ];
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -83,7 +99,7 @@ class _AddStockState extends State<AddStock> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Class',
+                                      'Category',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: Color(0xff000000),
@@ -91,32 +107,23 @@ class _AddStockState extends State<AddStock> {
                                       ),
                                     ),
                                     const SizedBox(height: 8),
-                                    TextFormField(
-                                      // initialValue: 'enter heritage',
-                                      style: const TextStyle(
-                                        // color: Color(0xffffffff),
-                                        fontFamily: 'Helvetica',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      // readOnly: true,
+                                    DropdownButtonFormField(
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       decoration: InputDecoration(
-                                        fillColor: Colors.transparent,
-                                        errorMaxLines: 3,
-                                        hintText: "Class",
                                         contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                            top: 15,
-                                            bottom: 15),
-                                        hintStyle: const TextStyle(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        hintStyle: TextStyle(
                                           fontSize: 16,
-                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          color: const Color(0xff327C04)
+                                              .withOpacity(0.5),
                                           fontFamily: 'Helvetica',
                                         ),
-                                        // fillColor: Colors.white,
+                                        fillColor: Colors.white,
                                         filled: true,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -135,7 +142,7 @@ class _AddStockState extends State<AddStock> {
                                           ),
                                         ),
                                         errorStyle: const TextStyle(
-                                          fontSize: 16.0,
+                                          fontSize: 14,
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
@@ -155,15 +162,30 @@ class _AddStockState extends State<AddStock> {
                                         ),
                                         isDense: true,
                                       ),
-                                      // controller: _email,
-                                      keyboardType: TextInputType.text,
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email Id';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                      // onSaved: (name) {},
+                                      isExpanded: true,
+                                      value: ClassSelected,
+                                      iconEnabledColor:
+                                          Colors.transparent, // Down Arrow Icon
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Color(0xff327C04),
+                                      ),
+                                      iconSize: 30,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xff000000),
+                                          fontFamily: 'Helvetica'),
+                                      items: iclass.map((String items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          ClassSelected = newValue!;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
@@ -183,32 +205,23 @@ class _AddStockState extends State<AddStock> {
                                       ),
                                     ),
                                     const SizedBox(height: 8),
-                                    TextFormField(
-                                      // initialValue: 'enter heritage',
-                                      style: const TextStyle(
-                                        // color: Color(0xffffffff),
-                                        fontFamily: 'Helvetica',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      // readOnly: true,
+                                    DropdownButtonFormField(
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
                                       decoration: InputDecoration(
-                                        fillColor: Colors.transparent,
-                                        errorMaxLines: 3,
-                                        hintText: "Type",
                                         contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                            top: 15,
-                                            bottom: 15),
-                                        hintStyle: const TextStyle(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        hintStyle: TextStyle(
                                           fontSize: 16,
-                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          color: const Color(0xff327C04)
+                                              .withOpacity(0.5),
                                           fontFamily: 'Helvetica',
                                         ),
-                                        // fillColor: Colors.white,
+                                        fillColor: Colors.white,
                                         filled: true,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -227,7 +240,7 @@ class _AddStockState extends State<AddStock> {
                                           ),
                                         ),
                                         errorStyle: const TextStyle(
-                                          fontSize: 16.0,
+                                          fontSize: 14,
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
@@ -247,15 +260,30 @@ class _AddStockState extends State<AddStock> {
                                         ),
                                         isDense: true,
                                       ),
-                                      // controller: _email,
-                                      keyboardType: TextInputType.text,
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email Id';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                      // onSaved: (name) {},
+                                      isExpanded: true,
+                                      value: TypeSelected,
+                                      iconEnabledColor:
+                                          Colors.transparent, // Down Arrow Icon
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Color(0xff327C04),
+                                      ),
+                                      iconSize: 30,
+                                      style: const TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xff000000),
+                                          fontFamily: 'Helvetica'),
+                                      items: type.map((String items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Text(items),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          TypeSelected = newValue!;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),

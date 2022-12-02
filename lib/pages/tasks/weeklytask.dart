@@ -536,7 +536,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                 // accordian()
                 SingleChildScrollView(
                     child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.67,
+                        height: MediaQuery.of(context).size.height * 0.6,
                         child: _buildgridview(context)))
               ],
             ),
@@ -547,117 +547,158 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   }
 
   Widget _buildgridview(context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 1,
+            childAspectRatio: (0.5 / 0.8),
             crossAxisCount: 4,
             mainAxisSpacing: 2,
             crossAxisSpacing: 3),
-        itemCount: 16,
+        itemCount: 12,
         itemBuilder: (BuildContext ctx, index) {
           //  var element = CropProgram.cropPrograms.elementAt(index);
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
+          return Card(
+            elevation: 2,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Week 1"),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  Text("Week"),
+                  SizedBox(
+                    height: screenSize.height * 0.2,
                     child: Card(
                       elevation: 2,
-                      color: Color(0xFFEBF2EB),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.check_circle_outline),
-                                Text("Gap Question")
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Text("Answer the set of questions"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                Image.asset("assets/images/taskperson.png"),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(Icons.calendar_today_outlined),
-                                SizedBox(
-                                  width: 3,
-                                ),
-                                Text("01-12-2022")
-                              ],
-                            )
-                          ],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: const Color(0xFFEBF2EB),
+                      child: SizedBox(
+                        height: screenSize.height * 0.15,
+                        width: 300,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.check_circle_outline),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "GAP Questions",
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Answer these Questions",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                    child: Image.asset(
+                                        "assets/images/taskperson.png"),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Icon(
+                                    Icons.calendar_today_outlined,
+                                    size: 18,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "22/12/22",
+                                    style: TextStyle(fontSize: 14),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    height: screenSize.height * 0.2,
                     child: InkWell(
-                      onTap: () {
-                        buildPin();
-                      },
+                      onTap: () => buildPin(),
                       child: Card(
-                        color: Color(0xFFEBF2EB),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.check_circle_outline),
-                                  Text("Manuring")
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Text("Adding manure to the soil"),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Image.asset("assets/images/taskperson.png"),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Icon(Icons.calendar_today_outlined),
-                                  SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text("01-12-2022")
-                                ],
-                              )
-                            ],
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        color: const Color(0xFFEBF2EB),
+                        child: SizedBox(
+                          height: screenSize.height * 0.15,
+                          width: 300,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.check_circle_outline),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "Title",
+                                      style: TextStyle(fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Description",
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                      child: Image.asset(
+                                          "assets/images/taskperson.png"),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.calendar_today_outlined,
+                                      size: 18,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "22/22/22",
+                                      style: TextStyle(fontSize: 14),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

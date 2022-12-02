@@ -161,35 +161,16 @@ class TopBar extends StatelessWidget {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () => Get.toNamed('/tasks'),
+                    onTap: () {
+                      Get.toNamed('/view_farm');
+                    },
                     child: Container(
                       height: double.maxFinite,
                       // color: Colors.orange[300],
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: const Center(
                         child: Text(
-                          'Task',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/crop_plan'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Crop Schedule',
+                          'Farms',
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Poppins',
@@ -224,16 +205,35 @@ class TopBar extends StatelessWidget {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed('/view_farm');
-                    },
+                    onTap: () => Get.toNamed('/crop_plan'),
                     child: Container(
                       height: double.maxFinite,
                       // color: Colors.orange[300],
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: const Center(
                         child: Text(
-                          'Farms',
+                          'Crop Schedule',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            color: Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () => Get.toNamed('/tasks'),
+                    child: Container(
+                      height: double.maxFinite,
+                      // color: Colors.orange[300],
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: const Center(
+                        child: Text(
+                          'Task',
                           style: TextStyle(
                             fontSize: 16,
                             fontFamily: 'Poppins',

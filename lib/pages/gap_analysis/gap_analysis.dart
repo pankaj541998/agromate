@@ -310,122 +310,129 @@ class _GapAnalysisState extends State<GapAnalysis> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(),
-            SizedBox(
-              height: 45,
-            ),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Image.asset(
-                                "assets/images/tasks-list-svgrepo-com.png"),
-                            SizedBox(
-                              width: 25,
-                            ),
-                            Text(
-                              "Gap Questions",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                          width: 92,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                buildPinAlert();
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color(0xFF327C04))),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 19,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    'ADD',
-                                    style: TextStyle(fontSize: 16),
-                                  )
-                                ],
-                              )),
-                        )
-                      ]),
-                  Divider(
-                    thickness: 1,
-                    color: Color(0xFFD6D6D6),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 60,
-                    width: double.infinity,
-                    color: Color(0xFFF7F9EA),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 40,
-                        top: 18,
+      body: Column(
+        children: [
+          TopBar(),
+          SizedBox(
+            height: 45,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+            child: Column(
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                              "assets/images/tasks-list-svgrepo-com.png"),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text(
+                            "Gap Questions",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w500),
+                          ),
+                        ],
                       ),
-                      child: Text(
-                        "Title : Farming",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 92,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              buildPinAlert();
+                            },
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    Color(0xFF327C04))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 19,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  'ADD',
+                                  style: TextStyle(fontSize: 16),
+                                )
+                              ],
+                            )),
+                      )
+                    ]),
+                Divider(
+                  thickness: 1,
+                  color: Color(0xFFD6D6D6),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 60,
+                  width: double.infinity,
+                  color: Color(0xFFF7F9EA),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 40,
+                      top: 18,
+                    ),
+                    child: Text(
+                      "Title : Farming",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  Question(
-                      sentence:
-                          "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
-                      number: "1)"),
-                  SizedBox(
-                    height: 5,
+                ),
+                SizedBox(
+                  height: screenSize.height * 0.6,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        Question(
+                            sentence:
+                                "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
+                            number: "1)"),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(
+                          thickness: 2,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Question(
+                            sentence:
+                                "A water quality assessment has been performed to determine the quality of water used for irrigation purpose on the crop(s) being applied.",
+                            number: "2)"),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(
+                          thickness: 2,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Question(
+                            sentence:
+                                "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
+                            number: "3)")
+                      ],
+                    ),
                   ),
-                  Divider(
-                    thickness: 2,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Question(
-                      sentence:
-                          "A water quality assessment has been performed to determine the quality of water used for irrigation purpose on the crop(s) being applied.",
-                      number: "2)"),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    thickness: 2,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Question(
-                      sentence:
-                          "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
-                      number: "3)")
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

@@ -397,7 +397,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           child: Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
                       Text(
-                        'Inventory Class & Types',
+                        'Inventory Category & Types',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff000000),
@@ -524,7 +524,7 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                           ),
                           tabs: [
                             Tab(
-                              text: 'Class',
+                              text: 'Category',
                             ),
                             Tab(
                               text: 'Type',
@@ -691,7 +691,7 @@ datatable(screenSize, context) {
                         ),
                         child: const Center(
                           child: Text(
-                            "Class",
+                            "Category",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.w500, fontSize: 14),
@@ -925,7 +925,7 @@ datatablerequest(screenSize, BuildContext context) {
                       ),
                       child: const Center(
                         child: Text(
-                          "Class",
+                          "Category",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 14),
