@@ -123,7 +123,7 @@ class UpdatePasswordState extends State<UpdatePassword> {
                         numericCharCount: 1,
                         specialCharCount: 1,
                         normalCharCount: 1,
-                        width: 500,
+                        width: MediaQuery.of(context).size.width * 0.65,
                         height: 215,
                         onSuccess: () {
                           setState(() {
