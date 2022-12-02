@@ -2,18 +2,19 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/pages/crop/table_view_crop.dart';
 import 'package:get/get.dart';
 
 import '../../test.dart';
 
-class Tasks extends StatefulWidget {
-  const Tasks({Key? key}) : super(key: key);
+class WeeklyTasks extends StatefulWidget {
+  const WeeklyTasks({Key? key}) : super(key: key);
 
   @override
-  State<Tasks> createState() => _TasksState();
+  State<WeeklyTasks> createState() => _WeeklyTasksState();
 }
 
-class _TasksState extends State<Tasks> {
+class _WeeklyTasksState extends State<WeeklyTasks> {
   String questionsSelected = 'Potato';
   var questions = ['Potato', 'Carrot', 'Onion', 'Cabbage'];
 
@@ -26,6 +27,191 @@ class _TasksState extends State<Tasks> {
   List<bool> expanded = [false, false];
   int selected = 0; //attention
   int subselected = 0; //attention
+
+  buildPin() {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                // insetPadding:
+                //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Week 1/Day 2",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: Icon(
+                          Icons.cancel_outlined,
+                        ))
+                  ],
+                ),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Title : Plowing",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Text(
+                          "Status : Ongoing",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      thickness: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Date : 08/06/2022",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Description : Turn over the uppermost soil, bringing fresh nutrients to the surface while \nburying weeds and crop remains to decay",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Category  : Fertilizer",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 250,
+                        ),
+                        Text(
+                          "Chemical : Ammonia",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Active Ingredients : Nitrogen",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 250,
+                        ),
+                        Text(
+                          "Quantity : 500 Kg",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Time of application : Moderate Wind speed",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Modes of application : Tractor",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Warnings :  ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.star),
+                        Text(
+                          "         May cause sensitisation by skin contact",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Precautions : ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.star),
+                        Text(
+                          "      Wear a mask",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -347,6 +533,7 @@ class _TasksState extends State<Tasks> {
                   ],
                 ),
                 const SizedBox(height: 10),
+                // accordian()
                 SingleChildScrollView(
                     child: SizedBox(
                         height: MediaQuery.of(context).size.height * 0.67,
@@ -363,47 +550,121 @@ class _TasksState extends State<Tasks> {
     return GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: (0.2 / 0.1),
+            childAspectRatio: 1,
             crossAxisCount: 4,
             mainAxisSpacing: 2,
             crossAxisSpacing: 3),
         itemCount: 16,
         itemBuilder: (BuildContext ctx, index) {
           //  var element = CropProgram.cropPrograms.elementAt(index);
-          return InkWell(
-            onTap: () {
-              Get.toNamed('/weeklytasks');
-            },
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Card(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Row(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/cabbage.png",
-                          )
-                        ],
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Week 1"),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Card(
+                      elevation: 2,
+                      color: Color(0xFFEBF2EB),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(Icons.check_circle_outline),
+                                Text("Gap Question")
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Text("Answer the set of questions"),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Image.asset("assets/images/taskperson.png"),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(Icons.calendar_today_outlined),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text("01-12-2022")
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Crop : Cabbage",
-                            style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: InkWell(
+                      onTap: () {
+                        buildPin();
+                      },
+                      child: Card(
+                        color: Color(0xFFEBF2EB),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.check_circle_outline),
+                                  Text("Manuring")
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Text("Adding manure to the soil"),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  Image.asset("assets/images/taskperson.png"),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon(Icons.calendar_today_outlined),
+                                  SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text("01-12-2022")
+                                ],
+                              )
+                            ],
                           ),
-                          Text("Plant Population  : 10000",
-                              style: TextStyle(fontSize: 18)),
-                          Text("Weeks : 12", style: TextStyle(fontSize: 18))
-                        ],
-                      )
-                    ],
-                  )),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         });

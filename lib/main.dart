@@ -23,6 +23,7 @@ import 'package:flutter_agro_new/pages/login_Registration/register.dart';
 import 'package:flutter_agro_new/pages/login_Registration/thankyou.dart';
 import 'package:flutter_agro_new/pages/login_Registration/update_password.dart';
 import 'package:flutter_agro_new/pages/Inventory/stock_order/stock_order.dart';
+import 'package:flutter_agro_new/pages/tasks/weeklytask.dart';
 import 'package:flutter_agro_new/pages/user.dart';
 import 'package:get/get.dart';
 import 'package:flutter_agro_new/pages/dashboard.dart';
@@ -64,7 +65,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
+      initialRoute: '/view_details',
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
@@ -100,7 +101,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/crop_plan', page: () => const CropPlan()),
         GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
         GetPage(name: '/grid_view_crop', page: () => const Crop()),
-        GetPage(name: '/view_details', page: () => const ViewDetails()),
+        GetPage(name: '/view_details', page: () => ViewDetails()),
         GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),
         GetPage(name: '/tasks', page: () => const Tasks()),
         GetPage(name: '/add_tasks', page: () => const AddTask()),
@@ -110,6 +111,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/user', page: () => User()),
         GetPage(name: '/allocation', page: () => Allocation()),
         GetPage(name: '/allocate', page: () => Allocate()),
+        GetPage(name: '/weeklytasks', page: () => WeeklyTasks()),
       ],
     );
   }
