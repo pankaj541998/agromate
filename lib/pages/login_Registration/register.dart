@@ -40,7 +40,7 @@ class _RegisterState extends State<Register> {
 
       Map responseMap = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        Get.toNamed('/thankyou');
+        Navigator.pushNamed(context, '/thankyou');
       } else {
         print("else entered");
         Flushbar(

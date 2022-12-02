@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
-        GetPage(name: '/thankyou', page: () => const Thankyou()),
+        GetPage(name: '/thankyou', page: () => Thankyou()),
         GetPage(name: '/forgotPassword', page: () => const ForgotPassword()),
         GetPage(name: '/otpVerification', page: () => const OtpVerification()),
         GetPage(name: '/updatePassword', page: () => const UpdatePassword()),

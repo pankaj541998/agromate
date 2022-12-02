@@ -178,7 +178,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'End Date',
+                                  'Start Date',
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Color(0xff000000),
