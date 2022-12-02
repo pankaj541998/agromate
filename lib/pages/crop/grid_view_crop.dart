@@ -109,7 +109,6 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -147,7 +146,6 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -185,7 +183,6 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -227,7 +224,6 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                      height: 40,
                                       width: 300,
                                       child: TextInputField(
                                           inputFormatters: [
@@ -267,7 +263,6 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
                                             inputFormatters: [
@@ -305,14 +300,21 @@ class _CropState extends State<Crop> {
                                       height: 15,
                                     ),
                                     SizedBox(
-                                        height: 40,
                                         width: 300,
                                         child: TextInputField(
-                                            textEditingController:
-                                                harvestTextEditingController,
-                                            hintText: "Harvest Days",
-                                            validatorText:
-                                                "Please Enter harvest Days")),
+                                          textEditingController:
+                                              harvestTextEditingController,
+                                          hintText: "Harvest Days",
+                                          validatorText:
+                                              "Please Enter harvest Days",
+                                          validator: (value) {
+                                            if (value != null &&
+                                                value.isEmpty) {
+                                              return "Please Enter harvest days";
+                                            }
+                                            return null;
+                                          },
+                                        )),
                                   ],
                                 ),
                               ],
