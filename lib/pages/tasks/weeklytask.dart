@@ -38,10 +38,11 @@ var taskunits = [
 ];
 
 class WeeklyTasks extends StatefulWidget {
-  const WeeklyTasks({Key? key}) : super(key: key);
+  const WeeklyTasks({Key? key, this.cropprogramid}) : super(key: key);
 
   @override
   State<WeeklyTasks> createState() => _WeeklyTasksState();
+  final String? cropprogramid;
 }
 
 // Future<RegisteredUserModel> fetchRegisteredUsers() async {
@@ -78,10 +79,10 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   int selected = 0; //attention
   int subselected = 0; //attention
 
-  Future<String> addWeeklyTask() async {
+  Future<String> addWeeklyTask(cropprogramid) async {
     debugPrint("reached");
     Map<String, dynamic> updata = {
-      "cropprogramid": "1",
+      "cropprogramid": cropprogramid,
       "week": WeekSelected,
       "status": taskStatusSelected,
       "title": tasktitleTextEditingController.text,
@@ -988,7 +989,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                           .text);
                                   debugPrint(
                                       taskquantityTextEditingController.text);
-                                  //addWeeklyTask();
+                                  addWeeklyTask(widget.cropprogramid);
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
