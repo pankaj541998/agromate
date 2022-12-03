@@ -21,7 +21,7 @@ Future<CropProgramModel> fetchCropProgram() async {
   final response = await client
       .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
   final parsed = jsonDecode(response.body);
-  print(response.body);
+  // print(response.body);
   cropdata = CropProgramModel.fromJson(parsed);
 
   return cropdata;

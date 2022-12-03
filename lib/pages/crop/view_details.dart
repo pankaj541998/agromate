@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/pages/Inventory/modes_of_application/Inventory_modes_of_application.dart';
+import 'package:flutter_agro_new/models/CropProgramTasksModel.dart';
+import 'package:flutter_agro_new/pages/crop/Repository/CropProgramViaDioAPI.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,9 +19,8 @@ import '../../models/cropPorgramModel.dart';
 
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
-late CropProgramModel cropdata;
-String WeekSelected = 'Week 1';
-var wee = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+late CropProgramTasks cropdata;
+
 String CategorySelected = 'Select Category';
 var categories = ['Select Category', 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
 String ActiveIngridientSelected = 'Select Ingredient';
@@ -50,12 +51,15 @@ class ViewDetails extends StatefulWidget {
   @override
   State<ViewDetails> createState() => _ViewDetailsState();
 
-  String? weeks;
+  final String? weeks;
   final String? id;
   int? initial;
 }
 
 class _ViewDetailsState extends State<ViewDetails> {
+  String WeekSelected = 'Week 1';
+  var wee = [''];
+
   TextEditingController controller = TextEditingController();
   TextEditingController titleTextEditingController = TextEditingController();
   TextEditingController descriptionTextEditingController =
@@ -64,7 +68,7 @@ class _ViewDetailsState extends State<ViewDetails> {
       TextEditingController();
   TextEditingController quantityTextEditingController = TextEditingController();
   bool sort = true;
-  List<Data>? filterData;
+  List<SampleData>? filterData;
 
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
@@ -76,21 +80,27 @@ class _ViewDetailsState extends State<ViewDetails> {
     }
   }
 
-  Future<CropProgramModel> fetchCropProgram() async {
-    var client = http.Client();
-    final response = await client
-        .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
-    final parsed = jsonDecode(response.body);
-    // print(response.body);
-    cropdata = CropProgramModel.fromJson(parsed);
-
-    return cropdata;
+  generateListForweeks() {
+    final items =
+        List<String>.generate(int.parse(widget.weeks!), (i) => "Week ${i + 1}");
+    // print("created list is $items");
+    wee = items;
   }
 
-  Future<String> addTask() async {
-    debugPrint("reached");
+  Future fetchCropProgram(id) async {
+    var client = http.Client();
+    final response = await client.get(Uri.parse(
+        'https://agromate.website/laravel/api/crop_program_task/$id'));
+    final parsed = jsonDecode(response.body);
+    print("api call data cp ${response.body}");
+    cropdata = CropProgramTasks.fromJson(parsed);
+
+    // return cropdata;
+  }
+
+  Future<String> addTask(id) async {
     Map<String, dynamic> updata = {
-      "cropprogramid": "1",
+      "cropprogramid": id,
       "week": WeekSelected,
       "status": StatusSelected,
       "title": titleTextEditingController.text,
@@ -125,6 +135,7 @@ class _ViewDetailsState extends State<ViewDetails> {
   void initState() {
     filterData = myData;
     super.initState();
+    generateListForweeks();
   }
 
   buildPin() {
@@ -806,6 +817,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                               width: 296,
                               child: CustomElevatedButton(
                                 onPressed: () {
+                                  fetchCropProgram(widget.id);
                                   final isValid =
                                       _form.currentState?.validate();
                                   debugPrint(WeekSelected);
@@ -820,18 +832,18 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       chemicaltitleTextEditingController.text);
                                   debugPrint(
                                       quantityTextEditingController.text);
-                                  // addTask();
+                                  //  addTask();
                                   if (isValid!) {
-                                    // setState(() {
-                                    //   addCropProgram().then((value) =>
-                                    //       Navigator.pushNamed(
-                                    //           context, '/table_view_crop'));
-                                    // });
+                                    setState(() {
+                                      addTask(widget.id).then(
+                                        (value) => Navigator.pop(context),
+                                      );
+                                    });
                                   } else {
-                                    // Flushbar(
-                                    //   duration: const Duration(seconds: 2),
-                                    //   message: "Please Enter All Details",
-                                    // ).show(context);
+                                    Flushbar(
+                                      duration: const Duration(seconds: 2),
+                                      message: "Please Enter All Details",
+                                    ).show(context);
                                   }
                                   // addCropProgram();
                                   // Navigator.pop(context);
@@ -1026,25 +1038,55 @@ class _ViewDetailsState extends State<ViewDetails> {
             SizedBox(
               height: screenSize.height * 0.7,
               child: TabBarView(children: [
-                _gridview(context, widget.weeks = 12.toString()),
-                FutureBuilder<CropProgramModel>(
-                  future: fetchCropProgram(),
+                FutureBuilder(
+                  future: getCropProgramData().getSecurityQuestions(
+                      int.parse(widget.id!)), //fetchCropProgram(1),
                   builder: (ctx, snapshot) {
+                    if (snapshot.data == null) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.45,
+                          ),
+                          Center(child: CircularProgressIndicator()),
+                        ],
+                      );
+                    }
                     if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return datatable(widget.weeks = 12.toString());
-                      } else {
+                      if (snapshot.hasError) {
                         return Center(
                           child: Text(
                             '${snapshot.error} occured',
-                            style: const TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18),
                           ),
                         );
                       }
                     }
-                    return const Center(child: CircularProgressIndicator());
+                    return _buildgridview(
+                        context, widget.weeks, diocropdata.data!, widget.id);
                   },
-                )
+                ),
+                datatable(widget.weeks)
+                // FutureBuilder<CropProgramTasks>(
+                //   future: fetchCropProgram(widget.id),
+                //   builder: (ctx, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //       if (snapshot.hasData) {
+                //         return datatable(widget.weeks);
+                //       } else {
+                //         return Center(
+                //           child: Text(
+                //             '${snapshot.error} occured',
+                //             style: const TextStyle(fontSize: 18),
+                //           ),
+                //         );
+                //       }
+                //     }
+                //     return const Center(child: CircularProgressIndicator());
+                //   },
+                // )
               ]),
             ),
           ],
@@ -1406,7 +1448,7 @@ buildPin(context) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Week 1/Day 2",
+                    "Week 1",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   IconButton(
@@ -1567,176 +1609,125 @@ buildPin(context) {
   );
 }
 
-_gridview(context, weeks) {
-  return Padding(
-    padding: EdgeInsets.all(20),
-    child: _buildgridview(context, weeks),
-  );
-}
-
-Widget _buildgridview(context, weeks) {
+Widget _buildgridview(context, weeks, List<Data> data, id) {
   final screenSize = MediaQuery.of(context).size;
 
-  return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: (0.5 / 0.8),
-          crossAxisCount: 4,
-          mainAxisSpacing: 2,
-          crossAxisSpacing: 3),
-      itemCount: 12,
-      itemBuilder: (BuildContext ctx, index) {
-        //  var element = CropProgram.cropPrograms.elementAt(index);
-        return Card(
-          elevation: 2,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("Week ${index + 1}"),
-                SizedBox(
-                  height: screenSize.height * 0.2,
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    color: const Color(0xFFEBF2EB),
-                    child: SizedBox(
-                      height: screenSize.height * 0.15,
-                      width: 300,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.check_circle_outline),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "GAP Questions",
-                                  style: TextStyle(fontSize: 14),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Answer these Questions",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: (0.5 / 0.8),
+            crossAxisCount: 4,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 3),
+        itemCount: int.parse(weeks),
+        itemBuilder: (BuildContext ctx, index) {
+          String weekName = "Week ${index + 1}";
+          var filtered = diocropdata.data!
+              .where((element) => (element.week == weekName))
+              .toList();
+
+          return Card(
+            elevation: 2,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text("Week ${index + 1}"),
+                  filtered.isNotEmpty
+                      ? SizedBox(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
-                                  height: 20,
-                                  child: Image.asset(
-                                      "assets/images/taskperson.png"),
+                                  height: screenSize.height * 0.67,
+                                  child: ListView.builder(
+                                    itemCount: filtered.length,
+                                    itemBuilder: (context, index) {
+                                      var element = filtered.elementAt(index);
+                                      return Card(
+                                        elevation: 2,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        color: const Color(0xFFEBF2EB),
+                                        child: SizedBox(
+                                          height: screenSize.height * 0.15,
+                                          width: 300,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(Icons
+                                                        .check_circle_outline),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      filtered
+                                                              .elementAt(index)
+                                                              .title ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    )
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  filtered
+                                                          .elementAt(index)
+                                                          .description ??
+                                                      "",
+                                                  style:
+                                                      TextStyle(fontSize: 12),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(
-                                  Icons.calendar_today_outlined,
-                                  size: 18,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "22/12/22",
-                                  style: TextStyle(fontSize: 14),
-                                )
                               ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.2,
-                  child: InkWell(
-                    onTap: () => buildPin(context),
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: const Color(0xFFEBF2EB),
-                      child: SizedBox(
-                        height: screenSize.height * 0.15,
-                        width: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(Icons.check_circle_outline),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "Title",
-                                    style: TextStyle(fontSize: 14),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Description",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                    child: Image.asset(
-                                        "assets/images/taskperson.png"),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(
-                                    Icons.calendar_today_outlined,
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "22/22/22",
-                                    style: TextStyle(fontSize: 14),
-                                  )
-                                ],
-                              )
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/empty.png',
+                              height: 200,
+                              width: 150,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text("No Tasks Added Here"),
+                          ],
+                        )
+                ],
+              ),
             ),
-          ),
-        );
-      });
+          );
+        }),
+  );
 }
 
 class RowSource extends DataTableSource {
@@ -1826,7 +1817,7 @@ DataRow recentFileDataRow(var data, int weeks) {
   );
 }
 
-class Data {
+class SampleData {
   String? name;
   String? stockCode;
   String? inventory;
@@ -1842,7 +1833,7 @@ class Data {
   String? w4;
   String? w5;
 
-  Data({
+  SampleData({
     required this.name,
     required this.stockCode,
     required this.inventory,
@@ -1860,8 +1851,8 @@ class Data {
   });
 }
 
-List<Data> myData = [
-  Data(
+List<SampleData> myData = [
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1877,7 +1868,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1893,7 +1884,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1909,7 +1900,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1925,7 +1916,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1941,7 +1932,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1957,7 +1948,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1973,7 +1964,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -1989,7 +1980,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -2005,7 +1996,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -2021,7 +2012,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
@@ -2037,7 +2028,7 @@ List<Data> myData = [
     w4: '500',
     w5: '500',
   ),
-  Data(
+  SampleData(
     name: "Buffer",
     stockCode: '4BL01',
     inventory: 'Chemical',
