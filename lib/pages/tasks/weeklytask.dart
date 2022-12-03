@@ -1,11 +1,41 @@
-import 'dart:ui';
-
+import 'dart:convert';
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/pages/crop/table_view_crop.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../component/custom_Elevated_Button.dart';
+import '../../component/text_Input_field.dart';
+import 'package:http/http.dart' as http;
+import '../../models/registered_users_model.dart';
 
-import '../../test.dart';
+final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+String WeekSelected = 'Week 1';
+var week = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+String CategorySelected = 'Select Category';
+var categories = ['Select Category', 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
+String ActiveIngridientSelected = 'Select Ingredient';
+var active = [
+  'Select Ingredient',
+  'Active Ingridient 1',
+  'Active Ingridient 2',
+  'Active Ingridient 3',
+  'Active Ingridient 4',
+  'Active Ingridient 5'
+];
+String taskStatusSelected = 'To Do';
+var taskstatus = ['To Do', 'On Going', 'Completed'];
+String taskUnitsSelected = 'Select Unit';
+var taskunits = [
+  'Select Unit',
+  'Kilogram',
+  'Gram',
+  'Liter',
+  "Milliliter",
+  "Pounds",
+  "Tonnes"
+];
 
 class WeeklyTasks extends StatefulWidget {
   const WeeklyTasks({Key? key}) : super(key: key);
@@ -14,19 +44,73 @@ class WeeklyTasks extends StatefulWidget {
   State<WeeklyTasks> createState() => _WeeklyTasksState();
 }
 
+// Future<RegisteredUserModel> fetchRegisteredUsers() async {
+//   var client = http.Client();
+//   final response = await client
+//       .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
+//   final parsed = jsonDecode(response.body);
+//   // print(response.body);
+//   registeredusers = RegisteredUserModel.fromJson(parsed);
+//   // print(registeredusers.data!.elementAt(1).firstName!);
+//   return registeredusers;
+// }
+
 class _WeeklyTasksState extends State<WeeklyTasks> {
+  TextEditingController tasktitleTextEditingController =
+      TextEditingController();
+  TextEditingController taskdescriptionTextEditingController =
+      TextEditingController();
+  TextEditingController taskchemicaltitleTextEditingController =
+      TextEditingController();
+  TextEditingController taskquantityTextEditingController =
+      TextEditingController();
+
   String questionsSelected = 'Potato';
   var questions = ['Potato', 'Carrot', 'Onion', 'Cabbage'];
 
-  String landeholderSelected = 'Kishan';
-  var landeholder = ['Kishan', 'Raj', 'Reethik'];
-  String blockselected = 'Carrots';
+  String tasklandeholderSelected = 'Kishan';
+  var tasklandeholder = ['Kishan', 'Raj', 'Reethik'];
+  String taskblockselected = 'Carrots';
   var crop = ['Green Mielies', 'Carrots', 'Sweet Corn'];
-  String Fieldselected = 'Car';
-  var field = ['Green ', 'Car', 'Sweet'];
+  String taskFieldselected = 'Car';
+  var taskfield = ['Green ', 'Car', 'Sweet'];
   List<bool> expanded = [false, false];
   int selected = 0; //attention
   int subselected = 0; //attention
+
+  Future<String> addWeeklyTask() async {
+    debugPrint("reached");
+    Map<String, dynamic> updata = {
+      "cropprogramid": "1",
+      "week": WeekSelected,
+      "status": taskStatusSelected,
+      "title": tasktitleTextEditingController.text,
+      "description": taskdescriptionTextEditingController.text,
+      "category": CategorySelected,
+      "chemical": taskchemicaltitleTextEditingController.text,
+      "activeingridient": ActiveIngridientSelected,
+      "quantity": taskquantityTextEditingController.text,
+      "unit": taskUnitsSelected
+    };
+    return await addTaskAPI(updata);
+  }
+
+  Future<String> addTaskAPI(Map<String, dynamic> updata) async {
+    final _chuckerHttpClient = await http.Client();
+    print(updata);
+    final prefs = await SharedPreferences.getInstance();
+    http.Response response = await _chuckerHttpClient.post(
+      Uri.parse("https://agromate.website/laravel/api/programtask"),
+      body: updata,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return 'null';
+    } else {
+      return 'throw (Exception("Search Error"))';
+    }
+  }
 
   buildPin() {
     return showDialog(
@@ -198,14 +282,739 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                     SizedBox(
                       height: 30,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [],
-                    )
                   ],
                 ),
               ),
             ],
+          );
+        },
+      ),
+    );
+  }
+
+  buildPinAlert() {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Form(
+            key: _form,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  contentPadding: EdgeInsets.only(top: 10.0),
+                  content: Padding(
+                    padding: EdgeInsets.only(
+                        top: 0, left: 25, right: 25, bottom: 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(Icons.cancel_outlined))
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Add New Task",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Weeks",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: WeekSelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items: week.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        WeekSelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Status",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: taskStatusSelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items: taskstatus.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        taskStatusSelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Title",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                    width: 300,
+                                    child: TextInputField(
+                                        // inputFormatters: [
+                                        //   LengthLimitingTextInputFormatter(
+                                        //       25),
+                                        //   FilteringTextInputFormatter.allow(
+                                        //       RegExp('[a-zA-Z]')),
+                                        // ],
+                                        // textEditingController:
+                                        //     cropTextEditingController,
+                                        textEditingController:
+                                            tasktitleTextEditingController,
+                                        hintText: "",
+                                        validator: (value) {
+                                          if (value != null && value.isEmpty) {
+                                            return "Please Enter Title";
+                                          }
+                                          return null;
+                                        },
+                                        validatorText: ""))
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Description",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                    width: 300,
+                                    child: TextInputField(
+                                        // inputFormatters: [
+                                        //   LengthLimitingTextInputFormatter(
+                                        //       6),
+                                        //   FilteringTextInputFormatter
+                                        //       .digitsOnly
+                                        // ],
+                                        // textEditingController:
+                                        //     yieldTextEditingController,
+                                        textEditingController:
+                                            taskdescriptionTextEditingController,
+                                        hintText: "",
+                                        validator: (value) {
+                                          if (value != null && value.isEmpty) {
+                                            return "Please Enter Description";
+                                          }
+                                          return null;
+                                        },
+                                        validatorText: ""))
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Category",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: CategorySelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items: categories.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        CategorySelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Chemical",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                    width: 300,
+                                    child: TextInputField(
+                                        // inputFormatters: [
+                                        //   LengthLimitingTextInputFormatter(
+                                        //       6),
+                                        //   FilteringTextInputFormatter
+                                        //       .digitsOnly
+                                        // ],
+                                        // textEditingController:
+                                        //     weeksTextEditingController,
+                                        textEditingController:
+                                            taskchemicaltitleTextEditingController,
+                                        hintText: "",
+                                        validator: (value) {
+                                          if (value != null && value.isEmpty) {
+                                            return "Please Chemical";
+                                          }
+                                          return null;
+                                        },
+                                        validatorText: "")),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Active Ingridient",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: ActiveIngridientSelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items: active.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        ActiveIngridientSelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Quantity",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                    width: 140,
+                                    child: TextInputField(
+                                        // inputFormatters: [
+                                        //   LengthLimitingTextInputFormatter(
+                                        //       6),
+                                        //   FilteringTextInputFormatter
+                                        //       .digitsOnly
+                                        // ],
+                                        // textEditingController:
+                                        //     weeksTextEditingController,
+                                        textEditingController:
+                                            taskquantityTextEditingController,
+                                        hintText: "",
+                                        validator: (value) {
+                                          if (value != null && value.isEmpty) {
+                                            return "Please Enter Quantity";
+                                          }
+                                          return null;
+                                        },
+                                        validatorText: "")),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Units",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                SizedBox(
+                                  width: 140,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: taskUnitsSelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items: taskunits.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        taskUnitsSelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 296,
+                              child: CustomElevatedButton(
+                                onPressed: () {
+                                  final isValid =
+                                      _form.currentState?.validate();
+                                  debugPrint(WeekSelected);
+                                  debugPrint(taskStatusSelected);
+                                  debugPrint(CategorySelected);
+                                  debugPrint(ActiveIngridientSelected);
+                                  debugPrint(taskUnitsSelected);
+                                  debugPrint(
+                                      tasktitleTextEditingController.text);
+                                  debugPrint(
+                                      taskdescriptionTextEditingController
+                                          .text);
+                                  debugPrint(
+                                      taskchemicaltitleTextEditingController
+                                          .text);
+                                  debugPrint(
+                                      taskquantityTextEditingController.text);
+                                  //addWeeklyTask();
+                                  if (isValid!) {
+                                    // setState(() {
+                                    //   addCropProgram().then((value) =>
+                                    //       Navigator.pushNamed(
+                                    //           context, '/table_view_crop'));
+                                    // });
+                                  } else {
+                                    // Flushbar(
+                                    //   duration: const Duration(seconds: 2),
+                                    //   message: "Please Enter All Details",
+                                    // ).show(context);
+                                  }
+                                  // addCropProgram();
+                                  // Navigator.pop(context);
+                                },
+                                title: "Add",
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -231,7 +1040,38 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                       "Tasks",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    )
+                    ),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {
+                        buildPinAlert();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF327C04),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 9),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: Color(0xffffffff),
+                                size: 20,
+                              ),
+                              const SizedBox(width: 6),
+                              const Text(
+                                'Add',
+                                style: TextStyle(
+                                    fontSize: 16, color: Color(0xffffffff)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -256,7 +1096,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Landholder',
+                            'Tasks',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),
@@ -315,7 +1155,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: landeholderSelected,
+                            value: tasklandeholderSelected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -327,7 +1167,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: landeholder.map((String items) {
+                            items: tasklandeholder.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -335,7 +1175,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                landeholderSelected = newValue!;
+                                tasklandeholderSelected = newValue!;
                               });
                             },
                           ),
@@ -408,7 +1248,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: blockselected,
+                            value: taskblockselected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -428,7 +1268,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                blockselected = newValue!;
+                                taskblockselected = newValue!;
                               });
                             },
                           ),
@@ -503,7 +1343,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: Fieldselected,
+                            value: taskFieldselected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -515,7 +1355,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: field.map((String items) {
+                            items: taskfield.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -523,7 +1363,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                Fieldselected = newValue!;
+                                taskFieldselected = newValue!;
                               });
                             },
                           ),
