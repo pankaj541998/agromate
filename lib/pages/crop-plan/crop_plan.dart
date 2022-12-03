@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:convert';
+import 'package:flutter_agro_new/models/crop_schedule_Model.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../component/top_bar.dart';
+
+late CropScheduleModel cropschedule;
 
 class CropPlan extends StatefulWidget {
   const CropPlan({Key? key}) : super(key: key);
@@ -14,22 +20,34 @@ class CropPlan extends StatefulWidget {
 
 class _CropPlanState extends State<CropPlan> {
   bool sort = true;
-  List<Data>? filterData;
+  List<CropScheduleData>? filterData;
 
-  onsortColum(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        filterData!.sort((a, b) => a.name!.compareTo(b.name!));
-      } else {
-        filterData!.sort((a, b) => b.name!.compareTo(a.name!));
-      }
-    }
-  }
+  // onsortColum(int columnIndex, bool ascending) {
+  //   if (columnIndex == 0) {
+  //     if (ascending) {
+  //       filterData!.sort((a, b) => a.name!.compareTo(b.name!));
+  //     } else {
+  //       filterData!.sort((a, b) => b.name!.compareTo(a.name!));
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
-    filterData = myData;
     super.initState();
+  }
+
+// List<CropScheduleData> myDataRequest = cropschedule;
+
+  Future fetchCropSchedule() async {
+    var client = http.Client();
+    final response = await client
+        .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
+    final parsed = jsonDecode(response.body);
+    print("api call data ${response.body}");
+    cropschedule = CropScheduleModel.fromJson(parsed);
+
+    return cropschedule;
   }
 
   TextEditingController controller = TextEditingController();
@@ -103,9 +121,10 @@ class _CropPlanState extends State<CropPlan> {
                               child: CupertinoSearchTextField(
                                 onChanged: (value) {
                                   setState(() {
-                                    myData = filterData!
+                                    myData = cropschedule.data!
                                         .where(
-                                          (element) => element.name!
+                                          (element) => element
+                                              .cropProgram!.first.crop!
                                               .toLowerCase()
                                               .contains(
                                                 value.toLowerCase(),
@@ -131,7 +150,7 @@ class _CropPlanState extends State<CropPlan> {
                                 prefixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         10, 8, 0, 8),
-                                placeholder: 'Search',
+                                placeholder: 'Search By Crop',
                                 suffixInsets:
                                     const EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 15, 2),
@@ -155,7 +174,24 @@ class _CropPlanState extends State<CropPlan> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                datatable(),
+                FutureBuilder(
+                  future: fetchCropSchedule(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return datatable(screenSize, context);
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ],
             ),
           ),
@@ -164,7 +200,8 @@ class _CropPlanState extends State<CropPlan> {
     );
   }
 
-  datatable() {
+  datatable(screenSize, context) {
+    fetchCropSchedule();
     return Container(
       padding: const EdgeInsets.all(0.0),
       decoration: const BoxDecoration(),
@@ -437,313 +474,70 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, int index) {
+DataRow recentFileDataRow(CropScheduleData data, int index) {
   int no = index + 1;
 
   return DataRow(
     cells: [
       DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.name ?? "Name"))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.phone.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.age.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.farm!.first.farm.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.crop.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.it.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.block!.first.block.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.catlivr.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.field?.first.field ?? ""))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.cropProgram!.first.crop.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.cropReference.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center, child: Text(data.caltivar.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.startDate.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.endDate.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.expectedEndDate.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.area.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.expectedYield.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: Text(data.ac.toString()))),
+      DataCell(Align(alignment: Alignment.center, child: Text(""))),
     ],
   );
 }
 
-class Data {
-  String? name;
-  String? phone;
-  String? age;
-  String? crop;
-  String? it;
-  String? catlivr;
-  String? startDate;
-  String? endDate;
-  String? area;
-  String? expectedYield;
-  String? ac;
+// class Data {
+//   String? name;
+//   String? phone;
+//   String? age;
+//   String? crop;
+//   String? it;
+//   String? catlivr;
+//   String? startDate;
+//   String? endDate;
+//   String? area;
+//   String? expectedYield;
+//   String? ac;
 
-  Data({
-    required this.name,
-    required this.phone,
-    required this.age,
-    required this.crop,
-    required this.it,
-    required this.catlivr,
-    required this.startDate,
-    required this.endDate,
-    required this.area,
-    required this.expectedYield,
-    required this.ac,
-  });
-}
+//   Data({
+//     required this.name,
+//     required this.phone,
+//     required this.age,
+//     required this.crop,
+//     required this.it,
+//     required this.catlivr,
+//     required this.startDate,
+//     required this.endDate,
+//     required this.area,
+//     required this.expectedYield,
+//     required this.ac,
+//   });
+// }
 
-List<Data> myData = [
-  Data(
-    name: "VARKPLAAS",
-    phone: 'A',
-    age: 'A1A',
-    crop: 'Carrots',
-    it: 'Pivot',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: '35000',
-    ac: '',
-  ),
-  Data(
-    name: "David",
-    phone: '6464646',
-    age: '30',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Kamal",
-    phone: '8888',
-    age: '32',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Ali",
-    phone: '3333333',
-    age: '33',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Muzal",
-    phone: '987654556',
-    age: '23',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Taimu",
-    phone: '46464664',
-    age: '24',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Mehdi",
-    phone: '5353535',
-    age: '36',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Rex",
-    phone: '244242',
-    age: '38',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-  Data(
-    name: "Alex",
-    phone: '323232323',
-    age: '29',
-    crop: 'tet1',
-    it: 'tests1',
-    catlivr: 'Laguna',
-    startDate: '5/30/2022',
-    endDate: '5/30/2022',
-    area: '3',
-    expectedYield: 'gfus',
-    ac: '',
-  ),
-];
+List<CropScheduleData> myData = cropschedule.data!;
