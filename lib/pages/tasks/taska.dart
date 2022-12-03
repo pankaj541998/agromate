@@ -70,7 +70,7 @@ class _TasksState extends State<Tasks> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Landholder',
+                            'Farm',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),

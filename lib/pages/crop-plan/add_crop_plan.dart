@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +7,110 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../models/Crop_Plan_Model.dart';
+
+final GlobalKey<FormState> _Form = GlobalKey<FormState>();
+TextEditingController CropReferenceTextEditingController =
+    TextEditingController();
+TextEditingController AreaTextEditingController = TextEditingController();
+TextEditingController ExpectedYieldTextEditingController =
+    TextEditingController();
+TextEditingController ExpectedRevenueTextEditingController =
+    TextEditingController();
+TextEditingController HarvestTextEditingController = TextEditingController();
+TextEditingController StartDateTextEditingController = TextEditingController();
+TextEditingController ExpectedEndDateTextEditingController =
+    TextEditingController();
 
 class AddCropPlan extends StatefulWidget {
   const AddCropPlan({Key? key}) : super(key: key);
 
   @override
   State<AddCropPlan> createState() => _AddCropPlanState();
+}
+
+String cropSelected = 'Select Your Question *';
+var crop = [
+  'Select Your Question *',
+  'crop 1',
+  'crop 2',
+  'crop 3',
+  'crop 4',
+];
+
+String CultivarSelected = 'Select Your Question *';
+var Cultivar = [
+  'Select Your Question *',
+  'cultivar 1',
+  'cultivar 2',
+  'cultivar 3',
+  'cultivar 4',
+];
+
+String farmSelected = 'Select Your Question *';
+var farms = [
+  'Select Your Question *',
+  'farm 1',
+  'farm 2',
+  'farm 3',
+  'farm 4',
+];
+
+String blockSelected = 'Select Your Question *';
+var block = [
+  'Select Your Question *',
+  'block 1',
+  'block 2',
+  'block 3',
+  'block 4',
+];
+
+String fieldSelected = 'Select Your Question *';
+var field = [
+  'Select Your Question *',
+  'field 1',
+  'field 2',
+  'field 3',
+  'field 4',
+];
+
+Future<String> addWeeklyTask() async {
+  debugPrint("reached");
+  Map<String, dynamic> updata = {
+    "farm_id": '',
+    "block_id": '',
+    "field_id": '',
+    "crop_reference": CropReferenceTextEditingController.text,
+    "crop_program_id": '',
+    "caltivar": CultivarSelected,
+    "start_date": StartDateTextEditingController,
+    "expected_end_date": ExpectedEndDateTextEditingController,
+    "area": AreaTextEditingController.text,
+    "expected_yield": ExpectedYieldTextEditingController.text,
+    "expected_revenue": ExpectedRevenueTextEditingController.text,
+    "harvest_days": HarvestTextEditingController.text,
+  };
+  return await addTaskAPI(updata);
+}
+
+Future<String> addTaskAPI(Map<String, dynamic> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  final prefs = await SharedPreferences.getInstance();
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse("https://agromate.website/laravel/api/programtask"),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return 'null';
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
 }
 
 class _AddCropPlanState extends State<AddCropPlan> {
@@ -20,15 +120,6 @@ class _AddCropPlanState extends State<AddCropPlan> {
   Widget build(BuildContext context) {
     final format = DateFormat("dd-MM-yyyy");
 
-    String questionsSelected = 'Select Your Question *';
-
-    var questions = [
-      'Select Your Question *',
-      'Question 1',
-      'Question 2',
-      'Question 3',
-      'Question 4',
-    ];
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -83,94 +174,98 @@ class _AddCropPlanState extends State<AddCropPlan> {
                   children: [
                     SizedBox(
                       width: screenSize.width * 0.28,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Farm',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          DropdownButtonFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
-                                fontFamily: 'Helvetica',
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorStyle: const TextStyle(
-                                fontSize: 14,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              isDense: true,
-                            ),
-                            isExpanded: true,
-                            value: questionsSelected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
+                      child: Form(
+                        key: _Form,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Farm',
+                              style: TextStyle(
+                                fontSize: 18,
                                 color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                questionsSelected = newValue!;
-                              });
-                            },
-                          ),
-                        ],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            DropdownButtonFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10,
+                                  left: 10,
+                                  right: 10,
+                                ),
+                                hintStyle: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      const Color(0xff327C04).withOpacity(0.5),
+                                  fontFamily: 'Helvetica',
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                errorStyle: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    width: 1,
+                                    color: Color(0xff327C04),
+                                  ),
+                                ),
+                                isDense: true,
+                              ),
+                              isExpanded: true,
+                              value: farmSelected,
+                              iconEnabledColor:
+                                  Colors.transparent, // Down Arrow Icon
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xff327C04),
+                              ),
+                              iconSize: 30,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff000000),
+                                  fontFamily: 'Helvetica'),
+                              items: farms.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  farmSelected = newValue!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -238,7 +333,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: questionsSelected,
+                            value: blockSelected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -250,7 +345,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
+                            items: block.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -258,7 +353,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                questionsSelected = newValue!;
+                                blockSelected = newValue!;
                               });
                             },
                           ),
@@ -330,7 +425,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: questionsSelected,
+                            value: fieldSelected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -342,7 +437,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
+                            items: field.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -350,7 +445,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                questionsSelected = newValue!;
+                                fieldSelected = newValue!;
                               });
                             },
                           ),
@@ -372,6 +467,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
+                            controller: CropReferenceTextEditingController,
                             // initialValue: 'enter heritage',
                             style: const TextStyle(
                               // color: Color(0xffffffff),
@@ -506,7 +602,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: questionsSelected,
+                            value: cropSelected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -518,7 +614,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
+                            items: crop.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -526,7 +622,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                questionsSelected = newValue!;
+                                cropSelected = newValue!;
                               });
                             },
                           ),
@@ -539,7 +635,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Caltivar',
+                            'Cultivar',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),
@@ -598,7 +694,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               isDense: true,
                             ),
                             isExpanded: true,
-                            value: questionsSelected,
+                            value: CultivarSelected,
                             iconEnabledColor:
                                 Colors.transparent, // Down Arrow Icon
                             icon: const Icon(
@@ -610,7 +706,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: questions.map((String items) {
+                            items: Cultivar.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
@@ -618,7 +714,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             }).toList(),
                             onChanged: (String? newValue) {
                               setState(() {
-                                questionsSelected = newValue!;
+                                CultivarSelected = newValue!;
                               });
                             },
                           ),
@@ -640,6 +736,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           DateTimeField(
+                            controller: StartDateTextEditingController,
                             cursorColor: const Color(0xff000000),
                             decoration: InputDecoration(
                               errorMaxLines: 3,
@@ -752,6 +849,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           DateTimeField(
+                            controller: ExpectedEndDateTextEditingController,
                             cursorColor: const Color(0xff000000),
                             decoration: InputDecoration(
                               errorMaxLines: 3,
@@ -864,6 +962,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
+                            controller: AreaTextEditingController,
                             // initialValue: 'enter heritage',
                             style: const TextStyle(
                               // color: Color(0xffffffff),
@@ -948,6 +1047,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
+                            controller: ExpectedYieldTextEditingController,
                             // initialValue: 'enter heritage',
                             style: const TextStyle(
                               // color: Color(0xffffffff),
@@ -1032,6 +1132,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
+                            controller: ExpectedRevenueTextEditingController,
                             // initialValue: 'enter heritage',
                             style: const TextStyle(
                               // color: Color(0xffffffff),
@@ -1116,6 +1217,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           ),
                           const SizedBox(height: 15),
                           TextFormField(
+                            controller: HarvestTextEditingController,
                             // initialValue: 'enter heritage',
                             style: const TextStyle(
                               // color: Color(0xffffffff),
@@ -1197,7 +1299,37 @@ class _AddCropPlanState extends State<AddCropPlan> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () => Get.toNamed('/crop_plan'),
+                  onPressed: () {
+                    final isValid = _Form.currentState?.validate();
+                    debugPrint('');
+                    debugPrint('');
+                    debugPrint('');
+                    debugPrint(CropReferenceTextEditingController.text);
+                    debugPrint('');
+                    debugPrint(CultivarSelected);
+                    debugPrint(StartDateTextEditingController.text);
+                    debugPrint(ExpectedEndDateTextEditingController.text);
+                    debugPrint(AreaTextEditingController.text);
+                    debugPrint(ExpectedYieldTextEditingController.text);
+                    debugPrint(ExpectedRevenueTextEditingController.text);
+                    debugPrint(HarvestTextEditingController.text);
+                    //addWeeklyTask();
+                    Get.toNamed('/crop_plan');
+                    if (isValid!) {
+                      // setState(() {
+                      //   addCropProgram().then((value) =>
+                      //       Navigator.pushNamed(
+                      //           context, '/table_view_crop'));
+                      // });
+                    } else {
+                      // Flushbar(
+                      //   duration: const Duration(seconds: 2),
+                      //   message: "Please Enter All Details",
+                      // ).show(context);
+                    }
+                    // addCropProgram();
+                    // Navigator.pop(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff327C04),
                     padding: const EdgeInsets.symmetric(

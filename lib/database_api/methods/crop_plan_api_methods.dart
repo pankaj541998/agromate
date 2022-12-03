@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'package:flutter_agro_new/models/Crop_Plan_Model.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/foundation.dart';
 
-import '../../models/CropPlanModel.dart';
 import '../url.dart';
 
 class CroPlanApiMethods {
