@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/pages/Inventory/modes_of_application/Inventory_modes_of_application.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,8 +18,8 @@ import '../../models/cropPorgramModel.dart';
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
 late CropProgramModel cropdata;
-String WeekSelected = 'Select Week';
-var wee = ['Select Week', 'Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+String WeekSelected = 'Week 1';
+var wee = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 String CategorySelected = 'Select Category';
 var categories = ['Select Category', 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
 String ActiveIngridientSelected = 'Select Ingredient';
@@ -30,8 +31,8 @@ var active = [
   'Active Ingridient 4',
   'Active Ingridient 5'
 ];
-String StatusSelected = 'Select Status';
-var status = ['Select Status', 'To Do', 'On Going', 'Completed'];
+String StatusSelected = 'To Do';
+var status = ['To Do', 'On Going', 'Completed'];
 String UnitsSelected = 'Select Unit';
 var units = [
   'Select Unit',
@@ -56,6 +57,12 @@ class ViewDetails extends StatefulWidget {
 
 class _ViewDetailsState extends State<ViewDetails> {
   TextEditingController controller = TextEditingController();
+  TextEditingController titleTextEditingController = TextEditingController();
+  TextEditingController descriptionTextEditingController =
+      TextEditingController();
+  TextEditingController chemicaltitleTextEditingController =
+      TextEditingController();
+  TextEditingController quantityTextEditingController = TextEditingController();
   bool sort = true;
   List<Data>? filterData;
 
@@ -83,10 +90,16 @@ class _ViewDetailsState extends State<ViewDetails> {
   Future<String> addTask() async {
     debugPrint("reached");
     Map<String, dynamic> updata = {
-      "iclass": "",
-      // classTextEditingController.text.toString(),
-      "class_description": ""
-      // classdescriptionTextEditingController.text.toString(),
+      "cropprogramid": "1",
+      "week": WeekSelected,
+      "status": StatusSelected,
+      "title": titleTextEditingController.text,
+      "description": descriptionTextEditingController.text,
+      "category": CategorySelected,
+      "chemical": chemicaltitleTextEditingController.text,
+      "activeingridient": ActiveIngridientSelected,
+      "quantity": quantityTextEditingController.text,
+      "unit": UnitsSelected
     };
     return await addTaskAPI(updata);
   }
@@ -370,6 +383,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         // ],
                                         // textEditingController:
                                         //     cropTextEditingController,
+                                        textEditingController:
+                                            titleTextEditingController,
                                         hintText: "",
                                         validator: (value) {
                                           if (value != null && value.isEmpty) {
@@ -404,6 +419,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         // ],
                                         // textEditingController:
                                         //     yieldTextEditingController,
+                                        textEditingController:
+                                            descriptionTextEditingController,
                                         hintText: "",
                                         validator: (value) {
                                           if (value != null && value.isEmpty) {
@@ -536,6 +553,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         // ],
                                         // textEditingController:
                                         //     weeksTextEditingController,
+                                        textEditingController:
+                                            chemicaltitleTextEditingController,
                                         hintText: "",
                                         validator: (value) {
                                           if (value != null && value.isEmpty) {
@@ -668,6 +687,8 @@ class _ViewDetailsState extends State<ViewDetails> {
                                         // ],
                                         // textEditingController:
                                         //     weeksTextEditingController,
+                                        textEditingController:
+                                            quantityTextEditingController,
                                         hintText: "",
                                         validator: (value) {
                                           if (value != null && value.isEmpty) {
@@ -792,6 +813,14 @@ class _ViewDetailsState extends State<ViewDetails> {
                                   debugPrint(CategorySelected);
                                   debugPrint(ActiveIngridientSelected);
                                   debugPrint(UnitsSelected);
+                                  debugPrint(titleTextEditingController.text);
+                                  debugPrint(
+                                      descriptionTextEditingController.text);
+                                  debugPrint(
+                                      chemicaltitleTextEditingController.text);
+                                  debugPrint(
+                                      quantityTextEditingController.text);
+                                  // addTask();
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
