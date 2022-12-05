@@ -71,6 +71,8 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
 
   String tasklandeholderSelected = 'Kishan';
   var tasklandeholder = ['Kishan', 'Raj', 'Reethik'];
+  String taskfarmSelected = 'Farm 1';
+  var taskfarm = ['Farm 1', 'Farm 2', 'Farm 3'];
   String taskblockselected = 'Carrots';
   var crop = ['Green Mielies', 'Carrots', 'Sweet Corn'];
   String taskFieldselected = 'Car';
@@ -1097,7 +1099,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Tasks',
+                            'Landholder',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),
@@ -1177,6 +1179,99 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 tasklandeholderSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 50),
+                    SizedBox(
+                      width: screenSize.width * 0.18,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Farm',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: taskfarmSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: taskfarm.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                taskfarmSelected = newValue!;
                               });
                             },
                           ),

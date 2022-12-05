@@ -11,6 +11,7 @@ import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -76,7 +77,7 @@ class _MyProfileState extends State<MyProfile> {
                       ],
                     ),
                     const SizedBox(
-                      height: 590,
+                      height: 640,
                       child: TabBarView(
                         children: [
                           Profile(),
@@ -405,6 +406,7 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  bool success = false;
   final confirmpassword = TextEditingController();
   final currentpassword = TextEditingController();
   final newpassword = TextEditingController();
@@ -480,7 +482,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               ],
             ),
             const SizedBox(
-              height: 33,
+              height: 25,
             ),
             const Text(
               "Current Password",
@@ -490,7 +492,6 @@ class _ChangePasswordState extends State<ChangePassword> {
               height: 15,
             ),
             SizedBox(
-              height: 40,
               width: 353,
               child: TextInputField(
                 textEditingController: currentpassword,
@@ -502,77 +503,126 @@ class _ChangePasswordState extends State<ChangePassword> {
             const SizedBox(
               height: 30,
             ),
-            const Text(
-              "Enter New Password",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              height: 40,
-              width: 353,
-              child: TextInputField(
-                textEditingController: newpassword,
-                hintText: "Enter New Password",
-                validatorText: "",
-                isInputPassword: true,
-                validator: (val) {
-                  if (val!.isEmpty) {
-                    return 'Password is Empty';
-                  }
-                  if (!RegExp(
-                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$')
-                      .hasMatch(val)) {
-                    return 'password should contain atleast one Uppercase,\n one Lowercase, one numeric & one special character';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Enter New Password",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      width: 353,
+                      child: TextInputField(
+                        textEditingController: newpassword,
+                        hintText: "Enter New Password",
+                        validatorText: "",
+                        isInputPassword: true,
+                        // validator: (val) {
+                        //   if (val!.isEmpty) {
+                        //     return 'Password is Empty';
+                        //   }
+                        //   if (!RegExp(
+                        //           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$')
+                        //       .hasMatch(val)) {
+                        //     return 'password should contain atleast one Uppercase,\n one Lowercase, one numeric & one special character';
+                        //   } else {
+                        //     return null;
+                        //   }
+                        // },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    FlutterPwValidator(
+                      controller: newpassword,
+                      minLength: 6,
+                      uppercaseCharCount: 1,
+                      numericCharCount: 1,
+                      specialCharCount: 1,
+                      normalCharCount: 1,
+                      width: 353,
+                      //MediaQuery.of(context).size.width * 0.65,
+                      height: 215,
+                      onSuccess: () {
+                        setState(() {
+                          success = true;
+                        });
+                        print("MATCHED");
+                      },
+                      onFail: () {
+                        setState(() {
+                          success = false;
+                        });
+                        print("NOT MATCHED");
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 30,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Confirm New Password",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      width: 353,
+                      child: TextInputField(
+                        validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return "Password cannot be empty";
+                          } else if (value != null && value.length < 6) {
+                            return "Password length should be atleast 6";
+                          } else if (value != newpassword.text) {
+                            return "Password Not Matched";
+                          }
+                          return null;
+                        },
+                        textEditingController: confirmpassword,
+                        hintText: "Confirm New Password",
+                        validatorText: "",
+                        isInputPassword: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             const SizedBox(
               height: 30,
             ),
-            const Text(
-              "Confirm New Password",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            SizedBox(
-              height: 40,
-              width: 353,
-              child: TextInputField(
-                validator: (value) {
-                  if (value != null && value.isEmpty) {
-                    return "Password cannot be empty";
-                  } else if (value != null && value.length < 6) {
-                    return "Password length should be atleast 6";
-                  } else if (value != newpassword.text) {
-                    return "Password Not Matched";
-                  }
-                  return null;
-                },
-                textEditingController: confirmpassword,
-                hintText: "Confirm New Password",
-                validatorText: "",
-                isInputPassword: true,
-              ),
-            ),
-            const SizedBox(
-              height: 30,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 40,
+                  width: 353,
+                  child: CustomElevatedButton(
+                    onPressed: () {
+                      _validateData();
+                    },
+                    title: "Save Changes",
+                  ),
+                ),
+              ],
             ),
             SizedBox(
-              height: 40,
-              width: 353,
-              child: CustomElevatedButton(
-                onPressed: () {
-                  _validateData();
-                },
-                title: "Save Changes",
-              ),
+              height: 20,
             )
           ],
         ),

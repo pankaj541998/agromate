@@ -113,6 +113,9 @@ class _TableViewCropState extends State<TableViewCrop> {
     'Week 4',
   ];
 
+  String UnitSelected = 'Hectare';
+  var Unit = ['Hectare', 'Acre'];
+
   buildPin() {
     return showDialog(
       context: context,
@@ -179,7 +182,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                               LengthLimitingTextInputFormatter(
                                                   25),
                                               FilteringTextInputFormatter.allow(
-                                                  RegExp('[a-zA-Z]')),
+                                                  RegExp('[a-zA-Z ]')),
                                             ],
                                             textEditingController:
                                                 cropTextEditingController,
@@ -221,13 +224,6 @@ class _TableViewCropState extends State<TableViewCrop> {
                                             textEditingController:
                                                 populationTextEditingController,
                                             hintText: "",
-                                            validator: (value) {
-                                              if (value != null &&
-                                                  value.isEmpty) {
-                                                return "Please Enter plant population";
-                                              }
-                                              return null;
-                                            },
                                             validatorText: ""))
                                   ],
                                 ),
@@ -238,7 +234,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Week",
+                                      "Growing Period In Weeks",
                                       style: TextStyle(
                                         fontSize: 18,
                                       ),
@@ -294,20 +290,12 @@ class _TableViewCropState extends State<TableViewCrop> {
                                             LengthLimitingTextInputFormatter(
                                                 25),
                                             FilteringTextInputFormatter.allow(
-                                                RegExp('[a-zA-Z]')),
+                                                RegExp('[a-zA-Z ]')),
                                           ],
                                           textEditingController:
                                               cropseasonTextEditingController,
                                           hintText: "",
-                                          validator: (value) {
-                                            if (value != null &&
-                                                value.isEmpty) {
-                                              return "Please Enter Crop Season Description";
-                                            }
-                                            return null;
-                                          },
-                                          validatorText:
-                                              "Please Enter Crop Season Description"),
+                                          validatorText: ""),
                                     ),
                                   ],
                                 ),
@@ -318,7 +306,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Yield Per Hectare",
+                                      "Yield Per Hectare/Acre",
                                       style: TextStyle(
                                         fontSize: 18,
                                       ),
@@ -326,26 +314,112 @@ class _TableViewCropState extends State<TableViewCrop> {
                                     SizedBox(
                                       height: 15,
                                     ),
-                                    SizedBox(
-                                        width: 300,
-                                        child: TextInputField(
-                                            inputFormatters: [
-                                              LengthLimitingTextInputFormatter(
-                                                  6),
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            textEditingController:
-                                                yieldTextEditingController,
-                                            hintText: "",
-                                            validator: (value) {
-                                              if (value != null &&
-                                                  value.isEmpty) {
-                                                return "Please Enter yield Per Hectare";
-                                              }
-                                              return null;
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 50,
+                                          width: 110,
+                                          child: DropdownButtonFormField(
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            decoration: InputDecoration(
+                                              // contentPadding:
+                                              //     const EdgeInsets.only(
+                                              //   top: 10,
+                                              //   bottom: 10,
+                                              //   left: 10,
+                                              //   right: 10,
+                                              // ),
+                                              hintStyle: TextStyle(
+                                                fontSize: 16,
+                                                color: const Color(0xff327C04)
+                                                    .withOpacity(0.5),
+                                                fontFamily: 'Helvetica',
+                                              ),
+                                              fillColor: Colors.white,
+                                              filled: true,
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              errorBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              errorStyle: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xff327C04),
+                                                ),
+                                              ),
+                                              isDense: true,
+                                            ),
+                                            isExpanded: true,
+                                            value: UnitSelected,
+                                            iconEnabledColor: Colors
+                                                .transparent, // Down Arrow Icon
+                                            icon: const Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: Color(0xff327C04),
+                                            ),
+                                            iconSize: 30,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color(0xff000000),
+                                                fontFamily: 'Helvetica'),
+                                            items: Unit.map((String items) {
+                                              return DropdownMenuItem(
+                                                value: items,
+                                                child: Text(items),
+                                              );
+                                            }).toList(),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                UnitSelected = newValue!;
+                                              });
                                             },
-                                            validatorText: "")),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        SizedBox(
+                                          width: 180,
+                                          child: TextInputField(
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    6),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              textEditingController:
+                                                  yieldTextEditingController,
+                                              hintText: "",
+                                              validatorText: ""),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                                 SizedBox(
@@ -368,16 +442,8 @@ class _TableViewCropState extends State<TableViewCrop> {
                                         child: TextInputField(
                                           textEditingController:
                                               harvestTextEditingController,
-                                          hintText: "Harvest Days",
-                                          validatorText:
-                                              "Please Enter harvest Days",
-                                          validator: (value) {
-                                            if (value != null &&
-                                                value.isEmpty) {
-                                              return "Please Enter harvest days";
-                                            }
-                                            return null;
-                                          },
+                                          hintText: "",
+                                          validatorText: "",
                                         )),
                                   ],
                                 ),
@@ -413,7 +479,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   } else {
                                     Flushbar(
                                       duration: const Duration(seconds: 2),
-                                      message: "Please Enter All Details",
+                                      message: "Please Enter Required Details",
                                     ).show(context);
                                   }
                                   // addCropProgram();
@@ -767,7 +833,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                           ),
                           child: const Center(
                             child: Text(
-                              "Weeks",
+                              "Growing Period In Weeks",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 14),

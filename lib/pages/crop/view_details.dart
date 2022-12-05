@@ -46,6 +46,16 @@ var units = [
   "Pounds",
   "Tonnes"
 ];
+String productdescriptionSelected = 'Select product description';
+var productdescription = [
+  'Select product description',
+  'product description 1',
+  'product description 2',
+  'product description 3',
+  "product description 4",
+  "product description 5",
+  "product description 6"
+];
 
 class ViewDetails extends StatefulWidget {
   ViewDetails({Key? key, this.weeks, this.id}) : super(key: key);
@@ -108,7 +118,7 @@ class _ViewDetailsState extends State<ViewDetails> {
       "title": titleTextEditingController.text,
       "description": descriptionTextEditingController.text,
       "category": CategorySelected,
-      "chemical": chemicaltitleTextEditingController.text,
+      "chemical": productdescriptionSelected,
       "activeingridient": ActiveIngridientSelected,
       "quantity": quantityTextEditingController.text,
       "unit": UnitsSelected
@@ -549,33 +559,92 @@ class _ViewDetailsState extends State<ViewDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Chemical",
+                                  "Product Description",
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
                                 SizedBox(height: 8),
                                 SizedBox(
-                                    width: 300,
-                                    child: TextInputField(
-                                        // inputFormatters: [
-                                        //   LengthLimitingTextInputFormatter(
-                                        //       6),
-                                        //   FilteringTextInputFormatter
-                                        //       .digitsOnly
-                                        // ],
-                                        // textEditingController:
-                                        //     weeksTextEditingController,
-                                        textEditingController:
-                                            chemicaltitleTextEditingController,
-                                        hintText: "",
-                                        validator: (value) {
-                                          if (value != null && value.isEmpty) {
-                                            return "Please Chemical";
-                                          }
-                                          return null;
-                                        },
-                                        validatorText: "")),
+                                  width: 300,
+                                  child: DropdownButtonFormField(
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10,
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      hintStyle: TextStyle(
+                                        fontSize: 16,
+                                        color: const Color(0xff327C04)
+                                            .withOpacity(0.5),
+                                        fontFamily: 'Helvetica',
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      errorStyle: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Color(0xff327C04),
+                                        ),
+                                      ),
+                                      isDense: true,
+                                    ),
+                                    isExpanded: true,
+                                    value: productdescriptionSelected,
+                                    iconEnabledColor:
+                                        Colors.transparent, // Down Arrow Icon
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Color(0xff327C04),
+                                    ),
+                                    iconSize: 30,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff000000),
+                                        fontFamily: 'Helvetica'),
+                                    items:
+                                        productdescription.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        productdescriptionSelected = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                           ],
