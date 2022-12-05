@@ -24,15 +24,22 @@ final GlobalKey<FormState> _form = GlobalKey<FormState>();
 late CropProgramTasks cropdata;
 
 String CategorySelected = 'Select Category';
-var categories = ['Select Category', 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Cat5'];
+var categories = [
+  'Select Category',
+  'Chemical',
+  'Fertiliser',
+  'Pesticide',
+  'Herbicide',
+  'Fungicide'
+];
 String ActiveIngridientSelected = 'Select Ingredient';
 var active = [
   'Select Ingredient',
-  'Active Ingridient 1',
-  'Active Ingridient 2',
-  'Active Ingridient 3',
-  'Active Ingridient 4',
-  'Active Ingridient 5'
+  'Sulphur',
+  'Ammonia',
+  'Nitrogen',
+  'Calcium',
+  'Magnesium'
 ];
 String StatusSelected = 'To Do';
 var status = ['To Do', 'On Going', 'Completed'];
@@ -936,6 +943,559 @@ class _ViewDetailsState extends State<ViewDetails> {
     );
   }
 
+  buildPinData(element) {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      element,
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: Icon(
+                          Icons.cancel_outlined,
+                        ))
+                  ],
+                ),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Title : Plowing",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Text(
+                          "Status : Ongoing",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      thickness: 1,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Date : 08/06/2022",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Description : Turn over the uppermost soil, bringing fresh nutrients to the surface while \nburying weeds and crop remains to decay",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Category  : Fertilizer",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 250,
+                        ),
+                        Text(
+                          "Chemical : Ammonia",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Active Ingredients : Nitrogen",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 250,
+                        ),
+                        Text(
+                          "Quantity : 500 Kg",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Time of application : Moderate Wind speed",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Modes of application : Tractor",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Warnings :  ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.star),
+                        Text(
+                          "         May cause sensitisation by skin contact",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Precautions : ",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        Icon(Icons.star),
+                        Text(
+                          "      Wear a mask",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildgridview(context, weeks, List<Data> data, id) {
+    final screenSize = MediaQuery.of(context).size;
+
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: GridView.builder(
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: (0.5 / 0.8),
+              crossAxisCount: 4,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 3),
+          itemCount: int.parse(weeks),
+          itemBuilder: (BuildContext ctx, index) {
+            String weekName = "Week ${index + 1}";
+            var filtered = diocropdata.data!
+                .where((element) => (element.week == weekName))
+                .toList();
+
+            return Card(
+              elevation: 2,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Week ${index + 1}"),
+                    filtered.isNotEmpty
+                        ? SizedBox(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: screenSize.height * 0.67,
+                                    child: ListView.builder(
+                                      itemCount: filtered.length,
+                                      itemBuilder: (context, index) {
+                                        var element = filtered.elementAt(index);
+                                        return InkWell(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  StatefulBuilder(
+                                                builder: (context, setState) {
+                                                  return Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      AlertDialog(
+                                                        // insetPadding:
+                                                        //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                                        // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10))),
+                                                        title: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              element.week
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .cancel_outlined,
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        content: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "Title : ${element.title}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 50,
+                                                                ),
+                                                                Text(
+                                                                  "Status : ${element.status}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Divider(
+                                                              thickness: 1,
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Text(
+                                                              "Description : ${element.description}",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Category  : ${element.category}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 250,
+                                                                ),
+                                                                Text(
+                                                                  "Chemical : ${element.chemical}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Active Ingredients : ${element.activeingridient}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                SizedBox(
+                                                                  width: 250,
+                                                                ),
+                                                                Text(
+                                                                  "Quantity : ${element.quantity} ${element.units}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Text(
+                                                              "Time of application : Moderate Wind speed",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Text(
+                                                              "Modes of application : Tractor",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Warnings :  ",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                Icon(
+                                                                    Icons.star),
+                                                                Text(
+                                                                  "         May cause sensitisation by skin contact",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                Text(
+                                                                  "Precautions : ",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                Icon(
+                                                                    Icons.star),
+                                                                Text(
+                                                                  "      Wear a mask",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 30,
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [],
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          child: Card(
+                                            elevation: 2,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            color: const Color(0xFFEBF2EB),
+                                            child: SizedBox(
+                                              height: screenSize.height * 0.15,
+                                              width: 300,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        const Icon(Icons
+                                                            .check_circle_outline),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          filtered
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .title ??
+                                                              "",
+                                                          style: TextStyle(
+                                                              fontSize: 14),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      filtered
+                                                              .elementAt(index)
+                                                              .description ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/empty.png',
+                                height: 200,
+                                width: 150,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text("No Tasks Added Here"),
+                            ],
+                          )
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -1499,306 +2059,6 @@ class _ViewDetailsState extends State<ViewDetails> {
       ),
     );
   }
-}
-
-buildPin(context) {
-  return showDialog(
-    context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AlertDialog(
-              // insetPadding:
-              //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Week 1",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: Icon(
-                        Icons.cancel_outlined,
-                      ))
-                ],
-              ),
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Title : Plowing",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 50,
-                      ),
-                      Text(
-                        "Status : Ongoing",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Divider(
-                    thickness: 1,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Date : 08/06/2022",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Description : Turn over the uppermost soil, bringing fresh nutrients to the surface while \nburying weeds and crop remains to decay",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Category  : Fertilizer",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 250,
-                      ),
-                      Text(
-                        "Chemical : Ammonia",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Active Ingredients : Nitrogen",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 250,
-                      ),
-                      Text(
-                        "Quantity : 500 Kg",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Time of application : Moderate Wind speed",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Modes of application : Tractor",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Warnings :  ",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Icon(Icons.star),
-                      Text(
-                        "         May cause sensitisation by skin contact",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Precautions : ",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Icon(Icons.star),
-                      Text(
-                        "      Wear a mask",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [],
-                  )
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    ),
-  );
-}
-
-Widget _buildgridview(context, weeks, List<Data> data, id) {
-  final screenSize = MediaQuery.of(context).size;
-
-  return Padding(
-    padding: const EdgeInsets.all(20.0),
-    child: GridView.builder(
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: (0.5 / 0.8),
-            crossAxisCount: 4,
-            mainAxisSpacing: 2,
-            crossAxisSpacing: 3),
-        itemCount: int.parse(weeks),
-        itemBuilder: (BuildContext ctx, index) {
-          String weekName = "Week ${index + 1}";
-          var filtered = diocropdata.data!
-              .where((element) => (element.week == weekName))
-              .toList();
-
-          return Card(
-            elevation: 2,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15))),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text("Week ${index + 1}"),
-                  filtered.isNotEmpty
-                      ? SizedBox(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: screenSize.height * 0.67,
-                                  child: ListView.builder(
-                                    itemCount: filtered.length,
-                                    itemBuilder: (context, index) {
-                                      var element = filtered.elementAt(index);
-                                      return Card(
-                                        elevation: 2,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        color: const Color(0xFFEBF2EB),
-                                        child: SizedBox(
-                                          height: screenSize.height * 0.15,
-                                          width: 300,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Icon(Icons
-                                                        .check_circle_outline),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Text(
-                                                      filtered
-                                                              .elementAt(index)
-                                                              .title ??
-                                                          "",
-                                                      style: TextStyle(
-                                                          fontSize: 14),
-                                                    )
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  filtered
-                                                          .elementAt(index)
-                                                          .description ??
-                                                      "",
-                                                  style:
-                                                      TextStyle(fontSize: 12),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/empty.png',
-                              height: 200,
-                              width: 150,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text("No Tasks Added Here"),
-                          ],
-                        )
-                ],
-              ),
-            ),
-          );
-        }),
-  );
 }
 
 class RowSource extends DataTableSource {

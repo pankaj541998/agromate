@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
+      initialRoute: '/classandtype',
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/stockorder', page: () => const StockOrder()),
         GetPage(name: '/classandtype', page: () => InventoryClassType()),
         GetPage(name: '/crop_plan', page: () => const CropPlan()),
-        GetPage(name: '/add_crop_plan', page: () => const AddCropPlan()),
+        GetPage(name: '/add_crop_plan', page: () => AddCropPlan()),
         GetPage(name: '/grid_view_crop', page: () => const Crop()),
         GetPage(name: '/view_details', page: () => ViewDetails()),
         GetPage(name: '/table_view_crop', page: () => const TableViewCrop()),

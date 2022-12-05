@@ -512,32 +512,4 @@ DataRow recentFileDataRow(CropScheduleData data, int index) {
   );
 }
 
-// class Data {
-//   String? name;
-//   String? phone;
-//   String? age;
-//   String? crop;
-//   String? it;
-//   String? catlivr;
-//   String? startDate;
-//   String? endDate;
-//   String? area;
-//   String? expectedYield;
-//   String? ac;
-
-//   Data({
-//     required this.name,
-//     required this.phone,
-//     required this.age,
-//     required this.crop,
-//     required this.it,
-//     required this.catlivr,
-//     required this.startDate,
-//     required this.endDate,
-//     required this.area,
-//     required this.expectedYield,
-//     required this.ac,
-//   });
-// }
-
 List<CropScheduleData> myData = cropschedule.data!;
