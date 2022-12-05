@@ -156,7 +156,28 @@ Future<String> addClassAPI(Map<String, dynamic> updata) async {
   }
 }
 
-class _InventoryClassTypeState extends State<InventoryClassType> {
+class _InventoryClassTypeState extends State<InventoryClassType>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TabController(
+      length: 2,
+      vsync: this,
+    );
+    _controller.addListener(_handleSelected);
+    print("tab value is ${_myHandler}");
+  }
+
+  late TabController _controller;
+  var _myHandler;
+
+  void _handleSelected() {
+    setState(() {
+      _myHandler = _controller.index;
+    });
+  }
+
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   TextEditingController controller = TextEditingController();
 
@@ -509,11 +530,12 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                   SizedBox(height: screenSize.height * 0.02),
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: 300,
                         height: 50,
                         child: TabBar(
                           indicatorColor: Color(0xFF327C04),
+                          controller: _controller,
                           labelColor: Colors.black,
                           unselectedLabelStyle:
                               TextStyle(color: Color(0xFF6B6B6B)),
@@ -537,8 +559,9 @@ class _InventoryClassTypeState extends State<InventoryClassType> {
                   SizedBox(
                     height: screenSize.height * 0.6,
                     child: TabBarView(
+                      controller: _controller,
                       children: [
-                        // FlutterLogo(),
+                        // FlutterLogo() ,
                         FutureBuilder<ClassModel>(
                           future: fetchClass(),
                           builder: (ctx, snapshot) {
