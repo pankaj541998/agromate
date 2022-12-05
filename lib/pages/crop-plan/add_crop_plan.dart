@@ -101,7 +101,7 @@ Future<String> addTaskAPI(Map<String, dynamic> updata) async {
   print(updata);
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
-    Uri.parse("https://agromate.website/laravel/api/programtask"),
+    Uri.parse("https://agromate.website/laravel/api/addCropPlan"),
     body: updata,
   );
   print(response.body);

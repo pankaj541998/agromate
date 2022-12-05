@@ -19,8 +19,10 @@ class _TasksState extends State<Tasks> {
 
   String landeholderSelected = 'Kishan';
   var landeholder = ['Kishan', 'Raj', 'Reethik'];
+  String farmSelected = 'farm 1';
+  var farm = ['farm 1', 'farm 2', 'farm 3'];
   String blockselected = 'Carrots';
-  var crop = ['Green Mielies', 'Carrots', 'Sweet Corn'];
+  var block = ['Green Mielies', 'Carrots', 'Sweet Corn'];
   String Fieldselected = 'Car';
   var field = ['Green ', 'Car', 'Sweet'];
   List<bool> expanded = [false, false];
@@ -70,7 +72,7 @@ class _TasksState extends State<Tasks> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Farm',
+                            'Landholder',
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff000000),
@@ -156,6 +158,101 @@ class _TasksState extends State<Tasks> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      width: 50,
+                    ),
+                    SizedBox(
+                      width: screenSize.width * 0.18,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Farm',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            isExpanded: true,
+                            value: farmSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: farm.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                farmSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(width: 50),
                     SizedBox(
                       width: screenSize.width * 0.18,
@@ -234,7 +331,7 @@ class _TasksState extends State<Tasks> {
                                 fontSize: 16,
                                 color: Color(0xff000000),
                                 fontFamily: 'Helvetica'),
-                            items: crop.map((String items) {
+                            items: block.map((String items) {
                               return DropdownMenuItem(
                                 value: items,
                                 child: Text(items),
