@@ -44,14 +44,14 @@ class AddCropPlan extends StatefulWidget {
   State<AddCropPlan> createState() => _AddCropPlanState();
 }
 
-String cropSelected = 'Select Your Question *';
-var crop = [
-  'Select Your Question *',
-  'crop 1',
-  'crop 2',
-  'crop 3',
-  'crop 4',
-];
+// String cropSelected = 'Select Your Question *';
+// var crop = [
+//   'Select Your Question *',
+//   'crop 1',
+//   'crop 2',
+//   'crop 3',
+//   'crop 4',
+// ];
 
 String CultivarSelected = 'Select Your Question *';
 var Cultivar = [
@@ -62,32 +62,32 @@ var Cultivar = [
   'cultivar 4',
 ];
 
-String farmSelected = 'Select Your Question *';
-var farms = [
-  'Select Your Question *',
-  'farm 1',
-  'farm 2',
-  'farm 3',
-  'farm 4',
-];
+// String farmSelected = 'Select Your Question *';
+// var farms = [
+//   'Select Your Question *',
+//   'farm 1',
+//   'farm 2',
+//   'farm 3',
+//   'farm 4',
+// ];
 
-String blockSelected = 'Select Your Question *';
-var block = [
-  'Select Your Question *',
-  'block 1',
-  'block 2',
-  'block 3',
-  'block 4',
-];
+// String blockSelected = 'Select Your Question *';
+// var block = [
+//   'Select Your Question *',
+//   'block 1',
+//   'block 2',
+//   'block 3',
+//   'block 4',
+// ];
 
-String fieldSelected = 'Select Your Question *';
-var field = [
-  'Select Your Question *',
-  'field 1',
-  'field 2',
-  'field 3',
-  'field 4',
-];
+// String fieldSelected = 'Select Your Question *';
+// var field = [
+//   'Select Your Question *',
+//   'field 1',
+//   'field 2',
+//   'field 3',
+//   'field 4',
+// ];
 
 Future<String> addWeeklyTask() async {
   debugPrint("reached");
@@ -331,7 +331,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                             .id;
                                       });
                                       debugPrint(currentField.toString());
-                                      // debugPrint(currentFarmId.toString());
+                                      debugPrint(currentFarmId.toString());
                                     },
                                   ),
                                 ),
