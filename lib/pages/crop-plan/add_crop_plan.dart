@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_agro_new/database_api/models/crop.dart';
 import 'package:flutter_agro_new/database_api/models/farm.dart';
 import 'package:flutter_agro_new/database_api/models/field.dart';
 import 'package:flutter_agro_new/models/cropPorgramModel.dart';
+import 'package:flutter_agro_new/pages/crop/table_view_crop.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -89,26 +91,27 @@ var Cultivar = [
 //   'field 4',
 // ];
 
-Future<String> addWeeklyTask() async {
+Future<String> addCropSchedule(
+    selectedFarmId, selectedBlockId, selectedFieldId, selectedCropId) async {
   debugPrint("reached");
   Map<String, dynamic> updata = {
-    "farm_id": '',
-    "block_id": '',
-    "field_id": '',
+    "farm_id": selectedFarmId,
+    "block_id": selectedBlockId,
+    "field_id": selectedFieldId,
     "crop_reference": CropReferenceTextEditingController.text,
-    "crop_program_id": '',
+    "crop_program_id": selectedCropId,
     "caltivar": CultivarSelected,
-    "start_date": StartDateTextEditingController,
-    "expected_end_date": ExpectedEndDateTextEditingController,
+    "start_date": StartDateTextEditingController.text,
+    "expected_end_date": ExpectedEndDateTextEditingController.text,
     "area": AreaTextEditingController.text,
     "expected_yield": ExpectedYieldTextEditingController.text,
     "expected_revenue": ExpectedRevenueTextEditingController.text,
     "harvest_days": HarvestTextEditingController.text,
   };
-  return await addTaskAPI(updata);
+  return await addaddCropScheduleAPI(updata);
 }
 
-Future<String> addTaskAPI(Map<String, dynamic> updata) async {
+Future<String> addaddCropScheduleAPI(Map<String, dynamic> updata) async {
   final _chuckerHttpClient = await http.Client();
   print(updata);
   final prefs = await SharedPreferences.getInstance();
@@ -138,6 +141,19 @@ class _AddCropPlanState extends State<AddCropPlan> {
     futureGroup.add(FieldApiMethods.fetchFields());
     futureGroup.add(CropApiMethods.fetchCrops());
     futureGroup.close();
+  }
+
+  @override
+  void dispose() {
+    // CropReferenceTextEditingController.dispose();
+    // AreaTextEditingController.dispose();
+    // StartDateTextEditingController.dispose();
+    // ExpectedEndDateTextEditingController.dispose();
+    // ExpectedYieldTextEditingController.dispose();
+    // ExpectedRevenueTextEditingController.dispose();
+    // harvestTextEditingController.dispose();
+    super.dispose();
+    HarvestTextEditingController.clear();
   }
 
   String? currentFarm;
@@ -188,6 +204,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             splashColor: Colors.transparent,
                             child: const Icon(Icons.arrow_back_ios),
                             onTap: () {
+                              HarvestTextEditingController.clear();
                               Get.back();
                             },
                           ),
@@ -323,15 +340,15 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                     hint: 'Select Field',
                                     onItemSelected: (value) async {
                                       setState(() {
-                                        currentFarm = value;
-                                        currentFarmId = fetchedfield
+                                        currentField = value;
+                                        currentFieldId = fetchedfield
                                             .singleWhere((element) =>
                                                 element.fieldName ==
                                                 currentField)
                                             .id;
                                       });
                                       debugPrint(currentField.toString());
-                                      debugPrint(currentFarmId.toString());
+                                      debugPrint(currentFieldId.toString());
                                     },
                                   ),
                                 ),
@@ -1145,10 +1162,14 @@ class _AddCropPlanState extends State<AddCropPlan> {
                         onPressed: () {
                           final isValid = _Form.currentState?.validate();
                           debugPrint(currentFarm);
+                          debugPrint(currentFarmId.toString());
                           debugPrint(currentBlock);
+                          debugPrint(currentBlockId.toString());
                           debugPrint(currentField);
+                          debugPrint(currentFieldId.toString());
                           debugPrint(CropReferenceTextEditingController.text);
                           debugPrint(currentCrop);
+                          debugPrint(currentCropId.toString());
                           debugPrint(CultivarSelected);
                           debugPrint(StartDateTextEditingController.text);
                           debugPrint(ExpectedEndDateTextEditingController.text);
@@ -1159,16 +1180,20 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           //addWeeklyTask();
                           Get.toNamed('/crop_plan');
                           if (isValid!) {
-                            // setState(() {
-                            //   addCropProgram().then((value) =>
-                            //       Navigator.pushNamed(
-                            //           context, '/table_view_crop'));
-                            // });
+                            setState(() {
+                              addCropSchedule(
+                                      currentFarmId.toString(),
+                                      currentBlockId.toString(),
+                                      currentFieldId.toString(),
+                                      currentCropId.toString())
+                                  .then((value) => Navigator.pushNamed(
+                                      context, '/crop_plan'));
+                            });
                           } else {
-                            // Flushbar(
-                            //   duration: const Duration(seconds: 2),
-                            //   message: "Please Enter All Details",
-                            // ).show(context);
+                            Flushbar(
+                              duration: const Duration(seconds: 2),
+                              message: "Please Enter All Details",
+                            ).show(context);
                           }
                           // addCropProgram();
                           // Navigator.pop(context);
