@@ -522,7 +522,10 @@ class _TableViewCropState extends State<TableViewCrop> {
                       InkWell(
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
-                          onTap: () => Get.back(),
+                          onTap: () {
+                            harvestTextEditingController.clear();
+                            Get.back();
+                          }, // onTap: () => Get.back(),
                           child: const Icon(Icons.arrow_back_ios)),
                       const Text(
                         'Select A Crop Program',
