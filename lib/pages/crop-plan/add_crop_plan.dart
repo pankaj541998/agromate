@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -63,6 +64,9 @@ var Cultivar = [
   'cultivar 3',
   'cultivar 4',
 ];
+
+String UnitSelected = 'ZWL';
+var Unit = ['ZWL', 'USD', 'NAD'];
 
 // String farmSelected = 'Select Your Question *';
 // var farms = [
@@ -361,6 +365,40 @@ class _AddCropPlanState extends State<AddCropPlan> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
+                                  'Crop',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color(0xff000000),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                SizedBox(
+                                  width: 500,
+                                  child: DropdownBtn(
+                                    items: fetchedcrop.map((e) {
+                                      return e.crop.toString();
+                                    }).toList(),
+                                    hint: 'Select Crop',
+                                    onItemSelected: (value) async {
+                                      debugPrint(value);
+                                      currentCrop = value;
+                                      currentCropId = fetchedcrop
+                                          .singleWhere((element) =>
+                                              element.crop == value)
+                                          .id;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: screenSize.width * 0.28,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
                                   'Crop Reference',
                                   style: TextStyle(
                                     fontSize: 18,
@@ -432,40 +470,6 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                     isDense: true,
                                   ),
                                   keyboardType: TextInputType.text,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: screenSize.width * 0.28,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Crop',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                SizedBox(
-                                  width: 500,
-                                  child: DropdownBtn(
-                                    items: fetchedcrop.map((e) {
-                                      return e.crop.toString();
-                                    }).toList(),
-                                    hint: 'Select Crop',
-                                    onItemSelected: (value) async {
-                                      debugPrint(value);
-                                      currentCrop = value;
-                                      currentCropId = fetchedcrop
-                                          .singleWhere((element) =>
-                                              element.crop == value)
-                                          .id;
-                                    },
-                                  ),
                                 ),
                               ],
                             ),
@@ -974,86 +978,120 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Expected Revenue',
+                                Text(
+                                  "Expected Revenue",
                                   style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
                                 ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  controller:
-                                      ExpectedRevenueTextEditingController,
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Expected Revenue",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 40,
+                                      width: 135,
+                                      child: DropdownButtonFormField(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 10,
+                                            right: 10,
+                                          ),
+                                          hintStyle: TextStyle(
+                                            fontSize: 16,
+                                            color: const Color(0xff327C04)
+                                                .withOpacity(0.5),
+                                            fontFamily: 'Helvetica',
+                                          ),
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          errorStyle: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                        isExpanded: true,
+                                        value: UnitSelected,
+                                        iconEnabledColor: Colors
+                                            .transparent, // Down Arrow Icon
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Color(0xff327C04),
+                                        ),
+                                        iconSize: 30,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Helvetica'),
+                                        items: Unit.map((String items) {
+                                          return DropdownMenuItem(
+                                            value: items,
+                                            child: Text(items),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            UnitSelected = newValue!;
+                                          });
+                                        },
                                       ),
                                     ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
+                                    SizedBox(
+                                      width: 10,
                                     ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
+                                    SizedBox(
+                                      height: 40,
+                                      width: 210,
+                                      child: TextInputField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(6),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          textEditingController:
+                                              yieldTextEditingController,
+                                          hintText: "",
+                                          validatorText: ""),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
+                                  ],
                                 ),
                               ],
                             ),
