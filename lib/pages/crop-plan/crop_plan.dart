@@ -491,7 +491,7 @@ DataRow recentFileDataRow(CropScheduleData data, int index) {
           child: Text(data.field?.first.field ?? ""))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.cropProgram!.first.crop.toString()))),
+          child: Text(data.cropReference.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.cropReference.toString()))),
