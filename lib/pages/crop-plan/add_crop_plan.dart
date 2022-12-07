@@ -98,12 +98,12 @@ var Unit = ['ZWL', 'USD', 'NAD'];
 Future<String> addCropSchedule(
     selectedFarmId, selectedBlockId, selectedFieldId, selectedCropId) async {
   debugPrint("reached");
-  Map<String, dynamic> updata = {
-    "farm_id": selectedFarmId,
-    "block_id": selectedBlockId,
-    "field_id": selectedFieldId,
+  Map updata = {
+    "farm_id": selectedFarmId.toString(),
+    "block_id": selectedBlockId.toString(),
+    "field_id": selectedFieldId.toString(),
     "crop_reference": CropReferenceTextEditingController.text,
-    "crop_program_id": selectedCropId,
+    "crop_program_id": selectedCropId.toString(),
     "caltivar": CultivarSelected,
     "start_date": StartDateTextEditingController.text,
     "expected_end_date": ExpectedEndDateTextEditingController.text,
@@ -115,12 +115,12 @@ Future<String> addCropSchedule(
   return await addaddCropScheduleAPI(updata);
 }
 
-Future<String> addaddCropScheduleAPI(Map<String, dynamic> updata) async {
+Future<String> addaddCropScheduleAPI(Map updata) async {
   final _chuckerHttpClient = await http.Client();
   print(updata);
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
-    Uri.parse("https://agromate.website/laravel/api/addCropPlan"),
+    Uri.parse("https://agromate.website/laravel/api/plan"),
     body: updata,
   );
   print(response.body);
@@ -175,7 +175,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
   @override
   Widget build(BuildContext context) {
     final format = DateFormat("dd-MM-yyyy");
-
+    var currentDate = DateTime.now();
     final screenSize = MediaQuery.of(context).size;
     return FutureBuilder(
       future: futureGroup.future,
@@ -208,7 +208,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             splashColor: Colors.transparent,
                             child: const Icon(Icons.arrow_back_ios),
                             onTap: () {
-                              HarvestTextEditingController.clear();
+                              harvestTextEditingController.clear();
                               Get.back();
                             },
                           ),
@@ -644,13 +644,9 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                     return showDatePicker(
                                       helpText: 'Select Date',
                                       context: context,
-                                      firstDate: DateTime(1970),
-                                      // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                                      initialDate: currentValue ??
-                                          DateTime.now().subtract(
-                                              const Duration(days: 4745)),
-                                      // lastDate: DateTime(2100));
-                                      lastDate: DateTime.now(),
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2050),
                                       builder: (BuildContext context,
                                           Widget? child) {
                                         return Theme(
@@ -759,13 +755,9 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                     return showDatePicker(
                                       helpText: 'Select Date',
                                       context: context,
-                                      firstDate: DateTime(1970),
-                                      // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                                      initialDate: currentValue ??
-                                          DateTime.now().subtract(
-                                              const Duration(days: 4745)),
-                                      // lastDate: DateTime(2100));
-                                      lastDate: DateTime.now(),
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2050),
                                       builder: (BuildContext context,
                                           Widget? child) {
                                         return Theme(
@@ -811,6 +803,10 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 ),
                                 const SizedBox(height: 15),
                                 TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   controller: AreaTextEditingController,
                                   // initialValue: 'enter heritage',
                                   style: const TextStyle(
@@ -899,6 +895,10 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 ),
                                 const SizedBox(height: 15),
                                 TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   controller:
                                       ExpectedYieldTextEditingController,
                                   // initialValue: 'enter heritage',
@@ -1082,7 +1082,8 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                       width: 210,
                                       child: TextInputField(
                                           inputFormatters: [
-                                            LengthLimitingTextInputFormatter(6),
+                                            LengthLimitingTextInputFormatter(
+                                                12),
                                             FilteringTextInputFormatter
                                                 .digitsOnly
                                           ],
@@ -1111,6 +1112,10 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                 ),
                                 const SizedBox(height: 15),
                                 TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12),
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   controller: HarvestTextEditingController,
                                   // initialValue: 'enter heritage',
                                   style: const TextStyle(
@@ -1216,7 +1221,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           debugPrint(ExpectedRevenueTextEditingController.text);
                           debugPrint(HarvestTextEditingController.text);
                           //addWeeklyTask();
-                          Get.toNamed('/crop_plan');
+                          // Get.toNamed('/crop_plan');
                           if (isValid!) {
                             setState(() {
                               addCropSchedule(

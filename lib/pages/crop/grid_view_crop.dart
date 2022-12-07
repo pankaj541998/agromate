@@ -42,8 +42,12 @@ class Crop extends StatefulWidget {
 
 class _CropState extends State<Crop> {
   final harvestTextEditingController = TextEditingController();
+
   File? _pickedImage;
   Uint8List webImage = Uint8List(8);
+
+  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     harvestTextEditingController.text = "14";
@@ -613,6 +617,7 @@ class _CropState extends State<Crop> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      key: scaffoldkey,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -844,112 +849,115 @@ class _CropState extends State<Crop> {
       ),
     );
   }
-}
 
-Widget _buildgridview(context, cropdata) {
-  return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: (0.5 / 0.4),
-          crossAxisCount: 5,
-          mainAxisSpacing: 2,
-          crossAxisSpacing: 3),
-      itemCount: cropdata.data!.length,
-      itemBuilder: (BuildContext ctx, index) {
-        //  var element = CropProgram.cropPrograms.elementAt(index);
-        return InkWell(
-          onTap: () {
-            debugPrint(index.toString());
-            String weeks = cropdata.data!.elementAt(index).weeks!;
-            debugPrint(weeks);
-            int id = cropdata.data!.elementAt(index).id!;
-            debugPrint(id.toString());
-            print("pressed");
-            // Get.toNamed("/view_details");
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewDetails(
-                  weeks: cropdata.data!.elementAt(index).weeks!,
-                  id: cropdata.data!.elementAt(index).id!.toString(),
+  Widget _buildgridview(context, cropdata) {
+    BuildContext? contextnew;
+    contextnew = scaffoldkey.currentContext;
+    return GridView.builder(
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: (0.5 / 0.4),
+            crossAxisCount: 5,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 3),
+        itemCount: cropdata.data!.length,
+        itemBuilder: (BuildContext ctx, index) {
+          //  var element = CropProgram.cropPrograms.elementAt(index);
+          return InkWell(
+            onTap: () {
+              debugPrint(index.toString());
+              String weeks = cropdata.data!.elementAt(index).weeks!;
+              debugPrint(weeks);
+              int id = cropdata.data!.elementAt(index).id!;
+              debugPrint(id.toString());
+              print("pressed");
+              // Get.toNamed("/view_details");
+              context = scaffoldkey.currentContext;
+              Navigator.push(
+                contextnew!,
+                MaterialPageRoute(
+                  builder: (context) => ViewDetails(
+                    weeks: cropdata.data!.elementAt(index).weeks!,
+                    id: cropdata.data!.elementAt(index).id!.toString(),
+                  ),
+                ),
+              );
+            },
+            child: Card(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset('images/potato.png', width: 40),
+                        const SizedBox(width: 10),
+                        Text(
+                          cropdata.data!.elementAt(index).crop!,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xff000000),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Text(
+                          'Plant Population : ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff000000),
+                          ),
+                        ),
+                        Text(
+                          cropdata.data!.elementAt(index).population!,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Text(
+                          'Yield Per Hectares : ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff000000),
+                          ),
+                        ),
+                        Text(
+                          cropdata.data!.elementAt(index).yield!,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Text(
+                          'Growing Period In Weeks : ',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff000000),
+                          ),
+                        ),
+                        Text(
+                          cropdata.data!.elementAt(index).weeks!,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            );
-          },
-          child: Card(
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('images/potato.png', width: 40),
-                      const SizedBox(width: 10),
-                      Text(
-                        cropdata.data!.elementAt(index).crop!,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xff000000),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Text(
-                        'Plant Population : ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                      Text(
-                        cropdata.data!.elementAt(index).population!,
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Text(
-                        'Yield Per Hectares : ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                      Text(
-                        cropdata.data!.elementAt(index).yield!,
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Text(
-                        'Growing Period In Weeks : ',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                      Text(
-                        cropdata.data!.elementAt(index).weeks!,
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
             ),
-          ),
-        );
-      });
+          );
+        });
+  }
 }
