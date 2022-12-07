@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:get/get.dart';
+import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
+import 'package:async/async.dart';
 
 class GapAnalysis extends StatefulWidget {
   GapAnalysis({Key? key}) : super(key: key);
@@ -16,6 +17,15 @@ bool check1 = false;
 bool check2 = false;
 
 class _GapAnalysisState extends State<GapAnalysis> {
+  final FutureGroup futureGroup = FutureGroup();
+
+  @override
+  void initState() {
+    super.initState();
+    GapQuestionMethods.getGap();
+    futureGroup.close();
+  }
+
   late String _selectedValue;
   List<String> listOfValue = [
     'Farming',
@@ -305,6 +315,9 @@ class _GapAnalysisState extends State<GapAnalysis> {
       ),
     );
   }
+
+  String? currentCategory;
+  int? currentCategoryId;
 
   @override
   Widget build(BuildContext context) {
