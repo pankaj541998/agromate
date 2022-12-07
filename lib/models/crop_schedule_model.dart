@@ -23,11 +23,11 @@ class CropScheduleModel {
 
 class CropScheduleData {
   int? id;
-  int? farmId;
-  int? blockId;
-  int? fieldId;
+  String? farmId;
+  String? blockId;
+  String? fieldId;
   String? cropReference;
-  int? cropProgramId;
+  String? cropProgramId;
   String? caltivar;
   int? farmerId;
   String? startDate;
