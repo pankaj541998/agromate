@@ -208,7 +208,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             splashColor: Colors.transparent,
                             child: const Icon(Icons.arrow_back_ios),
                             onTap: () {
-                              HarvestTextEditingController.clear();
+                              harvestTextEditingController.clear();
                               Get.back();
                             },
                           ),

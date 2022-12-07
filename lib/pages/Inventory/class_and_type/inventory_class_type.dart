@@ -174,7 +174,7 @@ class _InventoryClassTypeState extends State<InventoryClassType>
 
   void _handleSelected() {
     setState(() {
-      _myHandler = _controller.index;
+      initialindex = _controller.index;
     });
   }
 
@@ -393,11 +393,12 @@ class _InventoryClassTypeState extends State<InventoryClassType>
     );
   }
 
+  var initialindex = 0;
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return DefaultTabController(
-      initialIndex: widget.initial ?? 0,
+      initialIndex: initialindex,
       length: 2,
       child: Scaffold(
         body: Column(
@@ -434,7 +435,9 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                                 visible: _isVisible, child: FlutterLogo()),
                             InkWell(
                               onTap: () {
-                                buildPinAddClass(context);
+                                initialindex == 0
+                                    ? buildPinAddClass(context)
+                                    : buildPinAddType(context);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
