@@ -1,15 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/models/cropPorgramModel.dart';
+import 'package:flutter_agro_new/pages/Inventory/class_and_type/inventory_class_type.dart';
 import 'package:flutter_agro_new/pages/crop/table_view_crop.dart';
 import 'package:flutter_agro_new/pages/crop/view_details.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
@@ -38,49 +42,82 @@ class Crop extends StatefulWidget {
 
 class _CropState extends State<Crop> {
   final harvestTextEditingController = TextEditingController();
+  File? _pickedImage;
+  Uint8List webImage = Uint8List(8);
   @override
   void initState() {
     harvestTextEditingController.text = "14";
     super.initState();
   }
 
-  File? image;
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future<void> uploadImage() async {
-    var stream = http.ByteStream(image!.openRead());
-    stream.cast();
-
-    var length = await image!.length();
-
-    var uri = Uri.parse("");
-
-    var request = http.MultipartRequest('POST', uri);
-
-    var multiport = http.MultipartFile('file', stream, length);
-
-    request.files.add(multiport);
-
-    var response = await request.send();
-
-    print(response.stream.toString());
-    if (response.statusCode == 200) {
-      print('image uploaded');
+  StreamController<bool> _controllernew = StreamController<bool>.broadcast();
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          _pickedImage = selected;
+        });
+      } else {
+        print('no image picked');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          _pickedImage = File('a');
+          _controllernew.add(true);
+        });
+      } else {
+        print('no image picked');
+      }
     } else {
-      print(response.statusCode);
-      // print('failed');
-      // Navigator.pop(context);
+      print('something went wrong');
     }
   }
+
+  // File? image;
+  // Future pickImage() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (image == null) return;
+  //     final imageTemp = File(image.path);
+  //     setState(() => this.image = imageTemp);
+  //   } on PlatformException catch (e) {
+  //     print('Failed to pick image: $e');
+  //   }
+  // }
+
+  // Future<void> uploadImage() async {
+  //   var stream = http.ByteStream(image!.openRead());
+  //   stream.cast();
+
+  //   var length = await image!.length();
+
+  //   var uri = Uri.parse("");
+
+  //   var request = http.MultipartRequest('POST', uri);
+
+  //   var multiport = http.MultipartFile('file', stream, length);
+
+  //   request.files.add(multiport);
+
+  //   var response = await request.send();
+
+  //   print(response.stream.toString());
+  //   if (response.statusCode == 200) {
+  //     print('image uploaded');
+  //   } else {
+  //     print(response.statusCode);
+  //     // print('failed');
+  //     // Navigator.pop(context);
+  //   }
+  // }
 
   late String _selectedValue;
   List<String> listOfValue = [
@@ -91,435 +128,482 @@ class _CropState extends State<Crop> {
   ];
   String UnitSelected = 'Hectare';
   var Unit = ['Hectare', 'Acre'];
+  bool imageclick = false;
   buildPin() {
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
-          return Form(
-            key: _form,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  contentPadding: EdgeInsets.only(top: 10.0),
-                  content: Padding(
-                    padding: EdgeInsets.only(
-                        top: 0, left: 25, right: 25, bottom: 25),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(Icons.cancel_outlined))
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "Add New Crop program",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: InkWell(
-                                    onTap: pickImage,
-                                    child: CircleAvatar(
-                                      child: Image.asset(
-                                          "assets/images/Group6740.png"),
+          return StreamBuilder<bool>(
+              stream: _controllernew.stream,
+              builder: (context, snapshot) {
+                return Form(
+                  key: _form,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0))),
+                        contentPadding: EdgeInsets.only(top: 10.0),
+                        content: Padding(
+                          padding: EdgeInsets.only(
+                              top: 0, left: 25, right: 25, bottom: 25),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(Icons.cancel_outlined))
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Add New Crop program",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      MouseRegion(
+                                        cursor: SystemMouseCursors.click,
+                                        child: CircleAvatar(
+                                          radius: 35,
+                                          child: _pickedImage == null
+                                              ? Image.asset(
+                                                  "assets/images/Group6740.png")
+                                              : kIsWeb
+                                                  ? Image.memory(
+                                                      webImage,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  : Image.file(
+                                                      _pickedImage!,
+                                                      fit: BoxFit.fill,
+                                                    ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      InkWell(
+                                          onTap: ((() {
+                                            setState(
+                                              () {
+                                                _pickImage();
+                                              },
+                                            );
+                                          })),
+                                          child: Text("Upload image"))
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Crop",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                  width: 300,
+                                                  child: TextInputField(
+                                                      inputFormatters: [
+                                                        LengthLimitingTextInputFormatter(
+                                                            25),
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[a-zA-Z ]')),
+                                                      ],
+                                                      textEditingController:
+                                                          cropTextEditingController,
+                                                      hintText: "",
+                                                      validator: (value) {
+                                                        if (value != null &&
+                                                            value.isEmpty) {
+                                                          return "Please Enter Crop Name";
+                                                        }
+                                                        return null;
+                                                      },
+                                                      validatorText: ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Plant population",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                  width: 300,
+                                                  child: TextInputField(
+                                                      inputFormatters: [
+                                                        LengthLimitingTextInputFormatter(
+                                                            6),
+                                                        FilteringTextInputFormatter
+                                                            .digitsOnly
+                                                      ],
+                                                      textEditingController:
+                                                          populationTextEditingController,
+                                                      hintText: "",
+                                                      validatorText: ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Growing Periods in Weeks",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                  width: 300,
+                                                  child: TextInputField(
+                                                      inputFormatters: [
+                                                        LengthLimitingTextInputFormatter(
+                                                            6),
+                                                        FilteringTextInputFormatter
+                                                            .allow(RegExp(
+                                                                '[0-9]')),
+                                                      ],
+                                                      textEditingController:
+                                                          weeksTextEditingController,
+                                                      hintText: "",
+                                                      validator: (value) {
+                                                        if (value != null &&
+                                                            value.isEmpty) {
+                                                          return "Please Enter weeks";
+                                                        }
+                                                        return null;
+                                                      },
+                                                      validatorText:
+                                                          "Please Enter Weeks"))
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Crop Season Description",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                width: 300,
+                                                child: TextInputField(
+                                                    inputFormatters: [
+                                                      LengthLimitingTextInputFormatter(
+                                                          25),
+                                                      FilteringTextInputFormatter
+                                                          .allow(RegExp(
+                                                              '[a-zA-Z ]')),
+                                                    ],
+                                                    textEditingController:
+                                                        cropseasonTextEditingController,
+                                                    hintText: "",
+                                                    validatorText:
+                                                        "Please Enter Crop Season Description"),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Yield Per Hectare/Acre",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 50,
+                                                    width: 110,
+                                                    child:
+                                                        DropdownButtonFormField(
+                                                      autovalidateMode:
+                                                          AutovalidateMode
+                                                              .onUserInteraction,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        // contentPadding:
+                                                        //     const EdgeInsets.only(
+                                                        //   top: 10,
+                                                        //   bottom: 10,
+                                                        //   left: 10,
+                                                        //   right: 10,
+                                                        // ),
+                                                        hintStyle: TextStyle(
+                                                          fontSize: 16,
+                                                          color: const Color(
+                                                                  0xff327C04)
+                                                              .withOpacity(0.5),
+                                                          fontFamily:
+                                                              'Helvetica',
+                                                        ),
+                                                        fillColor: Colors.white,
+                                                        filled: true,
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          borderSide:
+                                                              const BorderSide(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xff327C04),
+                                                          ),
+                                                        ),
+                                                        errorBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          borderSide:
+                                                              const BorderSide(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xff327C04),
+                                                          ),
+                                                        ),
+                                                        errorStyle:
+                                                            const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          borderSide:
+                                                              const BorderSide(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xff327C04),
+                                                          ),
+                                                        ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          borderSide:
+                                                              const BorderSide(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xff327C04),
+                                                          ),
+                                                        ),
+                                                        isDense: true,
+                                                      ),
+                                                      isExpanded: true,
+                                                      value: UnitSelected,
+                                                      iconEnabledColor: Colors
+                                                          .transparent, // Down Arrow Icon
+                                                      icon: const Icon(
+                                                        Icons
+                                                            .keyboard_arrow_down,
+                                                        color:
+                                                            Color(0xff327C04),
+                                                      ),
+                                                      iconSize: 30,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          color:
+                                                              Color(0xff000000),
+                                                          fontFamily:
+                                                              'Helvetica'),
+                                                      items: Unit.map(
+                                                          (String items) {
+                                                        return DropdownMenuItem(
+                                                          value: items,
+                                                          child: Text(items),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged:
+                                                          (String? newValue) {
+                                                        setState(() {
+                                                          UnitSelected =
+                                                              newValue!;
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 180,
+                                                    child: TextInputField(
+                                                        inputFormatters: [
+                                                          LengthLimitingTextInputFormatter(
+                                                              6),
+                                                          FilteringTextInputFormatter
+                                                              .digitsOnly
+                                                        ],
+                                                        textEditingController:
+                                                            yieldTextEditingController,
+                                                        hintText: "",
+                                                        validatorText: ""),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Harvest Days",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                  width: 300,
+                                                  child: TextInputField(
+                                                    textEditingController:
+                                                        harvestTextEditingController,
+                                                    hintText: "Harvest Days",
+                                                    validatorText: "",
+                                                  )),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              const SizedBox(
+                                height: 28,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 40,
+                                    width: 296,
+                                    child: CustomElevatedButton(
+                                      onPressed: () {
+                                        final isValid =
+                                            _form.currentState?.validate();
+                                        if (isValid!) {
+                                          addCropProgram().then((value) =>
+                                              Navigator.pushNamed(
+                                                  context, '/grid_view_crop'));
+                                          Flushbar(
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            message:
+                                                "Crop Program Added Successfully",
+                                          ).show(context);
+                                        } else {
+                                          Flushbar(
+                                            duration:
+                                                const Duration(seconds: 2),
+                                            message:
+                                                "Please Enter Required Details",
+                                          ).show(context);
+                                        }
+                                        // addCropProgram();
+                                        // Navigator.pop(context);
+                                      },
+                                      title: "Add",
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            // Image.asset(""),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Crop",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        SizedBox(
-                                            width: 300,
-                                            child: TextInputField(
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      25),
-                                                  FilteringTextInputFormatter
-                                                      .allow(
-                                                          RegExp('[a-zA-Z ]')),
-                                                ],
-                                                textEditingController:
-                                                    cropTextEditingController,
-                                                hintText: "",
-                                                validator: (value) {
-                                                  if (value != null &&
-                                                      value.isEmpty) {
-                                                    return "Please Enter Crop Name";
-                                                  }
-                                                  return null;
-                                                },
-                                                validatorText: ""))
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Plant population",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        SizedBox(
-                                            width: 300,
-                                            child: TextInputField(
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      6),
-                                                  FilteringTextInputFormatter
-                                                      .digitsOnly
-                                                ],
-                                                textEditingController:
-                                                    populationTextEditingController,
-                                                hintText: "",
-                                                validatorText: ""))
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Growing Periods in Weeks",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        SizedBox(
-                                            width: 300,
-                                            child: TextInputField(
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      6),
-                                                  FilteringTextInputFormatter
-                                                      .allow(RegExp('[0-9]')),
-                                                ],
-                                                textEditingController:
-                                                    weeksTextEditingController,
-                                                hintText: "",
-                                                validator: (value) {
-                                                  if (value != null &&
-                                                      value.isEmpty) {
-                                                    return "Please Enter weeks";
-                                                  }
-                                                  return null;
-                                                },
-                                                validatorText:
-                                                    "Please Enter Weeks"))
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Column(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Crop Season Description",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        SizedBox(
-                                          width: 300,
-                                          child: TextInputField(
-                                              inputFormatters: [
-                                                LengthLimitingTextInputFormatter(
-                                                    25),
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp('[a-zA-Z ]')),
-                                              ],
-                                              textEditingController:
-                                                  cropseasonTextEditingController,
-                                              hintText: "",
-                                              validatorText:
-                                                  "Please Enter Crop Season Description"),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Yield Per Hectare/Acre",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              height: 50,
-                                              width: 110,
-                                              child: DropdownButtonFormField(
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
-                                                decoration: InputDecoration(
-                                                  // contentPadding:
-                                                  //     const EdgeInsets.only(
-                                                  //   top: 10,
-                                                  //   bottom: 10,
-                                                  //   left: 10,
-                                                  //   right: 10,
-                                                  // ),
-                                                  hintStyle: TextStyle(
-                                                    fontSize: 16,
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.5),
-                                                    fontFamily: 'Helvetica',
-                                                  ),
-                                                  fillColor: Colors.white,
-                                                  filled: true,
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    borderSide:
-                                                        const BorderSide(
-                                                      width: 1,
-                                                      color: Color(0xff327C04),
-                                                    ),
-                                                  ),
-                                                  errorBorder:
-                                                      OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    borderSide:
-                                                        const BorderSide(
-                                                      width: 1,
-                                                      color: Color(0xff327C04),
-                                                    ),
-                                                  ),
-                                                  errorStyle: const TextStyle(
-                                                    fontSize: 14,
-                                                  ),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    borderSide:
-                                                        const BorderSide(
-                                                      width: 1,
-                                                      color: Color(0xff327C04),
-                                                    ),
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    borderSide:
-                                                        const BorderSide(
-                                                      width: 1,
-                                                      color: Color(0xff327C04),
-                                                    ),
-                                                  ),
-                                                  isDense: true,
-                                                ),
-                                                isExpanded: true,
-                                                value: UnitSelected,
-                                                iconEnabledColor: Colors
-                                                    .transparent, // Down Arrow Icon
-                                                icon: const Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  color: Color(0xff327C04),
-                                                ),
-                                                iconSize: 30,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Color(0xff000000),
-                                                    fontFamily: 'Helvetica'),
-                                                items: Unit.map((String items) {
-                                                  return DropdownMenuItem(
-                                                    value: items,
-                                                    child: Text(items),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? newValue) {
-                                                  setState(() {
-                                                    UnitSelected = newValue!;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                              width: 180,
-                                              child: TextInputField(
-                                                  inputFormatters: [
-                                                    LengthLimitingTextInputFormatter(
-                                                        6),
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                  textEditingController:
-                                                      yieldTextEditingController,
-                                                  hintText: "",
-                                                  validatorText: ""),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Harvest Days",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        SizedBox(
-                                            width: 300,
-                                            child: TextInputField(
-                                              textEditingController:
-                                                  harvestTextEditingController,
-                                              hintText: "Harvest Days",
-                                              validatorText: "",
-                                            )),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        const SizedBox(
-                          height: 28,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 296,
-                              child: CustomElevatedButton(
-                                onPressed: () {
-                                  final isValid =
-                                      _form.currentState?.validate();
-                                  if (isValid!) {
-                                    addCropProgram().then((value) =>
-                                        Navigator.pushNamed(
-                                            context, '/grid_view_crop'));
-                                    Flushbar(
-                                      duration: const Duration(seconds: 2),
-                                      message:
-                                          "Crop Program Added Successfully",
-                                    ).show(context);
-                                  } else {
-                                    Flushbar(
-                                      duration: const Duration(seconds: 2),
-                                      message: "Please Enter Required Details",
-                                    ).show(context);
-                                  }
-                                  // addCropProgram();
-                                  // Navigator.pop(context);
-                                },
-                                title: "Add",
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          );
+                );
+              });
         },
       ),
     );
