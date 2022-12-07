@@ -39,8 +39,8 @@ class _RegisterState extends State<Register> {
       http.Response response = await Registerapi().editDataByUsername(data);
 
       Map responseMap = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        Navigator.pushNamed(context, '/thankyou');
+      if (response.statusCode == 202) {
+        Get.toNamed('/thankyou');
       } else {
         print("else entered");
         Flushbar(

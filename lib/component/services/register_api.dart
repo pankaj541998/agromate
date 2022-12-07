@@ -14,7 +14,7 @@ class Registerapi {
       // headers: {"Accept": "application/json"},
     );
     print(response.body);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 202) {
       print(response.body);
       return response;
     } else {
