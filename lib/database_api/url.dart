@@ -24,4 +24,6 @@ class ApiUrl {
   static const postGap = "https://agromate.website/laravel/api/gap_analysis";
   static const getGap =
       "https://agromate.website/laravel/api/gap_analysis_data";
+  static const getCategory =
+      "https://agromate.website/laravel/api/gap_category_data";
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:get/get.dart';
+import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
+import 'package:async/async.dart';
+
+import '../../database_api/models/gapQuestionModel.dart';
 
 class GapAnalysis extends StatefulWidget {
   GapAnalysis({Key? key}) : super(key: key);
@@ -11,11 +15,20 @@ class GapAnalysis extends StatefulWidget {
   State<GapAnalysis> createState() => _GapAnalysisState();
 }
 
-bool check3 = false;
-bool check1 = false;
-bool check2 = false;
-
 class _GapAnalysisState extends State<GapAnalysis> {
+  String? currentgapCat;
+
+  bool check3 = false;
+  bool check1 = false;
+  bool check2 = false;
+
+  late final Future myfuture;
+  @override
+  void initState() {
+    super.initState();
+    myfuture = GapQuestionMethods().getCategory();
+  }
+
   late String _selectedValue;
   List<String> listOfValue = [
     'Farming',
@@ -23,288 +36,308 @@ class _GapAnalysisState extends State<GapAnalysis> {
     'packaging',
     'Transport',
   ];
+
+  List<String> gap_cat = [];
+  bool _isonce = true;
+  setValues() {
+    if (_isonce) {
+      for (var i = 0; i < gapData.data!.length; i++) {
+        gap_cat.add(gapData.data![i].gapCategory!);
+      }
+      _isonce = false;
+    }
+  }
+
   buildPinAlert() {
     return showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        context: context, builder: (context) => _buildbody(context));
+  }
+
+  Widget _buildbody(context) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return FutureBuilder(
+          future: myfuture,
+          builder: (ctx, snapshot) {
+            if (snapshot.data == null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.45,
+                  ),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              setValues();
+              print("data from rsp ${snapshot.data}");
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    '${snapshot.error} occured',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
+              }
+            }
+            return _buildBody2(context, setState);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildBody2(context, setState) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AlertDialog(
+          insetPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AlertDialog(
-                insetPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "New Gap Analysis",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.cancel_outlined,
-                        color: Color(0xFF4E944F),
-                      ),
-                    )
-                  ],
+              Text(
+                "New Gap Analysis",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.cancel_outlined,
+                  color: Color(0xFF4E944F),
                 ),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Category"),
-                            SizedBox(
-                              height: 15,
-                              // ignore: prefer_const_literals_to_create_immutables
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 330,
-                              child: DropdownButtonFormField(
-                                focusColor: Colors.white,
-                                isExpanded: true,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      left: 10, top: 10, right: 10),
-                                  fillColor: Colors.white,
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF327C04)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF327C04)),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0xFF327C04),
-                                      width: 5.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                items: listOfValue.map((String val) {
-                                  return DropdownMenuItem(
-                                    enabled: true,
-                                    value: val,
-                                    child: Text(
-                                      val,
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedValue;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Text(
-                              "Question",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 330,
-                              child: TextFormField(
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      left: 10, top: 10, right: 10),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF327C04)),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color(0xFF327C04)),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color(0xFF327C04),
-                                      width: 5.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+              )
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Category"),
+                      SizedBox(
+                        height: 15,
+                        // ignore: prefer_const_literals_to_create_immutables
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 330,
+                        child: SizedBox(
+                          width: 500,
+                          child: DropdownBtn(
+                            items: gap_cat,
+                            hint: 'Select Category',
+                            onItemSelected: (value) async {
+                              setState(() {
+                                currentgapCat = value;
+                              });
+                            },
+                          ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Theme(
-                              data: ThemeData(
-                                unselectedWidgetColor: Color(0xff327C04),
-                              ),
-                              child: Checkbox(
-                                activeColor: Color(0xff327C04),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0))),
-                                value: check3,
-                                onChanged: (check) {
-                                  setState(() {
-                                    check3 = check!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Text(
-                              "Options",
-                            ),
-                          ],
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Text(
+                        "Question",
+                        style: TextStyle(
+                          fontSize: 18,
                         ),
-                        Row(
-                          children: [
-                            Theme(
-                              data: ThemeData(
-                                unselectedWidgetColor: Color(0xff327C04),
-                              ),
-                              child: Checkbox(
-                                activeColor: Color(0xff327C04),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0))),
-                                value: check1,
-                                onChanged: (check) {
-                                  setState(() {
-                                    check1 = check!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Text(
-                              "Text",
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Theme(
-                              data: ThemeData(
-                                unselectedWidgetColor: Color(0xff327C04),
-                              ),
-                              child: Checkbox(
-                                activeColor: Color(0xff327C04),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0))),
-                                value: check2,
-                                onChanged: (check) {
-                                  setState(() {
-                                    check2 = check!;
-                                  });
-                                },
-                              ),
-                            ),
-                            Text(
-                              "Image",
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Card(
-                            shape: RoundedRectangleBorder(
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 330,
+                        child: TextFormField(
+                          maxLines: 3,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                EdgeInsets.only(left: 10, top: 25, right: 10),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: Color(0xFF327C04)),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFF327C04)),
                             ),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text("Yes"),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                                  const BorderSide(color: Color(0xFF327C04)),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFF327C04),
+                                width: 5.0,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: Color(0xFF327C04)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text("No"),
-                            ),
-                          ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Theme(
+                        data: ThemeData(
+                          unselectedWidgetColor: Color(0xff327C04),
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: BorderSide(color: Color(0xFF327C04)),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                              child: Text("Maybe"),
-                            ),
-                          ),
+                        child: Checkbox(
+                          activeColor: Color(0xff327C04),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5.0))),
+                          value: check3,
+                          onChanged: (check) {
+                            setState(() {
+                              check3 = check!;
+                            });
+                          },
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    SizedBox(
-                      height: 40,
-                      width: 170,
-                      child: CustomElevatedButton(
-                        title: "ADD",
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                      ),
+                      Text(
+                        "Options",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Theme(
+                        data: ThemeData(
+                          unselectedWidgetColor: Color(0xff327C04),
+                        ),
+                        child: Checkbox(
+                          activeColor: Color(0xff327C04),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5.0))),
+                          value: check1,
+                          onChanged: (check) {
+                            setState(() {
+                              check1 = check!;
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
+                        "Text",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Theme(
+                        data: ThemeData(
+                          unselectedWidgetColor: Color(0xff327C04),
+                        ),
+                        child: Checkbox(
+                          activeColor: Color(0xff327C04),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5.0))),
+                          value: check2,
+                          onChanged: (check) {
+                            setState(() {
+                              check2 = check!;
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
+                        "Image",
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Color(0xFF327C04)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: Text("Yes"),
                       ),
                     ),
-                  ],
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Color(0xFF327C04)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: Text("No"),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Color(0xFF327C04)),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: Text("Maybe"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              SizedBox(
+                height: 40,
+                width: 170,
+                child: CustomElevatedButton(
+                  title: "ADD",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
+
+  String? currentCategory;
+  int? currentCategoryId;
 
   @override
   Widget build(BuildContext context) {

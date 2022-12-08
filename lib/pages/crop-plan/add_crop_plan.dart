@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,20 +10,16 @@ import 'package:flutter_agro_new/database_api/methods/block_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/crop_program_api_method.dart';
 import 'package:flutter_agro_new/database_api/methods/farm_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/field_api_methods.dart';
-import 'package:flutter_agro_new/database_api/methods/users_api_methods.dart';
 import 'package:flutter_agro_new/database_api/models/block.dart';
 import 'package:flutter_agro_new/database_api/models/crop.dart';
 import 'package:flutter_agro_new/database_api/models/farm.dart';
 import 'package:flutter_agro_new/database_api/models/field.dart';
-import 'package:flutter_agro_new/models/cropPorgramModel.dart';
 import 'package:flutter_agro_new/pages/crop/table_view_crop.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:async/async.dart';
-
-import '../../models/Crop_Plan_Model.dart';
 
 final GlobalKey<FormState> _Form = GlobalKey<FormState>();
 TextEditingController CropReferenceTextEditingController =
