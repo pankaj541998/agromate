@@ -124,6 +124,7 @@ Future<String> addaddCropScheduleAPI(Map updata) async {
     body: updata,
   );
   print(response.body);
+
   if (response.statusCode == 200) {
     print(response.body);
     return 'null';
@@ -1088,7 +1089,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                                 .digitsOnly
                                           ],
                                           textEditingController:
-                                              yieldTextEditingController,
+                                              ExpectedRevenueTextEditingController,
                                           hintText: "",
                                           validatorText: ""),
                                     ),

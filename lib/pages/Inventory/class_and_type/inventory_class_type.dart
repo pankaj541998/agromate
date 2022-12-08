@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/database_api/methods/category_api_methods.dart';
 import 'package:flutter_agro_new/pages/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:async/async.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
 import '../../../models/type_model.dart';
@@ -35,6 +37,7 @@ class InventoryClassType extends StatefulWidget {
   int? initial;
 }
 
+List<ClassData> myData = classdata.data!;
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
 Future<ClassModel> fetchClass() async {
@@ -44,6 +47,7 @@ Future<ClassModel> fetchClass() async {
   final parsed = jsonDecode(response.body);
   // print(response.body);
   classdata = ClassModel.fromJson(parsed);
+  myData = classdata.data!;
   // print(classdata.data!.elementAt(1).firstName!);
   return classdata;
 }
@@ -156,17 +160,25 @@ Future<String> addClassAPI(Map<String, dynamic> updata) async {
   }
 }
 
+final FutureGroup futureGroup = FutureGroup();
+
 class _InventoryClassTypeState extends State<InventoryClassType>
     with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    fetchClass();
+    fetchType();
+    // myData = classdata.data!;
     _controller = new TabController(
       length: 2,
       vsync: this,
     );
     _controller.addListener(_handleSelected);
     print("tab value is ${_myHandler}");
+
+    futureGroup.add(CategoryAPI.fetchCategory());
+    futureGroup.close();
   }
 
   late TabController _controller;
@@ -1958,5 +1970,3 @@ buildPinType(context, id,
     ),
   );
 }
-
-List<ClassData> myData = classdata.data!;

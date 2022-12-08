@@ -103,6 +103,7 @@ class _TableViewCropState extends State<TableViewCrop> {
   void initState() {
     harvestTextEditingController.text = "14";
     super.initState();
+    fetchCropProgram();
   }
 
   late String _selectedValue;

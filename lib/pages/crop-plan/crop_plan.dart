@@ -35,6 +35,7 @@ class _CropPlanState extends State<CropPlan> {
   @override
   void initState() {
     super.initState();
+    fetchCropSchedule();
   }
 
 // List<CropScheduleData> myDataRequest = cropschedule;
