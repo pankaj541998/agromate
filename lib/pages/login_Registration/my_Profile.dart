@@ -2,8 +2,10 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../constants.dart';
@@ -112,6 +115,9 @@ class _ProfileState extends State<Profile> {
 
   final myprofile = GlobalKey<FormState>();
 
+  File? _pickedImage;
+  Uint8List webImage = Uint8List(8);
+
   @override
   void initState() {
     setValues();
@@ -125,6 +131,35 @@ class _ProfileState extends State<Profile> {
     phone.text = prefs.getString('phone')!;
     email.text = prefs.getString('email')!;
     username.text = prefs.getString('username')!;
+  }
+
+  Future<void> _pickProfileImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          _pickedImage = selected;
+        });
+      } else {
+        print('no image picked');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          _pickedImage = File('a');
+        });
+      } else {
+        print('no image picked');
+      }
+    } else {
+      print('something went wrong');
+    }
   }
 
   Future<dynamic> submitData() async {
@@ -200,17 +235,35 @@ class _ProfileState extends State<Profile> {
                         height: 30,
                       ),
                       CircleAvatar(
-                        child: Image.asset("assets/images/profilepic.png"),
+                        backgroundColor: Colors.white,
+                        child: _pickedImage == null
+                            ? Image.asset("assets/images/profilepic.png")
+                            : kIsWeb
+                                ? Image.memory(
+                                    webImage,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.file(
+                                    _pickedImage!,
+                                    fit: BoxFit.fill,
+                                  ),
                         radius: 72.5,
                       ),
                       SizedBox(
                         height: 23,
                       ),
-                      Text(
-                        "Profile Picture",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      TextButton(
+                        onPressed: () {
+                          _pickProfileImage();
+                        },
+                        child: Text(
+                          "Upload Profile Picture",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF327C04),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       )
                     ],

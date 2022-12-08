@@ -86,44 +86,6 @@ class _CropState extends State<Crop> {
     }
   }
 
-  // File? image;
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null) return;
-  //     final imageTemp = File(image.path);
-  //     setState(() => this.image = imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  // Future<void> uploadImage() async {
-  //   var stream = http.ByteStream(image!.openRead());
-  //   stream.cast();
-
-  //   var length = await image!.length();
-
-  //   var uri = Uri.parse("");
-
-  //   var request = http.MultipartRequest('POST', uri);
-
-  //   var multiport = http.MultipartFile('file', stream, length);
-
-  //   request.files.add(multiport);
-
-  //   var response = await request.send();
-
-  //   print(response.stream.toString());
-  //   if (response.statusCode == 200) {
-  //     print('image uploaded');
-  //   } else {
-  //     print(response.statusCode);
-  //     // print('failed');
-  //     // Navigator.pop(context);
-  //   }
-  // }
-
   late String _selectedValue;
   List<String> listOfValue = [
     'Week 1',
