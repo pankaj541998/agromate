@@ -9,7 +9,7 @@ import '../url.dart';
 class CroPlanApiMethods {
   //get
   static Future<List<CropPlanModel>> fetchCropPlan() async {
-    final response = await http.Client().get(Uri.parse(ApiUrl.getCropPlan));
+    final response = await http.Client().get(Uri.parse(ApiUrl.getCategory));
     return compute(_parseCropPlan, response.body);
   }
 

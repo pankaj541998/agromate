@@ -154,6 +154,7 @@ class _ViewDetailsState extends State<ViewDetails> {
   void initState() {
     filterData = myData;
     super.initState();
+    fetchCropProgram(widget.id);
     generateListForweeks();
   }
 

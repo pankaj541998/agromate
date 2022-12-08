@@ -139,12 +139,14 @@ class _TasksState extends State<Tasks> {
                                   }).toList(),
                                   hint: 'Landholder',
                                   onItemSelected: (value) {
-                                    currentLandholder = value;
-                                    currentLandholderId = fetchedusers
-                                        .singleWhere((element) =>
-                                            "${element.firstName} ${element.lastName}" ==
-                                            currentLandholder)
-                                        .id;
+                                    setState(() {
+                                      currentLandholder = value;
+                                      currentLandholderId = fetchedusers
+                                          .singleWhere((element) =>
+                                              "${element.firstName} ${element.lastName}" ==
+                                              currentLandholder)
+                                          .id;
+                                    });
                                   },
                                 ),
                               ],
@@ -170,9 +172,12 @@ class _TasksState extends State<Tasks> {
                                 SizedBox(
                                   width: 500,
                                   child: DropdownBtn(
-                                    items: fetchedfarms.map((e) {
-                                      return e.farmName.toString();
-                                    }).toList(),
+                                    items: fetchedfarms
+                                        .where((element) =>
+                                            element.landholderId ==
+                                            currentLandholderId)
+                                        .map((e) => e.farmName!)
+                                        .toList(),
                                     hint: 'Select Farm',
                                     onItemSelected: (value) async {
                                       setState(() {

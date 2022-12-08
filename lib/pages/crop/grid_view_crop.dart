@@ -52,6 +52,7 @@ class _CropState extends State<Crop> {
   void initState() {
     harvestTextEditingController.text = "14";
     super.initState();
+    fetchCropProgram();
   }
 
   StreamController<bool> _controllernew = StreamController<bool>.broadcast();
