@@ -1160,7 +1160,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SizedBox(
-                                    height: screenSize.height * 0.67,
+                                    height: screenSize.height * 0.7,
                                     child: ListView.builder(
                                       itemCount: filtered.length,
                                       itemBuilder: (context, index) {
