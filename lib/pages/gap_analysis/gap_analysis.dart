@@ -5,6 +5,8 @@ import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
 import 'package:async/async.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../database_api/models/gapQuestionModel.dart';
 
@@ -18,9 +20,38 @@ class GapAnalysis extends StatefulWidget {
 class _GapAnalysisState extends State<GapAnalysis> {
   String? currentgapCat;
 
-  bool check3 = false;
   bool check1 = false;
   bool check2 = false;
+  bool check3 = false;
+
+  Future<String> addGap() async {
+    debugPrint("reached");
+    Map<String, dynamic> updata = {
+      "gap_category_name": "Farming",
+      "question": "What type of irrigation should i use",
+      "options": 1,
+      "text": 0,
+      "image": 1
+    };
+    return await addGapAPI(updata);
+  }
+
+  Future<String> addGapAPI(Map<String, dynamic> updata) async {
+    final _chuckerHttpClient = await http.Client();
+    print(updata);
+    final prefs = await SharedPreferences.getInstance();
+    http.Response response = await _chuckerHttpClient.post(
+      Uri.parse("https://agromate.website/laravel/api/gap_category"),
+      body: updata,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      print(response.body);
+      return 'null';
+    } else {
+      return 'throw (Exception("Search Error"))';
+    }
+  }
 
   late final Future myfuture;
   @override
@@ -163,6 +194,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         height: 40,
                         width: 330,
                         child: TextFormField(
+                          controller: questionTextEditingController,
                           maxLines: 3,
                           decoration: InputDecoration(
                             contentPadding:
@@ -208,30 +240,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check3,
-                          onChanged: (check) {
-                            setState(() {
-                              check3 = check!;
-                            });
-                          },
-                        ),
-                      ),
-                      Text(
-                        "Options",
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Theme(
-                        data: ThemeData(
-                          unselectedWidgetColor: Color(0xff327C04),
-                        ),
-                        child: Checkbox(
-                          activeColor: Color(0xff327C04),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0))),
                           value: check1,
                           onChanged: (check) {
                             setState(() {
@@ -241,7 +249,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         ),
                       ),
                       Text(
-                        "Text",
+                        "Options",
                       ),
                     ],
                   ),
@@ -265,6 +273,30 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         ),
                       ),
                       Text(
+                        "Text",
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Theme(
+                        data: ThemeData(
+                          unselectedWidgetColor: Color(0xff327C04),
+                        ),
+                        child: Checkbox(
+                          activeColor: Color(0xff327C04),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(5.0))),
+                          value: check3,
+                          onChanged: (check) {
+                            setState(() {
+                              check3 = check!;
+                            });
+                          },
+                        ),
+                      ),
+                      Text(
                         "Image",
                       ),
                     ],
@@ -275,43 +307,34 @@ class _GapAnalysisState extends State<GapAnalysis> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color(0xFF327C04)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                        child: Text("Yes"),
-                      ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Color(0xFF327C04)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                      child: Text("Yes"),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color(0xFF327C04)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                        child: Text("No"),
-                      ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Color(0xFF327C04)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                      child: Text("No"),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {},
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(color: Color(0xFF327C04)),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                        child: Text("Maybe"),
-                      ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Color(0xFF327C04)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                      child: Text("Maybe"),
                     ),
                   ),
                 ],
@@ -325,6 +348,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 child: CustomElevatedButton(
                   title: "ADD",
                   onPressed: () {
+                    addGap();
                     Navigator.pop(context);
                   },
                 ),
@@ -338,6 +362,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
 
   String? currentCategory;
   int? currentCategoryId;
+
+  final questionTextEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

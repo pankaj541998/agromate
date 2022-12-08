@@ -18,7 +18,7 @@ class ApiUrl {
   static const postCropPlan = "https://agromate.website/laravel/api/plan";
   static const getCropPlan = "https://agromate.website/laravel/api/get/plan";
 //
-  static const getCategory = "https://agromate.website/laravel/api/get/class";
+  static const getClass = "https://agromate.website/laravel/api/get/class";
 
   //gap_Question table
   static const postGap = "https://agromate.website/laravel/api/gap_analysis";
