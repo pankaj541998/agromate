@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
-import '../../../component/text_Input_field.dart';
 
 class StockOrder extends StatefulWidget {
   const StockOrder({Key? key}) : super(key: key);
