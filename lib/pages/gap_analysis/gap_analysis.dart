@@ -1,14 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
-import 'package:async/async.dart';
+import 'package:flutter_agro_new/models/gapQuestionModel.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../database_api/models/gapQuestionModel.dart';
 
 class GapAnalysis extends StatefulWidget {
   GapAnalysis({Key? key}) : super(key: key);
@@ -24,29 +23,37 @@ class _GapAnalysisState extends State<GapAnalysis> {
   bool check2 = false;
   bool check3 = false;
 
-  Future<String> addGap() async {
-    debugPrint("reached");
-    Map<String, dynamic> updata = {
-      "gap_category_name": "Farming",
-      "question": "What type of irrigation should i use",
-      "options": 1,
-      "text": 0,
-      "image": 1
-    };
-    return await addGapAPI(updata);
-  }
+  // Future<String> addGap() async {
+  //   debugPrint("reached");
 
-  Future<String> addGapAPI(Map<String, dynamic> updata) async {
+  //   return await addGapAPI(updata);
+  // }
+
+  Future<String> addGapAPI() async {
+    Map<String, dynamic> updata = {
+      "gap_category_name": currentgapCat.toString(),
+      "question": questionTextEditingController.text.toString(),
+      "options": true,
+      "text": true,
+      "image": true
+    };
     final _chuckerHttpClient = await http.Client();
-    print(updata);
-    final prefs = await SharedPreferences.getInstance();
-    http.Response response = await _chuckerHttpClient.post(
-      Uri.parse("https://agromate.website/laravel/api/gap_category"),
-      body: updata,
-    );
-    print(response.body);
+
+    // http.Response response = await _chuckerHttpClient.post(
+    //   Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
+    //   body: updata,
+    // );
+    final http.Response response = await http.post(
+        Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
+        body: {
+          "gap_category_name": currentgapCat.toString(),
+          "question": questionTextEditingController.text.toString(),
+          "options": check1 ? 1.toString() : 0.toString(),
+          "text": check2 ? 1.toString() : 0.toString(),
+          "image": check3 ? 1.toString() : 0.toString(),
+        });
+    print("api resp is ${response.body}");
     if (response.statusCode == 200) {
-      print(response.body);
       return 'null';
     } else {
       return 'throw (Exception("Search Error"))';
@@ -59,14 +66,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
     super.initState();
     myfuture = GapQuestionMethods().getCategory();
   }
-
-  late String _selectedValue;
-  List<String> listOfValue = [
-    'Farming',
-    'Irrigation',
-    'packaging',
-    'Transport',
-  ];
 
   List<String> gap_cat = [];
   bool _isonce = true;
@@ -348,7 +347,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 child: CustomElevatedButton(
                   title: "ADD",
                   onPressed: () {
-                    addGap();
+                    addGapAPI();
                     Navigator.pop(context);
                   },
                 ),
@@ -432,61 +431,87 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  height: 60,
-                  width: double.infinity,
-                  color: Color(0xFFF7F9EA),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 40,
-                      top: 18,
-                    ),
-                    child: Text(
-                      "Title : Farming",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: screenSize.height * 0.6,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        Question(
-                            sentence:
-                                "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
-                            number: "1)"),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Divider(
-                          thickness: 2,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Question(
-                            sentence:
-                                "A water quality assessment has been performed to determine the quality of water used for irrigation purpose on the crop(s) being applied.",
-                            number: "2)"),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Divider(
-                          thickness: 2,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Question(
-                            sentence:
-                                "Crop production areas are not located near or adjacent to dairy, livestock, or fowl production facilities unless adequate barriers exist.",
-                            number: "3)")
-                      ],
-                    ),
-                  ),
+                FutureBuilder(
+                  future: GapQuestionMethods().getQuestion(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return SizedBox(
+                          height: screenSize.height * 0.63,
+                          child: ListView.separated(
+                            itemCount: gapQuestion.data!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: double.infinity,
+                                    color: Color(0xFFF7F9EA),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 40,
+                                        top: 18,
+                                      ),
+                                      child: Text(
+                                        "Title : ${gapQuestion.data!.elementAt(index).gapcategory!.gapCategory}",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: screenSize.height * 0.6,
+                                    child: ListView.separated(
+                                      itemCount: gapQuestion.data!.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var question = gapQuestion.data!
+                                            .elementAt(1)
+                                            .question!;
+                                        return Column(
+                                          children: [
+                                            Question(
+                                                sentence: question,
+                                                number: "1)"),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Divider(
+                                              thickness: 2,
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              Divider(),
+                                    ),
+                                  ),
+                                ],
+                              )
+                                  // Container(
+                                  //   height: 50,
+                                  //   color: Colors.amber,
+                                  //   child: Center(child: Text('Entry ')),
+                                  // )
+                                  ;
+                            },
+                            separatorBuilder:
+                                (BuildContext context, int index) => Divider(),
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ],
             ),
