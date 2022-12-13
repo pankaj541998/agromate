@@ -32,7 +32,7 @@ class ModesOfApplication extends StatefulWidget {
 
 class _ModesOfApplicationState extends State<ModesOfApplication> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  StreamController<requestResponseState> _moderefresh =
+  final StreamController<requestResponseState> _moderefresh =
       StreamController.broadcast();
 
   String? unitcost;
@@ -83,7 +83,9 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
     // print(response.body);
     modes = ModeModel.fromJson(parsed);
     // print(registeredusers.data!.elementAt(1).firstName!);
+    myData = modes.data!;
     _moderefresh.add(requestResponseState.DataReceived);
+    debugPrint(parsed);
     return modes;
   }
 
@@ -101,6 +103,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
   void initState() {
     // filterData = modes.data!;
     super.initState();
+    fetchModes();
   }
 
   buildPinAlertDialog() {
@@ -341,12 +344,13 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                         height: 40,
                         width: 298,
                         child: CustomElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             final isValid = _form.currentState?.validate();
 
                             if (isValid!) {
                               // _moderefresh.add(true);
-                              addMode();
+                              await addMode();
+                              fetchModes();
                               Navigator.pop(context);
                             } else {
                               Flushbar(
@@ -405,6 +409,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                           InkWell(
                             onTap: () {
                               buildPinAlertDialog();
+                              // fetchModes();
                             },
                             child: Container(
                               decoration: BoxDecoration(
