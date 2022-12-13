@@ -68,6 +68,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
   }
 
   List<String> gap_cat = [];
+  List<String> gap_quest = [];
+
   bool _isonce = true;
   setValues() {
     if (_isonce) {
@@ -436,10 +438,20 @@ class _GapAnalysisState extends State<GapAnalysis> {
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
+                        for (var i = 0; i < gapData.data!.length; i++) {
+                          gap_cat.add(gapData.data![i].gapCategory!);
+                          for (var j = 0; j < gapQuestion.data!.length; j++) {
+                            if (gap_cat.elementAt(i) ==
+                                gapQuestion.data![j].gapcategory?.gapCategory) {
+                              gap_quest.add(gapQuestion.data![j].question!);
+                            }
+                          }
+                        }
+
                         return SizedBox(
                           height: screenSize.height * 0.63,
                           child: ListView.separated(
-                            itemCount: gapQuestion.data!.length,
+                            itemCount: gap_cat.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Column(
                                 children: [
@@ -453,49 +465,17 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                         top: 18,
                                       ),
                                       child: Text(
-                                        "Title : ${gapQuestion.data!.elementAt(index).gapcategory!.gapCategory}",
+                                        "Title : ${gap_cat[index]}",
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: screenSize.height * 0.6,
-                                    child: ListView.separated(
-                                      itemCount: gapQuestion.data!.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        var question = gapQuestion.data!
-                                            .elementAt(1)
-                                            .question!;
-                                        return Column(
-                                          children: [
-                                            Question(
-                                                sentence: question,
-                                                number: "1)"),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Divider(
-                                              thickness: 2,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                      separatorBuilder:
-                                          (BuildContext context, int index) =>
-                                              Divider(),
-                                    ),
-                                  ),
+                                  Question(
+                                      sentence: gap_quest[index], number: "1)"),
                                 ],
-                              )
-                                  // Container(
-                                  //   height: 50,
-                                  //   color: Colors.amber,
-                                  //   child: Center(child: Text('Entry ')),
-                                  // )
-                                  ;
+                              );
                             },
                             separatorBuilder:
                                 (BuildContext context, int index) => Divider(),
