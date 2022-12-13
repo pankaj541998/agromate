@@ -140,17 +140,24 @@ class _AddCropPlanState extends State<AddCropPlan> {
     futureGroup.add(FieldApiMethods.fetchFields());
     futureGroup.add(CropApiMethods.fetchCrops());
     futureGroup.close();
+    CropReferenceTextEditingController.clear();
+    AreaTextEditingController.clear();
+    StartDateTextEditingController.clear();
+    ExpectedEndDateTextEditingController.clear();
+    ExpectedYieldTextEditingController.clear();
+    ExpectedRevenueTextEditingController.clear();
+    HarvestTextEditingController.clear();
   }
 
   @override
   void dispose() {
-    // CropReferenceTextEditingController.dispose();
-    // AreaTextEditingController.dispose();
-    // StartDateTextEditingController.dispose();
-    // ExpectedEndDateTextEditingController.dispose();
-    // ExpectedYieldTextEditingController.dispose();
-    // ExpectedRevenueTextEditingController.dispose();
-    // harvestTextEditingController.dispose();
+    CropReferenceTextEditingController.clear();
+    AreaTextEditingController.clear();
+    StartDateTextEditingController.clear();
+    ExpectedEndDateTextEditingController.clear();
+    ExpectedYieldTextEditingController.clear();
+    ExpectedRevenueTextEditingController.clear();
+    harvestTextEditingController.clear();
     super.dispose();
     HarvestTextEditingController.clear();
   }

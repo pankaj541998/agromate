@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -159,6 +159,11 @@ class _ViewDetailsState extends State<ViewDetails> {
   }
 
   buildPin() {
+    controller.clear();
+    titleTextEditingController.clear();
+    descriptionTextEditingController.clear();
+    chemicaltitleTextEditingController.clear();
+    quantityTextEditingController.clear();
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -769,12 +774,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                                 SizedBox(
                                     width: 140,
                                     child: TextInputField(
-                                        // inputFormatters: [
-                                        //   LengthLimitingTextInputFormatter(
-                                        //       6),
-                                        //   FilteringTextInputFormatter
-                                        //       .digitsOnly
-                                        // ],
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(6),
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                         // textEditingController:
                                         //     weeksTextEditingController,
                                         textEditingController:

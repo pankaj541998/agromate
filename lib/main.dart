@@ -44,6 +44,8 @@ import 'providers/map_box_provider.dart';
 import 'providers/map_filter_provider.dart';
 import 'package:provider/provider.dart';
 
+enum requestResponseState { Error, DataReceived, Loading, SessionExpired }
+
 void main() {
   runApp(MultiProvider(
     providers: [

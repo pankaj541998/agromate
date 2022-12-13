@@ -97,6 +97,12 @@ class _CropState extends State<Crop> {
   var Unit = ['Hectare', 'Acre'];
   bool imageclick = false;
   buildPin() {
+    cropTextEditingController.clear();
+    cropseasonTextEditingController.clear();
+    populationTextEditingController.clear();
+    yieldTextEditingController.clear();
+    weeksTextEditingController.clear();
+    harvestTextEditingController.clear();
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(

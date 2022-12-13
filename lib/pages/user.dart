@@ -378,6 +378,8 @@ _buildrequesttable(screenSize, context) {
 }
 
 buildPin(context) {
+  email.clear();
+
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(

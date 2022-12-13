@@ -22,6 +22,10 @@ import '../../../component/custom_Elevated_Button.dart';
 import '../../../models/type_model.dart';
 import '../../../models/class_model.dart';
 import '../../../models/not_registered_user_model.dart';
+import 'dart:async';
+
+StreamController<bool> _classrefresh = StreamController<bool>.broadcast();
+StreamController<bool> _typerefresh = StreamController<bool>.broadcast();
 
 late ClassModel classdata;
 late TypeModel typedata;
@@ -192,7 +196,7 @@ Future<String> addTypeAPI(Map<String, dynamic> updata) async {
   }
 }
 
-late final Future myfuture;
+//final Future myfuture;
 final FutureGroup futureGroup = FutureGroup();
 List<String> get_cat = [];
 bool _isonce = true;
@@ -212,11 +216,19 @@ class _InventoryClassTypeState extends State<InventoryClassType>
   late CategoryPModel categoryData;
 
   @override
+  void dispose() {
+    classTextEditingController.clear();
+    classdescriptionTextEditingController.clear();
+    // ignore: avoid_print
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     fetchClass();
     fetchType();
-    myfuture = CategoryAPI().getCategory();
+    // myfuture = CategoryAPI().getCategory();
     // myData = classdata.data!;
     _controller = new TabController(
       length: 2,
@@ -625,51 +637,61 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                       controller: _controller,
                       children: [
                         // FlutterLogo() ,
-                        FutureBuilder<ClassModel>(
-                          future: fetchClass(),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.hasData) {
-                                debugPrint(snapshot.data.toString());
-                                return _buildusertable(screenSize, context);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    '${snapshot.error} occured',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                );
-                              }
-                            }
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          },
-                        ),
+                        StreamBuilder<bool>(
+                            stream: _classrefresh.stream,
+                            builder: (context, snapshot) {
+                              return FutureBuilder<ClassModel>(
+                                future: fetchClass(),
+                                builder: (ctx, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.hasData) {
+                                      debugPrint(snapshot.data.toString());
+                                      return _buildusertable(
+                                          screenSize, context);
+                                    } else {
+                                      return Center(
+                                        child: Text(
+                                          '${snapshot.error} occured',
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              );
+                            }),
                         // FlutterLogo(),
 
                         // _buildusertable(screenSize, context),
-                        FutureBuilder<TypeModel>(
-                          future: fetchType(),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.hasData) {
-                                debugPrint("type table called");
-                                return _buildrequesttable(screenSize, context);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    '${snapshot.error} occured',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                );
-                              }
-                            }
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          },
-                        ),
+                        StreamBuilder<bool>(
+                            stream: _typerefresh.stream,
+                            builder: (context, snapshot) {
+                              return FutureBuilder<TypeModel>(
+                                future: fetchType(),
+                                builder: (ctx, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.hasData) {
+                                      debugPrint("type table called");
+                                      return _buildrequesttable(
+                                          screenSize, context);
+                                    } else {
+                                      return Center(
+                                        child: Text(
+                                          '${snapshot.error} occured',
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              );
+                            }),
                         // _buildrequesttable(screenSize, context),
                       ],
                     ),
@@ -693,7 +715,7 @@ Widget _buildbodytype(context) {
   return StatefulBuilder(
     builder: (context, setState) {
       return FutureBuilder(
-        future: myfuture,
+        future: CategoryAPI().getCategory(),
         builder: (ctx, snapshot) {
           if (snapshot.data == null) {
             return Column(
@@ -727,6 +749,8 @@ Widget _buildbodytype(context) {
 }
 
 Widget _buildbodytype2(context, setState) {
+  typeTextEditingController.clear();
+  typedescriptionTextEditingController.clear();
   return Form(
     key: _form,
     child: Column(
@@ -887,9 +911,9 @@ Widget _buildbodytype2(context, setState) {
                                 catid = categoryData.data![i].id;
                               }
                             }
-
-                            addType(catid)
-                                .then((value) => Navigator.pop(context));
+                            _typerefresh.add(true);
+                            addType(catid);
+                            Navigator.pop(context);
                             // addCropProgram();
                           } else {
                             Flushbar(
@@ -1114,7 +1138,8 @@ _buildactionstype(context, data, index) {
           onTap: () {
             int id = typedata.data!.elementAt(index).id!;
             debugPrint(id.toString());
-            String iclass = typedata.data!.elementAt(index).classid!.toString();
+            String iclass =
+                typedata.data!.elementAt(index).inventoryclass!.iclass!;
             String type = typedata.data!.elementAt(index).type!.toString();
             String description =
                 typedata.data!.elementAt(index).typeDescription!.toString();
@@ -1393,11 +1418,10 @@ customAlert(context, id) {
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
                           onPressed: () {
-                            setState(() {
-                              deleteClassApi(id).then((value) =>
-                                  Navigator.pushNamed(
-                                      context, '/classandtype'));
-                            });
+                            _classrefresh.add(true);
+
+                            deleteClassApi(id);
+                            Navigator.pop(context);
                           },
                           child: const Text('Delete'),
                         ),
@@ -1490,11 +1514,9 @@ customAlertType(context, id) {
                                 borderRadius: BorderRadius.circular(10.0),
                               ))),
                           onPressed: () {
-                            setState(() {
-                              deleteTypeApi(id).then((value) =>
-                                  Navigator.pushNamed(
-                                      context, '/classandtype'));
-                            });
+                            _typerefresh.add(true);
+                            deleteTypeApi(id);
+                            Navigator.pop(context);
                           },
                           child: const Text('Delete'),
                         ),
@@ -1645,11 +1667,10 @@ buildPinClass(context, id,
                               onPressed: () {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
-                                  setState(() {
-                                    updateClass(id.toString()).then((value) =>
-                                        Navigator.pushNamed(
-                                            context, '/classandtype'));
-                                  });
+                                  _classrefresh.add(true);
+
+                                  updateClass(id.toString());
+                                  Navigator.pop(context);
                                   // addCropProgram();
                                 } else {
                                   Flushbar(
@@ -1678,6 +1699,8 @@ buildPinClass(context, id,
 }
 
 buildPinAddClass(context) {
+  classTextEditingController.clear();
+  classdescriptionTextEditingController.clear();
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -1804,11 +1827,10 @@ buildPinAddClass(context) {
                               onPressed: () {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
-                                  setState(() {
-                                    addClass().then((value) =>
-                                        Navigator.pushNamed(
-                                            context, '/classandtype'));
-                                  });
+                                  _classrefresh.add(true);
+                                  addClass()
+                                      .then((value) => Navigator.pop(context));
+
                                   // addCropProgram();
                                 } else {
                                   Flushbar(
@@ -2020,11 +2042,10 @@ buildPinType(context, id,
                               onPressed: () {
                                 final isValid = _form.currentState?.validate();
                                 if (isValid!) {
-                                  setState(() {
-                                    updateType(id.toString(), iclass).then(
-                                        (value) => Navigator.pushNamed(
-                                            context, '/classandtype'));
-                                  });
+                                  _typerefresh.add(true);
+                                  updateType(id.toString(), iclass);
+                                  Navigator.pop(context);
+
                                   // addCropProgram();
                                 } else {
                                   Flushbar(

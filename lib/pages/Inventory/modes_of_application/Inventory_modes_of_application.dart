@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/ModeModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +32,8 @@ class ModesOfApplication extends StatefulWidget {
 
 class _ModesOfApplicationState extends State<ModesOfApplication> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  StreamController<requestResponseState> _moderefresh =
+      StreamController.broadcast();
 
   String? unitcost;
   String? plantPopulation;
@@ -79,6 +83,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
     // print(response.body);
     modes = ModeModel.fromJson(parsed);
     // print(registeredusers.data!.elementAt(1).firstName!);
+    _moderefresh.add(requestResponseState.DataReceived);
     return modes;
   }
 
@@ -99,6 +104,11 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
   }
 
   buildPinAlertDialog() {
+    nameTextEditingController.clear();
+    descriptionTextEditingController.clear();
+    costTextEditingController.clear();
+    quantityTextEditingController.clear();
+    valueTextEditingController.clear();
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -335,8 +345,9 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                             final isValid = _form.currentState?.validate();
 
                             if (isValid!) {
-                              Navigator.pop(context);
+                              // _moderefresh.add(true);
                               addMode();
+                              Navigator.pop(context);
                             } else {
                               Flushbar(
                                 duration: const Duration(seconds: 2),
@@ -489,21 +500,16 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                   thickness: 1,
                 ),
                 SizedBox(height: screenSize.height * 0.03),
-                FutureBuilder<ModeModel>(
-                  future: fetchModes(),
-                  builder: (ctx, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      print("data is mydata is ${myData.first.mode}");
-                      print("data length is ${myData.length}");
-
-                      if (snapshot.hasData) {
-                        return datatable(screenSize);
+                StreamBuilder<requestResponseState>(
+                    stream: _moderefresh.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.data == requestResponseState.DataReceived) {
+                        if (snapshot.hasData) {
+                          return datatable(screenSize);
+                        }
                       }
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
-                //datatable(screenSize),
+                      return const Center(child: CircularProgressIndicator());
+                    }),
               ],
             ),
           )
