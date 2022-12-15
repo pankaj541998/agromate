@@ -7,13 +7,13 @@ class ClassModel {
     if (json['data'] != null) {
       data = <ClassData>[];
       json['data'].forEach((v) {
-        data!.add(new ClassData.fromJson(v));
+        data!.add(ClassData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -47,7 +47,7 @@ class ClassData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['iclass'] = this.iclass;
     data['class_description'] = this.classDescription;

@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
-import 'package:flutter_agro_new/models/gapQuestionModel.dart';
 import 'package:http/http.dart' as http;
 
 class GapAnalysis extends StatefulWidget {
@@ -30,13 +27,13 @@ class _GapAnalysisState extends State<GapAnalysis> {
   // }
 
   Future<String> addGapAPI() async {
-    Map<String, dynamic> updata = {
-      "gap_category_name": currentgapCat.toString(),
-      "question": questionTextEditingController.text.toString(),
-      "options": true,
-      "text": true,
-      "image": true
-    };
+    // Map<String, dynamic> updata = {
+    //   "gap_category_name": currentgapCat.toString(),
+    //   "question": questionTextEditingController.text.toString(),
+    //   "options": true,
+    //   "text": true,
+    //   "image": true
+    // };
     final _chuckerHttpClient = await http.Client();
 
     // http.Response response = await _chuckerHttpClient.post(
@@ -69,6 +66,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
 
   List<String> gap_cat = [];
   List<String> gap_quest = [];
+  List<int> gap_option = [];
 
   bool _isonce = true;
   setValues() {
@@ -110,7 +108,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 return Center(
                   child: Text(
                     '${snapshot.error} occured',
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                 );
               }
@@ -127,7 +125,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AlertDialog(
-          insetPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          insetPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -446,6 +445,12 @@ class _GapAnalysisState extends State<GapAnalysis> {
                               gap_quest.add(gapQuestion.data![j].question!);
                             }
                           }
+                          for (var k = 0; k < gapQuestion.data!.length; k++) {
+                            if (gap_quest.elementAt(i) ==
+                                gapQuestion.data![k].gapcategory?.gapCategory) {
+                              gap_option.add(gapQuestion.data![k].options!);
+                            }
+                          }
                         }
 
                         return SizedBox(
@@ -472,8 +477,163 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                       ),
                                     ),
                                   ),
-                                  Question(
-                                      sentence: gap_quest[index], number: "1)"),
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "1)",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
+                                            ),
+                                            SizedBox(
+                                              width: 20,
+                                            ),
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.75,
+                                                  child: Text(
+                                                    gap_quest[index],
+                                                    maxLines: 2,
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 22,
+                                        ),
+                                        gapQuestion.data!
+                                                    .elementAt(index)
+                                                    .options ==
+                                                1
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                      height: 30,
+                                                      width: 140,
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            side: BorderSide(
+                                                                width: 1,
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          ),
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "Yes",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          ))),
+                                                  SizedBox(
+                                                    width: 40,
+                                                  ),
+                                                  SizedBox(
+                                                      height: 30,
+                                                      width: 140,
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            side: BorderSide(
+                                                                width: 1,
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          ),
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "No",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          ))),
+                                                  SizedBox(
+                                                    width: 40,
+                                                  ),
+                                                  SizedBox(
+                                                      height: 30,
+                                                      width: 140,
+                                                      child: OutlinedButton(
+                                                          style: OutlinedButton
+                                                              .styleFrom(
+                                                            side: BorderSide(
+                                                                width: 1,
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          ),
+                                                          onPressed: () {},
+                                                          child: Text(
+                                                            "Maybe",
+                                                            style: TextStyle(
+                                                                color: Color(
+                                                                    0xFF327C04)),
+                                                          )))
+                                                ],
+                                              )
+                                            : Text(""),
+                                        SizedBox(
+                                          height: 18,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            gapQuestion.data!
+                                                        .elementAt(index)
+                                                        .text ==
+                                                    1
+                                                ? SizedBox(
+                                                    height: 30,
+                                                    width: 450,
+                                                    child: TextInputField(
+                                                      hintText: "Enter Text",
+                                                      validatorText:
+                                                          "validatorText",
+                                                    ),
+                                                  )
+                                                : Text(""),
+                                            SizedBox(
+                                              width: 30,
+                                            ),
+                                            Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                gapQuestion.data!
+                                                            .elementAt(index)
+                                                            .image ==
+                                                        1
+                                                    ? Image.asset(
+                                                        "assets/images/upload.png")
+                                                    : Text(""),
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                  //Question(
+                                  //  sentence: gap_quest[index], number: "1)"),
                                 ],
                               );
                             },
@@ -502,121 +662,121 @@ class _GapAnalysisState extends State<GapAnalysis> {
   }
 }
 
-class Question extends StatelessWidget {
-  const Question({Key? key, required this.sentence, required this.number})
-      : super(key: key);
-  final String sentence;
-  final String number;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                number,
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    child: Text(
-                      sentence,
-                      maxLines: 2,
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 22,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                  height: 30,
-                  width: 140,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(color: Color(0xFF327C04)),
-                      ))),
-              SizedBox(
-                width: 40,
-              ),
-              SizedBox(
-                  height: 30,
-                  width: 140,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "No",
-                        style: TextStyle(color: Color(0xFF327C04)),
-                      ))),
-              SizedBox(
-                width: 40,
-              ),
-              SizedBox(
-                  height: 30,
-                  width: 140,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Maybe",
-                        style: TextStyle(color: Color(0xFF327C04)),
-                      )))
-            ],
-          ),
-          SizedBox(
-            height: 18,
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 30,
-                width: 450,
-                child: TextInputField(
-                  hintText: "Enter Text",
-                  validatorText: "validatorText",
-                ),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Image.asset("assets/images/upload.png")
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
+// class Question extends StatelessWidget {
+//   const Question({Key? key, required this.sentence, required this.number})
+//       : super(key: key);
+//   final String sentence;
+//   final String number;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(20.0),
+//       child: Column(
+//         children: [
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 number,
+//                 style: TextStyle(fontSize: 16, color: Colors.black),
+//               ),
+//               SizedBox(
+//                 width: 20,
+//               ),
+//               Column(
+//                 children: [
+//                   SizedBox(
+//                     width: MediaQuery.of(context).size.width * 0.75,
+//                     child: Text(
+//                       sentence,
+//                       maxLines: 2,
+//                       style: TextStyle(fontSize: 16, color: Colors.black),
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: 22,
+//           ),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "Yes",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       ))),
+//               SizedBox(
+//                 width: 40,
+//               ),
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "No",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       ))),
+//               SizedBox(
+//                 width: 40,
+//               ),
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "Maybe",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       )))
+//             ],
+//           ),
+//           SizedBox(
+//             height: 18,
+//           ),
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.end,
+//             mainAxisAlignment: MainAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                 height: 30,
+//                 width: 450,
+//                 child: TextInputField(
+//                   hintText: "Enter Text",
+//                   validatorText: "validatorText",
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: 30,
+//               ),
+//               Column(
+//                 children: [
+//                   SizedBox(
+//                     height: 10,
+//                   ),
+//                   Image.asset("assets/images/upload.png")
+//                 ],
+//               ),
+//             ],
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }

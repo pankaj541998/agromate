@@ -41,19 +41,12 @@ class Crop extends StatefulWidget {
 }
 
 class _CropState extends State<Crop> {
-  final harvestTextEditingController = TextEditingController();
+  final gridharvestTextEditingController = TextEditingController();
 
   File? _pickedImage;
   Uint8List webImage = Uint8List(8);
 
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
-
-  @override
-  void initState() {
-    harvestTextEditingController.text = "14";
-    super.initState();
-    fetchCropProgram();
-  }
 
   StreamController<bool> _controllernew = StreamController<bool>.broadcast();
   Future<void> _pickImage() async {
@@ -86,6 +79,13 @@ class _CropState extends State<Crop> {
     }
   }
 
+  @override
+  void initState() {
+    gridharvestTextEditingController.text = "14";
+    super.initState();
+    fetchCropProgram();
+  }
+
   late String _selectedValue;
   List<String> listOfValue = [
     'Week 1',
@@ -102,7 +102,7 @@ class _CropState extends State<Crop> {
     populationTextEditingController.clear();
     yieldTextEditingController.clear();
     weeksTextEditingController.clear();
-    harvestTextEditingController.clear();
+
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -512,13 +512,14 @@ class _CropState extends State<Crop> {
                                                 height: 15,
                                               ),
                                               SizedBox(
-                                                  width: 300,
-                                                  child: TextInputField(
-                                                    textEditingController:
-                                                        harvestTextEditingController,
-                                                    hintText: "",
-                                                    validatorText: "",
-                                                  )),
+                                                width: 300,
+                                                child: TextInputField(
+                                                  textEditingController:
+                                                      gridharvestTextEditingController,
+                                                  hintText: "",
+                                                  validatorText: "",
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
