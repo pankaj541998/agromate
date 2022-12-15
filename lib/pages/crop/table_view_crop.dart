@@ -235,7 +235,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Growing Period In Weeks",
+                                      "Growing Period In (Weeks)",
                                       style: TextStyle(
                                         fontSize: 18,
                                       ),

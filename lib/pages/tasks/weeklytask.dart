@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -7,9 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
 import 'package:http/http.dart' as http;
-import '../../models/registered_users_model.dart';
+import '../../models/CropProgramTasksModel.dart';
+import '../crop/Repository/CropProgramViaDioAPI.dart';
 
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
+
+late CropProgramTasks cropdata;
 
 String WeekSelected = 'Week 1';
 var week = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
@@ -38,11 +40,12 @@ var taskunits = [
 ];
 
 class WeeklyTasks extends StatefulWidget {
-  const WeeklyTasks({Key? key, this.cropprogramid}) : super(key: key);
+  const WeeklyTasks({Key? key, this.id, this.weeks}) : super(key: key);
 
   @override
   State<WeeklyTasks> createState() => _WeeklyTasksState();
-  final String? cropprogramid;
+  final String? weeks;
+  final String? id;
 }
 
 // Future<RegisteredUserModel> fetchRegisteredUsers() async {
@@ -65,6 +68,15 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       TextEditingController();
   TextEditingController taskquantityTextEditingController =
       TextEditingController();
+
+  String WeekSelected = 'Week 1';
+  var wee = [''];
+
+  generateListForweeks() {
+    final items = List<String>.generate(4, (i) => "Week ${i + 1}");
+    // print("created list is $items");
+    wee = items;
+  }
 
   String questionsSelected = 'Potato';
   var questions = ['Potato', 'Carrot', 'Onion', 'Cabbage'];
@@ -113,6 +125,13 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     } else {
       return 'throw (Exception("Search Error"))';
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    //fetchCropProgram(widget.id);
+    generateListForweeks();
   }
 
   buildPin() {
@@ -991,7 +1010,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                           .text);
                                   debugPrint(
                                       taskquantityTextEditingController.text);
-                                  addWeeklyTask(widget.cropprogramid);
+                                  addWeeklyTask(widget.id);
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
@@ -1471,9 +1490,41 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                 const SizedBox(height: 10),
                 // accordian()
                 SingleChildScrollView(
-                    child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.6,
-                        child: _buildgridview(context)))
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: FutureBuilder(
+                      future: getCropProgramData().getSecurityQuestions(
+                          int.parse(widget.id!)), //fetchCropProgram(1),
+                      builder: (ctx, snapshot) {
+                        if (snapshot.data == null) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.45,
+                              ),
+                              Center(child: CircularProgressIndicator()),
+                            ],
+                          );
+                        }
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                '${snapshot.error} occured',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            );
+                          }
+                        }
+                        return _buildgridview(context, widget.weeks,
+                            diocropdata.data!, widget.id);
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -1482,7 +1533,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     );
   }
 
-  Widget _buildgridview(context) {
+  Widget _buildgridview(context, weeks, List<Data> data, id) {
     final screenSize = MediaQuery.of(context).size;
 
     return GridView.builder(
@@ -1492,9 +1543,13 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
             crossAxisCount: 4,
             mainAxisSpacing: 2,
             crossAxisSpacing: 3),
-        itemCount: 12,
+        itemCount: int.parse(weeks),
         itemBuilder: (BuildContext ctx, index) {
           //  var element = CropProgram.cropPrograms.elementAt(index);
+          String weekName = "Week ${index + 1}";
+          var filtered = diocropdata.data!
+              .where((element) => (element.week == weekName))
+              .toList();
           return Card(
             elevation: 2,
             shape: const RoundedRectangleBorder(
@@ -1504,142 +1559,473 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Week"),
-                  SizedBox(
-                    height: screenSize.height * 0.2,
-                    child: Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      color: const Color(0xFFEBF2EB),
-                      child: SizedBox(
-                        height: screenSize.height * 0.15,
-                        width: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(Icons.check_circle_outline),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "GAP Questions",
-                                    style: TextStyle(fontSize: 14),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Answer these Questions",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                    child: Image.asset(
-                                        "assets/images/taskperson.png"),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Icon(
-                                    Icons.calendar_today_outlined,
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "22/12/22",
-                                    style: TextStyle(fontSize: 14),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.height * 0.2,
-                    child: InkWell(
-                      onTap: () => buildPin(),
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        color: const Color(0xFFEBF2EB),
-                        child: SizedBox(
-                          height: screenSize.height * 0.15,
-                          width: 300,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
+                  Text("Week ${index + 1}"),
+                  // SizedBox(
+                  //   height: screenSize.height * 0.2,
+                  //   child: Card(
+                  //     elevation: 2,
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(20)),
+                  //     color: const Color(0xFFEBF2EB),
+                  //     child: SizedBox(
+                  //       height: screenSize.height * 0.15,
+                  //       width: 300,
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.all(10),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             Row(
+                  //               children: [
+                  //                 const Icon(Icons.check_circle_outline),
+                  //                 SizedBox(
+                  //                   width: 10,
+                  //                 ),
+                  //                 Text(
+                  //                   "GAP Questions",
+                  //                   style: TextStyle(fontSize: 14),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //             SizedBox(
+                  //               height: 10,
+                  //             ),
+                  //             Text(
+                  //               "Answer these Questions",
+                  //               style: TextStyle(fontSize: 12),
+                  //             ),
+                  //             SizedBox(
+                  //               height: 10,
+                  //             ),
+                  //             Row(
+                  //               children: [
+                  //                 SizedBox(
+                  //                   height: 20,
+                  //                   child: Image.asset(
+                  //                       "assets/images/taskperson.png"),
+                  //                 ),
+                  //                 SizedBox(
+                  //                   width: 10,
+                  //                 ),
+                  //                 Icon(
+                  //                   Icons.calendar_today_outlined,
+                  //                   size: 18,
+                  //                 ),
+                  //                 SizedBox(
+                  //                   width: 5,
+                  //                 ),
+                  //                 Text(
+                  //                   "22/12/22",
+                  //                   style: TextStyle(fontSize: 14),
+                  //                 )
+                  //               ],
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: screenSize.height * 0.2,
+                  //   child: InkWell(
+                  //     onTap: () => buildPin(),
+                  //     child: Card(
+                  //       elevation: 2,
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(20)),
+                  //       color: const Color(0xFFEBF2EB),
+                  //       child: SizedBox(
+                  //         height: screenSize.height * 0.15,
+                  //         width: 300,
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.all(10),
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Row(
+                  //                 children: [
+                  //                   const Icon(Icons.check_circle_outline),
+                  //                   SizedBox(
+                  //                     width: 10,
+                  //                   ),
+                  //                   Text(
+                  //                     "Title",
+                  //                     style: TextStyle(fontSize: 14),
+                  //                   )
+                  //                 ],
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 10,
+                  //               ),
+                  //               Text(
+                  //                 "Description",
+                  //                 style: TextStyle(fontSize: 12),
+                  //               ),
+                  //               SizedBox(
+                  //                 height: 10,
+                  //               ),
+                  //               Row(
+                  //                 children: [
+                  //                   SizedBox(
+                  //                     height: 20,
+                  //                     child: Image.asset(
+                  //                         "assets/images/taskperson.png"),
+                  //                   ),
+                  //                   SizedBox(
+                  //                     width: 10,
+                  //                   ),
+                  //                   Icon(
+                  //                     Icons.calendar_today_outlined,
+                  //                     size: 18,
+                  //                   ),
+                  //                   SizedBox(
+                  //                     width: 5,
+                  //                   ),
+                  //                   Text(
+                  //                     "22/22/22",
+                  //                     style: TextStyle(fontSize: 14),
+                  //                   )
+                  //                 ],
+                  //               )
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  filtered.isNotEmpty
+                      ? SizedBox(
+                          child: SingleChildScrollView(
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  children: [
-                                    const Icon(Icons.check_circle_outline),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      "Title",
-                                      style: TextStyle(fontSize: 14),
-                                    )
-                                  ],
-                                ),
                                 SizedBox(
-                                  height: 10,
+                                  height: screenSize.height * 0.7,
+                                  child: ListView.builder(
+                                    itemCount: filtered.length,
+                                    itemBuilder: (context, index) {
+                                      var element = filtered.elementAt(index);
+                                      return InkWell(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) =>
+                                                StatefulBuilder(
+                                              builder: (context, setState) {
+                                                return Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    AlertDialog(
+                                                      // insetPadding:
+                                                      //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                                      // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10))),
+                                                      title: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            element.week
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          IconButton(
+                                                              onPressed: () {
+                                                                Get.back();
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .cancel_outlined,
+                                                              ))
+                                                        ],
+                                                      ),
+                                                      content: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                "Title : ${element.title}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        18,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 50,
+                                                              ),
+                                                              Text(
+                                                                "Status : ${element.status}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Divider(
+                                                            thickness: 1,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Description : ${element.description}",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "Category  : ${element.category}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 250,
+                                                              ),
+                                                              Text(
+                                                                "Chemical : ${element.chemical}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "Active Ingredients : ${element.activeingridient}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 250,
+                                                              ),
+                                                              Text(
+                                                                "Quantity : ${element.quantity} ${element.units}",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Time of application : Moderate Wind speed",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Text(
+                                                            "Modes of application : Tractor",
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "Warnings :  ",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Icon(Icons.star),
+                                                              Text(
+                                                                "         May cause sensitisation by skin contact",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                "Precautions : ",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              Icon(Icons.star),
+                                                              Text(
+                                                                "      Wear a mask",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 30,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                        child: Card(
+                                          elevation: 2,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          color: const Color(0xFFEBF2EB),
+                                          child: SizedBox(
+                                            height: screenSize.height * 0.15,
+                                            width: 300,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      const Icon(Icons
+                                                          .check_circle_outline),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        filtered
+                                                                .elementAt(
+                                                                    index)
+                                                                .title ??
+                                                            "",
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    filtered
+                                                            .elementAt(index)
+                                                            .description ??
+                                                        "",
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                                Text(
-                                  "Description",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 20,
-                                      child: Image.asset(
-                                          "assets/images/taskperson.png"),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(
-                                      Icons.calendar_today_outlined,
-                                      size: 18,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      "22/22/22",
-                                      style: TextStyle(fontSize: 14),
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/empty.png',
+                              height: 200,
+                              width: 150,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text("No Tasks Added Here"),
+                          ],
+                        )
                 ],
               ),
             ),
