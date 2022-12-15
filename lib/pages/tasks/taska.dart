@@ -1,22 +1,33 @@
-import 'dart:ui';
+import 'dart:convert';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/constants.dart';
 import 'package:flutter_agro_new/database_api/models/block.dart';
 import 'package:flutter_agro_new/database_api/models/farm.dart';
 import 'package:flutter_agro_new/database_api/models/field.dart';
 import 'package:flutter_agro_new/database_api/models/user.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_agro_new/models/cropPorgramModel.dart';
+import 'package:flutter_agro_new/pages/tasks/weeklytask.dart';
 import 'package:async/async.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/block_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/farm_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/field_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/users_api_methods.dart';
-import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-import '../../test.dart';
+late CropProgramModel tasksdata;
+
+Future<CropProgramModel> fetchCropProgram() async {
+  var client = http.Client();
+  final response = await client
+      .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
+  final parsed = jsonDecode(response.body);
+  // print(response.body);
+  tasksdata = CropProgramModel.fromJson(parsed);
+
+  return tasksdata;
+}
 
 class Tasks extends StatefulWidget {
   const Tasks({Key? key}) : super(key: key);
@@ -26,6 +37,8 @@ class Tasks extends StatefulWidget {
 }
 
 class _TasksState extends State<Tasks> {
+  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
+
   String questionsSelected = 'Potato';
   var questions = ['Potato', 'Carrot', 'Onion', 'Cabbage'];
 
@@ -279,9 +292,28 @@ class _TasksState extends State<Tasks> {
                       ),
                       const SizedBox(height: 10),
                       SingleChildScrollView(
-                          child: SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.67,
-                              child: _buildgridview(context)))
+                        child: FutureBuilder<CropProgramModel>(
+                          future: fetchCropProgram(),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasData) {
+                                debugPrint(snapshot.data.toString());
+                                return _buildgridview(context, tasksdata);
+                              } else {
+                                return Center(
+                                  child: Text(
+                                    '${snapshot.error} occured',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                );
+                              }
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        ),
+                      )
                     ],
                   );
                 }
@@ -295,7 +327,9 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  Widget _buildgridview(context) {
+  Widget _buildgridview(context, CropProgramModel tasksdata) {
+    BuildContext? contextnew;
+    contextnew = scaffoldkey.currentContext;
     return GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -303,12 +337,29 @@ class _TasksState extends State<Tasks> {
             crossAxisCount: 4,
             mainAxisSpacing: 2,
             crossAxisSpacing: 3),
-        itemCount: 16,
+        itemCount: tasksdata.data!.length,
         itemBuilder: (BuildContext ctx, index) {
           //  var element = CropProgram.cropPrograms.elementAt(index);
           return InkWell(
             onTap: () {
-              Get.toNamed('/weeklytasks');
+              debugPrint("index is  $index");
+              String weeks = tasksdata.data!.elementAt(index).weeks!;
+              debugPrint("weeks is $weeks");
+              int id = tasksdata.data!.elementAt(index).id!;
+              debugPrint(id.toString());
+
+              // Get.toNamed("/view_details");
+              // context = scaffoldkey.currentContext;
+              Navigator.push(
+                context!,
+                MaterialPageRoute(
+                  builder: (context) => WeeklyTasks(
+                    weeks: weeks,
+                    id: id.toString(),
+                  ),
+                ),
+              );
+              // Get.toNamed('/weeklytasks');
             },
             child: Card(
               shape: const RoundedRectangleBorder(
@@ -331,13 +382,33 @@ class _TasksState extends State<Tasks> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            "Crop : Cabbage",
-                            style: TextStyle(fontSize: 14),
+                          Row(
+                            children: [
+                              Text(
+                                "Crop : ",
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                tasksdata.data!.elementAt(index).crop!,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
                           ),
-                          Text("Plant Population  : 10000",
-                              style: TextStyle(fontSize: 14)),
-                          Text("Weeks : 12", style: TextStyle(fontSize: 14))
+                          Row(
+                            children: [
+                              Text("Plant Population  : ",
+                                  style: TextStyle(fontSize: 14)),
+                              Text(tasksdata.data!.elementAt(index).population!,
+                                  style: TextStyle(fontSize: 14)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text("Weeks : ", style: TextStyle(fontSize: 14)),
+                              Text(tasksdata.data!.elementAt(index).weeks!,
+                                  style: TextStyle(fontSize: 14)),
+                            ],
+                          )
                         ],
                       )
                     ],

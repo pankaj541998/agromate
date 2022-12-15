@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/providers/map_filter_provider.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:get/get.dart';
 import 'package:async/async.dart';
@@ -17,7 +18,6 @@ import '../../database_api/models/block.dart';
 import '../../database_api/models/farm.dart';
 import '../../database_api/models/field.dart';
 import '../../database_api/models/user.dart';
-import '../../providers/map_filter_provider.dart';
 
 class ViewFarm extends StatefulWidget {
   const ViewFarm({Key? key}) : super(key: key);

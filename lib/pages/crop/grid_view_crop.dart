@@ -272,7 +272,7 @@ class _CropState extends State<Crop> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Growing Periods in Weeks",
+                                                "Growing Period in (Weeks)",
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                 ),
@@ -516,7 +516,7 @@ class _CropState extends State<Crop> {
                                                   child: TextInputField(
                                                     textEditingController:
                                                         harvestTextEditingController,
-                                                    hintText: "Harvest Days",
+                                                    hintText: "",
                                                     validatorText: "",
                                                   )),
                                             ],
