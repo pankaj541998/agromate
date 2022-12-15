@@ -67,8 +67,8 @@ class _TextDropdownState extends State<TextDropdown> {
                           controller.text = value;
                         });
                       },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.all(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       )),
                       itemBuilder: (BuildContext context) {

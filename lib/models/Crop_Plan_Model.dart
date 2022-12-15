@@ -7,13 +7,13 @@ class CropPlanModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -88,31 +88,31 @@ class Data {
     if (json['farm'] != null) {
       farm = <Farm>[];
       json['farm'].forEach((v) {
-        farm!.add(new Farm.fromJson(v));
+        farm!.add(Farm.fromJson(v));
       });
     }
     if (json['block'] != null) {
       block = <Block>[];
       json['block'].forEach((v) {
-        block!.add(new Block.fromJson(v));
+        block!.add(Block.fromJson(v));
       });
     }
     if (json['field'] != null) {
       field = <Field>[];
       json['field'].forEach((v) {
-        field!.add(new Field.fromJson(v));
+        field!.add(Field.fromJson(v));
       });
     }
     if (json['crop_program'] != null) {
       cropProgram = <CropProgram>[];
       json['crop_program'].forEach((v) {
-        cropProgram!.add(new CropProgram.fromJson(v));
+        cropProgram!.add(CropProgram.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['farm_id'] = this.farmId;
     data['block_id'] = this.blockId;
@@ -178,7 +178,7 @@ class Farm {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['landholder_id'] = this.landholderId;
     data['farm'] = this.farm;
@@ -226,7 +226,7 @@ class Block {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['landholder_id'] = this.landholderId;
     data['farm_id'] = this.farmId;
@@ -278,7 +278,7 @@ class Field {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['landholder_id'] = this.landholderId;
     data['farm_id'] = this.farmId;
@@ -325,7 +325,7 @@ class CropProgram {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['crop'] = this.crop;
     data['population'] = this.population;

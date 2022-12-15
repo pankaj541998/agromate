@@ -21,18 +21,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:async/async.dart';
 
-final GlobalKey<FormState> _Form = GlobalKey<FormState>();
-TextEditingController CropReferenceTextEditingController =
-    TextEditingController();
-TextEditingController AreaTextEditingController = TextEditingController();
-TextEditingController ExpectedYieldTextEditingController =
-    TextEditingController();
-TextEditingController ExpectedRevenueTextEditingController =
-    TextEditingController();
-TextEditingController HarvestTextEditingController = TextEditingController();
-TextEditingController StartDateTextEditingController = TextEditingController();
-TextEditingController ExpectedEndDateTextEditingController =
-    TextEditingController();
+final CropReferenceTextEditingController = TextEditingController();
+final AreaTextEditingController = TextEditingController();
+final ExpectedYieldTextEditingController = TextEditingController();
+final ExpectedRevenueTextEditingController = TextEditingController();
+final HarvestTextEditingController = TextEditingController();
+final StartDateTextEditingController = TextEditingController();
+final ExpectedEndDateTextEditingController = TextEditingController();
 
 class AddCropPlan extends StatefulWidget {
   AddCropPlan({Key? key}) : super(key: key);
@@ -62,6 +57,9 @@ var Cultivar = [
 String UnitSelected = 'ZWL';
 var Unit = ['ZWL', 'USD', 'NAD'];
 
+String AreaSelected = 'Hectare';
+var Area = ['Hectare', 'Acre'];
+
 // String farmSelected = 'Select Your Question *';
 // var farms = [
 //   'Select Your Question *',
@@ -88,7 +86,7 @@ var Unit = ['ZWL', 'USD', 'NAD'];
 //   'field 3',
 //   'field 4',
 // ];
-
+final GlobalKey<FormState> _Form = GlobalKey<FormState>();
 Future<String> addCropSchedule(
     selectedFarmId, selectedBlockId, selectedFieldId, selectedCropId) async {
   debugPrint("reached");
@@ -135,6 +133,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
   void initState() {
     super.initState();
     // futureGroup.add(UserApiMethods.fetchUsers());
+    HarvestTextEditingController.text = "14";
     futureGroup.add(FarmApiMethods.fetchFarms());
     futureGroup.add(BlockApiMethods.fetchBlocks());
     futureGroup.add(FieldApiMethods.fetchFields());
@@ -146,7 +145,6 @@ class _AddCropPlanState extends State<AddCropPlan> {
     ExpectedEndDateTextEditingController.clear();
     ExpectedYieldTextEditingController.clear();
     ExpectedRevenueTextEditingController.clear();
-    HarvestTextEditingController.clear();
   }
 
   @override
@@ -157,9 +155,8 @@ class _AddCropPlanState extends State<AddCropPlan> {
     ExpectedEndDateTextEditingController.clear();
     ExpectedYieldTextEditingController.clear();
     ExpectedRevenueTextEditingController.clear();
-    harvestTextEditingController.clear();
+
     super.dispose();
-    HarvestTextEditingController.clear();
   }
 
   String? currentFarm;
@@ -210,7 +207,6 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             splashColor: Colors.transparent,
                             child: const Icon(Icons.arrow_back_ios),
                             onTap: () {
-                              harvestTextEditingController.clear();
                               Get.back();
                             },
                           ),
@@ -887,90 +883,119 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Expected Yield',
+                                Text(
+                                  "Yield Per Hectare/Acre",
                                   style: TextStyle(
                                     fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(12),
-                                    FilteringTextInputFormatter.digitsOnly
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 40,
+                                      width: 135,
+                                      child: DropdownButtonFormField(
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.only(
+                                            top: 10,
+                                            bottom: 10,
+                                            left: 10,
+                                            right: 10,
+                                          ),
+                                          hintStyle: TextStyle(
+                                            fontSize: 16,
+                                            color: const Color(0xff327C04)
+                                                .withOpacity(0.5),
+                                            fontFamily: 'Helvetica',
+                                          ),
+                                          fillColor: Colors.white,
+                                          filled: true,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          errorStyle: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                              width: 1,
+                                              color: Color(0xff327C04),
+                                            ),
+                                          ),
+                                          isDense: true,
+                                        ),
+                                        isExpanded: true,
+                                        value: AreaSelected,
+                                        iconEnabledColor: Colors
+                                            .transparent, // Down Arrow Icon
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Color(0xff327C04),
+                                        ),
+                                        iconSize: 30,
+                                        style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xff000000),
+                                            fontFamily: 'Helvetica'),
+                                        items: Area.map((String items) {
+                                          return DropdownMenuItem(
+                                            value: items,
+                                            child: Text(items),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? newValue) {
+                                          setState(() {
+                                            AreaSelected = newValue!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                      width: 180,
+                                      child: TextInputField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(6),
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          textEditingController:
+                                              ExpectedYieldTextEditingController,
+                                          hintText: "",
+                                          validatorText: ""),
+                                    ),
                                   ],
-                                  controller:
-                                      ExpectedYieldTextEditingController,
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Expected Yield",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
                                 ),
                               ],
                             ),
@@ -1132,7 +1157,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                   decoration: InputDecoration(
                                     fillColor: Colors.transparent,
                                     errorMaxLines: 3,
-                                    hintText: "Harvest Days",
+                                    hintText: "",
                                     contentPadding: const EdgeInsets.only(
                                         left: 10,
                                         right: 10,
