@@ -3,7 +3,9 @@ import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/database_api/methods/gap_question_api_method.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
+import 'package:flutter_agro_new/database_api/models/gap.dart';
 import 'package:http/http.dart' as http;
 
 class GapAnalysis extends StatefulWidget {
@@ -26,24 +28,12 @@ class _GapAnalysisState extends State<GapAnalysis> {
   //   return await addGapAPI(updata);
   // }
 
-  Future<String> addGapAPI() async {
-    // Map<String, dynamic> updata = {
-    //   "gap_category_name": currentgapCat.toString(),
-    //   "question": questionTextEditingController.text.toString(),
-    //   "options": true,
-    //   "text": true,
-    //   "image": true
-    // };
+  Future<String> addGapAPI(currentGapCatId) async {
     final _chuckerHttpClient = await http.Client();
-
-    // http.Response response = await _chuckerHttpClient.post(
-    //   Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
-    //   body: updata,
-    // );
     final http.Response response = await http.post(
         Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
         body: {
-          "gap_category_name": currentgapCat.toString(),
+          "gap_category_id": currentGapCatId.toString(),
           "question": questionTextEditingController.text.toString(),
           "options": check1 ? 1.toString() : 0.toString(),
           "text": check2 ? 1.toString() : 0.toString(),
@@ -53,16 +43,21 @@ class _GapAnalysisState extends State<GapAnalysis> {
     if (response.statusCode == 200) {
       return 'null';
     } else {
-      return 'throw (Exception("Search Error"))';
+      return throw (Exception("Search Error"));
     }
   }
 
   late final Future myfuture;
+  late final Future myGapCat;
   @override
   void initState() {
     super.initState();
     myfuture = GapQuestionMethods().getCategory();
+    myGapCat = GapCatAPI.fetchgapcat();
   }
+
+  String? currentGapCat;
+  int? currentGapCatId;
 
   List<String> gap_cat = [];
   List<String> gap_quest = [];
@@ -87,7 +82,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
     return StatefulBuilder(
       builder: (context, setState) {
         return FutureBuilder(
-          future: myfuture,
+          future: myGapCat,
           builder: (ctx, snapshot) {
             if (snapshot.data == null) {
               return Column(
@@ -113,250 +108,263 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 );
               }
             }
-            return _buildBody2(context, setState);
-          },
-        );
-      },
-    );
-  }
+            var data = snapshot.data!;
 
-  Widget _buildBody2(context, setState) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        AlertDialog(
-          insetPadding:
-              const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "New Gap Analysis",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.cancel_outlined,
-                  color: Color(0xFF4E944F),
-                ),
-              )
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            var fetchedcategorylist = data as List<GapQuestionListModel>;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  insetPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Category"),
-                      SizedBox(
-                        height: 15,
-                        // ignore: prefer_const_literals_to_create_immutables
+                      Text(
+                        "New Gap Analysis",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // debugPrint(currentGapCat);
+                          // debugPrint(currentGapCatId.toString());
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.cancel_outlined,
+                          color: Color(0xFF4E944F),
+                        ),
+                      )
+                    ],
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Category"),
+                              SizedBox(
+                                height: 15,
+                                // ignore: prefer_const_literals_to_create_immutables
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 330,
+                                child: SizedBox(
+                                  width: 500,
+                                  child: DropdownBtn(
+                                    items: fetchedcategorylist.map((e) {
+                                      return e.gapCategory.toString();
+                                    }).toList(),
+                                    hint: 'Select GAP Category',
+                                    onItemSelected: (value) async {
+                                      setState(() {
+                                        currentGapCat = value;
+                                        currentGapCatId = fetchedcategorylist
+                                            .singleWhere((element) =>
+                                                element.gapCategory ==
+                                                currentGapCat)
+                                            .id;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text(
+                                "Question",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 330,
+                                child: TextFormField(
+                                  controller: questionTextEditingController,
+                                  maxLines: 3,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10, top: 25, right: 10),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF327C04)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFF327C04)),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xFF327C04),
+                                        width: 5.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        height: 40,
-                        width: 330,
-                        child: SizedBox(
-                          width: 500,
-                          child: DropdownBtn(
-                            items: gap_cat,
-                            hint: 'Select Category',
-                            onItemSelected: (value) async {
-                              setState(() {
-                                currentgapCat = value;
-                              });
-                            },
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: Color(0xff327C04),
+                                ),
+                                child: Checkbox(
+                                  activeColor: Color(0xff327C04),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  value: check1,
+                                  onChanged: (check) {
+                                    setState(() {
+                                      check1 = check!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                "Options",
+                              ),
+                            ],
                           ),
-                        ),
+                          Row(
+                            children: [
+                              Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: Color(0xff327C04),
+                                ),
+                                child: Checkbox(
+                                  activeColor: Color(0xff327C04),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  value: check2,
+                                  onChanged: (check) {
+                                    setState(() {
+                                      check2 = check!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                "Text",
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Theme(
+                                data: ThemeData(
+                                  unselectedWidgetColor: Color(0xff327C04),
+                                ),
+                                child: Checkbox(
+                                  activeColor: Color(0xff327C04),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  value: check3,
+                                  onChanged: (check) {
+                                    setState(() {
+                                      check3 = check!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              Text(
+                                "Image",
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Color(0xFF327C04)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text("Yes"),
+                            ),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Color(0xFF327C04)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text("No"),
+                            ),
+                          ),
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Color(0xFF327C04)),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: Text("Maybe"),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: 25,
                       ),
-                      Text(
-                        "Question",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       SizedBox(
                         height: 40,
-                        width: 330,
-                        child: TextFormField(
-                          controller: questionTextEditingController,
-                          maxLines: 3,
-                          decoration: InputDecoration(
-                            contentPadding:
-                                EdgeInsets.only(left: 10, top: 25, right: 10),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFF327C04)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide:
-                                  const BorderSide(color: Color(0xFF327C04)),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFF327C04),
-                                width: 5.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Theme(
-                        data: ThemeData(
-                          unselectedWidgetColor: Color(0xff327C04),
-                        ),
-                        child: Checkbox(
-                          activeColor: Color(0xff327C04),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0))),
-                          value: check1,
-                          onChanged: (check) {
-                            setState(() {
-                              check1 = check!;
-                            });
+                        width: 170,
+                        child: CustomElevatedButton(
+                          title: "ADD",
+                          onPressed: () {
+                            debugPrint(currentGapCatId.toString());
+                            debugPrint(
+                                questionTextEditingController.text.toString());
+                            addGapAPI(currentGapCatId);
+                            // Navigator.pop(context);
                           },
                         ),
                       ),
-                      Text(
-                        "Options",
-                      ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Theme(
-                        data: ThemeData(
-                          unselectedWidgetColor: Color(0xff327C04),
-                        ),
-                        child: Checkbox(
-                          activeColor: Color(0xff327C04),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0))),
-                          value: check2,
-                          onChanged: (check) {
-                            setState(() {
-                              check2 = check!;
-                            });
-                          },
-                        ),
-                      ),
-                      Text(
-                        "Text",
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Theme(
-                        data: ThemeData(
-                          unselectedWidgetColor: Color(0xff327C04),
-                        ),
-                        child: Checkbox(
-                          activeColor: Color(0xff327C04),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0))),
-                          value: check3,
-                          onChanged: (check) {
-                            setState(() {
-                              check3 = check!;
-                            });
-                          },
-                        ),
-                      ),
-                      Text(
-                        "Image",
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: Color(0xFF327C04)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                      child: Text("Yes"),
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: Color(0xFF327C04)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                      child: Text("No"),
-                    ),
-                  ),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: Color(0xFF327C04)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                      child: Text("Maybe"),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              SizedBox(
-                height: 40,
-                width: 170,
-                child: CustomElevatedButton(
-                  title: "ADD",
-                  onPressed: () {
-                    addGapAPI();
-                    Navigator.pop(context);
-                  },
                 ),
-              ),
-            ],
-          ),
-        ),
-      ],
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
