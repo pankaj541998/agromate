@@ -9,6 +9,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_api_method.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
 import 'package:flutter_agro_new/database_api/models/gap.dart';
+
 import 'package:http/http.dart' as http;
 
 class GapAnalysis extends StatefulWidget {
@@ -315,11 +316,13 @@ class _GapAnalysisState extends State<GapAnalysis> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(color: Color(0xFF327C04)),
+
                             ),
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                               child: Text("Yes"),
                             ),
+
                           ),
                           Card(
                             shape: RoundedRectangleBorder(
@@ -374,6 +377,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
   String? currentCategory;
   int? currentCategoryId;
   final StreamController<bool> _gapanalysis = StreamController.broadcast();
+  final questionTextEditingController = TextEditingController();
+
   final questionTextEditingController = TextEditingController();
 
   @override
@@ -443,6 +448,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 SizedBox(
                   height: 10,
                 ),
+
                 StreamBuilder<Object>(
                     stream: _gapanalysis.stream,
                     builder: (context, snapshot) {
@@ -750,6 +756,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         },
                       );
                     }),
+
               ],
             ),
           )
@@ -758,6 +765,126 @@ class _GapAnalysisState extends State<GapAnalysis> {
     );
   }
 }
+
+
+// class Question extends StatelessWidget {
+//   const Question({Key? key, required this.sentence, required this.number})
+//       : super(key: key);
+//   final String sentence;
+//   final String number;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.all(20.0),
+//       child: Column(
+//         children: [
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 number,
+//                 style: TextStyle(fontSize: 16, color: Colors.black),
+//               ),
+//               SizedBox(
+//                 width: 20,
+//               ),
+//               Column(
+//                 children: [
+//                   SizedBox(
+//                     width: MediaQuery.of(context).size.width * 0.75,
+//                     child: Text(
+//                       sentence,
+//                       maxLines: 2,
+//                       style: TextStyle(fontSize: 16, color: Colors.black),
+//                     ),
+//                   )
+//                 ],
+//               ),
+//             ],
+//           ),
+//           SizedBox(
+//             height: 22,
+//           ),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "Yes",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       ))),
+//               SizedBox(
+//                 width: 40,
+//               ),
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "No",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       ))),
+//               SizedBox(
+//                 width: 40,
+//               ),
+//               SizedBox(
+//                   height: 30,
+//                   width: 140,
+//                   child: OutlinedButton(
+//                       style: OutlinedButton.styleFrom(
+//                         side: BorderSide(width: 1, color: Color(0xFF327C04)),
+//                       ),
+//                       onPressed: () {},
+//                       child: Text(
+//                         "Maybe",
+//                         style: TextStyle(color: Color(0xFF327C04)),
+//                       )))
+//             ],
+//           ),
+//           SizedBox(
+//             height: 18,
+//           ),
+//           Row(
+//             crossAxisAlignment: CrossAxisAlignment.end,
+//             mainAxisAlignment: MainAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                 height: 30,
+//                 width: 450,
+//                 child: TextInputField(
+//                   hintText: "Enter Text",
+//                   validatorText: "validatorText",
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: 30,
+//               ),
+//               Column(
+//                 children: [
+//                   SizedBox(
+//                     height: 10,
+//                   ),
+//                   Image.asset("assets/images/upload.png")
+//                 ],
+//               ),
+//             ],
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class QuestionDesign extends StatelessWidget {
   const QuestionDesign({Key? key, required this.sentence, required this.number})
@@ -877,3 +1004,4 @@ class QuestionDesign extends StatelessWidget {
     );
   }
 }
+

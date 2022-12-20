@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/crop_schedule_Model.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,6 +12,8 @@ import 'package:get/get.dart';
 import '../../component/top_bar.dart';
 
 late CropScheduleModel cropschedule;
+final StreamController<requestResponseState> _schedulerefresh =
+    StreamController.broadcast();
 
 class CropPlan extends StatefulWidget {
   const CropPlan({Key? key}) : super(key: key);
@@ -40,14 +44,15 @@ class _CropPlanState extends State<CropPlan> {
 
 // List<CropScheduleData> myDataRequest = cropschedule;
 
-  Future fetchCropSchedule() async {
+  Future<CropScheduleModel> fetchCropSchedule() async {
     var client = http.Client();
     final response = await client
         .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
     final parsed = jsonDecode(response.body);
     print("api call data ${response.body}");
     cropschedule = CropScheduleModel.fromJson(parsed);
-
+    myData = cropschedule.data!;
+    _schedulerefresh.add(requestResponseState.DataReceived);
     return cropschedule;
   }
 
@@ -175,24 +180,35 @@ class _CropPlanState extends State<CropPlan> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                FutureBuilder(
-                  future: fetchCropSchedule(),
-                  builder: (ctx, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        return datatable(screenSize, context);
-                      } else {
-                        return Center(
-                          child: Text(
-                            '${snapshot.error} occured',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        );
+                StreamBuilder<requestResponseState>(
+                    stream: _schedulerefresh.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.data == requestResponseState.DataReceived) {
+                        if (snapshot.hasData) {
+                          fetchCropSchedule();
+                          return datatable(screenSize, context);
+                        }
                       }
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
+                      return const Center(child: CircularProgressIndicator());
+                    }),
+                // FutureBuilder(
+                //   future: fetchCropSchedule(),
+                //   builder: (ctx, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //       if (snapshot.hasData) {
+                //         return datatable(screenSize, context);
+                //       } else {
+                //         return Center(
+                //           child: Text(
+                //             '${snapshot.error} occured',
+                //             style: const TextStyle(fontSize: 18),
+                //           ),
+                //         );
+                //       }
+                //     }
+                //     return const Center(child: CircularProgressIndicator());
+                //   },
+                // ),
               ],
             ),
           ),

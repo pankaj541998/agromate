@@ -40,12 +40,27 @@ var taskunits = [
 ];
 
 class WeeklyTasks extends StatefulWidget {
-  const WeeklyTasks({Key? key, this.id, this.weeks}) : super(key: key);
+
+  const WeeklyTasks(
+      {Key? key,
+      this.id,
+      this.weeks,
+      this.farmsend,
+      this.blocksend,
+      this.fieldsend,
+      this.cropsend})
+      : super(key: key);
 
   @override
   State<WeeklyTasks> createState() => _WeeklyTasksState();
   final String? weeks;
   final String? id;
+
+  final String? farmsend;
+  final String? blocksend;
+  final String? fieldsend;
+  final String? cropsend;
+
 }
 
 // Future<RegisteredUserModel> fetchRegisteredUsers() async {
@@ -1058,6 +1073,10 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(Icons.arrow_back_ios_rounded)),
+                    SizedBox(width: screenSize.width * 0.02),
                     Text(
                       "Tasks",
                       style:
@@ -1112,377 +1131,45 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
               children: [
                 Row(
                   children: [
-                    SizedBox(
-                      width: screenSize.width * 0.18,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Landholder',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          DropdownButtonFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
-                                fontFamily: 'Helvetica',
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorStyle: const TextStyle(
-                                fontSize: 14,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              isDense: true,
-                            ),
-                            isExpanded: true,
-                            value: tasklandeholderSelected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: tasklandeholder.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                tasklandeholderSelected = newValue!;
-                              });
-                            },
-                          ),
-                        ],
+                    Text(
+                      widget.farmsend.toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff000000),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 50),
-                    SizedBox(
-                      width: screenSize.width * 0.18,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Farm',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          DropdownButtonFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
-                                fontFamily: 'Helvetica',
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorStyle: const TextStyle(
-                                fontSize: 14,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              isDense: true,
-                            ),
-                            isExpanded: true,
-                            value: taskfarmSelected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: taskfarm.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                taskfarmSelected = newValue!;
-                              });
-                            },
-                          ),
-                        ],
+                    SizedBox(width: 10),
+                    Icon(Icons.arrow_circle_right_outlined),
+                    SizedBox(width: 10),
+                    Text(
+                      widget.blocksend.toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff000000),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 50),
-                    SizedBox(
-                      width: screenSize.width * 0.18,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Block',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          DropdownButtonFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
-                                fontFamily: 'Helvetica',
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorStyle: const TextStyle(
-                                fontSize: 14,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              isDense: true,
-                            ),
-                            isExpanded: true,
-                            value: taskblockselected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: crop.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                taskblockselected = newValue!;
-                              });
-                            },
-                          ),
-                        ],
+                    SizedBox(width: 10),
+                    Icon(Icons.arrow_circle_right_outlined),
+                    SizedBox(width: 10),
+                    Text(
+                      widget.fieldsend.toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff000000),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    SizedBox(
-                      width: screenSize.width * 0.18,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Field',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff000000),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 15),
-                          DropdownButtonFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(
-                                top: 10,
-                                bottom: 10,
-                                left: 10,
-                                right: 10,
-                              ),
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                color: const Color(0xff327C04).withOpacity(0.5),
-                                fontFamily: 'Helvetica',
-                              ),
-                              fillColor: Colors.white,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              errorStyle: const TextStyle(
-                                fontSize: 14,
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                  width: 1,
-                                  color: Color(0xff327C04),
-                                ),
-                              ),
-                              isDense: true,
-                            ),
-                            isExpanded: true,
-                            value: taskFieldselected,
-                            iconEnabledColor:
-                                Colors.transparent, // Down Arrow Icon
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Color(0xff327C04),
-                            ),
-                            iconSize: 30,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: Color(0xff000000),
-                                fontFamily: 'Helvetica'),
-                            items: taskfield.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                taskFieldselected = newValue!;
-                              });
-                            },
-                          ),
-                        ],
+                    SizedBox(width: 10),
+                    Icon(Icons.arrow_circle_right_outlined),
+                    SizedBox(width: 10),
+                    Text(
+                      widget.cropsend.toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff000000),
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
