@@ -48,13 +48,6 @@ class _CropState extends State<Crop> {
 
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    harvestTextEditingController.text = "14";
-    super.initState();
-    fetchCropProgram();
-  }
-
   StreamController<bool> _controllernew = StreamController<bool>.broadcast();
   Future<void> _pickImage() async {
     if (!kIsWeb) {
@@ -85,6 +78,15 @@ class _CropState extends State<Crop> {
       print('something went wrong');
     }
   }
+
+
+  @override
+  void initState() {
+    gridharvestTextEditingController.text = "14";
+    super.initState();
+    fetchCropProgram();
+  }
+
 
   late String _selectedValue;
   List<String> listOfValue = [

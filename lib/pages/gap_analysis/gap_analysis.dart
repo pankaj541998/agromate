@@ -1,11 +1,15 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/database_api/methods/gap_cat_method.dart';
+import 'package:flutter_agro_new/database_api/methods/gap_question_api_method.dart';
 import 'package:flutter_agro_new/database_api/methods/gap_question_method.dart';
-import 'package:flutter_agro_new/models/gap.dart';
+import 'package:flutter_agro_new/database_api/models/gap.dart';
+
 import 'package:http/http.dart' as http;
 
 class GapAnalysis extends StatefulWidget {
@@ -312,11 +316,13 @@ class _GapAnalysisState extends State<GapAnalysis> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(color: Color(0xFF327C04)),
+
                             ),
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                               child: Text("Yes"),
                             ),
+
                           ),
                           Card(
                             shape: RoundedRectangleBorder(
@@ -370,6 +376,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
 
   String? currentCategory;
   int? currentCategoryId;
+  final StreamController<bool> _gapanalysis = StreamController.broadcast();
+  final questionTextEditingController = TextEditingController();
 
   final questionTextEditingController = TextEditingController();
 
@@ -440,227 +448,315 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 SizedBox(
                   height: 10,
                 ),
-                FutureBuilder(
-                  future: GapQuestionMethods().getQuestion(),
-                  builder: (ctx, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        for (var i = 0; i < gapData.data!.length; i++) {
-                          gap_cat.add(gapData.data![i].gapCategory!);
-                          for (var j = 0; j < gapQuestion.data!.length; j++) {
-                            if (gap_cat.elementAt(i) ==
-                                gapQuestion.data![j].gapcategory?.gapCategory) {
-                              gap_quest.add(gapQuestion.data![j].question!);
-                            }
-                          }
-                          for (var k = 0; k < gapQuestion.data!.length; k++) {
-                            if (gap_quest.elementAt(i) ==
-                                gapQuestion.data![k].gapcategory?.gapCategory) {
-                              gap_option.add(gapQuestion.data![k].options!);
-                            }
-                          }
-                        }
 
-                        return SizedBox(
-                          height: screenSize.height * 0.63,
-                          child: ListView.separated(
-                            itemCount: gap_cat.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    height: 60,
-                                    width: double.infinity,
-                                    color: Color(0xFFF7F9EA),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 40,
-                                        top: 18,
-                                      ),
-                                      child: Text(
-                                        "Title : ${gap_cat[index]}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
+                StreamBuilder<Object>(
+                    stream: _gapanalysis.stream,
+                    builder: (context, snapshot) {
+                      return FutureBuilder(
+                        future: GapQuestionMethods().getQuestion(),
+                        builder: (ctx, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            LinkedHashMap map =
+                                new LinkedHashMap<String, dynamic>();
+                            if (snapshot.hasData) {
+                              // for (var i = 0; i < gapData.data!.length; i++) {
+                              //  // gap_cat.add(gapData.data![i].gapCategory!);
+                              // //map = gap_cat.asMap();
+                              //   map[gapData.data![i].gapCategory] = List;
+
+                              //   // for (var j = 0; j < gapQuestion.data!.length; j++) {
+                              //   //   if (gap_cat.elementAt(i) ==
+                              //   //       gapQuestion.data![j].gapcategory?.gapCategory) {
+                              //   //     gap_quest.add(gapQuestion.data![j].question!);
+                              //   //   }
+                              //   // }
+                              //   // for (var k = 0; k < gapQuestion.data!.length; k++) {
+                              //   //   if (gap_quest.elementAt(i) ==
+                              //   //       gapQuestion.data![k].gapcategory?.gapCategory) {
+                              //   //     gap_option.add(gapQuestion.data![k].options!);
+                              //   //   }
+                              //   // }
+
+                              // }
+                              List Question = [];
+
+                              LinkedHashMap map =
+                                  new LinkedHashMap<String, List>();
+                              try {
+                                for (int i = 0; i < gapData.data!.length; i++) {
+                                  List Question = [];
+                                  map['${gapData.data![i].gapCategory}'] = [];
+                                  for (var j = 0;
+                                      j < gapQuestion.data!.length;
+                                      j++) {
+                                    if (gapQuestion.data![j].gapcategory
+                                            ?.gapCategory ==
+                                        gapData.data!
+                                            .elementAt(i)
+                                            .gapCategory) {
+                                      Question.add(
+                                          gapQuestion.data![j].question);
+                                      // map['${gapData.data![i].gapCategory}'] =
+                                      //     gapQuestion.data![j];
+                                      //print(map);
+                                    }
+                                  }
+                                  map['${gapData.data![i].gapCategory}'] =
+                                      Question;
+                                }
+                              } catch (e) {
+                                print(e);
+                              }
+
+                              return SizedBox(
+                                height: screenSize.height * 0.63,
+                                child: ListView.separated(
+                                  itemCount: gapData.data!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var key = map.keys.elementAt(index);
+                                    List questionlist =
+                                        map.values.elementAt(index) as List;
+                                    return Column(
                                       children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "1)",
+                                        Container(
+                                          height: 60,
+                                          width: double.infinity,
+                                          color: Color(0xFFF7F9EA),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 40,
+                                              top: 18,
+                                            ),
+                                            child: Text(
+                                              "Title : ${gapData.data![index].gapCategory}",
                                               style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
                                             ),
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Column(
+                                          ),
+                                        ),
+                                        ListView.separated(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: questionlist.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return Column(
                                               children: [
-                                                SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.75,
-                                                  child: Text(
-                                                    gap_quest[index],
-                                                    maxLines: 2,
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.black),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      20.0),
+                                                  child: Column(
+                                                    children: [
+                                                      // Row(
+                                                      //   crossAxisAlignment:
+                                                      //       CrossAxisAlignment.start,
+                                                      //   children: [
+                                                      //     Text(
+                                                      //       "1",
+                                                      //       style: TextStyle(
+                                                      //           fontSize: 16,
+                                                      //           color: Colors.black),
+                                                      //     ),
+                                                      //     SizedBox(
+                                                      //       width: 20,
+                                                      //     ),
+                                                      //     // Column(
+                                                      //     //   children: [
+                                                      //     //     SizedBox(
+                                                      //     //       width: MediaQuery.of(
+                                                      //     //                   context)
+                                                      //     //               .size
+                                                      //     //               .width *
+                                                      //     //           0.75,
+                                                      //     //       child: Text(
+                                                      //     //         questionlist[index],
+                                                      //     //         maxLines: 2,
+                                                      //     //         style: TextStyle(
+                                                      //     //             fontSize: 16,
+                                                      //     //             color: Colors
+                                                      //     //                 .black),
+                                                      //     //       ),
+                                                      //     //     )
+                                                      //     //   ],
+                                                      //     // ),
+                                                      //   ],
+                                                      // ),
+                                                      SizedBox(
+                                                        height: 22,
+                                                      ),
+                                                      // gapQuestion.data!
+                                                      //             .elementAt(index)
+                                                      //             .options ==
+                                                      //         1
+                                                      //     ? Row(
+                                                      //         mainAxisAlignment:
+                                                      //             MainAxisAlignment
+                                                      //                 .start,
+                                                      //         children: [
+                                                      //           SizedBox(
+                                                      //               height: 30,
+                                                      //               width: 140,
+                                                      //               child:
+                                                      //                   OutlinedButton(
+                                                      //                       style: OutlinedButton
+                                                      //                           .styleFrom(
+                                                      //                         side: BorderSide(
+                                                      //                             width:
+                                                      //                                 1,
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       ),
+                                                      //                       onPressed:
+                                                      //                           () {},
+                                                      //                       child:
+                                                      //                           Text(
+                                                      //                         "Yes",
+                                                      //                         style: TextStyle(
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       ))),
+                                                      //           SizedBox(
+                                                      //             width: 40,
+                                                      //           ),
+                                                      //           SizedBox(
+                                                      //               height: 30,
+                                                      //               width: 140,
+                                                      //               child:
+                                                      //                   OutlinedButton(
+                                                      //                       style: OutlinedButton
+                                                      //                           .styleFrom(
+                                                      //                         side: BorderSide(
+                                                      //                             width:
+                                                      //                                 1,
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       ),
+                                                      //                       onPressed:
+                                                      //                           () {},
+                                                      //                       child:
+                                                      //                           Text(
+                                                      //                         "No",
+                                                      //                         style: TextStyle(
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       ))),
+                                                      //           SizedBox(
+                                                      //             width: 40,
+                                                      //           ),
+                                                      //           SizedBox(
+                                                      //               height: 30,
+                                                      //               width: 140,
+                                                      //               child:
+                                                      //                   OutlinedButton(
+                                                      //                       style: OutlinedButton
+                                                      //                           .styleFrom(
+                                                      //                         side: BorderSide(
+                                                      //                             width:
+                                                      //                                 1,
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       ),
+                                                      //                       onPressed:
+                                                      //                           () {},
+                                                      //                       child:
+                                                      //                           Text(
+                                                      //                         "Maybe",
+                                                      //                         style: TextStyle(
+                                                      //                             color:
+                                                      //                                 Color(0xFF327C04)),
+                                                      //                       )))
+                                                      //         ],
+                                                      //       )
+                                                      //     : Text(""),
+                                                      // SizedBox(
+                                                      //   height: 18,
+                                                      // ),
+                                                      // Row(
+                                                      //   crossAxisAlignment:
+                                                      //       CrossAxisAlignment.end,
+                                                      //   mainAxisAlignment:
+                                                      //       MainAxisAlignment.start,
+                                                      //   children: [
+                                                      //     gapQuestion.data!
+                                                      //                 .elementAt(
+                                                      //                     index)
+                                                      //                 .text ==
+                                                      //             1
+                                                      //         ? SizedBox(
+                                                      //             height: 30,
+                                                      //             width: 450,
+                                                      //             child:
+                                                      //                 TextInputField(
+                                                      //               hintText:
+                                                      //                   "Enter Text",
+                                                      //               validatorText:
+                                                      //                   "validatorText",
+                                                      //             ),
+                                                      //           )
+                                                      //         : Text(""),
+                                                      //     SizedBox(
+                                                      //       width: 30,
+                                                      //     ),
+                                                      //     Column(
+                                                      //       children: [
+                                                      //         SizedBox(
+                                                      //           height: 10,
+                                                      //         ),
+                                                      //         gapQuestion.data!
+                                                      //                     .elementAt(
+                                                      //                         index)
+                                                      //                     .image ==
+                                                      //                 1
+                                                      //             ? Image.asset(
+                                                      //                 "assets/images/upload.png")
+                                                      //             : Text(""),
+                                                      //       ],
+                                                      //     ),
+                                                      //   ],
+                                                      // )
+                                                    ],
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 22,
-                                        ),
-                                        gapQuestion.data!
-                                                    .elementAt(index)
-                                                    .options ==
-                                                1
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  SizedBox(
-                                                      height: 30,
-                                                      width: 140,
-                                                      child: OutlinedButton(
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                            side: BorderSide(
-                                                                width: 1,
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          ),
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "Yes",
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          ))),
-                                                  SizedBox(
-                                                    width: 40,
-                                                  ),
-                                                  SizedBox(
-                                                      height: 30,
-                                                      width: 140,
-                                                      child: OutlinedButton(
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                            side: BorderSide(
-                                                                width: 1,
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          ),
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "No",
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          ))),
-                                                  SizedBox(
-                                                    width: 40,
-                                                  ),
-                                                  SizedBox(
-                                                      height: 30,
-                                                      width: 140,
-                                                      child: OutlinedButton(
-                                                          style: OutlinedButton
-                                                              .styleFrom(
-                                                            side: BorderSide(
-                                                                width: 1,
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          ),
-                                                          onPressed: () {},
-                                                          child: Text(
-                                                            "Maybe",
-                                                            style: TextStyle(
-                                                                color: Color(
-                                                                    0xFF327C04)),
-                                                          )))
-                                                ],
-                                              )
-                                            : Text(""),
-                                        SizedBox(
-                                          height: 18,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            gapQuestion.data!
-                                                        .elementAt(index)
-                                                        .text ==
-                                                    1
-                                                ? SizedBox(
-                                                    height: 30,
-                                                    width: 450,
-                                                    child: TextInputField(
-                                                      hintText: "Enter Text",
-                                                      validatorText:
-                                                          "validatorText",
-                                                    ),
-                                                  )
-                                                : Text(""),
-                                            SizedBox(
-                                              width: 30,
-                                            ),
-                                            Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
                                                 ),
-                                                gapQuestion.data!
-                                                            .elementAt(index)
-                                                            .image ==
-                                                        1
-                                                    ? Image.asset(
-                                                        "assets/images/upload.png")
-                                                    : Text(""),
+                                                QuestionDesign(
+                                                    sentence:
+                                                        questionlist[index],
+                                                    number: "${index + 1}"),
                                               ],
-                                            ),
-                                          ],
-                                        )
+                                            );
+                                          },
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                  int index) {
+                                            return Container();
+                                          },
+                                        ),
                                       ],
-                                    ),
-                                  )
-                                  //Question(
-                                  //  sentence: gap_quest[index], number: "1)"),
-                                ],
+                                    );
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          Divider(),
+                                ),
                               );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) => Divider(),
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: Text(
-                            '${snapshot.error} occured',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        );
-                      }
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                ),
+                            } else {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occured',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                              );
+                            }
+                          }
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        },
+                      );
+                    }),
+
               ],
             ),
           )
@@ -669,6 +765,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
     );
   }
 }
+
 
 // class Question extends StatelessWidget {
 //   const Question({Key? key, required this.sentence, required this.number})
@@ -788,3 +885,123 @@ class _GapAnalysisState extends State<GapAnalysis> {
 //     );
 //   }
 // }
+
+class QuestionDesign extends StatelessWidget {
+  const QuestionDesign({Key? key, required this.sentence, required this.number})
+      : super(key: key);
+  final String sentence;
+  final String number;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                number,
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: Text(
+                      sentence,
+                      maxLines: 2,
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 22,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      ))),
+              SizedBox(
+                width: 40,
+              ),
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "No",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      ))),
+              SizedBox(
+                width: 40,
+              ),
+              SizedBox(
+                  height: 30,
+                  width: 140,
+                  child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Maybe",
+                        style: TextStyle(color: Color(0xFF327C04)),
+                      )))
+            ],
+          ),
+          SizedBox(
+            height: 18,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
+                width: 450,
+                child: TextInputField(
+                  hintText: "Enter Text",
+                  validatorText: "validatorText",
+                ),
+              ),
+              SizedBox(
+                width: 30,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Image.asset("assets/images/upload.png")
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+

@@ -40,6 +40,7 @@ var taskunits = [
 ];
 
 class WeeklyTasks extends StatefulWidget {
+
   const WeeklyTasks(
       {Key? key,
       this.id,
@@ -54,10 +55,12 @@ class WeeklyTasks extends StatefulWidget {
   State<WeeklyTasks> createState() => _WeeklyTasksState();
   final String? weeks;
   final String? id;
+
   final String? farmsend;
   final String? blocksend;
   final String? fieldsend;
   final String? cropsend;
+
 }
 
 // Future<RegisteredUserModel> fetchRegisteredUsers() async {
