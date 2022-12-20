@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
@@ -32,7 +33,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
   //   return await addGapAPI(updata);
   // }
 
-  Future<String> addGapAPI(currentGapCatId) async {
+  Future<String> addGapAPI(currentGapCatId, check1, check2, check3) async {
     final _chuckerHttpClient = await http.Client();
     final http.Response response = await http.post(
         Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
@@ -316,13 +317,11 @@ class _GapAnalysisState extends State<GapAnalysis> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: BorderSide(color: Color(0xFF327C04)),
-
                             ),
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                               child: Text("Yes"),
                             ),
-
                           ),
                           Card(
                             shape: RoundedRectangleBorder(
@@ -358,7 +357,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
                             debugPrint(currentGapCatId.toString());
                             debugPrint(
                                 questionTextEditingController.text.toString());
-                            addGapAPI(currentGapCatId);
+                            debugPrint(check1.toString());
+                            addGapAPI(currentGapCatId, check1, check2, check3);
                             // Navigator.pop(context);
                           },
                         ),
@@ -377,8 +377,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
   String? currentCategory;
   int? currentCategoryId;
   final StreamController<bool> _gapanalysis = StreamController.broadcast();
-  final questionTextEditingController = TextEditingController();
-
   final questionTextEditingController = TextEditingController();
 
   @override
@@ -448,7 +446,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
                 SizedBox(
                   height: 10,
                 ),
-
                 StreamBuilder<Object>(
                     stream: _gapanalysis.stream,
                     builder: (context, snapshot) {
@@ -756,7 +753,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
                         },
                       );
                     }),
-
               ],
             ),
           )
@@ -765,7 +761,6 @@ class _GapAnalysisState extends State<GapAnalysis> {
     );
   }
 }
-
 
 // class Question extends StatelessWidget {
 //   const Question({Key? key, required this.sentence, required this.number})
@@ -1004,4 +999,3 @@ class QuestionDesign extends StatelessWidget {
     );
   }
 }
-
