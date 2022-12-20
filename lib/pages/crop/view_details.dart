@@ -920,6 +920,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       addTask(widget.id).then(
                                         (value) => Navigator.pop(context),
                                       );
+                                      Flushbar(
+                                        duration: const Duration(seconds: 2),
+                                        message: "New Task Added Successfully",
+                                      ).show(context);
                                     });
                                   } else {
                                     Flushbar(

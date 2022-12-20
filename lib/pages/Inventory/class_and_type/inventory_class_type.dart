@@ -2044,6 +2044,10 @@ buildPinType(context, id,
                                 if (isValid!) {
                                   _typerefresh.add(true);
                                   updateType(id.toString(), iclass);
+                                  Flushbar(
+                                    duration: const Duration(seconds: 2),
+                                    message: "New Type Added Succesfully",
+                                  ).show(context);
                                   Navigator.pop(context);
 
                                   // addCropProgram();
