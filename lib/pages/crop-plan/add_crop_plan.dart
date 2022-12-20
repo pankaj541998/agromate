@@ -23,6 +23,7 @@ import 'package:async/async.dart';
 final CropReferenceTextEditingController = TextEditingController();
 final AreaTextEditingController = TextEditingController();
 final ExpectedYieldTextEditingController = TextEditingController();
+final CultivarTextEditingController = TextEditingController();
 final ExpectedRevenueTextEditingController = TextEditingController();
 final HarvestTextEditingController = TextEditingController();
 final StartDateTextEditingController = TextEditingController();
@@ -44,14 +45,14 @@ class AddCropPlan extends StatefulWidget {
 //   'crop 4',
 // ];
 
-String CultivarSelected = 'Select Your Question *';
-var Cultivar = [
-  'Select Your Question *',
-  'cultivar 1',
-  'cultivar 2',
-  'cultivar 3',
-  'cultivar 4',
-];
+// String CultivarSelected = 'Select Your Question *';
+// var Cultivar = [
+//   'Select Your Question *',
+//   'cultivar 1',
+//   'cultivar 2',
+//   'cultivar 3',
+//   'cultivar 4',
+// ];
 
 String UnitSelected = 'ZWL';
 var Unit = ['ZWL', 'USD', 'NAD'];
@@ -95,7 +96,7 @@ Future<String> addCropSchedule(
     "field_id": selectedFieldId.toString(),
     "crop_reference": CropReferenceTextEditingController.text,
     "crop_program_id": selectedCropId.toString(),
-    "caltivar": CultivarSelected,
+    "caltivar": CultivarTextEditingController.text,
     "start_date": StartDateTextEditingController.text,
     "expected_end_date": ExpectedEndDateTextEditingController.text,
     "area": AreaTextEditingController.text,
@@ -485,23 +486,109 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                   ),
                                 ),
                                 const SizedBox(height: 15),
-                                DropdownButtonFormField(
+                                // DropdownButtonFormField(
+                                //   autovalidateMode:
+                                //       AutovalidateMode.onUserInteraction,
+                                //   decoration: InputDecoration(
+                                //     contentPadding: const EdgeInsets.only(
+                                //       top: 10,
+                                //       bottom: 10,
+                                //       left: 10,
+                                //       right: 10,
+                                //     ),
+                                //     hintStyle: TextStyle(
+                                //       fontSize: 16,
+                                //       color: const Color(0xff327C04)
+                                //           .withOpacity(0.5),
+                                //       fontFamily: 'Helvetica',
+                                //     ),
+                                //     fillColor: Colors.transparent,
+                                //     filled: true,
+                                //     border: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         width: 1,
+                                //         color: Color(0xff327C04),
+                                //       ),
+                                //     ),
+                                //     errorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         width: 1,
+                                //         color: Color(0xff327C04),
+                                //       ),
+                                //     ),
+                                //     errorStyle: const TextStyle(
+                                //       fontSize: 14,
+                                //     ),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         width: 1,
+                                //         color: Color(0xff327C04),
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         width: 1,
+                                //         color: Color(0xff327C04),
+                                //       ),
+                                //     ),
+                                //     isDense: true,
+                                //   ),
+                                //   isExpanded: true,
+                                //   value: CultivarSelected,
+                                //   iconEnabledColor:
+                                //       Colors.transparent, // Down Arrow Icon
+                                //   icon: const Icon(
+                                //     Icons.keyboard_arrow_down,
+                                //     color: Color(0xff327C04),
+                                //   ),
+                                //   iconSize: 30,
+                                //   style: const TextStyle(
+                                //       fontSize: 16,
+                                //       color: Color(0xff000000),
+                                //       fontFamily: 'Helvetica'),
+                                //   items: Cultivar.map((String items) {
+                                //     return DropdownMenuItem(
+                                //       value: items,
+                                //       child: Text(items),
+                                //     );
+                                //   }).toList(),
+                                //   onChanged: (String? newValue) {
+                                //     setState(() {
+                                //       CultivarSelected = newValue!;
+                                //     });
+                                //   },
+                                // ),
+                                TextFormField(
+                                  controller: CultivarTextEditingController,
+                                  // initialValue: 'enter heritage',
+                                  style: const TextStyle(
+                                    // color: Color(0xffffffff),
+                                    fontFamily: 'Helvetica',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  // readOnly: true,
                                   autovalidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   decoration: InputDecoration(
+                                    fillColor: Colors.transparent,
+                                    errorMaxLines: 3,
+                                    hintText: "Cultivar",
                                     contentPadding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                      left: 10,
-                                      right: 10,
-                                    ),
-                                    hintStyle: TextStyle(
+                                        left: 10,
+                                        right: 10,
+                                        top: 15,
+                                        bottom: 15),
+                                    hintStyle: const TextStyle(
                                       fontSize: 16,
-                                      color: const Color(0xff327C04)
-                                          .withOpacity(0.5),
+                                      // color: const Color(0xffffffff).withOpacity(0.8),
                                       fontFamily: 'Helvetica',
                                     ),
-                                    fillColor: Colors.transparent,
+                                    // fillColor: Colors.white,
                                     filled: true,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -518,7 +605,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                       ),
                                     ),
                                     errorStyle: const TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 16.0,
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -536,30 +623,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                     ),
                                     isDense: true,
                                   ),
-                                  isExpanded: true,
-                                  value: CultivarSelected,
-                                  iconEnabledColor:
-                                      Colors.transparent, // Down Arrow Icon
-                                  icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Color(0xff327C04),
-                                  ),
-                                  iconSize: 30,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Color(0xff000000),
-                                      fontFamily: 'Helvetica'),
-                                  items: Cultivar.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      CultivarSelected = newValue!;
-                                    });
-                                  },
+                                  keyboardType: TextInputType.text,
                                 ),
                               ],
                             ),
@@ -1239,7 +1303,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           debugPrint(CropReferenceTextEditingController.text);
                           debugPrint(currentCrop);
                           debugPrint(currentCropId.toString());
-                          debugPrint(CultivarSelected);
+                          debugPrint(CultivarTextEditingController.text);
                           debugPrint(StartDateTextEditingController.text);
                           debugPrint(ExpectedEndDateTextEditingController.text);
                           debugPrint(AreaTextEditingController.text);
@@ -1257,6 +1321,10 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                       currentCropId.toString())
                                   .then((value) => Navigator.pushNamed(
                                       context, '/crop_plan'));
+                              Flushbar(
+                                duration: Duration(seconds: 3),
+                                message: "Crop Schedule Added Successfully",
+                              );
                             });
                           } else {
                             Flushbar(

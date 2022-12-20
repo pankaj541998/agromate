@@ -259,7 +259,7 @@ class _AllocateState extends State<Allocate> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Landholder",
+                            "Agronomist",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
@@ -270,7 +270,7 @@ class _AllocateState extends State<Allocate> {
                             height: 40,
                             width: 257,
                             child: DropdownButtonFormField(
-                              hint: Text("Select Landholder"),
+                              hint: Text("Select Agronomist"),
                               focusColor: Colors.white,
                               isExpanded: true,
                               decoration: InputDecoration(
@@ -328,7 +328,7 @@ class _AllocateState extends State<Allocate> {
                             height: 40,
                             width: 257,
                             child: DropdownButtonFormField(
-                              hint: Text("Select Landholder"),
+                              hint: Text("Select Manager"),
                               focusColor: Colors.white,
                               isExpanded: true,
                               decoration: InputDecoration(

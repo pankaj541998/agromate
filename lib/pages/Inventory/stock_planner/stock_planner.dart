@@ -77,16 +77,16 @@ class _StockPlannerState extends State<StockPlanner> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Image.asset("assets/images/Group6740.png",
-                              height: 70),
-                        ],
-                      ),
+                      // Column(
+                      //   crossAxisAlignment: CrossAxisAlignment.start,
+                      //   children: [
+                      //     SizedBox(
+                      //       height: 10,
+                      //     ),
+                      //     Image.asset("assets/images/Group6740.png",
+                      //         height: 70),
+                      //   ],
+                      // ),
                       const SizedBox(
                         height: 20,
                       ),
