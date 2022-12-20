@@ -41,7 +41,7 @@ class Crop extends StatefulWidget {
 }
 
 class _CropState extends State<Crop> {
-  final harvestTextEditingController = TextEditingController();
+  final gridharvestTextEditingController = TextEditingController();
 
   File? _pickedImage;
   Uint8List webImage = Uint8List(8);
@@ -86,44 +86,6 @@ class _CropState extends State<Crop> {
     }
   }
 
-  // File? image;
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null) return;
-  //     final imageTemp = File(image.path);
-  //     setState(() => this.image = imageTemp);
-  //   } on PlatformException catch (e) {
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  // Future<void> uploadImage() async {
-  //   var stream = http.ByteStream(image!.openRead());
-  //   stream.cast();
-
-  //   var length = await image!.length();
-
-  //   var uri = Uri.parse("");
-
-  //   var request = http.MultipartRequest('POST', uri);
-
-  //   var multiport = http.MultipartFile('file', stream, length);
-
-  //   request.files.add(multiport);
-
-  //   var response = await request.send();
-
-  //   print(response.stream.toString());
-  //   if (response.statusCode == 200) {
-  //     print('image uploaded');
-  //   } else {
-  //     print(response.statusCode);
-  //     // print('failed');
-  //     // Navigator.pop(context);
-  //   }
-  // }
-
   late String _selectedValue;
   List<String> listOfValue = [
     'Week 1',
@@ -135,6 +97,12 @@ class _CropState extends State<Crop> {
   var Unit = ['Hectare', 'Acre'];
   bool imageclick = false;
   buildPin() {
+    cropTextEditingController.clear();
+    cropseasonTextEditingController.clear();
+    populationTextEditingController.clear();
+    yieldTextEditingController.clear();
+    weeksTextEditingController.clear();
+
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
@@ -304,7 +272,7 @@ class _CropState extends State<Crop> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Growing Periods in Weeks",
+                                                "Growing Period in (Weeks)",
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                 ),
@@ -544,13 +512,14 @@ class _CropState extends State<Crop> {
                                                 height: 15,
                                               ),
                                               SizedBox(
-                                                  width: 300,
-                                                  child: TextInputField(
-                                                    textEditingController:
-                                                        harvestTextEditingController,
-                                                    hintText: "Harvest Days",
-                                                    validatorText: "",
-                                                  )),
+                                                width: 300,
+                                                child: TextInputField(
+                                                  textEditingController:
+                                                      gridharvestTextEditingController,
+                                                  hintText: "",
+                                                  validatorText: "",
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],

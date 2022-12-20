@@ -44,6 +44,8 @@ import 'providers/map_box_provider.dart';
 import 'providers/map_filter_provider.dart';
 import 'package:provider/provider.dart';
 
+enum requestResponseState { Error, DataReceived, Loading, SessionExpired }
+
 void main() {
   runApp(MultiProvider(
     providers: [
@@ -65,7 +67,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/classandtype',
+      initialRoute: '/stockplanner',
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),

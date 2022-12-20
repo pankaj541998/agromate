@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/services/constants.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/not_registered_user_model.dart';
 import 'package:flutter_agro_new/models/registered_users_model.dart';
 import 'package:flutter_agro_new/pages/popup.dart';
@@ -16,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
 
+final StreamController<bool> _requestuserrefresh = StreamController.broadcast();
 late RegisteredUserModel registeredusers;
 late NotRegisteredUserModel notregisteredusers;
 final email = TextEditingController();
@@ -93,6 +96,8 @@ Future<String> addNewUser(Map<String, String> updata) async {
   print(response.body);
   if (response.statusCode == 200) {
     print(response.body);
+    // _requestuserrefresh.add(true);
+
     return 'null';
   } else {
     return 'throw (Exception("Search Error"))';
@@ -159,6 +164,14 @@ Future<int> deleteApi(int id) async {
 }
 
 class _UserState extends State<User> {
+  @override
+  void initState() {
+    // filterData = modes.data!;
+    //fetchNotRegisteredUsers();
+    fetchRegisteredUsers();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext) {
     final screenSize = MediaQuery.of(context).size;
@@ -324,27 +337,32 @@ class _UserState extends State<User> {
                           },
                         ),
                         //_buildusertable(screenSize, context),
-                        FutureBuilder<NotRegisteredUserModel>(
-                          future: fetchNotRegisteredUsers(),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.hasData) {
-                                debugPrint(snapshot.data.toString());
-                                return _buildrequesttable(screenSize, context);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    '${snapshot.error} occured',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                );
-                              }
-                            }
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          },
-                        ),
+                        StreamBuilder<bool>(
+                            stream: _requestuserrefresh.stream,
+                            builder: (context, snapshot) {
+                              return FutureBuilder<NotRegisteredUserModel>(
+                                future: fetchNotRegisteredUsers(),
+                                builder: (ctx, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.hasData) {
+                                      debugPrint(snapshot.data.toString());
+                                      return _buildrequesttable(
+                                          screenSize, context);
+                                    } else {
+                                      return Center(
+                                        child: Text(
+                                          '${snapshot.error} occured',
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              );
+                            }),
                         // _buildrequesttable(screenSize, context),
                       ],
                     ),
@@ -378,6 +396,8 @@ _buildrequesttable(screenSize, context) {
 }
 
 buildPin(context) {
+  email.clear();
+
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -522,13 +542,16 @@ buildPin(context) {
                               if (isValid!) {
                                 print(email);
                                 print(roleIndex);
-                                Flushbar(
-                                  duration: const Duration(seconds: 2),
-                                  message: "New User Added Successfully",
-                                ).show(context);
+                                // Flushbar(
+                                //   duration: const Duration(seconds: 2),
+                                //   message: "New User Added Successfully",
+                                // ).show(context);
 
-                                addUser().then((value) =>
-                                    Navigator.pushNamed(context, '/user'));
+                                addUser();
+                                _requestuserrefresh.add(true);
+                                // fetchNotRegisteredUsers();
+                                Navigator.pop(context);
+                                // Navigator.popAndPushNamed(context, "/user");
                               } else {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),

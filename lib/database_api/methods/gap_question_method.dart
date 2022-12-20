@@ -8,6 +8,7 @@ import '../../models/gapQuestionModel.dart';
 import '../url.dart';
 
 late GapCategory gapData;
+late GapQuestion gapQuestion;
 
 class GapQuestionMethods {
   //get
@@ -23,43 +24,47 @@ class GapQuestionMethods {
   //       .toList();
   // }
 
-  // Future getQuestion() async {
-  //   http.Response response = await http.get(Uri.parse(ApiUrl.getCategory));
-  //   print("response is ${response.body}");
-  //   var resp = jsonDecode(response.body);
-  //   gapData = GapQuestion.fromJson(resp);
-  //   print("conversion done");
-  //   return response.body;
-  // }
+// get question
 
-  Future getCategory() async {
-    http.Response response = await http.get(Uri.parse(ApiUrl.getCategory));
-    print("response is ${response.body}");
+  Future getQuestion() async {
+    http.Response response = await http.get(Uri.parse(ApiUrl.getGap));
+
     var resp = jsonDecode(response.body);
-    gapData = GapCategory.fromJson(resp);
-    print("conversion done");
+    gapQuestion = GapQuestion.fromJson(resp);
+
     return response.body;
   }
 
-  //post
-  static Future<bool> postGapQuestion({
-    required int gapCategoryId,
-    required String question,
-    required int options,
-    required int text,
-    required int image,
-  }) async {
-    var response = await http.post(
-      Uri.parse(ApiUrl.postGap),
-      body: {
-        "gap_category_id": gapCategoryId,
-        "question": question,
-        "options": options,
-        "text": text,
-        "image": image,
-      },
-    );
-    if (response.statusCode == 200) return true;
-    return false;
+// get category
+
+  Future getCategory() async {
+    http.Response response = await http.get(Uri.parse(ApiUrl.getCategory));
+
+    var resp = jsonDecode(response.body);
+    gapData = GapCategory.fromJson(resp);
+
+    return response.body;
   }
+
+  // //post
+  // static Future<bool> postGapQuestion({
+  //   required int gapCategoryId,
+  //   required String question,
+  //   required int options,
+  //   required int text,
+  //   required int image,
+  // }) async {
+  //   var response = await http.post(
+  //     Uri.parse(ApiUrl.postGap),
+  //     body: {
+  //       "gap_category_id": gapCategoryId,
+  //       "question": question,
+  //       "options": options,
+  //       "text": text,
+  //       "image": image,
+  //     },
+  //   );
+  //   if (response.statusCode == 200) return true;
+  //   return false;
+  // }
 }

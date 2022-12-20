@@ -16,8 +16,8 @@ class CustomElevatedButton extends StatelessWidget {
           backgroundColor:
               MaterialStateProperty.all<Color>(const Color(0XFF327C04)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+              const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ))),
       onPressed: onPressed,
       child: Text(
