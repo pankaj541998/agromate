@@ -40,7 +40,6 @@ var taskunits = [
 ];
 
 class WeeklyTasks extends StatefulWidget {
-
   const WeeklyTasks(
       {Key? key,
       this.id,
@@ -48,19 +47,20 @@ class WeeklyTasks extends StatefulWidget {
       this.farmsend,
       this.blocksend,
       this.fieldsend,
-      this.cropsend})
+      this.cropsend,
+      this.cropplanid})
       : super(key: key);
 
   @override
   State<WeeklyTasks> createState() => _WeeklyTasksState();
   final String? weeks;
   final String? id;
+  final String? cropplanid;
 
   final String? farmsend;
   final String? blocksend;
   final String? fieldsend;
   final String? cropsend;
-
 }
 
 // Future<RegisteredUserModel> fetchRegisteredUsers() async {

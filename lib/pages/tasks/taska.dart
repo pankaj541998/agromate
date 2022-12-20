@@ -19,6 +19,7 @@ import 'package:flutter_agro_new/database_api/methods/field_api_methods.dart';
 import 'package:flutter_agro_new/database_api/methods/users_api_methods.dart';
 import 'package:http/http.dart' as http;
 
+List filtereddata = [];
 late CropProgramModel tasksdata;
 
 late CropScheduleModel cropschedule;
@@ -39,12 +40,11 @@ Future<CropScheduleModel> fetchCropSchedule() async {
   final response = await client
       .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
   final parsed = jsonDecode(response.body);
-  print("api call data ${response.body}");
+  // print("api call data ${response.body}");
   cropschedule = CropScheduleModel.fromJson(parsed);
 
   return cropschedule;
 }
-
 
 class Tasks extends StatefulWidget {
   const Tasks({Key? key}) : super(key: key);
@@ -178,6 +178,15 @@ class _TasksState extends State<Tasks> {
                                                 "${element.firstName} ${element.lastName}" ==
                                                 currentLandholder)
                                             .id;
+                                        filtereddata = cropschedule.data!
+                                            .where((element) =>
+                                                element
+                                                    .farm!.first.landholderId ==
+                                                currentLandholderId)
+                                            .toList();
+                                        debugPrint(
+                                            currentLandholderId.toString());
+                                        debugPrint(filtereddata.toString());
                                       });
                                     },
                                   ),
@@ -217,6 +226,13 @@ class _TasksState extends State<Tasks> {
                                             .singleWhere((element) =>
                                                 element.farmName == currentFarm)
                                             .id;
+                                        filtereddata = cropschedule.data!
+                                            .where((element) =>
+                                                element.farm!.first.id ==
+                                                currentFarmId)
+                                            .toList();
+                                        debugPrint(currentFarmId.toString());
+                                        debugPrint(filtereddata.toString());
                                       });
                                     },
                                   ),
@@ -256,6 +272,13 @@ class _TasksState extends State<Tasks> {
                                                 element.blockName ==
                                                 currentBlock)
                                             .id;
+                                        filtereddata = cropschedule.data!
+                                            .where((element) =>
+                                                element.block!.first.id ==
+                                                currentBlockId)
+                                            .toList();
+                                        debugPrint(currentBlockId.toString());
+                                        debugPrint(filtereddata.toString());
                                       });
                                     },
                                   ),
@@ -295,9 +318,14 @@ class _TasksState extends State<Tasks> {
                                                 element.fieldName ==
                                                 currentField)
                                             .id;
+                                        filtereddata = cropschedule.data!
+                                            .where((element) =>
+                                                element.field!.first.id ==
+                                                currentField)
+                                            .toList();
+                                        debugPrint(currentFieldId.toString());
+                                        debugPrint(filtereddata.toString());
                                       });
-                                      debugPrint(currentField.toString());
-                                      debugPrint(currentFieldId.toString());
                                     },
                                   ),
                                 ),
@@ -308,10 +336,8 @@ class _TasksState extends State<Tasks> {
                       ),
                       const SizedBox(height: 10),
                       SingleChildScrollView(
-
                         child: FutureBuilder<CropScheduleModel>(
                           future: fetchCropSchedule(),
-
                           builder: (ctx, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
@@ -319,7 +345,6 @@ class _TasksState extends State<Tasks> {
                                 debugPrint(snapshot.data.toString());
 
                                 return _buildgridview(context);
-
                               } else {
                                 return Center(
                                   child: Text(
@@ -347,9 +372,9 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-
-  Widget _buildgridview(context) {
-
+  Widget _buildgridview(
+    context,
+  ) {
     BuildContext? contextnew;
     contextnew = scaffoldkey.currentContext;
     return GridView.builder(
@@ -359,20 +384,19 @@ class _TasksState extends State<Tasks> {
             crossAxisCount: 4,
             mainAxisSpacing: 2,
             crossAxisSpacing: 3),
-
-        itemCount: cropschedule.data!.length,
-
+        itemCount: filtereddata.length,
         itemBuilder: (BuildContext ctx, index) {
           //  var element = CropProgram.cropPrograms.elementAt(index);
           return InkWell(
             onTap: () {
               debugPrint("index is  $index");
-
               String weeks =
                   cropschedule.data!.elementAt(index).cropProgram!.first.weeks!;
               debugPrint("weeks is $weeks");
               int id =
                   cropschedule.data!.elementAt(index).cropProgram!.first.id!;
+              debugPrint(id.toString());
+              int cropplanid = cropschedule.data!.elementAt(index).id!;
               debugPrint(id.toString());
               String farmsend =
                   cropschedule.data!.elementAt(index).farm!.first.farm!;
@@ -382,25 +406,20 @@ class _TasksState extends State<Tasks> {
                   cropschedule.data!.elementAt(index).field!.first.field!;
               String cropsend =
                   cropschedule.data!.elementAt(index).cropProgram!.first.crop!;
-
-              // Get.toNamed("/view_details");
-              // context = scaffoldkey.currentContext;
               Navigator.push(
                 context!,
                 MaterialPageRoute(
                   builder: (context) => WeeklyTasks(
                     weeks: weeks,
                     id: id.toString(),
-
+                    cropplanid: cropplanid.toString(),
                     farmsend: farmsend,
                     blocksend: blocksend,
                     fieldsend: fieldsend,
                     cropsend: cropsend,
-
                   ),
                 ),
               );
-              // Get.toNamed('/weeklytasks');
             },
             child: Card(
               shape: const RoundedRectangleBorder(
@@ -425,7 +444,6 @@ class _TasksState extends State<Tasks> {
                         children: [
                           Row(
                             children: [
-
                               Image.asset(
                                 "assets/images/cabbage.png",
                                 height: 40,
@@ -435,11 +453,13 @@ class _TasksState extends State<Tasks> {
                                 width: 10,
                               ),
                               Text(
-                                cropschedule.data!
-                                    .elementAt(index)
-                                    .cropProgram!
-                                    .first
-                                    .crop!,
+                                cropschedule
+                                    .data!.first.cropProgram!.first.crop!,
+                                // cropschedule.data!
+                                //     .elementAt(index)
+                                //     .cropProgram!
+                                //     .first
+                                //     .crop!,
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
@@ -462,7 +482,6 @@ class _TasksState extends State<Tasks> {
                           //         style: TextStyle(fontSize: 14)),
                           //   ],
                           // )
-
                         ],
                       )
                     ],
