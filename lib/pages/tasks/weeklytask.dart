@@ -122,7 +122,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       "quantity": taskquantityTextEditingController.text,
       "unit": taskUnitsSelected
     };
-    return await addTaskAPI(updata);
+    return addTaskAPI(updata);
   }
 
   Future<String> addTaskAPI(Map<String, dynamic> updata) async {
@@ -1025,13 +1025,15 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                           .text);
                                   debugPrint(
                                       taskquantityTextEditingController.text);
-                                  addWeeklyTask(widget.id);
+
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
                                     //       Navigator.pushNamed(
                                     //           context, '/table_view_crop'));
                                     // });
+                                    addWeeklyTask(widget.id);
+                                    Get.back();
                                   } else {
                                     // Flushbar(
                                     //   duration: const Duration(seconds: 2),

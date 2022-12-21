@@ -321,7 +321,7 @@ class _TasksState extends State<Tasks> {
                                         filtereddata = cropschedule.data!
                                             .where((element) =>
                                                 element.field!.first.id ==
-                                                currentField)
+                                                currentFieldId)
                                             .toList();
                                         debugPrint(currentFieldId.toString());
                                         debugPrint(filtereddata.toString());
@@ -453,8 +453,11 @@ class _TasksState extends State<Tasks> {
                                 width: 10,
                               ),
                               Text(
-                                cropschedule
-                                    .data!.first.cropProgram!.first.crop!,
+                                cropschedule.data!
+                                    .elementAt(index)
+                                    .cropProgram!
+                                    .first
+                                    .crop!,
                                 // cropschedule.data!
                                 //     .elementAt(index)
                                 //     .cropProgram!
