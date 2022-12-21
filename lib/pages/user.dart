@@ -98,7 +98,7 @@ Future<String> addNewUser(Map<String, String> updata) async {
     print(response.body);
     // _requestuserrefresh.add(true);
 
-    return 'null';
+    return "null";
   } else {
     return 'throw (Exception("Search Error"))';
   }
@@ -542,16 +542,16 @@ buildPin(context) {
                               if (isValid!) {
                                 print(email);
                                 print(roleIndex);
-                                // Flushbar(
-                                //   duration: const Duration(seconds: 2),
-                                //   message: "New User Added Successfully",
-                                // ).show(context);
 
                                 addUser();
                                 _requestuserrefresh.add(true);
                                 // fetchNotRegisteredUsers();
                                 Navigator.pop(context);
                                 // Navigator.popAndPushNamed(context, "/user");
+                                Flushbar(
+                                  duration: const Duration(seconds: 2),
+                                  message: "New User Added Successfully",
+                                ).show(context);
                               } else {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),

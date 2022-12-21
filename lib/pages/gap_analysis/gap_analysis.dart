@@ -505,9 +505,8 @@ class _GapAnalysisState extends State<GapAnalysis> {
                               } catch (e) {
                                 print(e);
                               }
-
                               return SizedBox(
-                                height: screenSize.height * 0.63,
+                                height: screenSize.height * 0.64,
                                 child: ListView.separated(
                                   itemCount: gapData.data!.length,
                                   itemBuilder:
@@ -544,47 +543,10 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                             return Column(
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      20.0),
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
                                                   child: Column(
                                                     children: [
-                                                      // Row(
-                                                      //   crossAxisAlignment:
-                                                      //       CrossAxisAlignment.start,
-                                                      //   children: [
-                                                      //     Text(
-                                                      //       "1",
-                                                      //       style: TextStyle(
-                                                      //           fontSize: 16,
-                                                      //           color: Colors.black),
-                                                      //     ),
-                                                      //     SizedBox(
-                                                      //       width: 20,
-                                                      //     ),
-                                                      //     // Column(
-                                                      //     //   children: [
-                                                      //     //     SizedBox(
-                                                      //     //       width: MediaQuery.of(
-                                                      //     //                   context)
-                                                      //     //               .size
-                                                      //     //               .width *
-                                                      //     //           0.75,
-                                                      //     //       child: Text(
-                                                      //     //         questionlist[index],
-                                                      //     //         maxLines: 2,
-                                                      //     //         style: TextStyle(
-                                                      //     //             fontSize: 16,
-                                                      //     //             color: Colors
-                                                      //     //                 .black),
-                                                      //     //       ),
-                                                      //     //     )
-                                                      //     //   ],
-                                                      //     // ),
-                                                      //   ],
-                                                      // ),
-                                                      SizedBox(
-                                                        height: 22,
-                                                      ),
                                                       // gapQuestion.data!
                                                       //             .elementAt(index)
                                                       //             .options ==
@@ -669,9 +631,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                                       //         ],
                                                       //       )
                                                       //     : Text(""),
-                                                      // SizedBox(
-                                                      //   height: 18,
-                                                      // ),
+
                                                       // Row(
                                                       //   crossAxisAlignment:
                                                       //       CrossAxisAlignment.end,
@@ -695,9 +655,7 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                                       //             ),
                                                       //           )
                                                       //         : Text(""),
-                                                      //     SizedBox(
-                                                      //       width: 30,
-                                                      //     ),
+
                                                       //     Column(
                                                       //       children: [
                                                       //         SizedBox(
@@ -713,15 +671,13 @@ class _GapAnalysisState extends State<GapAnalysis> {
                                                       //             : Text(""),
                                                       //       ],
                                                       //     ),
-                                                      //   ],
-                                                      // )
                                                     ],
                                                   ),
                                                 ),
                                                 QuestionDesign(
                                                     sentence:
                                                         questionlist[index],
-                                                    number: "${index + 1}"),
+                                                    number: "${index + 1})"),
                                               ],
                                             );
                                           },

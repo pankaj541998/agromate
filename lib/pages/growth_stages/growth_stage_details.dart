@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/pages/growth_stages/crop_program_model.dart';
@@ -307,23 +308,36 @@ class _GrowthStageDetailsState extends State<GrowthStageDetails> {
                                             });
                                             Navigator.pop(context);
                                             setState(() {});
-                                            ScaffoldMessenger.of(context)
-                                                .clearSnackBars();
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        "Successfully added growth stage")));
+                                            Flushbar(
+                                              duration: Duration(seconds: 2),
+                                              message:
+                                                  "Successfully added growth stage",
+                                            );
+                                            // ScaffoldMessenger.of(context)
+                                            //     .clearSnackBars();
+                                            // ScaffoldMessenger.of(context)
+                                            //     .showSnackBar(
+                                            //   SnackBar(
+                                            //     content: Text(
+                                            //         "Successfully added growth stage"),
+                                            //   ),
+                                            //  );
                                           } else {
                                             setDdState(() {
                                               showSubmitBtn = true;
                                               showSubmitBtnLoader = false;
                                             });
-                                            ScaffoldMessenger.of(context)
-                                                .clearSnackBars();
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        "Successfully added growth stage")));
+                                            Flushbar(
+                                              duration: Duration(seconds: 2),
+                                              message:
+                                                  "Successfully added growth stage",
+                                            );
+                                            // ScaffoldMessenger.of(context)
+                                            //     .clearSnackBars();
+                                            // ScaffoldMessenger.of(context)
+                                            //     .showSnackBar(SnackBar(
+                                            //         content: Text(
+                                            //             "Successfully added growth stage")));
                                           }
                                         });
                                       },

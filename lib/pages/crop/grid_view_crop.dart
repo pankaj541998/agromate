@@ -160,23 +160,20 @@ class _CropState extends State<Crop> {
                                       SizedBox(
                                         width: 20,
                                       ),
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: CircleAvatar(
-                                          radius: 35,
-                                          child: _pickedImage == null
-                                              ? Image.asset(
-                                                  "assets/images/Group6740.png")
-                                              : kIsWeb
-                                                  ? Image.memory(
-                                                      webImage,
-                                                      fit: BoxFit.fill,
-                                                    )
-                                                  : Image.file(
-                                                      _pickedImage!,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                        ),
+                                      CircleAvatar(
+                                        radius: 35,
+                                        child: _pickedImage == null
+                                            ? Image.asset(
+                                                "assets/images/Group6740.png")
+                                            : kIsWeb
+                                                ? Image.memory(
+                                                    webImage,
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                : Image.file(
+                                                    _pickedImage!,
+                                                    fit: BoxFit.fill,
+                                                  ),
                                       ),
                                       SizedBox(
                                         width: 10,

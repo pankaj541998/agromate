@@ -351,6 +351,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               // _moderefresh.add(true);
                               await addMode();
                               fetchModes();
+
                               Navigator.pop(context);
                             } else {
                               Flushbar(
