@@ -879,32 +879,38 @@ class QuestionDesign extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                  height: 30,
-                  width: 140,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(color: Color(0xFF327C04)),
-                      ))),
+                height: 30,
+                width: 140,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Yes",
+                    style: TextStyle(
+                      color: Color(0xFF327C04),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(
                 width: 40,
               ),
               SizedBox(
-                  height: 30,
-                  width: 140,
-                  child: OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(width: 1, color: Color(0xFF327C04)),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "No",
-                        style: TextStyle(color: Color(0xFF327C04)),
-                      ))),
+                height: 30,
+                width: 140,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(width: 1, color: Color(0xFF327C04)),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: Color(0xFF327C04)),
+                  ),
+                ),
+              ),
               SizedBox(
                 width: 40,
               ),
