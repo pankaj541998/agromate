@@ -94,11 +94,14 @@ class _TasksState extends State<Tasks> {
     futureGroup.add(FarmApiMethods.fetchFarms());
     futureGroup.add(BlockApiMethods.fetchBlocks());
     futureGroup.add(FieldApiMethods.fetchFields());
+    fetchCropSchedule();
+
     futureGroup.close();
   }
 
   @override
   Widget build(BuildContext context) {
+
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -372,9 +375,12 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  Widget _buildgridview(
-    context,
-  ) {
+  Widget _buildgridview(context,) {
+
+    if(currentLandholder == ''|| currentLandholder == null){
+      filtereddata = [];
+      filtereddata = cropschedule.data as List;
+    }
     BuildContext? contextnew;
     contextnew = scaffoldkey.currentContext;
     return GridView.builder(
