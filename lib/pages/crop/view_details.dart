@@ -1,25 +1,21 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'dart:convert';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
+import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/text_Input_field.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-
 import 'package:flutter_agro_new/models/CropProgramTasksModel.dart';
 import 'package:flutter_agro_new/pages/crop/Repository/CropProgramViaDioAPI.dart';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../database_api/methods/gap_question_api_method.dart';
+import '../../models/gap.dart';
 
-import '../../models/cropPorgramModel.dart';
-
-final GlobalKey<FormState> _form = GlobalKey<FormState>();
+final GlobalKey<FormState> form = GlobalKey<FormState>();
 
 late CropProgramTasks cropdata;
 
@@ -64,6 +60,28 @@ var productdescription = [
   "product description 6"
 ];
 
+String AddGapQuestionSelected = 'Select product description';
+var AddGapQuestion = [
+  'Select Gap Question',
+  'Gap Question 1',
+  'Gap Question 2',
+  'Gap Question 3',
+  "Gap Question 4",
+  "Gap Question 5",
+  "Gap Question 6"
+];
+
+String WeeksSelected = 'Select product description';
+var Weeks = [
+  'Select Weeks',
+  'Weeks 1',
+  'Weeks 2',
+  'Weeks 3',
+  "Weeks 4",
+  "Weeks 5",
+  "Weeks 6"
+];
+
 class ViewDetails extends StatefulWidget {
   ViewDetails({Key? key, this.weeks, this.id}) : super(key: key);
 
@@ -88,6 +106,21 @@ class _ViewDetailsState extends State<ViewDetails> {
   TextEditingController quantityTextEditingController = TextEditingController();
   bool sort = true;
   List<SampleData>? filterData;
+  late final Future myGapCat;
+  String? currentgapCat;
+  int? currentGapCatId;
+  String? currentGapCat;
+  List<String> gap_cat = [];
+
+  // bool _isonce = true;
+  // setValues() {
+  //   if (_isonce) {
+  //     for (var i = 0; i < gapData.data!.length; i++) {
+  //       gap_cat.add(gapData.data![i].gapCategory!);
+  //     }
+  //     _isonce = false;
+  //   }
+  // }
 
   onsortColum(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
@@ -154,6 +187,7 @@ class _ViewDetailsState extends State<ViewDetails> {
   void initState() {
     filterData = myData;
     super.initState();
+    myGapCat = GapCatAPI.fetchgapcat();
     fetchCropProgram(widget.id);
     generateListForweeks();
   }
@@ -169,7 +203,7 @@ class _ViewDetailsState extends State<ViewDetails> {
       builder: (context) => StatefulBuilder(
         builder: (context, setState) {
           return Form(
-            key: _form,
+            key: form,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -900,8 +934,7 @@ class _ViewDetailsState extends State<ViewDetails> {
                               child: CustomElevatedButton(
                                 onPressed: () {
                                   fetchCropProgram(widget.id);
-                                  final isValid =
-                                      _form.currentState?.validate();
+                                  final isValid = form.currentState?.validate();
                                   debugPrint(WeekSelected);
                                   debugPrint(StatusSelected);
                                   debugPrint(CategorySelected);
@@ -1130,6 +1163,328 @@ class _ViewDetailsState extends State<ViewDetails> {
         },
       ),
     );
+  }
+
+  bool check8 = false;
+  bool check9 = false;
+  bool check10 = false;
+  bool check11 = false;
+
+  buildPinAlert() {
+    return showDialog(
+        context: context, builder: (context) => buildbody(context));
+  }
+
+  Widget buildbody(context) {
+    return StatefulBuilder(builder: (context, setState) {
+      return FutureBuilder(
+          future: myGapCat,
+          builder: (ctx, snapshot) {
+            if (snapshot.data == null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.45,
+                  ),
+                  Center(child: CircularProgressIndicator()),
+                ],
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              // setValues();
+              print("data from rsp ${snapshot.data}");
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    '${snapshot.error} occured',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                );
+              }
+            }
+            var data = snapshot.data!;
+
+            var fetchedcategorylist = data as List<GapQuestionListModel>;
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AlertDialog(
+                  insetPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "GAP Analysis",
+                        style: TextStyle(
+                            fontSize: 27, fontWeight: FontWeight.bold),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.cancel_outlined,
+                          color: Color(0xFF4E944F),
+                        ),
+                      )
+                    ],
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Category",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: DropdownBtn(
+                                          items: fetchedcategorylist.map((e) {
+                                            return e.gapCategory.toString();
+                                          }).toList(),
+                                          hint: 'Select GAP Category',
+                                          onItemSelected: (value) async {
+                                            setState(() {
+                                              currentGapCat = value;
+                                              currentGapCatId =
+                                                  fetchedcategorylist
+                                                      .singleWhere((element) =>
+                                                          element.gapCategory ==
+                                                          currentGapCat)
+                                                      .id;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Weeks",
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      SizedBox(
+                                        height: 40,
+                                        width: 300,
+                                        child: DropdownButtonFormField(
+                                          hint: Text("Select Weeks"),
+                                          focusColor: Colors.white,
+                                          isExpanded: true,
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.only(
+                                                left: 10, top: 10, right: 10),
+                                            fillColor: Colors.white,
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                  color: Color(0xFF327C04)),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                  color: Color(0xFF327C04)),
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF327C04),
+                                                width: 5.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          items: wee.map((String val) {
+                                            return DropdownMenuItem(
+                                              enabled: true,
+                                              value: val,
+                                              child: Text(
+                                                val,
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              WeekSelected;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 24,
+                              ),
+                              Row(
+                                children: [
+                                  Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor:
+                                            Color(0xFF4E944F)),
+                                    child: Checkbox(
+                                      activeColor: const Color(0xFF4E944F),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0))),
+                                      value: check8,
+                                      onChanged: (bool? check) {
+                                        setState(() {
+                                          this.check8 = check!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Crop production areas are not located near  or adjacent to diary, livestock, or \n fowl production facilities  unless adequate  barriers exists.",
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                children: [
+                                  Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor:
+                                            Color(0xFF4E944F)),
+                                    child: Checkbox(
+                                      activeColor: const Color(0xFF4E944F),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0))),
+                                      value: check9,
+                                      onChanged: (bool? check) {
+                                        setState(() {
+                                          this.check9 = check!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Crop production areas are not located near  or adjacent to diary, livestock, or \n fowl production facilities  unless adequate  barriers exists.",
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                children: [
+                                  Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor:
+                                            Color(0xFF4E944F)),
+                                    child: Checkbox(
+                                      activeColor: const Color(0xFF4E944F),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0))),
+                                      value: check10,
+                                      onChanged: (bool? check) {
+                                        setState(() {
+                                          this.check10 = check!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Crop production areas are not located near  or adjacent to diary, livestock, or \n fowl production facilities  unless adequate  barriers exists.",
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Row(
+                                children: [
+                                  Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor:
+                                            Color(0xFF4E944F)),
+                                    child: Checkbox(
+                                      activeColor: const Color(0xFF4E944F),
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5.0))),
+                                      value: check11,
+                                      onChanged: (bool? check) {
+                                        setState(() {
+                                          this.check11 = check!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Crop production areas are not located near  or adjacent to diary, livestock, or \n fowl production facilities  unless adequate  barriers exists.",
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 170,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0XFF327C04),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("ADD"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          });
+    });
   }
 
   Widget _buildgridview(context, weeks, List<Data> data, id) {
@@ -1555,6 +1910,46 @@ class _ViewDetailsState extends State<ViewDetails> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              height: 42,
+                              width: 125,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      const Color(0XFF327C04),
+                                    ),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    buildPinAlert();
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Color(0xffffffff),
+                                        size: 20,
+                                      ),
+                                      Text(
+                                        "ADD GAP",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xffffffff)),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
                             InkWell(
                               onTap: () {
                                 buildPin();
