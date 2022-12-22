@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
@@ -20,8 +20,44 @@ class StockPlanner extends StatefulWidget {
 
 class _StockPlannerState extends State<StockPlanner> {
   final TextEditingController _date = TextEditingController();
+  final TextEditingController PlannerDateTextEditingController =
+      TextEditingController();
   final format = DateFormat("dd-MM-yyyy");
   String questionsSelected = 'Select Your Question *';
+
+  Future<String> addGapAPI(currentGapCatId) async {
+    final _chuckerHttpClient = await http.Client();
+    final http.Response response = await http.post(
+        Uri.parse("https://agromate.website/laravel/api/gap_analysis"),
+        body: {
+          // "warehouse_id": ,
+          // "end_date": ,
+          // "stock_name": ,
+          // "quantity":
+        });
+    print("api resp is ${response.body}");
+    if (response.statusCode == 200) {
+      return 'null';
+    } else {
+      return throw (Exception("Search Error"));
+    }
+  }
+
+  late String _selectedValue;
+  List<String> listOfValue = [
+    'Warehouse 1',
+    'Warehouse 2',
+    'Warehouse 3',
+    'Warehouse 4',
+  ];
+  late String _selectedValue1;
+  List<String> listOfValue1 = [
+    'Stock 1',
+    'Stock 2',
+    'Stock 3',
+    'Stock 4',
+  ];
+
   var questions = [
     'Select Your Question *',
     'Question 1',
@@ -106,75 +142,49 @@ class _StockPlannerState extends State<StockPlanner> {
                                   ),
                                 ),
                                 const SizedBox(height: 15),
-                                TextFormField(
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
+                                SizedBox(
+                                  height: 40,
+                                  child: DropdownButtonFormField(
+                                    hint: Text("Select Warehouse"),
+                                    focusColor: Colors.white,
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10, top: 10, right: 10),
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF327C04),
+                                          width: 5.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    items: listOfValue.map((String val) {
+                                      return DropdownMenuItem(
+                                        enabled: true,
+                                        value: val,
+                                        child: Text(
+                                          val,
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedValue;
+                                      });
+                                    },
                                   ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Enter Warehouse",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
                                 ),
                               ],
                             ),
@@ -197,6 +207,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                 ),
                                 const SizedBox(height: 15),
                                 DateTimeField(
+                                  controller: PlannerDateTextEditingController,
                                   cursorColor: const Color(0xff000000),
                                   decoration: InputDecoration(
                                     errorMaxLines: 3,
@@ -264,7 +275,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                           DateTime.now().subtract(
                                               const Duration(days: 4745)),
                                       // lastDate: DateTime(2100));
-                                      lastDate: DateTime.now(),
+                                      lastDate: DateTime(2025),
                                       builder: (BuildContext context,
                                           Widget? child) {
                                         return Theme(
@@ -319,75 +330,49 @@ class _StockPlannerState extends State<StockPlanner> {
                                   ),
                                 ),
                                 const SizedBox(height: 15),
-                                TextFormField(
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
+                                SizedBox(
+                                  height: 40,
+                                  child: DropdownButtonFormField(
+                                    hint: Text("Select Name"),
+                                    focusColor: Colors.white,
+                                    isExpanded: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(
+                                          left: 10, top: 10, right: 10),
+                                      fillColor: Colors.white,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: const BorderSide(
+                                            color: Color(0xFF327C04)),
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFF327C04),
+                                          width: 5.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    items: listOfValue1.map((String val) {
+                                      return DropdownMenuItem(
+                                        enabled: true,
+                                        value: val,
+                                        child: Text(
+                                          val,
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedValue1;
+                                      });
+                                    },
                                   ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Enter Stock Name",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
                                 ),
                               ],
                             ),
