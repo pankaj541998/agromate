@@ -87,8 +87,8 @@ var Area = ['Hectare', 'Acre'];
 //   'field 4',
 // ];
 final GlobalKey<FormState> _Form = GlobalKey<FormState>();
-Future<String> addCropSchedule(
-    selectedFarmId, selectedBlockId, selectedFieldId, selectedCropId) async {
+Future<String> addCropSchedule(selectedFarmId, selectedBlockId, selectedFieldId,
+    selectedCropId, UnitSelected, AreaSelected) async {
   debugPrint("reached");
   Map updata = {
     "farm_id": selectedFarmId.toString(),
@@ -100,19 +100,21 @@ Future<String> addCropSchedule(
     "start_date": StartDateTextEditingController.text,
     "expected_end_date": ExpectedEndDateTextEditingController.text,
     "area": AreaTextEditingController.text,
-    "expected_yield": ExpectedYieldTextEditingController.text,
-    "expected_revenue": ExpectedRevenueTextEditingController.text,
+    "unit": AreaSelected.toString(),
+    "unit_value": ExpectedYieldTextEditingController.text,
+    "currency": UnitSelected.toString(),
+    "currency_value": ExpectedRevenueTextEditingController.text,
     "harvest_days": HarvestTextEditingController.text,
   };
-  return await addaddCropScheduleAPI(updata);
+  return await addCropScheduleAPI(updata);
 }
 
-Future<String> addaddCropScheduleAPI(Map updata) async {
+Future<String> addCropScheduleAPI(Map updata) async {
   final _chuckerHttpClient = await http.Client();
   print(updata);
   final prefs = await SharedPreferences.getInstance();
   http.Response response = await _chuckerHttpClient.post(
-    Uri.parse("https://agromate.website/laravel/api/plan"),
+    Uri.parse("https://agromate.website/laravel/api/add_plan"),
     body: updata,
   );
   print(response.body);
@@ -1306,7 +1308,11 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           debugPrint(CultivarTextEditingController.text);
                           debugPrint(StartDateTextEditingController.text);
                           debugPrint(ExpectedEndDateTextEditingController.text);
+                          debugPrint(AreaSelected.toString());
+
                           debugPrint(AreaTextEditingController.text);
+                          debugPrint(UnitSelected.toString());
+
                           debugPrint(ExpectedYieldTextEditingController.text);
                           debugPrint(ExpectedRevenueTextEditingController.text);
                           debugPrint(HarvestTextEditingController.text);
@@ -1315,16 +1321,18 @@ class _AddCropPlanState extends State<AddCropPlan> {
                           if (isValid!) {
                             setState(() {
                               addCropSchedule(
-                                      currentFarmId.toString(),
-                                      currentBlockId.toString(),
-                                      currentFieldId.toString(),
-                                      currentCropId.toString())
-                                  .then((value) => Navigator.pushNamed(
-                                      context, '/crop_plan'));
+                                  currentFarmId.toString(),
+                                  currentBlockId.toString(),
+                                  currentFieldId.toString(),
+                                  currentCropId.toString(),
+                                  UnitSelected.toString(),
+                                  AreaSelected.toString());
+
                               Flushbar(
                                 duration: Duration(seconds: 3),
                                 message: "Crop Schedule Added Successfully",
                               );
+                              Navigator.pushNamed(context, '/crop_plan');
                             });
                           } else {
                             Flushbar(

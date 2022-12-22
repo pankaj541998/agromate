@@ -13,7 +13,7 @@ class CropScheduleModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -29,12 +29,14 @@ class CropScheduleData {
   String? cropReference;
   String? cropProgramId;
   String? caltivar;
-  int? farmerId;
+  Null? farmerId;
   String? startDate;
   String? expectedEndDate;
   String? area;
-  String? expectedYield;
-  String? expectedRevenue;
+  String? unit;
+  String? unitValue;
+  String? currency;
+  String? currencyValue;
   String? harvestDays;
   int? isActive;
   String? createdAt;
@@ -56,8 +58,10 @@ class CropScheduleData {
       this.startDate,
       this.expectedEndDate,
       this.area,
-      this.expectedYield,
-      this.expectedRevenue,
+      this.unit,
+      this.unitValue,
+      this.currency,
+      this.currencyValue,
       this.harvestDays,
       this.isActive,
       this.createdAt,
@@ -79,8 +83,10 @@ class CropScheduleData {
     startDate = json['start_date'];
     expectedEndDate = json['expected_end_date'];
     area = json['area'];
-    expectedYield = json['expected_yield'];
-    expectedRevenue = json['expected_revenue'];
+    unit = json['unit'];
+    unitValue = json['unit_value'];
+    currency = json['currency'];
+    currencyValue = json['currency_value'];
     harvestDays = json['harvest_days'];
     isActive = json['is_active'];
     createdAt = json['created_at'];
@@ -88,31 +94,31 @@ class CropScheduleData {
     if (json['farm'] != null) {
       farm = <Farm>[];
       json['farm'].forEach((v) {
-        farm!.add(Farm.fromJson(v));
+        farm!.add(new Farm.fromJson(v));
       });
     }
     if (json['block'] != null) {
       block = <Block>[];
       json['block'].forEach((v) {
-        block!.add(Block.fromJson(v));
+        block!.add(new Block.fromJson(v));
       });
     }
     if (json['field'] != null) {
       field = <Field>[];
       json['field'].forEach((v) {
-        field!.add(Field.fromJson(v));
+        field!.add(new Field.fromJson(v));
       });
     }
     if (json['crop_program'] != null) {
       cropProgram = <CropProgram>[];
       json['crop_program'].forEach((v) {
-        cropProgram!.add(CropProgram.fromJson(v));
+        cropProgram!.add(new CropProgram.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['farm_id'] = this.farmId;
     data['block_id'] = this.blockId;
@@ -124,8 +130,10 @@ class CropScheduleData {
     data['start_date'] = this.startDate;
     data['expected_end_date'] = this.expectedEndDate;
     data['area'] = this.area;
-    data['expected_yield'] = this.expectedYield;
-    data['expected_revenue'] = this.expectedRevenue;
+    data['unit'] = this.unit;
+    data['unit_value'] = this.unitValue;
+    data['currency'] = this.currency;
+    data['currency_value'] = this.currencyValue;
     data['harvest_days'] = this.harvestDays;
     data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
@@ -178,7 +186,7 @@ class Farm {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['landholder_id'] = this.landholderId;
     data['farm'] = this.farm;
@@ -296,9 +304,13 @@ class Field {
 class CropProgram {
   int? id;
   String? crop;
+  String? cropSeasonDescription;
   String? population;
-  String? yield;
+  String? unitValue;
+  String? unit;
   String? weeks;
+  String? days;
+  Null? filePath;
   int? isActive;
   String? createdAt;
   String? updatedAt;
@@ -306,9 +318,13 @@ class CropProgram {
   CropProgram(
       {this.id,
       this.crop,
+      this.cropSeasonDescription,
       this.population,
-      this.yield,
+      this.unitValue,
+      this.unit,
       this.weeks,
+      this.days,
+      this.filePath,
       this.isActive,
       this.createdAt,
       this.updatedAt});
@@ -316,9 +332,13 @@ class CropProgram {
   CropProgram.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     crop = json['crop'];
+    cropSeasonDescription = json['crop_season_description'];
     population = json['population'];
-    yield = json['yield'];
+    unitValue = json['unit_value'];
+    unit = json['unit'];
     weeks = json['weeks'];
+    days = json['days'];
+    filePath = json['file_path'];
     isActive = json['is_active'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -328,9 +348,13 @@ class CropProgram {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['crop'] = this.crop;
+    data['crop_season_description'] = this.cropSeasonDescription;
     data['population'] = this.population;
-    data['yield'] = this.yield;
+    data['unit_value'] = this.unitValue;
+    data['unit'] = this.unit;
     data['weeks'] = this.weeks;
+    data['days'] = this.days;
+    data['file_path'] = this.filePath;
     data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
