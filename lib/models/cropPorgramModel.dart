@@ -24,27 +24,42 @@ class CropProgramModel {
 class ProgData {
   int? id;
   String? crop;
+  String? cropSeasonDescription;
   String? population;
-  String? yield;
+  String? unitValue;
+  String? unit;
   String? weeks;
+  String? days;
+  String? filePath;
+  int? isActive;
   String? createdAt;
   String? updatedAt;
 
   ProgData(
       {this.id,
       this.crop,
+      this.cropSeasonDescription,
       this.population,
-      this.yield,
+      this.unitValue,
+      this.unit,
       this.weeks,
+      this.days,
+      this.filePath,
+      this.isActive,
       this.createdAt,
       this.updatedAt});
 
   ProgData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     crop = json['crop'];
+    cropSeasonDescription = json['crop_season_description'];
     population = json['population'];
-    yield = json['yield'];
+    unitValue = json['unit_value'];
+    unit = json['unit'];
     weeks = json['weeks'];
+    days = json['days'];
+    filePath = json['file_path'];
+    isActive = json['is_active'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -53,9 +68,14 @@ class ProgData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['crop'] = this.crop;
+    data['crop_season_description'] = this.cropSeasonDescription;
     data['population'] = this.population;
-    data['yield'] = this.yield;
+    data['unit_value'] = this.unitValue;
+    data['unit'] = this.unit;
     data['weeks'] = this.weeks;
+    data['days'] = this.days;
+    data['file_path'] = this.filePath;
+    data['is_active'] = this.isActive;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

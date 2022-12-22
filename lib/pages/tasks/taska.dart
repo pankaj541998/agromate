@@ -94,11 +94,14 @@ class _TasksState extends State<Tasks> {
     futureGroup.add(FarmApiMethods.fetchFarms());
     futureGroup.add(BlockApiMethods.fetchBlocks());
     futureGroup.add(FieldApiMethods.fetchFields());
+    fetchCropSchedule();
+
     futureGroup.close();
   }
 
   @override
   Widget build(BuildContext context) {
+
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -321,7 +324,7 @@ class _TasksState extends State<Tasks> {
                                         filtereddata = cropschedule.data!
                                             .where((element) =>
                                                 element.field!.first.id ==
-                                                currentField)
+                                                currentFieldId)
                                             .toList();
                                         debugPrint(currentFieldId.toString());
                                         debugPrint(filtereddata.toString());
@@ -372,9 +375,12 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  Widget _buildgridview(
-    context,
-  ) {
+  Widget _buildgridview(context,) {
+
+    if(currentLandholder == ''|| currentLandholder == null){
+      filtereddata = [];
+      filtereddata = cropschedule.data as List;
+    }
     BuildContext? contextnew;
     contextnew = scaffoldkey.currentContext;
     return GridView.builder(
@@ -453,8 +459,11 @@ class _TasksState extends State<Tasks> {
                                 width: 10,
                               ),
                               Text(
-                                cropschedule
-                                    .data!.first.cropProgram!.first.crop!,
+                                cropschedule.data!
+                                    .elementAt(index)
+                                    .cropProgram!
+                                    .first
+                                    .crop!,
                                 // cropschedule.data!
                                 //     .elementAt(index)
                                 //     .cropProgram!

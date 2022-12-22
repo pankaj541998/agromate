@@ -79,14 +79,12 @@ class _CropState extends State<Crop> {
     }
   }
 
-
   @override
   void initState() {
     gridharvestTextEditingController.text = "14";
     super.initState();
     fetchCropProgram();
   }
-
 
   late String _selectedValue;
   List<String> listOfValue = [
@@ -901,7 +899,7 @@ class _CropState extends State<Crop> {
                           ),
                         ),
                         Text(
-                          cropdata.data!.elementAt(index).yield!,
+                          cropdata.data!.elementAt(index).unitValue!,
                           style: TextStyle(fontSize: 14),
                         ),
                       ],

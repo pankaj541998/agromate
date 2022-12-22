@@ -915,7 +915,7 @@ DataRow recentFileDataRow(ProgData data, context, int index) {
           alignment: Alignment.center,
           child: Text(data.population.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.yield.toString()))),
+          alignment: Alignment.center, child: Text(data.unitValue.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.weeks.toString()))),
       DataCell(Align(
