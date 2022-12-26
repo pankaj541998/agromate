@@ -350,6 +350,11 @@ class _AddCropPlanState extends State<AddCropPlan> {
                                                 element.fieldName ==
                                                 currentField)
                                             .id;
+                                        // CropReferenceTextEditingController
+                                        //         .text =
+                                        //     currentFarm.toString()+ " - " +
+                                        //         currentBlock.toString() + " - " +
+                                        //         currentField.toString();
                                       });
                                       debugPrint(currentField.toString());
                                       debugPrint(currentFieldId.toString());

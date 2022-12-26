@@ -7,7 +7,7 @@ class CropScheduleModel {
     if (json['data'] != null) {
       data = <CropScheduleData>[];
       json['data'].forEach((v) {
-        data!.add(CropScheduleData.fromJson(v));
+        data!.add(new CropScheduleData.fromJson(v));
       });
     }
   }
@@ -34,7 +34,7 @@ class CropScheduleData {
   String? expectedEndDate;
   String? area;
   String? unit;
-  String? unitValue;
+  int? unitValue;
   String? currency;
   String? currencyValue;
   String? harvestDays;
@@ -306,7 +306,7 @@ class CropProgram {
   String? crop;
   String? cropSeasonDescription;
   String? population;
-  String? unitValue;
+  int? unitValue;
   String? unit;
   String? weeks;
   String? days;
