@@ -824,7 +824,8 @@ class _CropState extends State<Crop> {
     );
   }
 
-  Widget _buildgridview(context, cropdata) {
+  Widget _buildgridview(context, CropProgramModel cropdata) {
+    // String url = cropdata.data!.elementAt(index).filePath!
     BuildContext? contextnew;
     contextnew = scaffoldkey.currentContext;
     return GridView.builder(
@@ -867,7 +868,9 @@ class _CropState extends State<Crop> {
                   children: [
                     Row(
                       children: [
-                        Image.asset('images/potato.png', width: 40),
+                        // Image.network(,
+                        //     width: 40),
+                        // Image.asset('images/potato.png', width: 40),
                         const SizedBox(width: 10),
                         Text(
                           cropdata.data!.elementAt(index).crop!,
@@ -906,7 +909,7 @@ class _CropState extends State<Crop> {
                           ),
                         ),
                         Text(
-                          cropdata.data!.elementAt(index).unitValue!,
+                          cropdata.data!.elementAt(index).unitValue!.toString(),
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
