@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
@@ -84,7 +85,8 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       TextEditingController();
   TextEditingController taskquantityTextEditingController =
       TextEditingController();
-  final StreamController<bool> weeklytaskcontroller = StreamController<bool>.broadcast();
+  final StreamController<bool> weeklytaskcontroller =
+      StreamController<bool>.broadcast();
   String WeekSelected = 'Week 1';
   var wee = [''];
 
@@ -108,11 +110,12 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   List<bool> expanded = [false, false];
   int selected = 0; //attention
   int subselected = 0; //attention
-  var taskid ;
+  var taskid;
 
-   addWeeklyTask(cropprogramid) async {
+  addWeeklyTask(cropprogramid) async {
     debugPrint("reached");
     Map<String, dynamic> updata = {
+      "crop_plan_id": widget.cropplanid.toString(),
       "cropprogramid": cropprogramid,
       "week": WeekSelected,
       "status": taskStatusSelected,
@@ -124,20 +127,24 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       "quantity": taskquantityTextEditingController.text,
       "unit": taskUnitsSelected
     };
-     addTaskAPI(updata);
+    addTaskAPI(updata);
   }
 
-   addTaskAPI(Map<String, dynamic> updata) async {
-    final _chuckerHttpClient = await http.Client();
+  addTaskAPI(Map<String, dynamic> updata) async {
+    final _chuckerHttpClient = http.Client();
     print(updata);
     final prefs = await SharedPreferences.getInstance();
     http.Response response = await _chuckerHttpClient.post(
-      Uri.parse("https://agromate.website/laravel/api/programtask"),
+      Uri.parse("https://agromate.website/laravel/api/add_task"),
       body: updata,
     );
     print(response.body);
     if (response.statusCode == 200) {
       print(response.body);
+      Flushbar(
+        duration: const Duration(seconds: 2),
+        message: "New Task Added Successfully",
+      ).show(context);
       return 'null';
     } else {
       return 'throw (Exception("Search Error"))';
@@ -1011,7 +1018,8 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                               width: 296,
                               child: CustomElevatedButton(
                                 onPressed: () async {
-                                  final isValid = _form.currentState?.validate();
+                                  final isValid =
+                                      _form.currentState?.validate();
                                   debugPrint(WeekSelected);
                                   debugPrint(taskStatusSelected);
                                   debugPrint(CategorySelected);
@@ -1034,7 +1042,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                     //       Navigator.pushNamed(
                                     //           context, '/table_view_crop'));
                                     // });
-                                    await addWeeklyTask(taskid);
+                                    addWeeklyTask(taskid);
                                     weeklytaskcontroller.add(true);
                                     Navigator.pop(context);
                                   } else {
@@ -1185,41 +1193,42 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.6,
                     child: StreamBuilder<bool>(
-                      stream: weeklytaskcontroller.stream,
-                      builder: (context, snapshot) {
-                        return FutureBuilder(
-                          future: getCropProgramData().getSecurityQuestions(
-                              int.parse(widget.id!)), //fetchCropProgram(1),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.data == null) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.45,
-                                  ),
-                                  Center(child: CircularProgressIndicator()),
-                                ],
-                              );
-                            }
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text(
-                                    '${snapshot.error} occured',
-                                    style: TextStyle(fontSize: 18),
-                                  ),
+                        stream: weeklytaskcontroller.stream,
+                        builder: (context, snapshot) {
+                          return FutureBuilder(
+                            future: getCropProgramData().getSecurityQuestions(
+                                int.parse(widget.id!)), //fetchCropProgram(1),
+                            builder: (ctx, snapshot) {
+                              if (snapshot.data == null) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.45,
+                                    ),
+                                    Center(child: CircularProgressIndicator()),
+                                  ],
                                 );
                               }
-                            }
-                            return _buildgridview(context, widget.weeks,
-                                diocropdata.data!, widget.id);
-                          },
-                        );
-                      }
-                    ),
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasError) {
+                                  return Center(
+                                    child: Text(
+                                      '${snapshot.error} occured',
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  );
+                                }
+                              }
+                              return _buildgridview(context, widget.weeks,
+                                  diocropdata.data!, widget.id);
+                            },
+                          );
+                        }),
                   ),
                 ),
               ],
