@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
@@ -114,6 +115,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   addWeeklyTask(cropprogramid) async {
     debugPrint("reached");
     Map<String, dynamic> updata = {
+      "crop_plan_id": widget.cropplanid.toString(),
       "cropprogramid": cropprogramid,
       "week": WeekSelected,
       "status": taskStatusSelected,
@@ -129,16 +131,22 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   }
 
   addTaskAPI(Map<String, dynamic> updata) async {
+
     final _chuckerHttpClient = await http.Client();
     print(updata);
     final prefs = await SharedPreferences.getInstance();
     http.Response response = await _chuckerHttpClient.post(
       Uri.parse(" https://agromate.website/laravel/api/add_task"),
+
       body: updata,
     );
     print(response.body);
     if (response.statusCode == 200) {
       print(response.body);
+      Flushbar(
+        duration: const Duration(seconds: 2),
+        message: "New Task Added Successfully",
+      ).show(context);
       return 'null';
     } else {
       return 'throw (Exception("Search Error"))';
@@ -1036,7 +1044,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                     //       Navigator.pushNamed(
                                     //           context, '/table_view_crop'));
                                     // });
-                                    await addWeeklyTask(taskid);
+                                    addWeeklyTask(taskid);
                                     weeklytaskcontroller.add(true);
                                     Navigator.pop(context);
                                   } else {

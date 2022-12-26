@@ -1212,7 +1212,6 @@ class _ViewDetailsState extends State<ViewDetails> {
               }
             }
             var data = snapshot.data!;
-
             var fetchedcategorylist = data as List<GapQuestionListModel>;
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
