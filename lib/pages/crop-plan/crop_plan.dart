@@ -521,9 +521,8 @@ DataRow recentFileDataRow(CropScheduleData data, int index) {
           child: Text(data.expectedEndDate.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.area.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.currencyValue.toString()))),
+      DataCell(
+          Align(alignment: Alignment.center, child: Text(data.toString()))),
       DataCell(Align(alignment: Alignment.center, child: Text(""))),
     ],
   );

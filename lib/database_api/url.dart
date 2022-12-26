@@ -26,4 +26,8 @@ class ApiUrl {
       "https://agromate.website/laravel/api/gap_analysis_data";
   static const getCategory =
       "https://agromate.website/laravel/api/gap_category_data";
+
+  // stock_planner
+  static const getWarehouse =
+      "https://agromate.website/laravel/api/fetch_warehouse";
 }
