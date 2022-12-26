@@ -180,35 +180,35 @@ class _CropPlanState extends State<CropPlan> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                StreamBuilder<requestResponseState>(
-                    stream: _schedulerefresh.stream,
-                    builder: (context, snapshot) {
-                      if (snapshot.data == requestResponseState.DataReceived) {
-                        if (snapshot.hasData) {
-                          fetchCropSchedule();
-                          return datatable(screenSize, context);
-                        }
-                      }
-                      return const Center(child: CircularProgressIndicator());
-                    }),
-                // FutureBuilder(
-                //   future: fetchCropSchedule(),
-                //   builder: (ctx, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.done) {
-                //       if (snapshot.hasData) {
-                //         return datatable(screenSize, context);
-                //       } else {
-                //         return Center(
-                //           child: Text(
-                //             '${snapshot.error} occured',
-                //             style: const TextStyle(fontSize: 18),
-                //           ),
-                //         );
+                // StreamBuilder<requestResponseState>(
+                //     stream: _schedulerefresh.stream,
+                //     builder: (context, snapshot) {
+                //       if (snapshot.data == requestResponseState.DataReceived) {
+                //         if (snapshot.hasData) {
+                //           fetchCropSchedule();
+                //           return datatable(screenSize, context);
+                //         }
                 //       }
-                //     }
-                //     return const Center(child: CircularProgressIndicator());
-                //   },
-                // ),
+                //       return const Center(child: CircularProgressIndicator());
+                //     }),
+                FutureBuilder(
+                  future: fetchCropSchedule(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return datatable(screenSize, context);
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ],
             ),
           ),
@@ -523,7 +523,7 @@ DataRow recentFileDataRow(CropScheduleData data, int index) {
           alignment: Alignment.center, child: Text(data.area.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.expectedYield.toString()))),
+          child: Text(data.currencyValue.toString()))),
       DataCell(Align(alignment: Alignment.center, child: Text(""))),
     ],
   );

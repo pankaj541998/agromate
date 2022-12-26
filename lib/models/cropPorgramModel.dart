@@ -26,11 +26,11 @@ class ProgData {
   String? crop;
   String? cropSeasonDescription;
   String? population;
-  String? unitValue;
+  int? unitValue;
   String? unit;
   String? weeks;
   String? days;
-  String? filePath;
+  Null? filePath;
   int? isActive;
   String? createdAt;
   String? updatedAt;

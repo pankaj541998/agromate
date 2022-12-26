@@ -20,11 +20,15 @@ import 'view_details.dart';
 
 late CropProgramModel cropdata;
 final cropTextEditingController = TextEditingController();
-final cropseasonTextEditingController = TextEditingController();
+final cropSeasonDescriptionTextEditingController = TextEditingController();
 final populationTextEditingController = TextEditingController();
-final yieldTextEditingController = TextEditingController();
+final unitTextEditingController = TextEditingController();
+final unitValueTextEditingController = TextEditingController();
 final weeksTextEditingController = TextEditingController();
-final harvestTextEditingController = TextEditingController();
+final harvestDaysTextEditingController = TextEditingController();
+
+String UnitSelected = 'Hectare';
+var Unit = ['Hectare', 'Acre'];
 
 class TableViewCrop extends StatefulWidget {
   const TableViewCrop({Key? key}) : super(key: key);
@@ -39,13 +43,13 @@ Future<String> addCropProgram() async {
   debugPrint("reached");
   Map<String, String> updata = {
     "crop": cropTextEditingController.text.toString(),
+    "crop_season_description":
+        cropSeasonDescriptionTextEditingController.text.toString(),
     "population": populationTextEditingController.text.toString(),
-    "yield": yieldTextEditingController.text.toString(),
+    "unit_value": unitValueTextEditingController.text.toString(),
+    "unit": UnitSelected.toString(),
     "weeks": weeksTextEditingController.text.toString(),
-    "cropseason": cropseasonTextEditingController.text.toString(),
-    "harvest": harvestTextEditingController.text.toString()
-    // "email": email.text.toString(),
-    // "role_type": '$roleIndex'
+    "days": harvestDaysTextEditingController.text.toString()
   };
   return await addNewCropProgram(updata);
 }
@@ -101,7 +105,7 @@ class _TableViewCropState extends State<TableViewCrop> {
 
   @override
   void initState() {
-    harvestTextEditingController.text = "14";
+    harvestDaysTextEditingController.text = "14";
     super.initState();
     fetchCropProgram();
   }
@@ -113,9 +117,6 @@ class _TableViewCropState extends State<TableViewCrop> {
     'Week 3',
     'Week 4',
   ];
-
-  String UnitSelected = 'Hectare';
-  var Unit = ['Hectare', 'Acre'];
 
   buildPin() {
     return showDialog(
@@ -294,7 +295,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                                 RegExp('[a-zA-Z ]')),
                                           ],
                                           textEditingController:
-                                              cropseasonTextEditingController,
+                                              cropSeasonDescriptionTextEditingController,
                                           hintText: "",
                                           validatorText: ""),
                                     ),
@@ -415,7 +416,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                                     .digitsOnly
                                               ],
                                               textEditingController:
-                                                  yieldTextEditingController,
+                                                  unitValueTextEditingController,
                                               hintText: "",
                                               validatorText: ""),
                                         ),
@@ -442,7 +443,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                                         width: 300,
                                         child: TextInputField(
                                           textEditingController:
-                                              harvestTextEditingController,
+                                              harvestDaysTextEditingController,
                                           hintText: "",
                                           validatorText: "",
                                         )),
@@ -524,7 +525,7 @@ class _TableViewCropState extends State<TableViewCrop> {
                           hoverColor: Colors.transparent,
                           splashColor: Colors.transparent,
                           onTap: () {
-                            harvestTextEditingController.clear();
+                            harvestDaysTextEditingController.clear();
                             Get.back();
                           }, // onTap: () => Get.back(),
                           child: const Icon(Icons.arrow_back_ios)),

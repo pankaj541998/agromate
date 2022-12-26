@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'dart:async';
+
 import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +22,8 @@ import '../../models/gap.dart';
 final GlobalKey<FormState> form = GlobalKey<FormState>();
 
 late CropProgramTasks cropdata;
+final StreamController<bool> weeklytaskcontroller =
+    StreamController<bool>.broadcast();
 
 String CategorySelected = 'Select Category';
 var categories = [
@@ -950,9 +956,10 @@ class _ViewDetailsState extends State<ViewDetails> {
                                   //  addTask();
                                   if (isValid!) {
                                     setState(() {
-                                      addTask(widget.id).then(
-                                        (value) => Navigator.pop(context),
-                                      );
+                                      addTask(widget.id);
+                                      Navigator.pop(context);
+                                      weeklytaskcontroller.add(true);
+
                                       Flushbar(
                                         duration: const Duration(seconds: 2),
                                         message: "New Task Added Successfully",
@@ -1172,10 +1179,10 @@ class _ViewDetailsState extends State<ViewDetails> {
 
   buildPinAlert() {
     return showDialog(
-        context: context, builder: (context) => buildbody(context));
+        context: context, builder: (context) => _buildbody(context));
   }
 
-  Widget buildbody(context) {
+  Widget _buildbody(context) {
     return StatefulBuilder(builder: (context, setState) {
       return FutureBuilder(
           future: myGapCat,
@@ -2071,36 +2078,42 @@ class _ViewDetailsState extends State<ViewDetails> {
             SizedBox(
               height: screenSize.height * 0.7,
               child: TabBarView(children: [
-                FutureBuilder(
-                  future: getCropProgramData().getSecurityQuestions(
-                      int.parse(widget.id!)), //fetchCropProgram(1),
-                  builder: (ctx, snapshot) {
-                    if (snapshot.data == null) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.45,
-                          ),
-                          Center(child: CircularProgressIndicator()),
-                        ],
+                StreamBuilder<bool>(
+                    stream: weeklytaskcontroller.stream,
+                    builder: (context, snapshot) {
+                      return FutureBuilder(
+                        future: getCropProgramData().getSecurityQuestions(
+                            int.parse(widget.id!)), //fetchCropProgram(1),
+                        builder: (ctx, snapshot) {
+                          if (snapshot.data == null) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.45,
+                                ),
+                                Center(child: CircularProgressIndicator()),
+                              ],
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occured',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              );
+                            }
+                          }
+                          return _buildgridview(context, widget.weeks,
+                              diocropdata.data!, widget.id);
+                        },
                       );
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text(
-                            '${snapshot.error} occured',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        );
-                      }
-                    }
-                    return _buildgridview(
-                        context, widget.weeks, diocropdata.data!, widget.id);
-                  },
-                ),
+                    }),
                 datatable(widget.weeks)
                 // FutureBuilder<CropProgramTasks>(
                 //   future: fetchCropProgram(widget.id),

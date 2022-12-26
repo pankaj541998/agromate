@@ -28,8 +28,15 @@ Future<CropProgramModel> fetchCropProgram() async {
       .get(Uri.parse('https://agromate.website/laravel/api/get/program'));
   final parsed = jsonDecode(response.body);
   // print(response.body);
-  cropdata = CropProgramModel.fromJson(parsed);
 
+  if (response.statusCode == 200) {
+    cropdata = CropProgramModel.fromJson(parsed);
+    return cropdata;
+  } else {
+    Center(
+      child: Text("Please Try Again After Some Time..."),
+    );
+  }
   return cropdata;
 }
 
@@ -98,9 +105,9 @@ class _CropState extends State<Crop> {
   bool imageclick = false;
   buildPin() {
     cropTextEditingController.clear();
-    cropseasonTextEditingController.clear();
+    cropSeasonDescriptionTextEditingController.clear();
     populationTextEditingController.clear();
-    yieldTextEditingController.clear();
+    unitValueTextEditingController.clear();
     weeksTextEditingController.clear();
 
     return showDialog(
@@ -332,7 +339,7 @@ class _CropState extends State<Crop> {
                                                               '[a-zA-Z ]')),
                                                     ],
                                                     textEditingController:
-                                                        cropseasonTextEditingController,
+                                                        cropSeasonDescriptionTextEditingController,
                                                     hintText: "",
                                                     validatorText:
                                                         "Please Enter Crop Season Description"),
@@ -484,7 +491,7 @@ class _CropState extends State<Crop> {
                                                               .digitsOnly
                                                         ],
                                                         textEditingController:
-                                                            yieldTextEditingController,
+                                                            unitValueTextEditingController,
                                                         hintText: "",
                                                         validatorText: ""),
                                                   ),
@@ -512,7 +519,7 @@ class _CropState extends State<Crop> {
                                                 width: 300,
                                                 child: TextInputField(
                                                   textEditingController:
-                                                      gridharvestTextEditingController,
+                                                      harvestDaysTextEditingController,
                                                   hintText: "",
                                                   validatorText: "",
                                                 ),
@@ -817,7 +824,8 @@ class _CropState extends State<Crop> {
     );
   }
 
-  Widget _buildgridview(context, cropdata) {
+  Widget _buildgridview(context, CropProgramModel cropdata) {
+    // String url = cropdata.data!.elementAt(index).filePath!
     BuildContext? contextnew;
     contextnew = scaffoldkey.currentContext;
     return GridView.builder(
@@ -860,7 +868,9 @@ class _CropState extends State<Crop> {
                   children: [
                     Row(
                       children: [
-                        Image.asset('images/potato.png', width: 40),
+                        // Image.network(,
+                        //     width: 40),
+                        // Image.asset('images/potato.png', width: 40),
                         const SizedBox(width: 10),
                         Text(
                           cropdata.data!.elementAt(index).crop!,
@@ -899,7 +909,7 @@ class _CropState extends State<Crop> {
                           ),
                         ),
                         Text(
-                          cropdata.data!.elementAt(index).unitValue!,
+                          cropdata.data!.elementAt(index).unitValue!.toString(),
                           style: TextStyle(fontSize: 14),
                         ),
                       ],

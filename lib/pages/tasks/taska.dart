@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/constants.dart';
 import 'package:flutter_agro_new/database_api/models/block.dart';
@@ -36,12 +37,26 @@ Future<CropProgramModel> fetchCropProgram() async {
 }
 
 Future<CropScheduleModel> fetchCropSchedule() async {
-  var client = http.Client();
-  final response = await client
-      .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
-  final parsed = jsonDecode(response.body);
-  // print("api call data ${response.body}");
-  cropschedule = CropScheduleModel.fromJson(parsed);
+  try {
+    var client = http.Client();
+    final response = await client
+        .get(Uri.parse('https://agromate.website/laravel/api/get/plan'));
+    if (response.statusCode == 200) {
+      final parsed = jsonDecode(response.body);
+      // print("api call data ${response.body}");
+      cropschedule = CropScheduleModel.fromJson(parsed);
+      return cropschedule;
+    } else {
+      Flushbar(
+        duration: const Duration(seconds: 2),
+        message: "Please Enter Username And Password",
+      );
+    }
+  } catch (e) {
+    Center(
+      child: Text("There was some error"),
+    );
+  }
 
   return cropschedule;
 }
@@ -101,7 +116,6 @@ class _TasksState extends State<Tasks> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -375,9 +389,10 @@ class _TasksState extends State<Tasks> {
     );
   }
 
-  Widget _buildgridview(context,) {
-
-    if(currentLandholder == ''|| currentLandholder == null){
+  Widget _buildgridview(
+    context,
+  ) {
+    if (currentLandholder == '' || currentLandholder == null) {
       filtereddata = [];
       filtereddata = cropschedule.data as List;
     }

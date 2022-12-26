@@ -131,11 +131,13 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   }
 
   addTaskAPI(Map<String, dynamic> updata) async {
-    final _chuckerHttpClient = http.Client();
+
+    final _chuckerHttpClient = await http.Client();
     print(updata);
     final prefs = await SharedPreferences.getInstance();
     http.Response response = await _chuckerHttpClient.post(
-      Uri.parse("https://agromate.website/laravel/api/add_task"),
+      Uri.parse(" https://agromate.website/laravel/api/add_task"),
+
       body: updata,
     );
     print(response.body);
