@@ -1,13 +1,13 @@
-class StockPlanModel {
-  List<StockPlanData>? data;
+class stockPlanModel {
+  List<StockData>? data;
 
-  StockPlanModel({this.data});
+  stockPlanModel({this.data});
 
-  StockPlanModel.fromJson(Map<String, dynamic> json) {
+  stockPlanModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <StockPlanData>[];
+      data = <StockData>[];
       json['data'].forEach((v) {
-        data!.add(new StockPlanData.fromJson(v));
+        data!.add(new StockData.fromJson(v));
       });
     }
   }
@@ -21,28 +21,28 @@ class StockPlanModel {
   }
 }
 
-class StockPlanData {
+class StockData {
   int? id;
   int? warehouseId;
-  String? endDate;
+  String? startDate;
   String? stockName;
   int? quantity;
   String? createdAt;
   String? updatedAt;
 
-  StockPlanData(
+  StockData(
       {this.id,
       this.warehouseId,
-      this.endDate,
+      this.startDate,
       this.stockName,
       this.quantity,
       this.createdAt,
       this.updatedAt});
 
-  StockPlanData.fromJson(Map<String, dynamic> json) {
+  StockData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     warehouseId = json['warehouse_id'];
-    endDate = json['end_date'];
+    startDate = json['start_date'];
     stockName = json['stock_name'];
     quantity = json['quantity'];
     createdAt = json['created_at'];
@@ -53,7 +53,7 @@ class StockPlanData {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['warehouse_id'] = this.warehouseId;
-    data['end_date'] = this.endDate;
+    data['start_date'] = this.startDate;
     data['stock_name'] = this.stockName;
     data['quantity'] = this.quantity;
     data['created_at'] = this.createdAt;

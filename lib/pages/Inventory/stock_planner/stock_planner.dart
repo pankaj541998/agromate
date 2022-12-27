@@ -1,11 +1,13 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.dart';
+import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
+import 'package:flutter_agro_new/models/stock_plan_model.dart';
 import 'package:flutter_agro_new/pages/growth_stages/dropdown_btn.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +25,8 @@ class StockPlanner extends StatefulWidget {
 }
 
 class _StockPlannerState extends State<StockPlanner> {
-  final StreamController<bool> _stockPlannerGet = StreamController.broadcast();
+  final StreamController<requestResponseState> _stockPlannerGet =
+      StreamController.broadcast();
   final TextEditingController _date = TextEditingController();
   final TextEditingController PlannerDateTextEditingController =
       TextEditingController();
@@ -53,6 +56,27 @@ class _StockPlannerState extends State<StockPlanner> {
     } else {
       return throw (Exception("Search Error"));
     }
+  }
+
+  late stockPlanModel stockplan;
+
+  Future<stockPlanModel> fetchStockPlan() async {
+    var client = http.Client();
+    final response = await client.get(
+        Uri.parse('https://agromate.website/laravel/api/get_stock_planner'));
+    final parsed = jsonDecode(response.body);
+    //print(response.body);
+
+    if (response.statusCode == 200) {
+      stockplan = stockPlanModel.fromJson(parsed);
+      _stockPlannerGet.add(requestResponseState.DataReceived);
+      return stockplan;
+    } else {
+      Center(
+        child: Text("Please Try Again After Some Time..."),
+      );
+    }
+    return stockplan;
   }
 
   // late String _selectedValue;
@@ -91,6 +115,7 @@ class _StockPlannerState extends State<StockPlanner> {
   void initState() {
     super.initState();
     warehouse = stockPlannerAPI.getWarehouse();
+    fetchStockPlan();
   }
 
   String? currentWarehouse;
@@ -555,431 +580,435 @@ class _StockPlannerState extends State<StockPlanner> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      InkWell(
-                          onTap: () => Navigator.pop(context),
-                          child: const Icon(Icons.arrow_back_ios_rounded)),
-                      SizedBox(width: screenSize.width * 0.02),
-                      Text(
-                        'Stock Planner',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Color(0xff000000),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(width: screenSize.width * 0.02),
-                      Row(
-                        children: [
-                          InkWell(
-                            hoverColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(Icons.arrow_back_ios_rounded)),
+                    SizedBox(width: screenSize.width * 0.02),
+                    Text(
+                      'Stock Planner',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xff000000),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(width: screenSize.width * 0.02),
+                    Row(
+                      children: [
+                        InkWell(
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xff327C04),
+                              border: Border.all(
                                 color: const Color(0xff327C04),
-                                border: Border.all(
-                                  color: const Color(0xff327C04),
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(5),
-                                  bottomLeft: Radius.circular(5),
-                                ),
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 3),
-                                child: Text(
-                                  'Grid',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xffffffff),
-                                  ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(5),
+                                bottomLeft: Radius.circular(5),
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 3),
+                              child: Text(
+                                'Grid',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xffffffff),
                                 ),
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () => Get.toNamed('/stockplannertable'),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xffF7F9EA),
-                                border: Border.all(
-                                  color: const Color(0xff327C04),
-                                ),
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(5),
-                                  bottomRight: Radius.circular(5),
+                        ),
+                        InkWell(
+                          onTap: () => Get.toNamed('/stockplannertable'),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0xffF7F9EA),
+                              border: Border.all(
+                                color: const Color(0xff327C04),
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(5),
+                                bottomRight: Radius.circular(5),
+                              ),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 3),
+                              child: Text(
+                                'Table',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff000000),
                                 ),
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 3),
-                                child: Text(
-                                  'Table',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xff000000),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // ToggleButtons(
+                    //   onPressed: (int index) {
+                    //     setState(() {
+                    //       // The button that is tapped is set to true, and the others to false.
+                    //       for (int i = 0; i < _selectedFruits.length; i++) {
+                    //         _selectedFruits[i] = i == index;
+                    //       }
+                    //     });
+                    //   },
+                    //   borderRadius:
+                    //       const BorderRadius.all(Radius.circular(8)),
+                    //   selectedBorderColor: Color(0xFF327c04),
+                    //   selectedColor: Colors.white,
+                    //   fillColor: Color(0xFF327c04),
+                    //   color: Colors.black,
+                    //   constraints: const BoxConstraints(
+                    //     minHeight: 30.0,
+                    //     minWidth: 60.0,
+                    //   ),
+                    //   isSelected: _selectedFruits,
+                    //   children: options,
+                    // ),
+                    Expanded(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              buildPinAlert(screenSize);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF327C04),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 9),
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.add,
+                                      color: Color(0xffffffff),
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      'Add',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Color(0xffffffff)),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: SizedBox(
+                              width: 250,
+                              child: CupertinoSearchTextField(
+                                onChanged: (value) {
+                                  // setState(() {
+                                  //   myData = filterData!
+                                  //       .where(
+                                  //         (element) => element.name!
+                                  //             .toLowerCase()
+                                  //             .contains(
+                                  //               value.toLowerCase(),
+                                  //             ),
+                                  //       )
+                                  //       .toList();
+                                  // }
+                                  // );
+                                },
+                                // controller: controller,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: const Color(0xFF327C04),
                                   ),
+                                  borderRadius: BorderRadius.circular(6),
+                                  color:
+                                      const Color(0xff327C04).withOpacity(0.11),
+                                ),
+                                itemSize: 25,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff000000),
+                                ),
+                                prefixInsets:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        10, 8, 0, 8),
+                                placeholder: 'Search',
+                                suffixInsets:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 15, 2),
+                                placeholderStyle: TextStyle(
+                                  fontSize: 16,
+                                  color:
+                                      const Color(0xff000000).withOpacity(0.38),
+                                ),
+                                padding: const EdgeInsets.only(
+                                  left: 5,
+                                  top: 0,
+                                  bottom: 0,
+                                  right: 15,
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      // ToggleButtons(
-                      //   onPressed: (int index) {
-                      //     setState(() {
-                      //       // The button that is tapped is set to true, and the others to false.
-                      //       for (int i = 0; i < _selectedFruits.length; i++) {
-                      //         _selectedFruits[i] = i == index;
-                      //       }
-                      //     });
-                      //   },
-                      //   borderRadius:
-                      //       const BorderRadius.all(Radius.circular(8)),
-                      //   selectedBorderColor: Color(0xFF327c04),
-                      //   selectedColor: Colors.white,
-                      //   fillColor: Color(0xFF327c04),
-                      //   color: Colors.black,
-                      //   constraints: const BoxConstraints(
-                      //     minHeight: 30.0,
-                      //     minWidth: 60.0,
-                      //   ),
-                      //   isSelected: _selectedFruits,
-                      //   children: options,
-                      // ),
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                buildPinAlert(screenSize);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF327C04),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 9),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        Icons.add,
-                                        color: Color(0xffffffff),
-                                        size: 20,
-                                      ),
-                                      SizedBox(width: 6),
-                                      Text(
-                                        'Add',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Color(0xffffffff)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                const Divider(
+                  height: 5,
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
+                SizedBox(height: screenSize.height * 0.03),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Select Warehouse',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: SizedBox(
-                                width: 250,
-                                child: CupertinoSearchTextField(
-                                  onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
-                                  },
-                                  // controller: controller,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: const Color(0xFF327C04),
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: const Color(0xff327C04)
-                                        .withOpacity(0.11),
-                                  ),
-                                  itemSize: 25,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xff000000),
-                                  ),
-                                  prefixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 8, 0, 8),
-                                  placeholder: 'Search',
-                                  suffixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 15, 2),
-                                  placeholderStyle: TextStyle(
-                                    fontSize: 16,
-                                    color: const Color(0xff000000)
-                                        .withOpacity(0.38),
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                    top: 0,
-                                    bottom: 0,
-                                    right: 15,
-                                  ),
-                                ),
+                          ),
+                          const SizedBox(height: 15),
+                          DropdownButtonFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(
-                    height: 5,
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
-                  SizedBox(height: screenSize.height * 0.03),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: screenSize.width * 0.28,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Select Warehouse',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff000000),
-                                fontWeight: FontWeight.w500,
+                              hintStyle: TextStyle(
+                                fontSize: 16,
+                                color: const Color(0xff327C04).withOpacity(0.5),
+                                fontFamily: 'Helvetica',
                               ),
-                            ),
-                            const SizedBox(height: 15),
-                            DropdownButtonFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                  left: 10,
-                                  right: 10,
-                                ),
-                                hintStyle: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                      const Color(0xff327C04).withOpacity(0.5),
-                                  fontFamily: 'Helvetica',
-                                ),
-                                fillColor: Colors.transparent,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                errorStyle: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                isDense: true,
-                              ),
-                              isExpanded: true,
-                              value: questionsSelected,
-                              iconEnabledColor:
-                                  Colors.transparent, // Down Arrow Icon
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Color(0xff327C04),
-                              ),
-                              iconSize: 30,
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xff000000),
-                                  fontFamily: 'Helvetica'),
-                              items: questions.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  questionsSelected = newValue!;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: screenSize.width * 0.03),
-                      SizedBox(
-                        width: screenSize.width * 0.28,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Start Date',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff000000),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 15),
-                            DateTimeField(
-                              cursorColor: const Color(0xff000000),
-                              decoration: InputDecoration(
-                                errorMaxLines: 3,
-                                hintText: "Start Date",
-                                contentPadding: const EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 10,
-                                  left: 10,
-                                  right: 10,
-                                ),
-                                hintStyle: const TextStyle(
-                                  fontSize: 16,
-                                  // color: const Color(0xff161723).withOpacity(0.5),
-                                  // fontFamily: 'Helvetica',
-                                ),
-                                // fillColor: Colors.white,
-                                filled: true,
-                                fillColor: Colors.transparent,
-                                suffixIcon: const Icon(
-                                  CupertinoIcons.calendar_today,
+                              fillColor: Colors.transparent,
+                              filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
                                   color: Color(0xff327C04),
-                                  size: 25,
                                 ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                errorStyle: const TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    width: 1,
-                                    color: Color(0xff327C04),
-                                  ),
-                                ),
-                                isDense: true,
                               ),
-                              format: format,
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                  helpText: 'Select Date',
-                                  context: context,
-                                  firstDate: DateTime(1970),
-                                  // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                                  initialDate: currentValue ??
-                                      DateTime.now()
-                                          .subtract(const Duration(days: 4745)),
-                                  // lastDate: DateTime(2100));
-                                  lastDate: DateTime.now(),
-                                  builder:
-                                      (BuildContext context, Widget? child) {
-                                    return Theme(
-                                      data: ThemeData.dark().copyWith(
-                                        colorScheme: const ColorScheme.dark(
-                                          primary: Color(0xff327C04),
-                                          // onPrimary: Colors.black,
-                                          surface: Color(0xff327C04),
-                                          // onSurface: Color(0xff000000),
-                                        ),
-                                        dialogBackgroundColor:
-                                            const Color(0xff000000),
-                                      ),
-                                      child: child!,
-                                    );
-                                  },
-                                );
-                              },
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (date) => date == null
-                                  ? 'Date of birth is required'
-                                  : null,
-                              onChanged: (date) {
-                                setState(() {});
-                              },
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
                             ),
-                          ],
-                        ),
+                            isExpanded: true,
+                            value: questionsSelected,
+                            iconEnabledColor:
+                                Colors.transparent, // Down Arrow Icon
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xff327C04),
+                            ),
+                            iconSize: 30,
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xff000000),
+                                fontFamily: 'Helvetica'),
+                            items: questions.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                questionsSelected = newValue!;
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  StreamBuilder<Object>(
-                      stream: _stockPlannerGet.stream,
-                      builder: (context, snapshot) {
-                        return SizedBox(
-                          height: screenSize.height * 0.57,
-                          child: _buildgridview(context, screenSize),
-                        );
-                      }),
-                ],
-              ),
+                    ),
+                    SizedBox(width: screenSize.width * 0.03),
+                    SizedBox(
+                      width: screenSize.width * 0.28,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Start Date',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff000000),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          DateTimeField(
+                            cursorColor: const Color(0xff000000),
+                            decoration: InputDecoration(
+                              errorMaxLines: 3,
+                              hintText: "Start Date",
+                              contentPadding: const EdgeInsets.only(
+                                top: 10,
+                                bottom: 10,
+                                left: 10,
+                                right: 10,
+                              ),
+                              hintStyle: const TextStyle(
+                                fontSize: 16,
+                                // color: const Color(0xff161723).withOpacity(0.5),
+                                // fontFamily: 'Helvetica',
+                              ),
+                              // fillColor: Colors.white,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              suffixIcon: const Icon(
+                                CupertinoIcons.calendar_today,
+                                color: Color(0xff327C04),
+                                size: 25,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              errorStyle: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: Color(0xff327C04),
+                                ),
+                              ),
+                              isDense: true,
+                            ),
+                            format: format,
+                            onShowPicker: (context, currentValue) {
+                              return showDatePicker(
+                                helpText: 'Select Date',
+                                context: context,
+                                firstDate: DateTime(1970),
+                                // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                initialDate: currentValue ??
+                                    DateTime.now()
+                                        .subtract(const Duration(days: 4745)),
+                                // lastDate: DateTime(2100));
+                                lastDate: DateTime.now(),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.dark().copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Color(0xff327C04),
+                                        // onPrimary: Colors.black,
+                                        surface: Color(0xff327C04),
+                                        // onSurface: Color(0xff000000),
+                                      ),
+                                      dialogBackgroundColor:
+                                          const Color(0xff000000),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (date) => date == null
+                                ? 'Date of birth is required'
+                                : null,
+                            onChanged: (date) {
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                StreamBuilder<requestResponseState>(
+                    stream: _stockPlannerGet.stream,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return Center(child: CircularProgressIndicator());
+
+                        default:
+                          if (snapshot.hasError) {
+                            return Text("Error Occured");
+                          } else {
+                            return _buildgridview(
+                                context, screenSize, stockplan);
+                          }
+                      }
+                    }),
+              ],
             ),
           )
         ],
@@ -1067,14 +1096,14 @@ class _TextDropdownState extends State<TextDropdown> {
   }
 }
 
-Widget _buildgridview(context, screenSize) {
+Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: (0.5 / 0.2),
         crossAxisCount: 4,
       ),
-      itemCount: 12,
+      itemCount: stockplan.data!.length,
       itemBuilder: (BuildContext ctx, index) {
         return Padding(
           padding: const EdgeInsets.all(5.0),
@@ -1099,14 +1128,30 @@ Widget _buildgridview(context, screenSize) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Nitrogen",
+                              stockplan.data!.elementAt(index).stockName!,
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: screenSize.height * 0.01),
-                            Text("Quantity : 200ml"),
+                            Row(
+                              children: [
+                                Text("Quantity : "),
+                                Text(stockplan.data!
+                                    .elementAt(index)
+                                    .quantity!
+                                    .toString())
+                              ],
+                            ),
                             SizedBox(height: screenSize.height * 0.01),
-                            Text("Required : 200ml"),
+                            Row(
+                              children: [
+                                Text("Required : "),
+                                Text(stockplan.data!
+                                    .elementAt(index)
+                                    .quantity!
+                                    .toString())
+                              ],
+                            ),
                           ],
                         )
                       ],

@@ -1,11 +1,16 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/main.dart';
+import 'package:flutter_agro_new/models/stock_plan_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
@@ -17,6 +22,8 @@ class StockPlannerTable extends StatefulWidget {
   State<StockPlannerTable> createState() => _StockPlannerTableState();
 }
 
+late stockPlanModel stockplan;
+
 class _StockPlannerTableState extends State<StockPlannerTable> {
   var currentDate = DateTime.now();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -27,6 +34,36 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
+  final StreamController<requestResponseState> _stockPlannerGet =
+      StreamController.broadcast();
+
+  late stockPlanModel stockplan;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchStockPlan();
+  }
+
+  Future<stockPlanModel> fetchStockPlan() async {
+    var client = http.Client();
+    final response = await client.get(
+        Uri.parse('https://agromate.website/laravel/api/get_stock_planner'));
+    final parsed = jsonDecode(response.body);
+    //print(response.body);
+
+    if (response.statusCode == 200) {
+      stockplan = stockPlanModel.fromJson(parsed);
+      _stockPlannerGet.add(requestResponseState.DataReceived);
+      return stockplan;
+    } else {
+      Center(
+        child: Text("Please Try Again After Some Time..."),
+      );
+    }
+    return stockplan;
+  }
 
   buildPinAlertDialog(screenSize) {
     return showDialog(
@@ -814,7 +851,14 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     thickness: 1,
                   ),
                   SizedBox(height: screenSize.height * 0.03),
-                  datatable(screenSize),
+                  StreamBuilder<requestResponseState>(
+                      stream: _stockPlannerGet.stream,
+                      builder: (context, snapshot) {
+                        fetchStockPlan();
+                        return SizedBox(
+                          child: datatable(screenSize),
+                        );
+                      })
                 ],
               ),
             ),
@@ -931,19 +975,20 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(StockData data) {
   return DataRow(
     cells: [
       DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
+          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.warehouse.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.warehouseId.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.stockname.toString()))),
+          alignment: Alignment.center, child: Text(data.stockName.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.quantity.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.date.toString()))),
+          alignment: Alignment.center, child: Text(data.startDate.toString()))),
     ],
   );
 }
@@ -964,138 +1009,4 @@ class Data {
   });
 }
 
-List<Data> myData = [
-  Data(
-    id: "1",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "2",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "3",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "4",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "5",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "6",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "7",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "8",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "9",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "10",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "11",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "12",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "13",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "14",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "15",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "16",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "17",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "18",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "19",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-];
+List<StockData> myData = stockplan.data!;
