@@ -88,7 +88,7 @@ class _CropState extends State<Crop> {
 
   @override
   void initState() {
-    gridharvestTextEditingController.text = "14";
+    harvestDaysTextEditingController.text = "14";
     super.initState();
     fetchCropProgram();
   }
@@ -109,7 +109,6 @@ class _CropState extends State<Crop> {
     populationTextEditingController.clear();
     unitValueTextEditingController.clear();
     weeksTextEditingController.clear();
-
     return showDialog(
       context: context,
       builder: (context) => StatefulBuilder(

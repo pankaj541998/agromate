@@ -57,7 +57,6 @@ Future<CropScheduleModel> fetchCropSchedule() async {
       child: Text("There was some error"),
     );
   }
-
   return cropschedule;
 }
 
@@ -407,26 +406,26 @@ class _TasksState extends State<Tasks> {
             crossAxisSpacing: 3),
         itemCount: filtereddata.length,
         itemBuilder: (BuildContext ctx, index) {
+          CropScheduleData obj = filtereddata[index];
           //  var element = CropProgram.cropPrograms.elementAt(index);
           return InkWell(
             onTap: () {
               debugPrint("index is  $index");
-              String weeks =
-                  cropschedule.data!.elementAt(index).cropProgram!.first.weeks!;
-              debugPrint("weeks is $weeks");
-              int id =
-                  cropschedule.data!.elementAt(index).cropProgram!.first.id!;
-              debugPrint(id.toString());
-              int cropplanid = cropschedule.data!.elementAt(index).id!;
-              debugPrint(id.toString());
-              String farmsend =
-                  cropschedule.data!.elementAt(index).farm!.first.farm!;
-              String blocksend =
-                  cropschedule.data!.elementAt(index).block!.first.block!;
-              String fieldsend =
-                  cropschedule.data!.elementAt(index).field!.first.field!;
-              String cropsend =
-                  cropschedule.data!.elementAt(index).cropProgram!.first.crop!;
+              String weeks = obj.cropProgram!.first.weeks!;
+              // cropschedule.data!.elementAt(index).cropProgram!.first.weeks!;
+
+              // cropschedule.data!.elementAt(index).cropProgram!.first.id!;
+              int cropplanid = obj.id as int;
+              int id = cropplanid;
+              // cropschedule.data!.elementAt(index).id!;
+              String farmsend = obj.farm!.first.farm!;
+              // cropschedule.data!.elementAt(index).farm!.first.farm!;
+              String blocksend = obj.block!.first.block!;
+              // cropschedule.data!.elementAt(index).block!.first.block!;
+              String fieldsend = obj.field!.first.field!;
+              // cropschedule.data!.elementAt(index).field!.first.field!;
+              String cropsend = obj.cropProgram!.first.crop!;
+              // cropschedule.data!.elementAt(index).cropProgram!.first.crop!;
               Navigator.push(
                 context!,
                 MaterialPageRoute(
@@ -474,12 +473,13 @@ class _TasksState extends State<Tasks> {
                                 width: 10,
                               ),
                               Text(
-                                cropschedule.data!
-                                    .elementAt(index)
-                                    .cropProgram!
-                                    .first
-                                    .crop!,
+                                // filtereddata
+                                //     .elementAt(index)
+                                //     .cropProgram!
+                                //     .first
+                                //     .crop!,
                                 // cropschedule.data!
+                                obj.cropProgram!.first.crop.toString(),
                                 //     .elementAt(index)
                                 //     .cropProgram!
                                 //     .first
@@ -492,10 +492,10 @@ class _TasksState extends State<Tasks> {
                             children: [
                               Text("Crop Ref: ",
                                   style: TextStyle(fontSize: 14)),
-                              Text(
-                                  cropschedule.data!
-                                      .elementAt(index)
-                                      .cropReference!,
+                              Text(obj.cropReference.toString(),
+                                  // cropschedule.data!
+                                  //     .elementAt(index)
+                                  //     .cropReference!,
                                   style: TextStyle(fontSize: 14)),
                             ],
                           ),
