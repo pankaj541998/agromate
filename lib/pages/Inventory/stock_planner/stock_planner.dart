@@ -175,10 +175,8 @@ class _StockPlannerState extends State<StockPlanner> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
                           child: const Icon(
                             Icons.cancel_outlined,
                             color: Color(0xFF4E944F),
