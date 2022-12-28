@@ -8,15 +8,15 @@ import '../url.dart';
 
 class StockPlanApiMethods {
   //get
-  static Future<List<StockPlanModel>> fetchStockPlan() async {
+  static Future<List<stockPlanModel>> fetchStockPlan() async {
     final response = await http.Client().get(Uri.parse(ApiUrl.getClass));
     return compute(_parseStockPlan, response.body);
   }
 
-  static List<StockPlanModel> _parseStockPlan(String responseBody) {
+  static List<stockPlanModel> _parseStockPlan(String responseBody) {
     final parsed = jsonDecode(responseBody);
     return parsed
-        .map<StockPlanModel>((json) => StockPlanModel.fromJson(json))
+        .map<stockPlanModel>((json) => stockPlanModel.fromJson(json))
         .toList();
   }
 

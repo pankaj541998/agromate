@@ -1,11 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.dart';
+import 'package:flutter_agro_new/main.dart';
+import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
+import 'package:flutter_agro_new/models/stock_plan_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../component/custom_Elevated_Button.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
@@ -17,6 +25,8 @@ class StockPlannerTable extends StatefulWidget {
   State<StockPlannerTable> createState() => _StockPlannerTableState();
 }
 
+late stockPlanModel stockplan;
+
 class _StockPlannerTableState extends State<StockPlannerTable> {
   var currentDate = DateTime.now();
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -27,477 +37,514 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
+  final TextEditingController PlannerDateTextEditingController =
+      TextEditingController();
+  final TextEditingController stockPlannerQuantityTextEditingController =
+      TextEditingController();
+  final StreamController<requestResponseState> _stockPlannerGet =
+      StreamController.broadcast();
+  late final Future warehouse;
+  @override
+  void initState() {
+    super.initState();
+    warehouse = stockPlannerAPI.getWarehouse();
+    fetchStockPlan();
+  }
 
+  Future<stockPlanModel> fetchStockPlan() async {
+    var client = http.Client();
+    final response = await client.get(
+        Uri.parse('https://agromate.website/laravel/api/get_stock_planner'));
+    final parsed = jsonDecode(response.body);
+    //print(response.body);
+
+    if (response.statusCode == 200) {
+      stockplan = stockPlanModel.fromJson(parsed);
+      _stockPlannerGet.add(requestResponseState.DataReceived);
+      return stockplan;
+    } else {
+      Center(
+        child: Text("Please Try Again After Some Time..."),
+      );
+    }
+    return stockplan;
+  }
+
+  Future<String> addStockplannerAPI() async {
+    print("reached");
+    final _chuckerHttpClient = await http.Client();
+    final http.Response response = await http.post(
+        Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
+        body: {
+          "warehouse_id": currentWarehouseId,
+          "start_date": PlannerDateTextEditingController.toString(),
+          "stock_name": _selectedValue1.toString(),
+          "quantity": stockPlannerQuantityTextEditingController.toString()
+        });
+    print("api resp is ${response.body}");
+    if (response.statusCode == 200) {
+      Flushbar(
+        message: "Stock Planner Added Successfully",
+        duration: Duration(seconds: 2),
+      );
+      return 'null';
+    } else {
+      return throw (Exception("Search Error"));
+    }
+  }
+
+  late String _selectedValue1;
+  List<String> listOfValue1 = [
+    'Stock 1',
+    'Stock 2',
+    'Stock 3',
+    'Stock 4',
+  ];
+
+  String? currentWarehouse;
+  int? currentWarehouseId;
   buildPinAlertDialog(screenSize) {
     return showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AlertDialog(
-                insetPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10))),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        context: context,
+        builder: (context) => _buildbody(context, screenSize));
+  }
+
+  Widget _buildbody(context, screenSize) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return FutureBuilder(
+            future: warehouse,
+            builder: (ctx, snapshot) {
+              if (snapshot.data == null) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Add New Stock",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.45,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.cancel_outlined,
-                        color: Color(0xFF4E944F),
-                      ),
-                    )
+                    Center(child: CircularProgressIndicator()),
                   ],
-                ),
-                content: Form(
-                  key: _form,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     SizedBox(
-                      //       height: 10,
-                      //     ),
-                      //     Image.asset("assets/images/Group6740.png",
-                      //         height: 70),
-                      //   ],
-                      // ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Row(
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                print("data from rsp ${snapshot.data}");
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      '${snapshot.error} occured',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  );
+                }
+              }
+              var data = snapshot.data!;
+              var fetchedwarehouselist = data as List<fetchWarehouse>;
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AlertDialog(
+                    insetPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
+                    contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10))),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Add New Stock",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(
+                            Icons.cancel_outlined,
+                            color: Color(0xFF4E944F),
+                          ),
+                        )
+                      ],
+                    ),
+                    content: Form(
+                      key: _form,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: screenSize.width * 0.21,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Select Warehouse',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Enter Warehouse",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Column(
+                          //   crossAxisAlignment: CrossAxisAlignment.start,
+                          //   children: [
+                          //     SizedBox(
+                          //       height: 10,
+                          //     ),
+                          //     Image.asset("assets/images/Group6740.png",
+                          //         height: 70),
+                          //   ],
+                          // ),
                           const SizedBox(
-                            width: 25,
+                            height: 20,
                           ),
-                          SizedBox(
-                            width: screenSize.width * 0.21,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Start Date',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: screenSize.width * 0.21,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Select Warehouse',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    SizedBox(
+                                        height: 40,
+                                        child: DropdownBtn(
+                                          items: fetchedwarehouselist.map((e) {
+                                            return e.warehouseName.toString();
+                                          }).toList(),
+                                          hint: "Select Warehouse",
+                                          onItemSelected: (value) async {
+                                            setState(() {
+                                              currentWarehouse = value;
+                                              currentWarehouseId =
+                                                  fetchedwarehouselist
+                                                      .singleWhere((element) =>
+                                                          element
+                                                              .warehouseName ==
+                                                          currentWarehouse)
+                                                      .id;
+                                            });
+                                          },
+                                        )),
+                                  ],
                                 ),
-                                const SizedBox(height: 15),
-                                DateTimeField(
-                                  cursorColor: const Color(0xff000000),
-                                  decoration: InputDecoration(
-                                    errorMaxLines: 3,
-                                    hintText: "Date",
-                                    contentPadding: const EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 10,
-                                      left: 10,
-                                      right: 10,
-                                    ),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xff161723).withOpacity(0.5),
-                                      // fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    fillColor: Colors.transparent,
-                                    suffixIcon: const Icon(
-                                      CupertinoIcons.calendar_today,
-                                      color: Color(0xff327C04),
-                                      size: 25,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              SizedBox(
+                                width: screenSize.width * 0.21,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Start Date',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  format: format,
-                                  onShowPicker: (context, currentValue) {
-                                    return showDatePicker(
-                                      helpText: 'Select Date',
-                                      context: context,
-                                      firstDate: DateTime(1970),
-                                      // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
-                                      initialDate: currentValue ??
-                                          DateTime.now().subtract(
-                                              const Duration(days: 4745)),
-                                      // lastDate: DateTime(2100));
-                                      lastDate: DateTime.now(),
-                                      builder: (BuildContext context,
-                                          Widget? child) {
-                                        return Theme(
-                                          data: ThemeData.dark().copyWith(
-                                            colorScheme: const ColorScheme.dark(
-                                              primary: Color(0xff327C04),
-                                              // onPrimary: Colors.black,
-                                              surface: Color(0xff327C04),
-                                              // onSurface: Color(0xff000000),
-                                            ),
-                                            dialogBackgroundColor:
-                                                const Color(0xff000000),
+                                    const SizedBox(height: 15),
+                                    DateTimeField(
+                                      controller:
+                                          PlannerDateTextEditingController,
+                                      cursorColor: const Color(0xff000000),
+                                      decoration: InputDecoration(
+                                        errorMaxLines: 3,
+                                        hintText: "Date",
+                                        contentPadding: const EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xff161723).withOpacity(0.5),
+                                          // fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        fillColor: Colors.transparent,
+                                        suffixIcon: const Icon(
+                                          CupertinoIcons.calendar_today,
+                                          color: Color(0xff327C04),
+                                          size: 25,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
                                           ),
-                                          child: child!,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      format: format,
+                                      onShowPicker: (context, currentValue) {
+                                        return showDatePicker(
+                                          helpText: 'Select Date',
+                                          context: context,
+                                          firstDate: DateTime(1970),
+                                          // initialDate: currentValue ?? DateTime.now().subtract(const Duration(days: 365)),
+                                          initialDate: currentValue ??
+                                              DateTime.now().subtract(
+                                                  const Duration(days: 4745)),
+                                          // lastDate: DateTime(2100));
+                                          lastDate: DateTime(2025),
+                                          builder: (BuildContext context,
+                                              Widget? child) {
+                                            return Theme(
+                                              data: ThemeData.dark().copyWith(
+                                                colorScheme:
+                                                    const ColorScheme.dark(
+                                                  primary: Color(0xff327C04),
+                                                  // onPrimary: Colors.black,
+                                                  surface: Color(0xff327C04),
+                                                  // onSurface: Color(0xff000000),
+                                                ),
+                                                dialogBackgroundColor:
+                                                    const Color(0xff000000),
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
                                         );
                                       },
-                                    );
-                                  },
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  validator: (date) => date == null
-                                      ? 'Date of birth is required'
-                                      : null,
-                                  onChanged: (date) {
-                                    setState(() {});
-                                  },
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      validator: (date) => date == null
+                                          ? 'Date of birth is required'
+                                          : null,
+                                      onChanged: (date) {
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: screenSize.width * 0.21,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Stock Name',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    SizedBox(
+                                      height: 40,
+                                      child: DropdownButtonFormField(
+                                        hint: Text("Select Name"),
+                                        focusColor: Colors.white,
+                                        isExpanded: true,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              left: 10, top: 10, right: 10),
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color(0xFF327C04),
+                                              width: 5.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        items: listOfValue1.map((String val) {
+                                          return DropdownMenuItem(
+                                            enabled: true,
+                                            value: val,
+                                            child: Text(
+                                              val,
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedValue1;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              SizedBox(
+                                width: screenSize.width * 0.21,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Enter Quantity',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      controller:
+                                          stockPlannerQuantityTextEditingController,
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Enter Quantity",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                            ],
                           ),
                           const SizedBox(
-                            width: 25,
+                            height: 30,
+                          ),
+                          SizedBox(
+                            width: screenSize.width * 0.21,
+                            height: 40,
+                            child: CustomElevatedButton(
+                              onPressed: () {
+                                addStockplannerAPI();
+                                Navigator.pop(context);
+                              },
+                              title: "Submit",
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: screenSize.width * 0.21,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Stock Name',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Enter Stock Name",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                          SizedBox(
-                            width: screenSize.width * 0.21,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Enter Quantity',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color(0xff000000),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                TextFormField(
-                                  // initialValue: 'enter heritage',
-                                  style: const TextStyle(
-                                    // color: Color(0xffffffff),
-                                    fontFamily: 'Helvetica',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  // readOnly: true,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.transparent,
-                                    errorMaxLines: 3,
-                                    hintText: "Enter Quantity",
-                                    contentPadding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 15,
-                                        bottom: 15),
-                                    hintStyle: const TextStyle(
-                                      fontSize: 16,
-                                      // color: const Color(0xffffffff).withOpacity(0.8),
-                                      fontFamily: 'Helvetica',
-                                    ),
-                                    // fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    errorStyle: const TextStyle(
-                                      fontSize: 16.0,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Color(0xff327C04),
-                                      ),
-                                    ),
-                                    isDense: true,
-                                  ),
-                                  // controller: _email,
-                                  keyboardType: TextInputType.text,
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please enter your email Id';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // onSaved: (name) {},
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: screenSize.width * 0.21,
-                        child: CustomElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          title: "Submit",
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+                ],
+              );
+            });
+      },
     );
   }
 
@@ -814,7 +861,14 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     thickness: 1,
                   ),
                   SizedBox(height: screenSize.height * 0.03),
-                  datatable(screenSize),
+                  StreamBuilder<requestResponseState>(
+                      stream: _stockPlannerGet.stream,
+                      builder: (context, snapshot) {
+                        fetchStockPlan();
+                        return SizedBox(
+                          child: datatable(screenSize),
+                        );
+                      })
                 ],
               ),
             ),
@@ -931,19 +985,20 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data) {
+DataRow recentFileDataRow(StockData data) {
   return DataRow(
     cells: [
       DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id ?? "id"))),
+          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.warehouse.toString()))),
+          alignment: Alignment.center,
+          child: Text(data.warehouseId.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.stockname.toString()))),
+          alignment: Alignment.center, child: Text(data.stockName.toString()))),
       DataCell(Align(
           alignment: Alignment.center, child: Text(data.quantity.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.date.toString()))),
+          alignment: Alignment.center, child: Text(data.startDate.toString()))),
     ],
   );
 }
@@ -964,138 +1019,4 @@ class Data {
   });
 }
 
-List<Data> myData = [
-  Data(
-    id: "1",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "2",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "3",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "4",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "5",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "6",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "7",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "8",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "9",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "10",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "11",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "12",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "13",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "14",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "15",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "16",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "17",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "18",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-  Data(
-    id: "19",
-    warehouse: 'Lorem Ipsum',
-    stockname: 'Nitrogen',
-    date: '15-11-2022',
-    quantity: '200',
-  ),
-];
+List<StockData> myData = stockplan.data!;
