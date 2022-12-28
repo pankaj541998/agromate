@@ -27,7 +27,7 @@ class CropScheduleData {
   String? blockId;
   String? fieldId;
   String? cropReference;
-  String? cropProgramId;
+  int? cropProgramId;
   String? caltivar;
   Null? farmerId;
   String? startDate;

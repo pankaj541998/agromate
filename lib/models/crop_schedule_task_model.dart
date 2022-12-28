@@ -1,29 +1,29 @@
-class CropProgramTasks {
-  List<Data>? dataa;
+class CropScheduleTasksModel {
+  List<CropScheduleTasks>? data;
 
-  CropProgramTasks({this.dataa});
+  CropScheduleTasksModel({this.data});
 
-  CropProgramTasks.fromJson(Map<String, dynamic> json) {
+  CropScheduleTasksModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      dataa = <Data>[];
+      data = <CropScheduleTasks>[];
       json['data'].forEach((v) {
-        dataa!.add(new Data.fromJson(v));
+        data!.add(new CropScheduleTasks.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> dataa = new Map<String, dynamic>();
-    if (this.dataa != null) {
-      dataa['data'] = this.dataa!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    return dataa;
+    return data;
   }
 }
 
-class Data {
+class CropScheduleTasks {
   int? id;
-  int? cropprogramid;
+  int? cropPlanId;
   String? week;
   String? status;
   String? title;
@@ -37,9 +37,9 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data(
+  CropScheduleTasks(
       {this.id,
-      this.cropprogramid,
+      this.cropPlanId,
       this.week,
       this.status,
       this.title,
@@ -53,9 +53,9 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  CropScheduleTasks.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    cropprogramid = json['cropprogramid'];
+    cropPlanId = json['crop_plan_id'];
     week = json['week'];
     status = json['status'];
     title = json['title'];
@@ -70,10 +70,12 @@ class Data {
     updatedAt = json['updated_at'];
   }
 
+  get data => null;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['cropprogramid'] = this.cropprogramid;
+    data['crop_plan_id'] = this.cropPlanId;
     data['week'] = this.week;
     data['status'] = this.status;
     data['title'] = this.title;

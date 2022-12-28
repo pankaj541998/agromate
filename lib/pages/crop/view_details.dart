@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../database_api/methods/gap_question_api_method.dart';
+import '../../models/crop_schedule_task_model.dart';
 import '../../models/gap.dart';
 
 final GlobalKey<FormState> form = GlobalKey<FormState>();
@@ -167,7 +168,7 @@ class _ViewDetailsState extends State<ViewDetails> {
       "chemical": productdescriptionSelected,
       "activeingridient": ActiveIngridientSelected,
       "quantity": quantityTextEditingController.text,
-      "unit": UnitsSelected
+      "units": UnitsSelected
     };
     return await addTaskAPI(updata);
   }
@@ -1493,7 +1494,283 @@ class _ViewDetailsState extends State<ViewDetails> {
     });
   }
 
-  Widget _buildgridview(context, weeks, List<Data> data, id) {
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return DefaultTabController(
+      initialIndex: widget.initial ?? 0,
+      length: 2,
+      child: Scaffold(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TopBar(),
+            const SizedBox(height: 10),
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          children: [
+                            InkWell(
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: const Icon(
+                                Icons.arrow_back_ios,
+                                color: Color(0xff327C04),
+                              ),
+                            ),
+                            // const SizedBox(width: 10),
+                            const Text(
+                              'Crop Program Details',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xff000000),
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 42,
+                              width: 125,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      const Color(0XFF327C04),
+                                    ),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    buildPinAlert();
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Color(0xffffffff),
+                                        size: 20,
+                                      ),
+                                      Text(
+                                        "ADD GAP",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xffffffff)),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                buildPin();
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF327C04),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 9),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.add,
+                                        color: Color(0xffffffff),
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 6),
+                                      const Text(
+                                        'Add',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xffffffff)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: SizedBox(
+                                width: 250,
+                                child: CupertinoSearchTextField(
+                                  onChanged: (value) {
+                                    // setState(() {
+                                    //   myData = cropdata.data!
+                                    //       .where(
+                                    //         (element) => element.crop!
+                                    //             .toLowerCase()
+                                    //             .contains(
+                                    //               value.toLowerCase(),
+                                    //             ),
+                                    //       )
+                                    //       .toList();
+                                    // });
+                                  },
+                                  controller: controller,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: const Color(0xFF327C04),
+                                    ),
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: const Color(0xff327C04)
+                                        .withOpacity(0.11),
+                                  ),
+                                  itemSize: 25,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xff000000),
+                                  ),
+                                  prefixInsets:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          10, 8, 0, 8),
+                                  placeholder: 'Search',
+                                  suffixInsets:
+                                      const EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 15, 2),
+                                  placeholderStyle: TextStyle(
+                                    fontSize: 16,
+                                    color: const Color(0xff000000)
+                                        .withOpacity(0.38),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                    left: 5,
+                                    top: 0,
+                                    bottom: 0,
+                                    right: 15,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              height: 5,
+              color: Colors.grey,
+              thickness: 1,
+            ),
+            const SizedBox(
+              width: 300,
+              height: 50,
+              child: TabBar(
+                indicatorColor: Color(0xFF327C04),
+                labelColor: Colors.black,
+                unselectedLabelStyle: TextStyle(color: Color(0xFF6B6B6B)),
+                labelStyle: TextStyle(
+                  color: Color(0xFF000000),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                tabs: [
+                  Tab(
+                    text: 'Grid',
+                  ),
+                  Tab(
+                    text: 'Table',
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: screenSize.height * 0.7,
+              child: TabBarView(children: [
+                StreamBuilder<bool>(
+                    stream: weeklytaskcontroller.stream,
+                    builder: (context, snapshot) {
+                      return FutureBuilder(
+                        future: getCropProgramTasksData()
+                            .getCropProgramTasksFunction(
+                                int.parse(widget.id!)), //fetchCropProgram(1),
+                        builder: (ctx, snapshot) {
+                          if (snapshot.data == null) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.45,
+                                ),
+                                Center(child: CircularProgressIndicator()),
+                              ],
+                            );
+                          }
+                          if (snapshot.data != null) {
+                            if (snapshot.hasError) {
+                              return Center(
+                                child: Text(
+                                  '${snapshot.error} occured',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              );
+                            }
+                          }
+                          return _buildgridview(context, widget.weeks,
+                              diocropprogramdata.dataa!, widget.id);
+                        },
+                      );
+                    }),
+                datatable(widget.weeks)
+                // FutureBuilder<CropProgramTasks>(
+                //   future: fetchCropProgram(widget.id),
+                //   builder: (ctx, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.done) {
+                //       if (snapshot.hasData) {
+                //         return datatable(widget.weeks);
+                //       } else {
+                //         return Center(
+                //           child: Text(
+                //             '${snapshot.error} occured',
+                //             style: const TextStyle(fontSize: 18),
+                //           ),
+                //         );
+                //       }
+                //     }
+                //     return const Center(child: CircularProgressIndicator());
+                //   },
+                // )
+              ]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildgridview(context, weeks, List<Data> dataa, id) {
     final screenSize = MediaQuery.of(context).size;
 
     return Padding(
@@ -1508,7 +1785,7 @@ class _ViewDetailsState extends State<ViewDetails> {
           itemCount: int.parse(weeks),
           itemBuilder: (BuildContext ctx, index) {
             String weekName = "Week ${index + 1}";
-            var filtered = diocropdata.data!
+            var filtered = diocropprogramdata.dataa!
                 .where((element) => (element.week == weekName))
                 .toList();
 
@@ -1862,282 +2139,6 @@ class _ViewDetailsState extends State<ViewDetails> {
               ),
             );
           }),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    return DefaultTabController(
-      initialIndex: widget.initial ?? 0,
-      length: 2,
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TopBar(),
-            const SizedBox(height: 10),
-            Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              hoverColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                Get.back();
-                              },
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: Color(0xff327C04),
-                              ),
-                            ),
-                            // const SizedBox(width: 10),
-                            const Text(
-                              'Crop Program Details',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xff000000),
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 42,
-                              width: 125,
-                              child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      const Color(0XFF327C04),
-                                    ),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    buildPinAlert();
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.add,
-                                        color: Color(0xffffffff),
-                                        size: 20,
-                                      ),
-                                      Text(
-                                        "ADD GAP",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Color(0xffffffff)),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                buildPin();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF327C04),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 9),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.add,
-                                        color: Color(0xffffffff),
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 6),
-                                      const Text(
-                                        'Add',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Color(0xffffffff)),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15.0),
-                              child: SizedBox(
-                                width: 250,
-                                child: CupertinoSearchTextField(
-                                  onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = cropdata.data!
-                                    //       .where(
-                                    //         (element) => element.crop!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // });
-                                  },
-                                  controller: controller,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: const Color(0xFF327C04),
-                                    ),
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: const Color(0xff327C04)
-                                        .withOpacity(0.11),
-                                  ),
-                                  itemSize: 25,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xff000000),
-                                  ),
-                                  prefixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 8, 0, 8),
-                                  placeholder: 'Search',
-                                  suffixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 15, 2),
-                                  placeholderStyle: TextStyle(
-                                    fontSize: 16,
-                                    color: const Color(0xff000000)
-                                        .withOpacity(0.38),
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                    top: 0,
-                                    bottom: 0,
-                                    right: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const Divider(
-              height: 5,
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            const SizedBox(
-              width: 300,
-              height: 50,
-              child: TabBar(
-                indicatorColor: Color(0xFF327C04),
-                labelColor: Colors.black,
-                unselectedLabelStyle: TextStyle(color: Color(0xFF6B6B6B)),
-                labelStyle: TextStyle(
-                  color: Color(0xFF000000),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-                tabs: [
-                  Tab(
-                    text: 'Grid',
-                  ),
-                  Tab(
-                    text: 'Table',
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: screenSize.height * 0.7,
-              child: TabBarView(children: [
-                StreamBuilder<bool>(
-                    stream: weeklytaskcontroller.stream,
-                    builder: (context, snapshot) {
-                      return FutureBuilder(
-                        future: getCropProgramData().getSecurityQuestions(
-                            int.parse(widget.id!)), //fetchCropProgram(1),
-                        builder: (ctx, snapshot) {
-                          if (snapshot.data == null) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.45,
-                                ),
-                                Center(child: CircularProgressIndicator()),
-                              ],
-                            );
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Text(
-                                  '${snapshot.error} occured',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                              );
-                            }
-                          }
-                          return _buildgridview(context, widget.weeks,
-                              diocropdata.data!, widget.id);
-                        },
-                      );
-                    }),
-                datatable(widget.weeks)
-                // FutureBuilder<CropProgramTasks>(
-                //   future: fetchCropProgram(widget.id),
-                //   builder: (ctx, snapshot) {
-                //     if (snapshot.connectionState == ConnectionState.done) {
-                //       if (snapshot.hasData) {
-                //         return datatable(widget.weeks);
-                //       } else {
-                //         return Center(
-                //           child: Text(
-                //             '${snapshot.error} occured',
-                //             style: const TextStyle(fontSize: 18),
-                //           ),
-                //         );
-                //       }
-                //     }
-                //     return const Center(child: CircularProgressIndicator());
-                //   },
-                // )
-              ]),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -9,6 +9,7 @@ import '../../component/custom_Elevated_Button.dart';
 import '../../component/text_Input_field.dart';
 import 'package:http/http.dart' as http;
 import '../../models/CropProgramTasksModel.dart';
+import '../../models/crop_schedule_task_model.dart';
 import '../crop/Repository/CropProgramViaDioAPI.dart';
 
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -116,7 +117,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     debugPrint("reached");
     Map<String, dynamic> updata = {
       "crop_plan_id": widget.cropplanid.toString(),
-      "cropprogramid": cropprogramid,
+      // "cropprogramid": cropprogramid,
       "week": WeekSelected,
       "status": taskStatusSelected,
       "title": tasktitleTextEditingController.text,
@@ -131,13 +132,11 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   }
 
   addTaskAPI(Map<String, dynamic> updata) async {
-
     final _chuckerHttpClient = await http.Client();
     print(updata);
     final prefs = await SharedPreferences.getInstance();
     http.Response response = await _chuckerHttpClient.post(
       Uri.parse(" https://agromate.website/laravel/api/add_task"),
-
       body: updata,
     );
     print(response.body);
@@ -1037,7 +1036,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                           .text);
                                   debugPrint(
                                       taskquantityTextEditingController.text);
-
+                                  debugPrint(widget.cropplanid.toString());
                                   if (isValid!) {
                                     // setState(() {
                                     //   addCropProgram().then((value) =>
@@ -1215,8 +1214,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                   ],
                                 );
                               }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
+                              if (snapshot.data != null) {
                                 if (snapshot.hasError) {
                                   return Center(
                                     child: Text(
@@ -1226,6 +1224,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                   );
                                 }
                               }
+
                               return _buildgridview(context, widget.weeks,
                                   diocropdata.data!, widget.id);
                             },
@@ -1241,7 +1240,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     );
   }
 
-  Widget _buildgridview(context, weeks, List<Data> data, id) {
+  Widget _buildgridview(context, weeks, List<CropScheduleTasks> data, id) {
     final screenSize = MediaQuery.of(context).size;
 
     return GridView.builder(
