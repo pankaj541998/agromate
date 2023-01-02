@@ -1,20 +1,26 @@
-import 'dart:async';
+import 'package:async/async.dart';
 import 'dart:convert';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/models/block.dart';
+import 'package:flutter_agro_new/database_api/models/crop.dart';
 import 'package:flutter_agro_new/database_api/models/farm.dart';
 import 'package:flutter_agro_new/database_api/models/field.dart';
 import 'package:flutter_agro_new/database_api/models/user.dart';
+import 'package:flutter_agro_new/pages/tasks/taska.dart';
 import 'package:flutter_agro_new/providers/map_filter_provider.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../../../component/custom_Elevated_Button.dart';
 import '../../../constants.dart';
+import '../../../database_api/methods/block_api_methods.dart';
+import '../../../database_api/methods/crop_program_api_method.dart';
+import '../../../database_api/methods/farm_api_methods.dart';
+import '../../../database_api/methods/field_api_methods.dart';
+import '../../../database_api/methods/users_api_methods.dart';
 import '../../growth_stages/dropdown_btn.dart';
 
 class StockOrder extends StatefulWidget {
@@ -24,15 +30,31 @@ class StockOrder extends StatefulWidget {
   State<StockOrder> createState() => _StockOrderState();
 }
 
+String? currentLandholder;
+int? currentLandholderId;
+
+String? currentFarm;
+int? currentFarmId;
+
+String? currentBlock;
+int? currentBlockId;
+
+String? currentField;
+int? currentFieldId;
+
+String? currentCrop;
+int? currentCropId;
+
 class _StockOrderState extends State<StockOrder> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  late MapboxMapController mapController;
+  MapboxMapController? mapController;
   String? crop;
   String? plantPopulation;
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
-  final StreamController<List> stockOrder = StreamController.broadcast();
+  // StreamController<List> stockOrder = StreamController.broadcast();
+  late final Future stockorder;
 
   Future<String> addStockplannerAPI() async {
     print("reached");
@@ -40,12 +62,12 @@ class _StockOrderState extends State<StockOrder> {
     final http.Response response = await http.post(
         Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
         body: {
-          "farm_id": "",
-          "block_id": "",
-          "field_id": "",
-          "crop_id": "",
-          "warehouse_id": "",
-          "user_id": ""
+          "farm_id": "1",
+          "block_id": "1",
+          "field_id": "1",
+          "crop_id": "1",
+          "warehouse_id": "1",
+          "user_id": "21"
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
@@ -59,663 +81,496 @@ class _StockOrderState extends State<StockOrder> {
     }
   }
 
-  buildPinAlertDialog(screenSize) {
+  final FutureGroup futureGroup = FutureGroup();
+  @override
+  void initState() {
+    super.initState();
+    futureGroup.add(UserApiMethods.fetchUsers());
+    futureGroup.add(FarmApiMethods.fetchFarms());
+    futureGroup.add(BlockApiMethods.fetchBlocks());
+    futureGroup.add(FieldApiMethods.fetchFields());
+    futureGroup.add(CropApiMethods.fetchCrops());
+    futureGroup.close();
+  }
+
+  String? currentFarm;
+  int? currentFarmId;
+
+  String? currentUser;
+  int? currentUserId;
+
+  String? currentBlock;
+  int? currentBlockId;
+
+  String? currentField;
+  int? currentFieldId;
+
+  String? currentCrop;
+  int? currentCropId;
+
+  buildPinAlert(screenSize) {
     return showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          var watchProvider = context.watch<MapFilterProvider>();
-          var readProvider = context.read<MapFilterProvider>();
-          return StreamBuilder<List>(
-              stream: stockOrder.stream,
-              builder: (context, snapshot) {
-                debugPrint("my snapshot $snapshot");
-                if (snapshot.connectionState == ConnectionState.active &&
-                    snapshot.hasData) {
-                  var data = snapshot.data!;
-                  var users = data.elementAt(0) as List<UserModel>;
-                  var farms = data.elementAt(1) as List<FarmModel>;
-                  var block = data.elementAt(2) as List<BlockModel>;
-                  var field = data.elementAt(3) as List<FieldModel>;
+        context: context,
+        builder: (context) => _buildbody(context, screenSize));
+  }
 
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AlertDialog(
-                        insetPadding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
-                        contentPadding:
-                            const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Add Stock Order",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Icon(
-                                Icons.cancel_outlined,
-                                color: Color(0xFF4E944F),
-                              ),
-                            )
-                          ],
+  // Widget _buildbodyi(context, screenSize) {
+  //   return StatefulBuilder(
+  //     builder: (context, setState) {
+  //       return FutureBuilder(
+  //           future: stockorder,
+  //           builder: (ctx, snapshot) {
+  //             var watchProvider = context.watch<MapFilterProvider>();
+  //             var readProvider = context.read<MapFilterProvider>();
+  //             if (snapshot.data == null) {
+  //               return Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   SizedBox(
+  //                     height: MediaQuery.of(context).size.height * 0.45,
+  //                   ),
+  //                   Center(child: CircularProgressIndicator()),
+  //                 ],
+  //               );
+  //             }
+  //             if (snapshot.connectionState == ConnectionState.done&&
+  //           snapshot.hasData) {
+  //               print("data from rsp ${snapshot.data}");
+  //               if (snapshot.hasError) {
+  //                 return Center(
+  //                   child: Text(
+  //                     '${snapshot.error} occured',
+  //                     style: const TextStyle(fontSize: 18),
+  //                   ),
+  //                 );
+  //               }
+  //             }
+
+  //             return  });
+  //     },
+  //   );
+  // }
+
+  // buildPinAlertDialog(screenSize) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) => StatefulBuilder(
+  //       builder: (context, setState) {
+  //         var watchProvider = context.watch<MapFilterProvider>();
+  //         var readProvider = context.read<MapFilterProvider>();
+  //         return StreamBuilder<List>(
+  //             stream: stockOrder.stream,
+  //             builder: (context, snapshot) {
+  //               debugPrint("my snapshot $snapshot");
+  //               if (snapshot.connectionState == ConnectionState.active &&
+  //                   snapshot.hasData) {
+  //                 var data = snapshot.data!;
+  //                 var users = data.elementAt(0) as List<UserModel>;
+  //                 var farms = data.elementAt(1) as List<FarmModel>;
+  //                 var block = data.elementAt(2) as List<BlockModel>;
+  //                 var field = data.elementAt(3) as List<FieldModel>;
+
+  //                 return    }
+  //               return Scaffold(
+  //                 body: Center(
+  //                   child: CircularProgressIndicator(),
+  //                 ),
+  //               );
+  //             });
+  //       },
+  //     ),
+  //   );
+  // }
+
+  Widget _buildbody(context, screenSize) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return FutureBuilder(
+          future: futureGroup.future,
+          builder: (context, snapshot) {
+            var watchProvider = context.watch<MapFilterProvider>();
+            var readProvider = context.read<MapFilterProvider>();
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              var data = snapshot.data!;
+              var fetchedusers = data.elementAt(0) as List<UserModel>;
+              var fetchedfarms = data.elementAt(1) as List<FarmModel>;
+              var fetchedblock = data.elementAt(2) as List<BlockModel>;
+              var fetchedfield = data.elementAt(3) as List<FieldModel>;
+              var fetchedcrop = data.elementAt(4) as List<CropPModel>;
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AlertDialog(
+                    insetPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 15),
+                    contentPadding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10))),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Add Stock Order",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        content: Form(
-                          key: _form,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.cancel_outlined,
+                            color: Color(0xFF4E944F),
+                          ),
+                        )
+                      ],
+                    ),
+                    content: Form(
+                      key: _form,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'landholder',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        DropdownBtn(
-                                          items: users
-                                              .where((element) =>
-                                                  element.roleIndex ==
-                                                  Roles.Landholder.index)
-                                              .map((e) {
-                                            return "${e.firstName} ${e.lastName}";
-                                          }).toList(),
-                                          hint:
-                                              watchProvider.currentLandholder ??
-                                                  'Landholder',
-                                          onItemSelected: (value) {
-                                            readProvider.onLandholderSelected();
-                                            mapController.clearLines();
-                                            mapController.clearFills();
-                                            readProvider.currentLandholder =
-                                                value;
-                                            readProvider.currentLandholderId = users
-                                                .singleWhere((element) =>
-                                                    "${element.firstName} ${element.lastName}" ==
-                                                    watchProvider
-                                                        .currentLandholder)
-                                                .id;
-
-                                            var landholderFarms = farms
-                                                .where((farmModel) =>
-                                                    farmModel.landholderId ==
-                                                    watchProvider
-                                                        .currentLandholderId)
-                                                .toList();
-                                            for (FarmModel farmModel
-                                                in landholderFarms) {
-                                              var latLngs = jsonDecode(
-                                                      farmModel.farmLatLngs!)
-                                                  as List;
-                                              String outlineColor = "#D5D8DC";
-                                              var linesGeo = latLngs;
-                                              linesGeo.add(latLngs.first);
-                                              mapController.addLines(linesGeo
-                                                  .map((latLng) => LineOptions(
-                                                      geometry: linesGeo
-                                                          .map((e) => LatLng(
-                                                              e.first, e.last))
-                                                          .toList(),
-                                                      lineColor: outlineColor))
-                                                  .toList());
-
-                                              mapController.addFill(
-                                                FillOptions(
-                                                  geometry: [
-                                                    latLngs.map((e) {
-                                                      return LatLng(
-                                                          e.first, e.last);
-                                                    }).toList()
-                                                  ],
-                                                  fillColor: "#566573",
-                                                  fillOutlineColor:
-                                                      outlineColor,
-                                                  fillOpacity: 0.6,
-                                                ),
-                                              );
-                                            }
-                                            var cam = jsonDecode(landholderFarms
-                                                .first.farmLatLngs!) as List;
-
-                                            mapController.animateCamera(
-                                                CameraUpdate.newLatLngZoom(
-                                                    LatLng(cam.first.first,
-                                                        cam.first.last),
-                                                    12));
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25,
-                                  ),
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Farm',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        DropdownBtn(
-                                          isEnabled: watchProvider
-                                              .isFarmDropdownEnabled,
-                                          items: farms
-                                              .where((element) =>
-                                                  element.landholderId ==
-                                                  watchProvider
-                                                      .currentLandholderId)
-                                              .map((e) {
-                                            return e.farmName.toString();
-                                          }).toList(),
-                                          hint: watchProvider.currentFarm ??
-                                              "Farm",
-                                          onItemSelected: (value) async {
-                                            readProvider.enableBlockDropdown();
-                                            if (watchProvider.highlightFill !=
-                                                    null &&
-                                                watchProvider.highlightLines !=
-                                                    null) {
-                                              mapController.removeLines(
-                                                  readProvider.highlightLines!);
-                                              mapController.removeFill(
-                                                  readProvider.highlightFill!);
-                                            }
-                                            readProvider.currentFarm = value;
-                                            var farmModel = farms.singleWhere(
-                                                (element) =>
-                                                    element.landholderId ==
-                                                        watchProvider
-                                                            .currentLandholderId &&
-                                                    element.farmName ==
-                                                        watchProvider
-                                                            .currentFarm);
-                                            readProvider.currentFarmId =
-                                                farmModel.id;
-                                            var latLngs = jsonDecode(
-                                                farmModel.farmLatLngs!) as List;
-                                            double avgLat = 0;
-                                            double avgLng = 0;
-                                            for (List latLng in latLngs) {
-                                              avgLat += latLng.first;
-                                              avgLng += latLng.last;
-                                            }
-                                            avgLat /= latLngs.length;
-                                            avgLng /= latLngs.length;
-                                            mapController.animateCamera(
-                                                CameraUpdate.newLatLngZoom(
-                                                    LatLng(avgLat, avgLng),
-                                                    13));
-                                            //highlight farm
-                                            String outlineColor = "#F9E79F";
-                                            var linesGeo = latLngs;
-                                            linesGeo.add(latLngs.first);
-
-                                            var highlightLines = await mapController
-                                                .addLines(linesGeo
-                                                    .map((latLng) =>
-                                                        LineOptions(
-                                                            geometry: linesGeo
-                                                                .map((e) =>
-                                                                    LatLng(
-                                                                        e.first,
-                                                                        e.last))
-                                                                .toList(),
-                                                            lineColor:
-                                                                outlineColor))
-                                                    .toList());
-                                            readProvider.highlightLines =
-                                                highlightLines;
-
-                                            var fill = await mapController
-                                                .addFill(FillOptions(
-                                              geometry: [
-                                                latLngs.map((e) {
-                                                  return LatLng(
-                                                      e.first, e.last);
-                                                }).toList()
-                                              ],
-                                              fillColor: outlineColor,
-                                              fillOutlineColor: outlineColor,
-                                              fillOpacity: 0.3,
-                                            ));
-                                            readProvider.highlightFill = fill;
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
                               SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Block',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        DropdownBtn(
-                                          isEnabled: watchProvider
-                                              .isBlockDropdownEnabled,
-                                          items: block
-                                              .where((element) =>
-                                                  element.landholderId ==
-                                                      watchProvider
-                                                          .currentLandholderId &&
-                                                  element.farmId ==
-                                                      watchProvider
-                                                          .currentFarmId)
-                                              .map((e) {
-                                            return e.blockName.toString();
-                                          }).toList(),
-                                          hint: 'Block',
-                                          onItemSelected: (value) async {
-                                            readProvider.enableFieldDropdown();
-                                            if (watchProvider
-                                                        .highlightFillBlock !=
-                                                    null &&
-                                                watchProvider
-                                                        .highlightLinesBlock !=
-                                                    null) {
-                                              mapController.removeLines(
-                                                  readProvider
-                                                      .highlightLinesBlock!);
-                                              mapController.removeFill(
-                                                  readProvider
-                                                      .highlightFillBlock!);
-                                            }
-                                            readProvider.currentBlock = value;
-                                            var blockModel = block.singleWhere(
-                                                (element) =>
-                                                    element.blockName ==
-                                                        watchProvider
-                                                            .currentBlock &&
-                                                    element.farmId ==
-                                                        watchProvider
-                                                            .currentFarmId &&
-                                                    element.landholderId ==
-                                                        watchProvider
-                                                            .currentLandholderId);
-                                            readProvider.currentBlockId =
-                                                blockModel.id;
-
-                                            var latLngs = jsonDecode(
-                                                    blockModel.blockLatLngs!)
-                                                as List;
-                                            double avgLat = 0;
-                                            double avgLng = 0;
-                                            for (List latLng in latLngs) {
-                                              avgLat += latLng.first;
-                                              avgLng += latLng.last;
-                                            }
-                                            avgLat /= latLngs.length;
-                                            avgLng /= latLngs.length;
-                                            mapController.animateCamera(
-                                                CameraUpdate.newLatLngZoom(
-                                                    LatLng(avgLat, avgLng),
-                                                    13));
-                                            //highlight farm
-                                            String outlineColor = "#ff4000";
-                                            var linesGeo = latLngs;
-                                            linesGeo.add(latLngs.first);
-
-                                            var highlightLines = await mapController
-                                                .addLines(linesGeo
-                                                    .map((latLng) =>
-                                                        LineOptions(
-                                                            geometry: linesGeo
-                                                                .map((e) =>
-                                                                    LatLng(
-                                                                        e.first,
-                                                                        e.last))
-                                                                .toList(),
-                                                            lineColor:
-                                                                outlineColor))
-                                                    .toList());
-                                            readProvider.highlightLinesBlock =
-                                                highlightLines;
-
-                                            var fill = await mapController
-                                                .addFill(FillOptions(
-                                              geometry: [
-                                                latLngs.map((e) {
-                                                  return LatLng(
-                                                      e.first, e.last);
-                                                }).toList()
-                                              ],
-                                              fillColor: outlineColor,
-                                              fillOutlineColor: outlineColor,
-                                              fillOpacity: 0.4,
-                                            ));
-                                            readProvider.highlightFillBlock =
-                                                fill;
-                                          },
-                                        ),
-                                      ],
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'landholder',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25,
-                                  ),
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Field',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        DropdownBtn(
-                                          isEnabled: watchProvider
-                                              .isFieldDropdownEnabled,
-                                          items: field
-                                              .where((element) =>
-                                                  element.landholderId ==
-                                                      watchProvider
-                                                          .currentLandholderId &&
-                                                  element.farmId ==
-                                                      watchProvider
-                                                          .currentFarmId &&
-                                                  element.blockId ==
-                                                      watchProvider
-                                                          .currentBlockId)
-                                              .map((e) {
-                                            return e.fieldName.toString();
-                                          }).toList(),
-                                          hint: watchProvider.currentField ??
-                                              'Field',
-                                          onItemSelected: (value) async {
-                                            readProvider.enableCropDropdown();
-                                            if (watchProvider
-                                                        .highlightFillField !=
-                                                    null &&
-                                                watchProvider
-                                                        .highlightLinesField !=
-                                                    null) {
-                                              mapController.removeLines(
-                                                  readProvider
-                                                      .highlightLinesField!);
-                                              mapController.removeFill(
-                                                  readProvider
-                                                      .highlightFillField!);
-                                            }
-                                            readProvider.currentField = value;
-                                            //==
-                                            var fieldModel = field.singleWhere(
-                                                (element) =>
-                                                    element.fieldName ==
-                                                        watchProvider
-                                                            .currentField &&
-                                                    element.farmId ==
-                                                        watchProvider
-                                                            .currentFarmId &&
-                                                    element.landholderId ==
-                                                        watchProvider
-                                                            .currentLandholderId &&
-                                                    element.blockId ==
-                                                        watchProvider
-                                                            .currentBlockId);
-                                            readProvider.currentFieldId =
-                                                fieldModel.id;
+                                    const SizedBox(height: 15),
+                                    DropdownBtn(
+                                      items: fetchedusers
+                                          .where((element) =>
+                                              element.roleIndex ==
+                                              Roles.Landholder.index)
+                                          .map((e) {
+                                        return "${e.firstName} ${e.lastName}";
+                                      }).toList(),
+                                      hint: 'Landholder',
+                                      onItemSelected: (value) {
+                                        setState(() {
+                                          currentLandholder = value;
+                                          currentLandholderId = fetchedusers
+                                              .singleWhere((element) =>
+                                                  "${element.firstName} ${element.lastName}" ==
+                                                  currentLandholder)
+                                              .id;
 
-                                            var latLngs = jsonDecode(
-                                                    fieldModel.fieldLatLngs!)
-                                                as List;
-                                            double avgLat = 0;
-                                            double avgLng = 0;
-                                            for (List latLng in latLngs) {
-                                              avgLat += latLng.first;
-                                              avgLng += latLng.last;
-                                            }
-                                            avgLat /= latLngs.length;
-                                            avgLng /= latLngs.length;
-                                            mapController.animateCamera(
-                                                CameraUpdate.newLatLngZoom(
-                                                    LatLng(avgLat, avgLng),
-                                                    13));
-                                            //highlight farm
-                                            String outlineColor = "#ffffff";
-                                            var linesGeo = latLngs;
-                                            linesGeo.add(latLngs.first);
-
-                                            var highlightLines = await mapController
-                                                .addLines(linesGeo
-                                                    .map((latLng) =>
-                                                        LineOptions(
-                                                            geometry: linesGeo
-                                                                .map((e) =>
-                                                                    LatLng(
-                                                                        e.first,
-                                                                        e.last))
-                                                                .toList(),
-                                                            lineColor:
-                                                                outlineColor))
-                                                    .toList());
-                                            readProvider.highlightLinesField =
-                                                highlightLines;
-
-                                            var fill = await mapController
-                                                .addFill(FillOptions(
-                                              geometry: [
-                                                latLngs.map((e) {
-                                                  return LatLng(
-                                                      e.first, e.last);
-                                                }).toList()
-                                              ],
-                                              fillColor: outlineColor,
-                                              fillOutlineColor: outlineColor,
-                                              fillOpacity: 0.3,
-                                            ));
-                                            readProvider.highlightFillField =
-                                                fill;
-                                          },
-                                        ),
-                                      ],
+                                          debugPrint(
+                                              currentLandholderId.toString());
+                                          debugPrint(fetchedfarms.toString());
+                                        });
+                                      },
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Crop',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        DropdownBtn(
-                                          isEnabled: watchProvider
-                                              .isCropDropdownEnabled,
-                                          items: const ['Crop 1', 'Crop 2'],
-                                          hint: 'Crop',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25,
-                                  ),
-                                  SizedBox(
-                                    width: screenSize.width * 0.2,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Warehouse',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Color(0xff000000),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 15),
-                                        TextFormField(
-                                          // initialValue: 'enter heritage',
-                                          style: const TextStyle(
-                                            // color: Color(0xffffffff),
-                                            fontFamily: 'Helvetica',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          // readOnly: true,
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          decoration: InputDecoration(
-                                            fillColor: Colors.transparent,
-                                            errorMaxLines: 3,
-                                            hintText: "Enter Person",
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                                    left: 10,
-                                                    right: 10,
-                                                    top: 15,
-                                                    bottom: 15),
-                                            hintStyle: const TextStyle(
-                                              fontSize: 16,
-                                              // color: const Color(0xffffffff).withOpacity(0.8),
-                                              fontFamily: 'Helvetica',
-                                            ),
-                                            // fillColor: Colors.white,
-                                            filled: true,
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                width: 1,
-                                                color: Color(0xff327C04),
-                                              ),
-                                            ),
-                                            errorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                width: 1,
-                                                color: Color(0xff327C04),
-                                              ),
-                                            ),
-                                            errorStyle: const TextStyle(
-                                              fontSize: 16.0,
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                width: 1,
-                                                color: Color(0xff327C04),
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide: const BorderSide(
-                                                width: 1,
-                                                color: Color(0xff327C04),
-                                              ),
-                                            ),
-                                            isDense: true,
-                                          ),
-                                          // controller: _email,
-                                          keyboardType: TextInputType.text,
-                                          // validator: (value) {
-                                          //   if (value == null || value.isEmpty) {
-                                          //     return 'Please enter your email Id';
-                                          //   }
-                                          //   return null;
-                                          // },
-                                          // onSaved: (name) {},
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               const SizedBox(
-                                height: 30,
+                                width: 25,
                               ),
                               SizedBox(
-                                height: 40,
-                                width: 298,
-                                child: CustomElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  title: "Submit",
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Farm',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    DropdownBtn(
+                                      items: fetchedfarms
+                                          .where((element) =>
+                                              element.landholderId ==
+                                              currentLandholderId)
+                                          .map((e) => e.farmName!)
+                                          .toList(),
+                                      hint: 'Select Farm',
+                                      onItemSelected: (value) async {
+                                        setState(() {
+                                          currentFarm = value;
+                                          currentFarmId = fetchedfarms
+                                              .singleWhere((element) =>
+                                                  element.farmName ==
+                                                  currentFarm)
+                                              .id;
+
+                                          debugPrint(currentFarmId.toString());
+                                        });
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Block',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    DropdownBtn(
+                                      items: fetchedblock
+                                          .where((element) =>
+                                              element.farmId == currentFarmId)
+                                          .map((e) => e.blockName!)
+                                          .toList(),
+                                      hint: 'Select Block',
+                                      onItemSelected: (value) async {
+                                        setState(() {
+                                          currentBlock = value;
+                                          currentBlockId = fetchedblock
+                                              .singleWhere((element) =>
+                                                  element.blockName ==
+                                                  currentBlock)
+                                              .id;
+
+                                          debugPrint(currentBlockId.toString());
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Field',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    DropdownBtn(
+                                      items: fetchedfield
+                                          .where((element) =>
+                                              element.blockId == currentBlockId)
+                                          .map((e) => e.fieldName!)
+                                          .toList(),
+                                      hint: 'Select Field',
+                                      onItemSelected: (value) async {
+                                        setState(() {
+                                          currentField = value;
+                                          currentFieldId = fetchedfield
+                                              .singleWhere((element) =>
+                                                  element.fieldName ==
+                                                  currentField)
+                                              .id;
+
+                                          debugPrint(currentFieldId.toString());
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Crop',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    DropdownBtn(
+                                      items: fetchedcrop.map((e) {
+                                        return e.crop.toString();
+                                      }).toList(),
+                                      hint: 'Select Crop',
+                                      onItemSelected: (value) async {
+                                        debugPrint(value);
+                                        currentCrop = value;
+                                        currentCropId = fetchedcrop
+                                            .singleWhere((element) =>
+                                                element.crop == value)
+                                            .id;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              SizedBox(
+                                width: screenSize.width * 0.2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Warehouse',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Color(0xff000000),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    TextFormField(
+                                      // initialValue: 'enter heritage',
+                                      style: const TextStyle(
+                                        // color: Color(0xffffffff),
+                                        fontFamily: 'Helvetica',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      // readOnly: true,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.transparent,
+                                        errorMaxLines: 3,
+                                        hintText: "Enter Person",
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10,
+                                            top: 15,
+                                            bottom: 15),
+                                        hintStyle: const TextStyle(
+                                          fontSize: 16,
+                                          // color: const Color(0xffffffff).withOpacity(0.8),
+                                          fontFamily: 'Helvetica',
+                                        ),
+                                        // fillColor: Colors.white,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        errorStyle: const TextStyle(
+                                          fontSize: 16.0,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                            width: 1,
+                                            color: Color(0xff327C04),
+                                          ),
+                                        ),
+                                        isDense: true,
+                                      ),
+                                      // controller: _email,
+                                      keyboardType: TextInputType.text,
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please enter your email Id';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // onSaved: (name) {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            width: 298,
+                            child: CustomElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              title: "Submit",
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  );
-                }
-                return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
+                    ),
                   ),
-                );
-              });
-        },
-      ),
+                ],
+              );
+            }
+            return Scaffold(
+              body: Column(
+                children: [
+                  TopBar(),
+                  const Expanded(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -755,7 +610,7 @@ class _StockOrderState extends State<StockOrder> {
                           children: [
                             InkWell(
                               onTap: () {
-                                buildPinAlertDialog(screenSize);
+                                buildPinAlert(screenSize);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
