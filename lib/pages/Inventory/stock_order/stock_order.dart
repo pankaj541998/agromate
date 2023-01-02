@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_agro_new/database_api/models/user.dart';
 import 'package:flutter_agro_new/providers/map_filter_provider.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../component/custom_Elevated_Button.dart';
 import '../../../constants.dart';
 import '../../growth_stages/dropdown_btn.dart';
@@ -32,6 +33,31 @@ class _StockOrderState extends State<StockOrder> {
   String? weeks;
   TextEditingController controller = TextEditingController();
   final StreamController<List> stockOrder = StreamController.broadcast();
+
+  Future<String> addStockplannerAPI() async {
+    print("reached");
+    final _chuckerHttpClient = await http.Client();
+    final http.Response response = await http.post(
+        Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
+        body: {
+          "farm_id": "",
+          "block_id": "",
+          "field_id": "",
+          "crop_id": "",
+          "warehouse_id": "",
+          "user_id": ""
+        });
+    print("api resp is ${response.body}");
+    if (response.statusCode == 200) {
+      Flushbar(
+        message: "Stock Planner Added Successfully",
+        duration: Duration(seconds: 2),
+      );
+      return 'null';
+    } else {
+      return throw (Exception("Search Error"));
+    }
+  }
 
   buildPinAlertDialog(screenSize) {
     return showDialog(
