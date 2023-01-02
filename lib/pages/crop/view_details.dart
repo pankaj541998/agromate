@@ -56,7 +56,7 @@ var units = [
   "Pounds",
   "Tonnes"
 ];
-String productdescriptionSelected = 'Select product description';
+String productdescriptionSelected = 'product description 1';
 var productdescription = [
   'Select product description',
   'product description 1',
