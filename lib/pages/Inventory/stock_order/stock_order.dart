@@ -1,15 +1,19 @@
-import 'package:async/async.dart';
+import 'dart:async';
 import 'dart:convert';
+
+import 'package:async/async.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.dart';
 import 'package:flutter_agro_new/database_api/models/block.dart';
 import 'package:flutter_agro_new/database_api/models/crop.dart';
 import 'package:flutter_agro_new/database_api/models/farm.dart';
 import 'package:flutter_agro_new/database_api/models/field.dart';
 import 'package:flutter_agro_new/database_api/models/user.dart';
-import 'package:flutter_agro_new/pages/tasks/taska.dart';
+import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
+import 'package:flutter_agro_new/models/stock_order_model.dart';
 import 'package:flutter_agro_new/providers/map_filter_provider.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +25,7 @@ import '../../../database_api/methods/crop_program_api_method.dart';
 import '../../../database_api/methods/farm_api_methods.dart';
 import '../../../database_api/methods/field_api_methods.dart';
 import '../../../database_api/methods/users_api_methods.dart';
+import '../../../main.dart';
 import '../../growth_stages/dropdown_btn.dart';
 
 class StockOrder extends StatefulWidget {
@@ -30,21 +35,6 @@ class StockOrder extends StatefulWidget {
   State<StockOrder> createState() => _StockOrderState();
 }
 
-String? currentLandholder;
-int? currentLandholderId;
-
-String? currentFarm;
-int? currentFarmId;
-
-String? currentBlock;
-int? currentBlockId;
-
-String? currentField;
-int? currentFieldId;
-
-String? currentCrop;
-int? currentCropId;
-
 class _StockOrderState extends State<StockOrder> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   MapboxMapController? mapController;
@@ -52,27 +42,28 @@ class _StockOrderState extends State<StockOrder> {
   String? plantPopulation;
   String? yield;
   String? weeks;
+  final StreamController<requestResponseState> _stockOrderGet =
+      StreamController.broadcast();
   TextEditingController controller = TextEditingController();
-  // StreamController<List> stockOrder = StreamController.broadcast();
   late final Future stockorder;
-
-  Future<String> addStockplannerAPI() async {
+  late stockOrderModel stockOrderData;
+  Future<String> addStockorderAPI() async {
     print("reached");
     final _chuckerHttpClient = await http.Client();
     final http.Response response = await http.post(
-        Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
+        Uri.parse("https://agromate.website/laravel/api/add_stock_order"),
         body: {
-          "farm_id": "1",
-          "block_id": "1",
-          "field_id": "1",
-          "crop_id": "1",
-          "warehouse_id": "1",
-          "user_id": "21"
+          "farm_id": currentFarmId.toString(),
+          "block_id": currentBlockId.toString(),
+          "field_id": currentFieldId.toString(),
+          "crop_id": currentCropId.toString(),
+          "warehouse_id": currentWarehouseId.toString(),
+          "user_id": currentLandholderId.toString()
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
       Flushbar(
-        message: "Stock Planner Added Successfully",
+        message: "Stock Order Added Successfully",
         duration: Duration(seconds: 2),
       );
       return 'null';
@@ -81,23 +72,44 @@ class _StockOrderState extends State<StockOrder> {
     }
   }
 
+  Future fetchStockOrder() async {
+    var client = http.Client();
+    final response = await client
+        .get(Uri.parse('https://agromate.website/laravel/api/get_stock_order'));
+    final parsed = jsonDecode(response.body);
+    //print(response.body);
+
+    if (response.statusCode == 200) {
+      stockOrderData = stockOrderModel.fromJson(parsed);
+      _stockOrderGet.add(requestResponseState.DataReceived);
+      return stockOrderData;
+    } else {
+      Center(
+        child: Text("Please Try Again After Some Time..."),
+      );
+    }
+    return stockOrderData;
+  }
+
   final FutureGroup futureGroup = FutureGroup();
   @override
   void initState() {
     super.initState();
+    fetchStockOrder();
     futureGroup.add(UserApiMethods.fetchUsers());
     futureGroup.add(FarmApiMethods.fetchFarms());
     futureGroup.add(BlockApiMethods.fetchBlocks());
     futureGroup.add(FieldApiMethods.fetchFields());
     futureGroup.add(CropApiMethods.fetchCrops());
+    futureGroup.add(stockPlannerAPI.getWarehouse());
     futureGroup.close();
   }
 
   String? currentFarm;
   int? currentFarmId;
 
-  String? currentUser;
-  int? currentUserId;
+  String? currentLandholder;
+  int? currentLandholderId;
 
   String? currentBlock;
   int? currentBlockId;
@@ -108,80 +120,14 @@ class _StockOrderState extends State<StockOrder> {
   String? currentCrop;
   int? currentCropId;
 
+  String? currentWarehouse;
+  int? currentWarehouseId;
+
   buildPinAlert(screenSize) {
     return showDialog(
         context: context,
         builder: (context) => _buildbody(context, screenSize));
   }
-
-  // Widget _buildbodyi(context, screenSize) {
-  //   return StatefulBuilder(
-  //     builder: (context, setState) {
-  //       return FutureBuilder(
-  //           future: stockorder,
-  //           builder: (ctx, snapshot) {
-  //             var watchProvider = context.watch<MapFilterProvider>();
-  //             var readProvider = context.read<MapFilterProvider>();
-  //             if (snapshot.data == null) {
-  //               return Column(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   SizedBox(
-  //                     height: MediaQuery.of(context).size.height * 0.45,
-  //                   ),
-  //                   Center(child: CircularProgressIndicator()),
-  //                 ],
-  //               );
-  //             }
-  //             if (snapshot.connectionState == ConnectionState.done&&
-  //           snapshot.hasData) {
-  //               print("data from rsp ${snapshot.data}");
-  //               if (snapshot.hasError) {
-  //                 return Center(
-  //                   child: Text(
-  //                     '${snapshot.error} occured',
-  //                     style: const TextStyle(fontSize: 18),
-  //                   ),
-  //                 );
-  //               }
-  //             }
-
-  //             return  });
-  //     },
-  //   );
-  // }
-
-  // buildPinAlertDialog(screenSize) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) => StatefulBuilder(
-  //       builder: (context, setState) {
-  //         var watchProvider = context.watch<MapFilterProvider>();
-  //         var readProvider = context.read<MapFilterProvider>();
-  //         return StreamBuilder<List>(
-  //             stream: stockOrder.stream,
-  //             builder: (context, snapshot) {
-  //               debugPrint("my snapshot $snapshot");
-  //               if (snapshot.connectionState == ConnectionState.active &&
-  //                   snapshot.hasData) {
-  //                 var data = snapshot.data!;
-  //                 var users = data.elementAt(0) as List<UserModel>;
-  //                 var farms = data.elementAt(1) as List<FarmModel>;
-  //                 var block = data.elementAt(2) as List<BlockModel>;
-  //                 var field = data.elementAt(3) as List<FieldModel>;
-
-  //                 return    }
-  //               return Scaffold(
-  //                 body: Center(
-  //                   child: CircularProgressIndicator(),
-  //                 ),
-  //               );
-  //             });
-  //       },
-  //     ),
-  //   );
-  // }
 
   Widget _buildbody(context, screenSize) {
     return StatefulBuilder(
@@ -199,6 +145,7 @@ class _StockOrderState extends State<StockOrder> {
               var fetchedblock = data.elementAt(2) as List<BlockModel>;
               var fetchedfield = data.elementAt(3) as List<FieldModel>;
               var fetchedcrop = data.elementAt(4) as List<CropPModel>;
+              var fetchedwarehouse = data.elementAt(5) as List<fetchWarehouse>;
 
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -457,79 +404,19 @@ class _StockOrderState extends State<StockOrder> {
                                       ),
                                     ),
                                     const SizedBox(height: 15),
-                                    TextFormField(
-                                      // initialValue: 'enter heritage',
-                                      style: const TextStyle(
-                                        // color: Color(0xffffffff),
-                                        fontFamily: 'Helvetica',
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      // readOnly: true,
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      decoration: InputDecoration(
-                                        fillColor: Colors.transparent,
-                                        errorMaxLines: 3,
-                                        hintText: "Enter Person",
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                            top: 15,
-                                            bottom: 15),
-                                        hintStyle: const TextStyle(
-                                          fontSize: 16,
-                                          // color: const Color(0xffffffff).withOpacity(0.8),
-                                          fontFamily: 'Helvetica',
-                                        ),
-                                        // fillColor: Colors.white,
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xff327C04),
-                                          ),
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xff327C04),
-                                          ),
-                                        ),
-                                        errorStyle: const TextStyle(
-                                          fontSize: 16.0,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xff327C04),
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                            width: 1,
-                                            color: Color(0xff327C04),
-                                          ),
-                                        ),
-                                        isDense: true,
-                                      ),
-                                      // controller: _email,
-                                      keyboardType: TextInputType.text,
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email Id';
-                                      //   }
-                                      //   return null;
-                                      // },
-                                      // onSaved: (name) {},
+                                    DropdownBtn(
+                                      items: fetchedwarehouse.map((e) {
+                                        return e.warehouseName.toString();
+                                      }).toList(),
+                                      hint: 'Select Warehouse',
+                                      onItemSelected: (value) async {
+                                        debugPrint(value);
+                                        currentWarehouse = value;
+                                        currentWarehouseId = fetchedwarehouse
+                                            .singleWhere((element) =>
+                                                element.warehouseName == value)
+                                            .id;
+                                      },
                                     ),
                                   ],
                                 ),
@@ -544,6 +431,7 @@ class _StockOrderState extends State<StockOrder> {
                             width: 298,
                             child: CustomElevatedButton(
                               onPressed: () {
+                                addStockorderAPI();
                                 Navigator.pop(context);
                               },
                               title: "Submit",
@@ -645,18 +533,17 @@ class _StockOrderState extends State<StockOrder> {
                                 width: 250,
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
+                                    setState(() {
+                                      // myDataRequest = registeredusers.data!
+                                      //     .where(
+                                      //       (element) => element.email!
+                                      //           .toLowerCase()
+                                      //           .contains(
+                                      //             value.toLowerCase(),
+                                      //           ),
+                                      //     )
+                                      //     .toList();
+                                    });
                                   },
                                   controller: controller,
                                   decoration: BoxDecoration(
@@ -707,7 +594,22 @@ class _StockOrderState extends State<StockOrder> {
                   SizedBox(height: screenSize.height * 0.03),
                   SizedBox(
                     height: screenSize.height * 0.7,
-                    child: _buildgridview(context, screenSize),
+                    child: StreamBuilder<requestResponseState>(
+                        stream: _stockOrderGet.stream,
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return Center(child: CircularProgressIndicator());
+
+                            default:
+                              if (snapshot.hasError) {
+                                return Text("Error Occured");
+                              } else {
+                                return _buildgridview(
+                                    context, screenSize, stockOrderData);
+                              }
+                          }
+                        }),
                   ),
                 ],
               ),
@@ -719,14 +621,14 @@ class _StockOrderState extends State<StockOrder> {
   }
 }
 
-Widget _buildgridview(context, screenSize) {
+Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 2,
         crossAxisCount: 3,
       ),
-      itemCount: 5,
+      itemCount: stockOrderData.data!.length,
       itemBuilder: (BuildContext ctx, index) {
         return Padding(
           padding: EdgeInsets.all(15),
@@ -755,7 +657,7 @@ Widget _buildgridview(context, screenSize) {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Farm",
                                     style: TextStyle(
@@ -763,7 +665,12 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "Varkaplass",
+                                    stockOrderData.data!
+                                        .elementAt(index)
+                                        .farm!
+                                        .first
+                                        .farm!
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -784,7 +691,7 @@ Widget _buildgridview(context, screenSize) {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Block",
                                     style: TextStyle(
@@ -792,11 +699,12 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "A",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .hectarage
-                                    //     .toString(),
+                                    stockOrderData.data!
+                                        .elementAt(index)
+                                        .block!
+                                        .first
+                                        .block!
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -817,7 +725,7 @@ Widget _buildgridview(context, screenSize) {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Field",
                                     style: TextStyle(
@@ -825,11 +733,12 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "A1A",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .farmerId
-                                    //     .toString(),
+                                    stockOrderData.data!
+                                        .elementAt(index)
+                                        .field!
+                                        .first
+                                        .field!
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -852,7 +761,7 @@ Widget _buildgridview(context, screenSize) {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Person",
                                     style: TextStyle(
@@ -860,11 +769,7 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "Raj",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .fieldId
-                                    //     .toString(),
+                                    "${stockOrderData.data!.elementAt(index).user!.first.firstName!.toString()} ${stockOrderData.data!.elementAt(index).user!.first.lastName!.toString()}",
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -885,7 +790,7 @@ Widget _buildgridview(context, screenSize) {
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Crop",
                                     style: TextStyle(
@@ -893,11 +798,12 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "Potato",
-                                    // cropPlan
-                                    //     .elementAt(index)
-                                    //     .planneddate
-                                    //     .toString(),
+                                    stockOrderData.data!
+                                        .elementAt(index)
+                                        .crop!
+                                        .first
+                                        .crop!
+                                        .toString(),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -926,7 +832,7 @@ Widget _buildgridview(context, screenSize) {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    "Pre Planting",
+                                    "Stage 1",
                                     // cropPlan
                                     //     .elementAt(index)
                                     //     .stageId
@@ -950,206 +856,3 @@ Widget _buildgridview(context, screenSize) {
         );
       });
 }
-
-
-
-// buildPin(context) {
-//   return showDialog(
-//     context: context,
-//     builder: (context) => StatefulBuilder(
-//       builder: (context, setState) {
-//         return Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             AlertDialog(
-//               content: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   Row(
-//                     children: [
-//                       Text(
-//                         "Add New Growth Stage",
-//                         style: TextStyle(
-//                             fontSize: 20, fontWeight: FontWeight.w500),
-//                       ),
-//                     ],
-//                   ),
-//                   SizedBox(
-//                     height: 20,
-//                   ),
-//                   Row(
-//                     children: [
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "Select Crop",
-//                             style: TextStyle(
-//                               fontSize: 18,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: 15,
-//                           ),
-//                           SizedBox(
-//                               height: 50,
-//                               width: 300,
-//                               child: TextDropdown(
-//                                   items: const ['Onion', 'Potato', 'Carrot'],
-//                                   controller: crop,
-//                                   showDropDown: true))
-//                         ],
-//                       ),
-//                       SizedBox(
-//                         width: 35,
-//                       ),
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "Growth Name",
-//                             style: TextStyle(
-//                               fontSize: 18,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: 15,
-//                           ),
-//                           SizedBox(
-//                               height: 50,
-//                               width: 300,
-//                               child: TextInputField(
-//                                   hintText: "", validatorText: ""))
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                   SizedBox(
-//                     height: 18,
-//                   ),
-//                   Text(
-//                     "Description",
-//                     style: TextStyle(fontSize: 18),
-//                   ),
-//                   SizedBox(
-//                     height: 15,
-//                   ),
-//                   SizedBox(
-//                       height: 100,
-//                       width: 629,
-//                       child: TextFormField(
-//                         maxLines: 5,
-//                         cursorColor: Color(0xFF327C04),
-//                         autovalidateMode: AutovalidateMode.onUserInteraction,
-//                         decoration: InputDecoration(
-//                           filled: true,
-//                           fillColor: Colors.white,
-//                           enabledBorder: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(15),
-//                             borderSide:
-//                                 const BorderSide(color: Color(0xFFA1B809)),
-//                           ),
-//                           focusedBorder: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(15),
-//                             borderSide:
-//                                 const BorderSide(color: Color(0xFFA1B809)),
-//                           ),
-//                           errorBorder: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(15),
-//                             borderSide: const BorderSide(color: Colors.red),
-//                           ),
-//                           focusedErrorBorder: OutlineInputBorder(
-//                             borderRadius: BorderRadius.circular(15),
-//                             borderSide: const BorderSide(color: Colors.red),
-//                           ),
-//                           hintStyle: const TextStyle(
-//                               color: Color(0x80000000), fontSize: 18),
-//                           hintText: "",
-//                         ),
-//                         validator: (value) {
-//                           if (value != null && value.isEmpty) {
-//                             return "Password cannot be empty";
-//                           }
-//                           return null;
-//                         },
-//                       )),
-//                   SizedBox(
-//                     height: 14,
-//                   ),
-//                   Row(
-//                     children: [
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "Start Week",
-//                             style: TextStyle(
-//                               fontSize: 18,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: 15,
-//                           ),
-//                           SizedBox(
-//                               height: 50,
-//                               width: 300,
-//                               child: TextDropdown(
-//                                   items: const ['Onion', 'Potato', 'Carrot'],
-//                                   controller: crop,
-//                                   showDropDown: true))
-//                         ],
-//                       ),
-//                       SizedBox(
-//                         width: 35,
-//                       ),
-//                       Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "End Week",
-//                             style: TextStyle(
-//                               fontSize: 18,
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: 15,
-//                           ),
-//                           SizedBox(
-//                               height: 50,
-//                               width: 300,
-//                               child: TextDropdown(
-//                                   items: const ['Onion', 'Potato', 'Carrot'],
-//                                   controller: crop,
-//                                   showDropDown: true))
-//                         ],
-//                       ),
-//                     ],
-//                   ),
-//                   SizedBox(
-//                     height: 25,
-//                   ),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       SizedBox(
-//                         height: 40,
-//                         width: 298,
-//                         child: customElevatedButton(
-//                           onPressed: () {
-//                             Navigator.pop(context);
-//                           },
-//                           title: "Submit",
-//                         ),
-//                       ),
-//                     ],
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ],
-//         );
-//       },
-//     ),
-//   );
-// }
