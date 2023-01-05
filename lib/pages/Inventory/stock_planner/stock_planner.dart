@@ -79,13 +79,6 @@ class _StockPlannerState extends State<StockPlanner> {
     return stockplan;
   }
 
-  // late String _selectedValue;
-  // List<String> listOfValue = [
-  //   'Warehouse 1',
-  //   'Warehouse 2',
-  //   'Warehouse 3',
-  //   'Warehouse 4',
-  // ];
   late String _selectedValue1;
   List<String> listOfValue1 = [
     'Stock 1',

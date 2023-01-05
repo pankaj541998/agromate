@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/pages/Inventory/modes_of_application/Inventory_modes_of_application.dart';
-
 import 'package:flutter_agro_new/pages/allocation.dart';
-
 import 'package:flutter_agro_new/pages/allocate.dart';
-
 import 'package:flutter_agro_new/pages/farms/plot_block.dart';
 import 'package:flutter_agro_new/pages/farms/plot_field.dart';
-
 import 'package:flutter_agro_new/pages/farms/view_farm.dart';
 import 'package:flutter_agro_new/pages/gap_analysis/gap_analysis.dart';
 import 'package:flutter_agro_new/pages/growth_stages/growth_stage_details.dart';
 import 'package:flutter_agro_new/pages/growth_stages/growth_stages.dart';
 import 'package:flutter_agro_new/pages/Inventory/inventory.dart';
 import 'package:flutter_agro_new/pages/Inventory/class_and_type/inventory_class_type.dart';
-
 import 'package:flutter_agro_new/pages/login_Registration/forgot_password.dart';
 import 'package:flutter_agro_new/pages/login_Registration/login.dart';
 import 'package:flutter_agro_new/pages/login_Registration/my_profile.dart';
@@ -67,7 +62,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/addstock',
+
+      initialRoute: '/',
+
       getPages: [
         GetPage(name: '/', page: () => const Login()),
         GetPage(name: '/register', page: () => const Register()),
