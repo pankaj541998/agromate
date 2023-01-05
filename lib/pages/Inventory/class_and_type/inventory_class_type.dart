@@ -26,7 +26,8 @@ import 'dart:async';
 
 StreamController<bool> _classrefresh = StreamController<bool>.broadcast();
 StreamController<bool> _typerefresh = StreamController<bool>.broadcast();
-
+String? currentCategory;
+int? currentCategoryId;
 late ClassModel classdata;
 late TypeModel typedata;
 final classTextEditingController = TextEditingController();
@@ -197,7 +198,7 @@ Future<String> addTypeAPI(Map<String, dynamic> updata) async {
 }
 
 //final Future myfuture;
-final FutureGroup futureGroup = FutureGroup();
+// final FutureGroup futureGroup = FutureGroup();
 List<String> get_cat = [];
 bool _isonce = true;
 setValues() {
@@ -1934,23 +1935,33 @@ buildPinType(context, id,
                                         height: 15,
                                       ),
                                       SizedBox(
-                                          width: 300,
-                                          child: TextInputField(
-                                              inputFormatters: [
-                                                LengthLimitingTextInputFormatter(
-                                                    25),
-                                              ],
-                                              textEditingController:
-                                                  classTextEditingController,
-                                              hintText: "",
-                                              validator: (value) {
-                                                if (value != null &&
-                                                    value.isEmpty) {
-                                                  return "Please Enter Class Name";
-                                                }
-                                                return null;
-                                              },
-                                              validatorText: ""))
+                                        width: 300,
+                                        child: DropdownBtn(
+                                          items: get_cat,
+                                          hint: classTextEditingController.text,
+                                          onItemSelected: (value) async {
+                                            setState(() {
+                                              currentgapCat = value;
+                                            });
+                                          },
+                                        ),
+                                        // TextInputField(
+                                        //     inputFormatters: [
+                                        //       LengthLimitingTextInputFormatter(
+                                        //           25),
+                                        //     ],
+                                        //     textEditingController:
+                                        //         classTextEditingController,
+                                        //     hintText: "",
+                                        //     validator: (value) {
+                                        //       if (value != null &&
+                                        //           value.isEmpty) {
+                                        //         return "Please Enter Class Name";
+                                        //       }
+                                        //       return null;
+                                        //     },
+                                        //     validatorText: "")
+                                      )
                                     ],
                                   ),
                                   SizedBox(

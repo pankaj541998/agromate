@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -92,7 +93,8 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   var wee = [''];
 
   generateListForweeks() {
-    final items = List<String>.generate(4, (i) => "Week ${i + 1}");
+    final items =
+        List<String>.generate(int.parse(widget.weeks!), (i) => "Week ${i + 1}");
     // print("created list is $items");
     wee = items;
   }
@@ -113,20 +115,20 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   int subselected = 0; //attention
   var taskid;
 
-  addWeeklyTask(cropprogramid) async {
+  addWeeklyTask(cropplanid) async {
     debugPrint("reached");
     Map<String, dynamic> updata = {
       "crop_plan_id": widget.cropplanid.toString(),
       // "cropprogramid": cropprogramid,
-      "week": WeekSelected,
-      "status": taskStatusSelected,
-      "title": tasktitleTextEditingController.text,
-      "description": taskdescriptionTextEditingController.text,
-      "category": CategorySelected,
-      "chemical": taskchemicaltitleTextEditingController.text,
-      "activeingridient": ActiveIngridientSelected,
-      "quantity": taskquantityTextEditingController.text,
-      "unit": taskUnitsSelected
+      "week": WeekSelected.toString(),
+      "status": taskStatusSelected.toString(),
+      "title": tasktitleTextEditingController.text.toString(),
+      "description": taskdescriptionTextEditingController.text.toString(),
+      "category": CategorySelected.toString(),
+      "chemical": taskchemicaltitleTextEditingController.text.toString(),
+      "activeingridient": ActiveIngridientSelected.toString(),
+      "quantity": taskquantityTextEditingController.text.toString(),
+      "units": taskUnitsSelected.toString(),
     };
     addTaskAPI(updata);
   }
@@ -136,7 +138,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     print(updata);
     final prefs = await SharedPreferences.getInstance();
     http.Response response = await _chuckerHttpClient.post(
-      Uri.parse(" https://agromate.website/laravel/api/add_task"),
+      Uri.parse("https://agromate.website/laravel/api/add_task"),
       body: updata,
     );
     print(response.body);
@@ -145,7 +147,36 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "New Task Added Successfully",
-      ).show(context);
+      );
+      return 'null';
+    } else {
+      return 'throw (Exception("Search Error"))';
+    }
+  }
+
+  deleteTask(id) async {
+    debugPrint("reached");
+    Map<String, dynamic> updata = {
+      "task_id": id.toString(),
+    };
+    deleteAPI(updata);
+  }
+
+  deleteAPI(Map<String, dynamic> updata) async {
+    final _chuckerHttpClient = await http.Client();
+    print(updata);
+    final prefs = await SharedPreferences.getInstance();
+    http.Response response = await _chuckerHttpClient.post(
+      Uri.parse("https://agromate.website/laravel/api/delete_task"),
+      body: updata,
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      print(response.body);
+      Flushbar(
+        duration: const Duration(seconds: 2),
+        message: "New Task Added Successfully",
+      );
       return 'null';
     } else {
       return 'throw (Exception("Search Error"))';
@@ -158,186 +189,6 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
     //fetchCropProgram(widget.id);
     taskid = widget.id;
     generateListForweeks();
-  }
-
-  buildPin() {
-    return showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AlertDialog(
-                // insetPadding:
-                //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Week 1/Day 2",
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        icon: Icon(
-                          Icons.cancel_outlined,
-                        ))
-                  ],
-                ),
-                content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Title : Plowing",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 50,
-                        ),
-                        Text(
-                          "Status : Ongoing",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      thickness: 1,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Date : 08/06/2022",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Description : Turn over the uppermost soil, bringing fresh nutrients to the surface while \nburying weeds and crop remains to decay",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Category  : Fertilizer",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 250,
-                        ),
-                        Text(
-                          "Chemical : Ammonia",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Active Ingredients : Nitrogen",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          width: 250,
-                        ),
-                        Text(
-                          "Quantity : 500 Kg",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Time of application : Moderate Wind speed",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Modes of application : Tractor",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Warnings :  ",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.star),
-                        Text(
-                          "         May cause sensitisation by skin contact",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "Precautions : ",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        Icon(Icons.star),
-                        Text(
-                          "      Wear a mask",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
   }
 
   buildPinAlert() {
@@ -461,7 +312,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                         fontSize: 16,
                                         color: Color(0xff000000),
                                         fontFamily: 'Helvetica'),
-                                    items: week.map((String items) {
+                                    items: wee.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
                                         child: Text(items),
@@ -892,12 +743,10 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                 SizedBox(
                                     width: 140,
                                     child: TextInputField(
-                                        // inputFormatters: [
-                                        //   LengthLimitingTextInputFormatter(
-                                        //       6),
-                                        //   FilteringTextInputFormatter
-                                        //       .digitsOnly
-                                        // ],
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(12),
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                         // textEditingController:
                                         //     weeksTextEditingController,
                                         textEditingController:
@@ -1066,6 +915,108 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                 ),
               ],
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  customAlert(context, id) {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.delete,
+                      size: 60,
+                      color: Color(0xFFFF0000),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      "Are You Sure?",
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 160,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: const BorderSide(
+                                    color: Color(0xFF327C04),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Color(0XFF000000),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 160,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color(0xFF327C04),
+                                ),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ))),
+                            onPressed: () {
+                              setState(() {
+                                deleteTask(id);
+                                weeklytaskcontroller.add(true);
+                                var count = 0;
+                                Navigator.popUntil(context, (route) {
+                                  return count++ == 2;
+                                });
+                              });
+                            },
+                            child: const Text('Delete'),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -1426,9 +1377,6 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                                       MainAxisAlignment.center,
                                                   children: [
                                                     AlertDialog(
-                                                      // insetPadding:
-                                                      //     EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                                                      // contentPadding: EdgeInsets.fromLTRB(24, 8, 24, 24),
                                                       shape: RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius.all(
@@ -1449,14 +1397,46 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                                                     FontWeight
                                                                         .bold),
                                                           ),
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                Get.back();
-                                                              },
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .cancel_outlined,
-                                                              ))
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              // IconButton(
+                                                              //     onPressed:
+                                                              //         () {
+                                                              //       Get.back();
+                                                              //     },
+                                                              //     icon: Icon(
+                                                              //       Icons.edit,
+                                                              //     )),
+                                                              // SizedBox(
+                                                              //     width: 20),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    customAlert(
+                                                                        context,
+                                                                        element
+                                                                            .id);
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .delete_outline,
+                                                                  )),
+                                                              SizedBox(
+                                                                  width: 20),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back();
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .cancel_outlined,
+                                                                  ))
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                       content: Column(
