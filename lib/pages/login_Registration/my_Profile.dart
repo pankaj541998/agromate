@@ -291,7 +291,7 @@ class _ProfileState extends State<Profile> {
                               readonly: true,
                               textEditingController: username,
                               hintText: "Username",
-                              validatorText: "")),
+                              validatorText: ""),),
                       const SizedBox(
                         height: 35,
                       ),

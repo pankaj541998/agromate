@@ -1,13 +1,18 @@
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
-import 'package:flutter_agro_new/pages/popup.dart';
+import 'package:flutter_agro_new/models/allocactionModel.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
+late allocationModel allocation;
+enum requestResponseState { Error, DataReceived, Loading, SessionExpired }
+final StreamController<requestResponseState> _schedulerefresh =
+    StreamController.broadcast();
 
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -21,13 +26,33 @@ class Allocation extends StatefulWidget {
 }
 
 class _AllocationState extends State<Allocation> {
+
+ @override
+  void initState() {
+
+  
+      fetchAllocation();
+
+          super.initState();
+
+  }
+
+
+    Future<allocationModel> fetchAllocation() async {
+    var client = http.Client();
+    final response = await client
+        .get(Uri.parse('https://agromate.website/laravel/api/get_allocation'));
+    final parsed = jsonDecode(response.body);
+    print("api call data ${response.body}");
+    allocation = allocationModel.fromJson(parsed);
+    myData = allocation.data!;
+    _schedulerefresh.add(requestResponseState.DataReceived);
+    return allocation;
+  }
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return DefaultTabController(
-      initialIndex: widget.initial ?? 0,
-      length: 1,
-      child: Scaffold(
+    return  Scaffold(
         backgroundColor: Colors.white,
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -42,26 +67,26 @@ class _AllocationState extends State<Allocation> {
                   SizedBox(height: screenSize.height * 0.02),
                   Row(
                     children: [
-                      const SizedBox(
-                        width: 120,
-                        height: 50,
-                        child: TabBar(
-                          indicatorColor: Color(0xFF327C04),
-                          labelColor: Colors.black,
-                          unselectedLabelStyle:
-                              TextStyle(color: Color(0xFF6B6B6B)),
-                          labelStyle: TextStyle(
-                            color: Color(0xFF000000),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                          tabs: [
-                            Tab(
-                              text: 'Allocation',
-                            ),
-                          ],
-                        ),
-                      ),
+                      // const SizedBox(
+                      //   width: 120,
+                      //   height: 50,
+                      //   child: TabBar(
+                      //     indicatorColor: Color(0xFF327C04),
+                      //     labelColor: Colors.black,
+                      //     unselectedLabelStyle:
+                      //         TextStyle(color: Color(0xFF6B6B6B)),
+                      //     labelStyle: TextStyle(
+                      //       color: Color(0xFF000000),
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 16,
+                      //     ),
+                      //     tabs: [
+                      //       Tab(
+                      //         text: 'Allocation',
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       Expanded(
                         flex: 3,
                         child: Row(
@@ -156,246 +181,280 @@ class _AllocationState extends State<Allocation> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: screenSize.height * 0.8,
-                    child: TabBarView(
-                      children: [
-                        Container(
-                          child: SingleChildScrollView(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 15),
-                              child: Container(
-                                decoration: const BoxDecoration(),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: double.infinity,
-                                        child: PaginatedDataTable(
-                                          sortColumnIndex: 0,
-                                          // sortAscending: sort,
-                                          source: RowSource(
-                                            myData: myData,
-                                            count: myData.length,
-                                            context: context,
-                                          ),
-                                          rowsPerPage: 7,
-                                          columnSpacing: 0,
-                                          headingRowHeight: 50,
-                                          horizontalMargin: 0,
-                                          columns: [
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Sr.No",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Profile",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Username",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Full Name",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Phone Number",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Email Address",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Role",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: Expanded(
-                                                child: Container(
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        const Color(0xff327C04)
-                                                            .withOpacity(0.11),
-                                                  ),
-                                                  child: const Center(
-                                                    child: Text(
-                                                      "Action",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+
+                      FutureBuilder(
+                  future: fetchAllocation(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return datatable(screenSize, context);
+                      } else {
+                        return Center(
+                          child: Text(
+                            '${snapshot.error} occured',
+                            style: const TextStyle(fontSize: 18),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
+                        );
+                      }
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
+             
+               
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
+    
   }
+
+    datatable(screenSize, context) {
+    fetchAllocation();
+    return     Container(
+                    decoration: const BoxDecoration(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: PaginatedDataTable(
+                              sortColumnIndex: 0,
+                              // sortAscending: sort,
+                              source: RowSource(
+                                myData: myData,
+                                count: myData.length,
+                                context: context,
+                              ),
+                              rowsPerPage: 7,
+                              columnSpacing: 0,
+                              headingRowHeight: 50,
+                              horizontalMargin: 0,
+                              columns: [
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Sr.No",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Profile",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Full Name",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),                                                                                   
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Role",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "landholder",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Farm",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Block",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                               DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Field",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                               DataColumn(
+                                  label: Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            const Color(0xff327C04)
+                                                .withOpacity(0.11),
+                                      ),
+                                      child: const Center(
+                                        child: Text(
+                                          "Action",
+                                          textAlign:
+                                              TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight:
+                                                  FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                 }
 }
 
 _buildusertable(screenSize, context) {}
 
-datatable(screenSize, context) {}
+// datatable(screenSize, context) {}
 
 class RowSource extends DataTableSource {
   var myData;
@@ -423,7 +482,7 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(var data, context, int index) {
+DataRow recentFileDataRow(allocationData data, context, int index) {
   int no = index + 1;
 
   return DataRow(
@@ -434,16 +493,18 @@ DataRow recentFileDataRow(var data, context, int index) {
         child: Image.asset("assets/images/albert.png", height: 30),
       )),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.username.toString()))),
+          alignment: Alignment.center, child: Text(data.getLandholder.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.fullname.toString()))),
+          alignment: Alignment.center, child: Text(data.getFarm!.first.farm.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.phonenumber.toString()))),
+          child: Text(data.getFarm!.first.farm.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.email.toString()))),
+          alignment: Alignment.center, child: Text(data.getFarm!.first.farm.toString()))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.role.toString()))),
+          alignment: Alignment.center, child: Text(data.getFarm!.first.farm.toString()))),
+          DataCell(Align(
+          alignment: Alignment.center, child: Text(data.getFarm!.first.farm.toString()))),
       DataCell(
           Align(alignment: Alignment.center, child: _buildactions(context))),
     ],
@@ -1022,196 +1083,28 @@ customAlert(context) {
   );
 }
 
-class Data {
-  String? profile;
-  String? username;
-  String? fullname;
-  String? phonenumber;
-  String? email;
-  String? role;
-  String? action;
+// class Data {
+//   String? profile;
+//   String? username;
+//   String? fullname;
+//   String? phonenumber;
+//   String? email;
+//   String? role;
+//   String? action;
 
-  Data({
-    required this.profile,
-    required this.username,
-    required this.fullname,
-    required this.phonenumber,
-    required this.email,
-    required this.role,
-    required this.action,
-  });
-}
+//   Data({
+//     required this.profile,
+//     required this.username,
+//     required this.fullname,
+//     required this.phonenumber,
+//     required this.email,
+//     required this.role,
+//     required this.action,
+//   });
+// }
 
-List<Data> myData = [
-  Data(
-    profile: "1",
-    username: 'Raj',
-    fullname: 'Raj Shinde',
-    phonenumber: '9987171941',
-    email: 'rajshinde06@gmail.com',
-    role: 'Agronomist',
-    action: '24524',
-  ),
-  Data(
-    profile: "2",
-    username: 'pankaj',
-    fullname: 'pankaj Gupta',
-    phonenumber: '9821667219',
-    email: 'pankajgipta@gmail.com',
-    role: 'Landholder',
-    action: '`52435`',
-  ),
-  Data(
-    profile: "3",
-    username: 'Kishan',
-    fullname: 'Kishan Bhuta',
-    phonenumber: '9835654981',
-    email: 'kishbhutaa@gmial.com',
-    role: 'Farmer',
-    action: '245245',
-  ),
-  Data(
-    profile: "4",
-    username: 'Dhurmil',
-    fullname: 'Dhurmil Shah',
-    phonenumber: '9767485497',
-    email: 'dhurshah@gmail.com',
-    role: 'Farmer',
-    action: '245245',
-  ),
-  Data(
-    profile: "5",
-    username: 'Pooja',
-    fullname: 'pooja tambe',
-    phonenumber: '8828291148',
-    email: 'tambepoo@gmail.com',
-    role: 'Manager',
-    action: '245245',
-  ),
-  Data(
-    profile: "6",
-    username: 'Jyoti',
-    fullname: 'Jyoti Shetty',
-    phonenumber: '9147624864',
-    email: 'jyotty@gmail.com',
-    role: 'Manager',
-    action: '24524',
-  ),
-  Data(
-    profile: "7",
-    username: 'Salman',
-    fullname: 'Salman Khan',
-    phonenumber: '9870368665',
-    email: 'Salmannkhann786@gmail.com',
-    role: 'Farmer',
-    action: '13435',
-  ),
-  Data(
-    profile: "8",
-    username: 'Chetan',
-    fullname: 'Chetan Jadhav',
-    phonenumber: '9826458246',
-    email: 'chetan245@gmail.com',
-    role: 'Agronomist',
-    action: '65979',
-  ),
-  Data(
-    profile: "9",
-    username: 'Sandeep',
-    fullname: 'Sandeep Vishwakarma',
-    phonenumber: '8865455892',
-    email: 'sandeep23@gmail.com',
-    role: 'landholder',
-    action: '69659',
-  ),
-  Data(
-    profile: "10",
-    username: 'Reethik',
-    fullname: 'Reethik Bhuta',
-    phonenumber: '9870456298',
-    email: 'reethikb@gmail.com',
-    role: 'Farmer',
-    action: '694689',
-  ),
-  Data(
-    profile: "11",
-    username: 'Dipti',
-    fullname: 'Dipti mahabdi',
-    phonenumber: '9456872816',
-    email: 'Dipti@gmailcom',
-    role: 'Landholder',
-    action: '67947',
-  ),
-  Data(
-    profile: "12",
-    username: 'Adam',
-    fullname: 'Adam james',
-    phonenumber: '9756481546',
-    email: 'Adamjamezss@gmail.com',
-    role: 'Manager',
-    action: '6479467',
-  ),
-  Data(
-    profile: "13",
-    username: 'Chinmay',
-    fullname: 'Chinmay Rasam',
-    phonenumber: '8829154964',
-    email: 'chinmay@gmail.com',
-    role: 'Farmer',
-    action: '658365',
-  ),
-  Data(
-    profile: "14",
-    username: 'Mayur',
-    fullname: 'Mayur More',
-    phonenumber: '7946582646',
-    email: 'mayur@gmail.com',
-    role: 'landholder',
-    action: '5686',
-  ),
-  Data(
-    profile: "15",
-    username: 'shahrukh',
-    fullname: 'shahrukh Shah',
-    phonenumber: '7946521744',
-    email: 'shahrukh@gmail.com',
-    role: 'Famrer',
-    action: '3477',
-  ),
-  Data(
-    profile: "16",
-    username: 'Reethik',
-    fullname: 'Reethik Thota',
-    phonenumber: '9870368956',
-    email: 'reethik@gmail.com',
-    role: 'Farmer',
-    action: '457',
-  ),
-  Data(
-    profile: "17",
-    username: 'Shubham',
-    fullname: 'Shubham kadam',
-    phonenumber: '7945164946',
-    email: 'shubhkadam@gmail.com',
-    role: 'Manager',
-    action: '45725',
-  ),
-  Data(
-    profile: "18",
-    username: 'Rohan',
-    fullname: 'Rohan Verma',
-    phonenumber: '9870364615',
-    email: 'rohan@gmail.com',
-    role: 'rohan@gmail.com',
-    action: '257457',
-  ),
-  Data(
-    profile: "19",
-    username: 'kartikey',
-    fullname: 'kartikey gautam',
-    phonenumber: '8828294615',
-    email: 'kartikey@gmail.com',
-    role: 'landholder',
-    action: '245747',
-  ),
-];
+List<allocationData> myData = allocation.data!;
+
+
+
+
