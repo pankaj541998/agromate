@@ -19,6 +19,7 @@ class ApiUrl {
   static const getCropPlan = "https://agromate.website/laravel/api/get/plan";
 //
   static const getClass = "https://agromate.website/laravel/api/get/class";
+  static const getType = "https://agromate.website/laravel/api/get/type";
 
   //gap_Question table
   static const postGap = "https://agromate.website/laravel/api/gap_analysis";
@@ -30,4 +31,16 @@ class ApiUrl {
   // stock_planner
   static const getWarehouse =
       "https://agromate.website/laravel/api/fetch_warehouse";
+
+  static const getWarnings = "https://agromate.website/laravel/api/get_warning";
+  static const getPrecautions =
+      "https://agromate.website/laravel/api/get_precaution";
+  static const getInstructions =
+      "https://agromate.website/laravel/api/get_instruction";
+  static const getKeyTargets =
+      "https://agromate.website/laravel/api/get_key_targets";
+  static const getTimeOfApplication =
+      "https://agromate.website/laravel/api/get_time_of_application";
+  static const getModesOfApplication =
+      "https://agromate.website/laravel/api/get/mode";
 }
