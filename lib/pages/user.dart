@@ -19,6 +19,7 @@ import '../component/custom_Elevated_Button.dart';
 import '../component/text_Input_field.dart';
 
 final StreamController<bool> _requestuserrefresh = StreamController.broadcast();
+final StreamController<bool> _userrefresh = StreamController.broadcast();
 late RegisteredUserModel registeredusers;
 late NotRegisteredUserModel notregisteredusers;
 final email = TextEditingController();
@@ -59,6 +60,7 @@ Future<RegisteredUserModel> fetchRegisteredUsers() async {
   final parsed = jsonDecode(response.body);
   // print(response.body);
   registeredusers = RegisteredUserModel.fromJson(parsed);
+  myDataRequest = registeredusers.data!;
   // print(registeredusers.data!.elementAt(1).firstName!);
   return registeredusers;
 }
@@ -127,6 +129,7 @@ Future<String> updateUserAPI(Map<String, String> updata) async {
 
   if (response.statusCode == 200) {
     print("update api response is ${response.body}");
+
     return 'null';
   } else {
     return 'throw (Exception("Search Error"))';
@@ -316,26 +319,31 @@ class _UserState extends State<User> {
                     height: screenSize.height * 0.8,
                     child: TabBarView(
                       children: [
-                        FutureBuilder<RegisteredUserModel>(
-                          future: fetchRegisteredUsers(),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.hasData) {
-                                return _buildusertable(screenSize, context);
-                              } else {
-                                return Center(
-                                  child: Text(
-                                    '${snapshot.error} occured',
-                                    style: const TextStyle(fontSize: 18),
-                                  ),
-                                );
-                              }
-                            }
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          },
-                        ),
+                        StreamBuilder<bool>(
+                            stream: _userrefresh.stream,
+                            builder: (context, snapshot) {
+                              return FutureBuilder<RegisteredUserModel>(
+                                future: fetchRegisteredUsers(),
+                                builder: (ctx, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    if (snapshot.hasData) {
+                                      return _buildusertable(
+                                          screenSize, context);
+                                    } else {
+                                      return Center(
+                                        child: Text(
+                                          '${snapshot.error} occured',
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                },
+                              );
+                            }),
                         //_buildusertable(screenSize, context),
                         StreamBuilder<bool>(
                             stream: _requestuserrefresh.stream,
@@ -542,7 +550,6 @@ buildPin(context) {
                               if (isValid!) {
                                 print(email);
                                 print(roleIndex);
-
                                 addUser();
                                 _requestuserrefresh.add(true);
                                 // fetchNotRegisteredUsers();
@@ -1026,12 +1033,12 @@ buildPinAlert(context,
                                 phoneTextEditingController.text.toString());
                             debugPrint(
                                 roleTextEditingController.text.toString());
-                            setState(() {
-                              updateUser(id.toString(),
-                                      roleTextEditingController.text.toString())
-                                  .then((value) =>
-                                      Navigator.pushNamed(context, '/user'));
-                            });
+
+                            updateUser(id.toString(),
+                                roleTextEditingController.text.toString());
+                            _userrefresh.add(true);
+                            Navigator.pop(context);
+
                             // updateUser(id.toString());
                             // Navigator.pop(context);
                           },
@@ -1150,7 +1157,7 @@ customAlert(context, id) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
-                    Icons.cancel_outlined,
+                    Icons.delete,
                     size: 60,
                     color: Color(0xFFFF0000),
                   ),
@@ -1213,8 +1220,9 @@ customAlert(context, id) {
                               ))),
                           onPressed: () {
                             setState(() {
-                              deleteApi(id).then((value) =>
-                                  Navigator.pushNamed(context, '/user'));
+                              deleteApi(id);
+                              _userrefresh.add(true);
+                              Navigator.pop(context);
                             });
                           },
                           child: const Text('Delete'),

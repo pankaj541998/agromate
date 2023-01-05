@@ -103,6 +103,12 @@ class ViewDetails extends StatefulWidget {
 class _ViewDetailsState extends State<ViewDetails> {
   String WeekSelected = 'Week 1';
   var wee = [''];
+  generateListForweeks() {
+    final items =
+        List<String>.generate(int.parse(widget.weeks!), (i) => "Week ${i + 1}");
+    // print("created list is $items");
+    wee = items;
+  }
 
   TextEditingController controller = TextEditingController();
   TextEditingController titleTextEditingController = TextEditingController();
@@ -137,13 +143,6 @@ class _ViewDetailsState extends State<ViewDetails> {
         filterData!.sort((a, b) => b.name!.compareTo(a.name!));
       }
     }
-  }
-
-  generateListForweeks() {
-    final items =
-        List<String>.generate(int.parse(widget.weeks!), (i) => "Week ${i + 1}");
-    // print("created list is $items");
-    wee = items;
   }
 
   Future fetchCropProgram(id) async {
