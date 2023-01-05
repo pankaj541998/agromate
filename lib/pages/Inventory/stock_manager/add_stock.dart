@@ -44,6 +44,13 @@ final modesOfApplicationTextEditingController = TextEditingController();
 final StreamController<bool> _modesOfApplicationsrefresh =
     StreamController.broadcast();
 
+final selectedIndexesWarning = [];
+final selectedIndexesPrecaution = [];
+final selectedIndexesInstruction = [];
+final selectedIndexesKeyTargets = [];
+final selectedIndexesTimeOfApplication = [];
+final selectedIndexesModesOfApplication = [];
+
 class AddStock extends StatefulWidget {
   const AddStock({Key? key}) : super(key: key);
 
@@ -1210,9 +1217,14 @@ class _WarningsState extends State<Warnings> {
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(5.0))),
-                      value: check11,
-                      onChanged: (check) {
-                        check11 = check!;
+                      value: selectedIndexesWarning.contains(index),
+                      onChanged: (value) {
+                        if (selectedIndexesWarning.contains(index)) {
+                          selectedIndexesWarning.remove(index); // unselect
+                        } else {
+                          selectedIndexesWarning.add(index); // select
+                        }
+                        setState(() {});
                       },
                     ),
                   ),
@@ -1417,9 +1429,15 @@ class _PrecautionsState extends State<Precautions> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check11,
-                          onChanged: (check) {
-                            check11 = check!;
+                          value: selectedIndexesPrecaution.contains(index),
+                          onChanged: (value) {
+                            if (selectedIndexesPrecaution.contains(index)) {
+                              selectedIndexesPrecaution
+                                  .remove(index); // unselect
+                            } else {
+                              selectedIndexesPrecaution.add(index); // select
+                            }
+                            setState(() {});
                           },
                         ),
                       ),
@@ -1624,9 +1642,15 @@ class _InstructionsState extends State<Instructions> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check11,
-                          onChanged: (check) {
-                            check11 = check!;
+                          value: selectedIndexesInstruction.contains(index),
+                          onChanged: (value) {
+                            if (selectedIndexesInstruction.contains(index)) {
+                              selectedIndexesInstruction
+                                  .remove(index); // unselect
+                            } else {
+                              selectedIndexesInstruction.add(index); // select
+                            }
+                            setState(() {});
                           },
                         ),
                       ),
@@ -1831,9 +1855,15 @@ class _KeyTargetsState extends State<KeyTargets> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check11,
-                          onChanged: (check) {
-                            check11 = check!;
+                          value: selectedIndexesKeyTargets.contains(index),
+                          onChanged: (value) {
+                            if (selectedIndexesKeyTargets.contains(index)) {
+                              selectedIndexesKeyTargets
+                                  .remove(index); // unselect
+                            } else {
+                              selectedIndexesKeyTargets.add(index); // select
+                            }
+                            setState(() {});
                           },
                         ),
                       ),
@@ -2041,9 +2071,18 @@ class _TimeOfApplicationState extends State<TimeOfApplication> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check11,
-                          onChanged: (check) {
-                            check11 = check!;
+                          value:
+                              selectedIndexesTimeOfApplication.contains(index),
+                          onChanged: (value) {
+                            if (selectedIndexesTimeOfApplication
+                                .contains(index)) {
+                              selectedIndexesTimeOfApplication
+                                  .remove(index); // unselect
+                            } else {
+                              selectedIndexesTimeOfApplication
+                                  .add(index); // select
+                            }
+                            setState(() {});
                           },
                         ),
                       ),
@@ -2228,9 +2267,18 @@ class _ModeApplicationState extends State<ModeApplication> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: check11,
-                          onChanged: (check) {
-                            check11 = check!;
+                          value:
+                              selectedIndexesModesOfApplication.contains(index),
+                          onChanged: (value) {
+                            if (selectedIndexesModesOfApplication
+                                .contains(index)) {
+                              selectedIndexesModesOfApplication
+                                  .remove(index); // unselect
+                            } else {
+                              selectedIndexesModesOfApplication
+                                  .add(index); // select
+                            }
+                            setState(() {});
                           },
                         ),
                       ),
