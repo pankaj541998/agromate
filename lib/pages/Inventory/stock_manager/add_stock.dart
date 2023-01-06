@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_agro_new/database_api/methods/instructions_api_model.dart';
 import 'package:flutter_agro_new/database_api/methods/keyTargets.dart';
 import 'package:flutter_agro_new/database_api/methods/modes_api_methods.dart';
@@ -28,6 +29,13 @@ import 'package:flutter_agro_new/models/warnings_model.dart';
 
 import '../../../component/custom_Elevated_Button.dart';
 
+final itemCodeTextEditingController = TextEditingController();
+final descriptionTextEditingController = TextEditingController();
+final unitCostTextEditingController = TextEditingController();
+final stockLevelTextEditingController = TextEditingController();
+final activeIngridientTextEditingController = TextEditingController();
+final aikgTextEditingController = TextEditingController();
+
 final warningTextEditingController = TextEditingController();
 final StreamController<bool> _warningsrefresh = StreamController.broadcast();
 final precautionTextEditingController = TextEditingController();
@@ -44,12 +52,55 @@ final modesOfApplicationTextEditingController = TextEditingController();
 final StreamController<bool> _modesOfApplicationsrefresh =
     StreamController.broadcast();
 
-final selectedIndexesWarning = [];
-final selectedIndexesPrecaution = [];
-final selectedIndexesInstruction = [];
-final selectedIndexesKeyTargets = [];
-final selectedIndexesTimeOfApplication = [];
-final selectedIndexesModesOfApplication = [];
+List selectedIndexesWarning = [];
+List selectedIndexesPrecaution = [];
+List selectedIndexesInstruction = [];
+List selectedIndexesKeyTargets = [];
+List selectedIndexesTimeOfApplication = [];
+List selectedIndexesModesOfApplication = [];
+
+String? currentCategory;
+int? currentCategoryId;
+
+String? currentType;
+int? currentTypeId;
+String questionsSelected = 'Alternative';
+
+Future<String> addStock() async {
+  Map<String, dynamic> updata = {
+    "inventory_category": currentCategoryId.toString(),
+    "inventory_type": currentTypeId.toString(),
+    "alternative": questionsSelected.toString(),
+    "item_code": itemCodeTextEditingController.text.toString(),
+    "item_description": descriptionTextEditingController.text.toString(),
+    "unit_cost": unitCostTextEditingController.text.toString(),
+    "stock_level": stockLevelTextEditingController.text.toString(),
+    "active_ingridient": activeIngridientTextEditingController.text.toString(),
+    "aiperKg": aikgTextEditingController.text.toString(),
+    "warning": selectedIndexesWarning,
+    "precaution": selectedIndexesPrecaution,
+    "instruction": selectedIndexesInstruction,
+    "key_target": selectedIndexesKeyTargets,
+    "time_of_application": selectedIndexesModesOfApplication
+  };
+  return await addNewStock(updata);
+}
+
+Future<String> addNewStock(Map<String, dynamic> updata) async {
+  final _chuckerHttpClient = await http.Client();
+  print(updata);
+  http.Response response = await _chuckerHttpClient.post(
+    Uri.parse('https://agromate.website/laravel/api/post_stock_order'),
+    body: updata,
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return "null";
+  } else {
+    return 'throw (Exception("Search Error"))';
+  }
+}
 
 class AddStock extends StatefulWidget {
   const AddStock({Key? key}) : super(key: key);
@@ -82,34 +133,12 @@ class _AddStockState extends State<AddStock> {
     futureGroup.close();
   }
 
-  String? currentCategory;
-  int? currentCategoryId;
-
-  String? currentType;
-  int? currentTypeId;
-  String questionsSelected = 'Select Your Question *';
   var questions = [
-    'Select Your Question *',
-    'Question 1',
-    'Question 2',
-    'Question 3',
-    'Question 4',
-  ];
-  String ClassSelected = 'Select Category';
-  var iclass = [
-    'Select Category',
-    'Category 1',
-    'Category 2',
-    'Category 3',
-    'Category 4',
-  ];
-  String TypeSelected = 'Select Type';
-  var type = [
-    'Select Type',
-    'Type 1',
-    'Type 2',
-    'Type 3',
-    'Type 4',
+    'Alternative',
+    'Alternative 1',
+    'Alternative 2',
+    'Alternative 3',
+    'Alternative 4',
   ];
 
   @override
@@ -449,7 +478,8 @@ class _AddStockState extends State<AddStock> {
                                                 ),
                                                 isDense: true,
                                               ),
-                                              // controller: _email,
+                                              controller:
+                                                  itemCodeTextEditingController,
                                               keyboardType: TextInputType.text,
                                               // validator: (value) {
                                               //   if (value == null || value.isEmpty) {
@@ -545,7 +575,8 @@ class _AddStockState extends State<AddStock> {
                                                 ),
                                                 isDense: true,
                                               ),
-                                              // controller: _email,
+                                              controller:
+                                                  descriptionTextEditingController,
                                               keyboardType: TextInputType.text,
                                               // validator: (value) {
                                               //   if (value == null || value.isEmpty) {
@@ -575,6 +606,12 @@ class _AddStockState extends State<AddStock> {
                                             ),
                                             const SizedBox(height: 8),
                                             TextFormField(
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    12),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
                                               // initialValue: 'enter heritage',
                                               style: const TextStyle(
                                                 // color: Color(0xffffffff),
@@ -641,7 +678,8 @@ class _AddStockState extends State<AddStock> {
                                                 ),
                                                 isDense: true,
                                               ),
-                                              // controller: _email,
+                                              controller:
+                                                  unitCostTextEditingController,
                                               keyboardType: TextInputType.text,
                                               // validator: (value) {
                                               //   if (value == null || value.isEmpty) {
@@ -671,6 +709,12 @@ class _AddStockState extends State<AddStock> {
                                             ),
                                             const SizedBox(height: 8),
                                             TextFormField(
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    12),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
                                               // initialValue: 'enter heritage',
                                               style: const TextStyle(
                                                 // color: Color(0xffffffff),
@@ -737,7 +781,8 @@ class _AddStockState extends State<AddStock> {
                                                 ),
                                                 isDense: true,
                                               ),
-                                              // controller: _email,
+                                              controller:
+                                                  stockLevelTextEditingController,
                                               keyboardType: TextInputType.text,
                                               // validator: (value) {
                                               //   if (value == null || value.isEmpty) {
@@ -837,7 +882,8 @@ class _AddStockState extends State<AddStock> {
                                                 ),
                                                 isDense: true,
                                               ),
-                                              // controller: _email,
+                                              controller:
+                                                  activeIngridientTextEditingController,
                                               keyboardType: TextInputType.text,
                                               // validator: (value) {
                                               //   if (value == null || value.isEmpty) {
@@ -867,6 +913,12 @@ class _AddStockState extends State<AddStock> {
                                             ),
                                             const SizedBox(height: 8),
                                             TextFormField(
+                                              inputFormatters: [
+                                                LengthLimitingTextInputFormatter(
+                                                    12),
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
                                               // initialValue: 'enter heritage',
                                               style: const TextStyle(
                                                 // color: Color(0xffffffff),
@@ -934,6 +986,8 @@ class _AddStockState extends State<AddStock> {
                                                 isDense: true,
                                               ),
                                               keyboardType: TextInputType.text,
+                                              controller:
+                                                  aikgTextEditingController,
                                             ),
                                           ],
                                         ),
@@ -1004,7 +1058,9 @@ class _AddStockState extends State<AddStock> {
                                     height: 50,
                                     width: 353,
                                     child: CustomElevatedButton(
-                                      onPressed: () => Navigator.pop(context),
+                                      onPressed: () {
+                                        addStock();
+                                      },
                                       title: 'Submit',
                                     ),
                                   )
@@ -1159,8 +1215,9 @@ class _WarningsState extends State<Warnings> {
                       width: 50,
                     ),
                     InkWell(
-                      onTap: () {
-                        addWarnings();
+                      onTap: () async {
+                        await addWarnings();
+                        WarningsAPI.fetchWarnings();
                         _warningsrefresh.add(true);
                         warningTextEditingController.clear();
                       },
@@ -1217,12 +1274,16 @@ class _WarningsState extends State<Warnings> {
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(5.0))),
-                      value: selectedIndexesWarning.contains(index),
+                      value: selectedIndexesWarning
+                          .contains(widget.fetcwar.elementAt(index).id),
                       onChanged: (value) {
-                        if (selectedIndexesWarning.contains(index)) {
-                          selectedIndexesWarning.remove(index); // unselect
+                        if (selectedIndexesWarning
+                            .contains(widget.fetcwar.elementAt(index).id)) {
+                          selectedIndexesWarning.remove(
+                              widget.fetcwar.elementAt(index).id); // unselect
                         } else {
-                          selectedIndexesWarning.add(index); // select
+                          selectedIndexesWarning.add(
+                              widget.fetcwar.elementAt(index).id); // select
                         }
                         setState(() {});
                       },
@@ -1429,13 +1490,18 @@ class _PrecautionsState extends State<Precautions> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: selectedIndexesPrecaution.contains(index),
+                          value: selectedIndexesPrecaution
+                              .contains(widget.fetchprec.elementAt(index).id),
                           onChanged: (value) {
-                            if (selectedIndexesPrecaution.contains(index)) {
-                              selectedIndexesPrecaution
-                                  .remove(index); // unselect
+                            if (selectedIndexesPrecaution.contains(
+                                widget.fetchprec.elementAt(index).id)) {
+                              selectedIndexesPrecaution.remove(widget.fetchprec
+                                  .elementAt(index)
+                                  .id); // unselect
                             } else {
-                              selectedIndexesPrecaution.add(index); // select
+                              selectedIndexesPrecaution.add(widget.fetchprec
+                                  .elementAt(index)
+                                  .id); // select
                             }
                             setState(() {});
                           },
@@ -1642,13 +1708,18 @@ class _InstructionsState extends State<Instructions> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: selectedIndexesInstruction.contains(index),
+                          value: selectedIndexesInstruction
+                              .contains(widget.fetchinst.elementAt(index).id),
                           onChanged: (value) {
-                            if (selectedIndexesInstruction.contains(index)) {
-                              selectedIndexesInstruction
-                                  .remove(index); // unselect
+                            if (selectedIndexesInstruction.contains(
+                                widget.fetchinst.elementAt(index).id)) {
+                              selectedIndexesInstruction.remove(widget.fetchinst
+                                  .elementAt(index)
+                                  .id); // unselect
                             } else {
-                              selectedIndexesInstruction.add(index); // select
+                              selectedIndexesInstruction.add(widget.fetchinst
+                                  .elementAt(index)
+                                  .id); // select
                             }
                             setState(() {});
                           },
@@ -1855,13 +1926,19 @@ class _KeyTargetsState extends State<KeyTargets> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value: selectedIndexesKeyTargets.contains(index),
+                          value: selectedIndexesKeyTargets
+                              .contains(widget.fetchtarget.elementAt(index).id),
                           onChanged: (value) {
-                            if (selectedIndexesKeyTargets.contains(index)) {
-                              selectedIndexesKeyTargets
-                                  .remove(index); // unselect
+                            if (selectedIndexesKeyTargets.contains(
+                                widget.fetchtarget.elementAt(index).id)) {
+                              selectedIndexesKeyTargets.remove(widget
+                                  .fetchtarget
+                                  .elementAt(index)
+                                  .id); // unselect
                             } else {
-                              selectedIndexesKeyTargets.add(index); // select
+                              selectedIndexesKeyTargets.add(widget.fetchtarget
+                                  .elementAt(index)
+                                  .id); // select
                             }
                             setState(() {});
                           },
@@ -2071,16 +2148,20 @@ class _TimeOfApplicationState extends State<TimeOfApplication> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value:
-                              selectedIndexesTimeOfApplication.contains(index),
+                          value: selectedIndexesTimeOfApplication.contains(
+                              widget.fetchApplication.elementAt(index).id),
                           onChanged: (value) {
-                            if (selectedIndexesTimeOfApplication
-                                .contains(index)) {
-                              selectedIndexesTimeOfApplication
-                                  .remove(index); // unselect
+                            if (selectedIndexesTimeOfApplication.contains(
+                                widget.fetchApplication.elementAt(index).id)) {
+                              selectedIndexesTimeOfApplication.remove(widget
+                                  .fetchApplication
+                                  .elementAt(index)
+                                  .id); // unselect
                             } else {
-                              selectedIndexesTimeOfApplication
-                                  .add(index); // select
+                              selectedIndexesTimeOfApplication.add(widget
+                                  .fetchApplication
+                                  .elementAt(index)
+                                  .id); // select
                             }
                             setState(() {});
                           },
@@ -2267,16 +2348,20 @@ class _ModeApplicationState extends State<ModeApplication> {
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5.0))),
-                          value:
-                              selectedIndexesModesOfApplication.contains(index),
+                          value: selectedIndexesModesOfApplication
+                              .contains(widget.fetchmode.elementAt(index).id),
                           onChanged: (value) {
-                            if (selectedIndexesModesOfApplication
-                                .contains(index)) {
-                              selectedIndexesModesOfApplication
-                                  .remove(index); // unselect
+                            if (selectedIndexesModesOfApplication.contains(
+                                widget.fetchmode.elementAt(index).id)) {
+                              selectedIndexesModesOfApplication.remove(widget
+                                  .fetchmode
+                                  .elementAt(index)
+                                  .id); // unselect
                             } else {
-                              selectedIndexesModesOfApplication
-                                  .add(index); // select
+                              selectedIndexesModesOfApplication.add(widget
+                                  .fetchmode
+                                  .elementAt(index)
+                                  .id); // select
                             }
                             setState(() {});
                           },

@@ -1,10 +1,10 @@
 class WarningsPModel {
   final int? id;
-  final String? warnings;
+  late final String? warnings;
 
-  const WarningsPModel({
-    required this.id,
-    required this.warnings,
+  WarningsPModel({
+    this.id,
+    this.warnings,
   });
 
   factory WarningsPModel.fromJson(Map<String, dynamic> json) {

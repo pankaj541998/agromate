@@ -8,6 +8,7 @@ class WarningsAPI {
   //get
   static Future<List<WarningsPModel>> fetchWarnings() async {
     final response = await http.Client().get(Uri.parse(ApiUrl.getWarnings));
+
     return compute(_parseFarms, response.body);
   }
 
