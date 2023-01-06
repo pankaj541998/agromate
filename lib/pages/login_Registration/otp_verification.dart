@@ -41,7 +41,7 @@ class _OtpVerificationState extends State<OtpVerification> {
       Flushbar(
         message: responseMap.values.last.toString(),
         duration: const Duration(seconds: 2),
-      ).show(context);
+      );
     }
   }
 
@@ -53,7 +53,7 @@ class _OtpVerificationState extends State<OtpVerification> {
       Flushbar(
         message: "Please Enter OTP",
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
     }
   }
 

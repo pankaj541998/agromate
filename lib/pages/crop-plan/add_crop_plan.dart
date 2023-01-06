@@ -1343,7 +1343,7 @@ class _AddCropPlanState extends State<AddCropPlan> {
                             Flushbar(
                               duration: const Duration(seconds: 2),
                               message: "Please Enter All Details",
-                            ).show(context);
+                            );
                           }
                           // addCropProgram();
                           // Navigator.pop(context);

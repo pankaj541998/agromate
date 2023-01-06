@@ -357,7 +357,7 @@ class _ModesOfApplicationState extends State<ModesOfApplication> {
                               Flushbar(
                                 duration: const Duration(seconds: 2),
                                 message: "Please Enter All Details",
-                              ).show(context);
+                              );
                             }
                           },
                           title: "Submit",

@@ -963,13 +963,13 @@ class _ViewDetailsState extends State<ViewDetails> {
                                       Flushbar(
                                         duration: const Duration(seconds: 2),
                                         message: "New Task Added Successfully",
-                                      ).show(context);
+                                      );
                                     });
                                   } else {
                                     Flushbar(
                                       duration: const Duration(seconds: 2),
                                       message: "Please Enter All Details",
-                                    ).show(context);
+                                    );
                                   }
                                   // addCropProgram();
                                   // Navigator.pop(context);

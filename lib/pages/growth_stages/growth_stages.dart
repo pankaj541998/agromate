@@ -56,7 +56,7 @@ class _GrowthStageState extends State<GrowthStage> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children:  [
                             Text(
                               "Crop",
                               style: TextStyle(
@@ -64,11 +64,11 @@ class _GrowthStageState extends State<GrowthStage> {
                             ),
                           ],
                         ),
-                        Divider(
+                         Divider(
                           thickness: 1,
                           color: Color(0xFFD6D6D6),
                         ),
-                        SizedBox(
+                         SizedBox(
                           height: 30,
                         ),
                         SizedBox(
@@ -97,16 +97,18 @@ class _GrowthStageState extends State<GrowthStage> {
                                       cropimage: "assets/images/onion.png",
                                     ),
                                   );
-                                }),
+                                },),
                           ),
                         )
                       ],
                     );
                   }
                   return const Center(child: CircularProgressIndicator());
-                })),
+                },),
+                ),
       ],
-    ));
+    ),
+    );
   }
 }
 
@@ -123,7 +125,7 @@ class _CropCardState extends State<CropCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -134,12 +136,12 @@ class _CropCardState extends State<CropCard> {
             height: 100,
             width: 76,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
             widget.cropname ?? "",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
         ],
       ),
@@ -202,7 +204,7 @@ class _TextDropdownState extends State<TextDropdown> {
                 borderSide: BorderSide(color: Color(0xFFA1B809)),
               ),
               border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFA1B809)),
+                  borderSide: const BorderSide(color: Color(0xFFA1B809)),
                   borderRadius: BorderRadius.circular(10)),
               suffixIcon: widget.showDropDown
                   ? PopupMenuButton<String>(
@@ -214,8 +216,8 @@ class _TextDropdownState extends State<TextDropdown> {
                           controller.text = value;
                         });
                       },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.all(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
                         Radius.circular(10.0),
                       )),
                       itemBuilder: (BuildContext context) {

@@ -920,7 +920,7 @@ Widget _buildbodytype2(context, setState) {
                             Flushbar(
                               duration: const Duration(seconds: 2),
                               message: "Please Enter All Details",
-                            ).show(context);
+                            );
                           }
                           // addCropProgram();
                           // Navigator.pop(context);
@@ -1677,7 +1677,7 @@ buildPinClass(context, id,
                                   Flushbar(
                                     duration: const Duration(seconds: 2),
                                     message: "Please Enter All Details",
-                                  ).show(context);
+                                  );
                                 }
                                 // addCropProgram();
                                 // Navigator.pop(context);
@@ -1837,7 +1837,7 @@ buildPinAddClass(context) {
                                   Flushbar(
                                     duration: const Duration(seconds: 2),
                                     message: "Please Enter All Details",
-                                  ).show(context);
+                                  );
                                 }
                                 // addCropProgram();
                                 // Navigator.pop(context);
@@ -2058,7 +2058,7 @@ buildPinType(context, id,
                                   Flushbar(
                                     duration: const Duration(seconds: 2),
                                     message: "New Type Added Succesfully",
-                                  ).show(context);
+                                  );
                                   Navigator.pop(context);
 
                                   // addCropProgram();
@@ -2066,7 +2066,7 @@ buildPinType(context, id,
                                   Flushbar(
                                     duration: const Duration(seconds: 2),
                                     message: "Please Enter All Details",
-                                  ).show(context);
+                                  );
                                 }
 
                                 // addCropProgram();

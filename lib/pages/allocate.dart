@@ -180,7 +180,7 @@ final FutureGroup futureGroup = FutureGroup();
                                   top: 18,
                                 ),
                                 child: Text(
-                                  "Allocating Agronomist & Manager",
+                                  "Allocating User",
                                   style: TextStyle(
                                       fontSize: 18, fontWeight: FontWeight.w500),
                                 ),
@@ -190,7 +190,7 @@ final FutureGroup futureGroup = FutureGroup();
                               height: 20,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,77 +267,7 @@ final FutureGroup futureGroup = FutureGroup();
                                               ),
                                             ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Agronomist",
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                DropdownBtn(
-                                                items: fetchedagronomist
-                                                    .where((element) =>
-                                                        element.roleIndex ==
-                                                        Roles.Agronomist.index)
-                                                    .map((e) {
-                                                  return "${e.firstName} ${e.lastName}";
-                                                }).toList(),
-                                                hint: 'Agronomist',
-                                                onItemSelected: (value) {
-                                                  setState(() {
-                                                    currentAgronomist = value;
-                                                    currentAgronomistId = fetchedagronomist
-                                                        .firstWhere((element) =>
-                                                            "${element.firstName} ${element.lastName}" ==
-                                                            currentAgronomist)
-                                                        .id;
-                      
-                                                    debugPrint(
-                                                        currentAgronomistId.toString());
-                                                    debugPrint(fetchedfarms.toString());
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Manager",
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                DropdownBtn(
-                                                items: fetchedusers
-                                                    .where((element) =>
-                                                        element.roleIndex ==
-                                                        Roles.Manager.index)
-                                                    .map((e) {
-                                                  return "${e.firstName} ${e.lastName}";
-                                                }).toList(),
-                                                hint: 'Manager',
-                                                onItemSelected: (value) {
-                                                  setState(() {
-                                                    currentManager = value;
-                                                    currentManagerId = fetchedusers
-                                                        .firstWhere((element) =>
-                                                            "${element.firstName} ${element.lastName}" ==
-                                                            currentManager)
-                                                        .id;
-                                                  });
-                                                },
-                                              ),
-                                    ],
-                                ),
-                              ],
+                          ],
                             ),
                             SizedBox(
                               height: 40,
@@ -352,7 +282,7 @@ final FutureGroup futureGroup = FutureGroup();
                                   top: 18,
                                 ),
                                 child: Text(
-                                  "Allocating Farmer & Labourer",
+                                  "Allocating Farm, Block & Field",
                                   style: TextStyle(
                                       fontSize: 18, fontWeight: FontWeight.w500),
                                 ),
@@ -362,7 +292,7 @@ final FutureGroup futureGroup = FutureGroup();
                               height: 20,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -430,97 +360,7 @@ final FutureGroup futureGroup = FutureGroup();
                                               ),
                                             ],
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Farmer",
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),    DropdownBtn(
-                                                items: fetchedfarmer
-                                                    .where((element) =>
-                                                        element.roleIndex ==
-                                                        Roles.Farmer.index)
-                                                    .map((e) {
-                                                  return "${e.firstName} ${e.lastName}";
-                                                }).toList(),
-                                                hint: 'Farmer',
-                                                onItemSelected: (value) {
-                                                  setState(() {
-                                                    currentFarmer = value;
-                                                    currentFarmerId = fetchedfarmer
-                                                        .firstWhere((element) =>
-                                                            "${element.firstName} ${element.lastName}" ==
-                                                            currentFarmer)
-                                                        .id;
-                                                  });
-                                                },
-                                              ),
-                                  
-                             ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Labourer",
-                                      style: TextStyle(
-                                          fontSize: 20, fontWeight: FontWeight.w500),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                                    SizedBox(
-                                    height: 40,
-                                    width: 257,
-                                    child: DropdownButtonFormField(
-                                      hint: Text("Select Labourer"),
-                                      focusColor: Colors.white,
-                                      isExpanded: true,
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            left: 10, top: 10, right: 10),
-                                        fillColor: Colors.white,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFF327C04)),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
-                                              color: Color(0xFF327C04)),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFF327C04),
-                                            width: 5.0,
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      items: listOfValue7.map((String val) {
-                                        return DropdownMenuItem(
-                                          enabled: true,
-                                          value: val,
-                                          child: Text(
-                                            val,
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedValue7;
-                                        });
-                                      },
-                                    ),
-                                  ),  ],
-                                ),
-                              ],
+                      ],
                             ),
                             SizedBox(
                               height: 40,

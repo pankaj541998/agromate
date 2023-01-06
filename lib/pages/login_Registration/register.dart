@@ -46,13 +46,13 @@ class _RegisterState extends State<Register> {
         Flushbar(
           duration: const Duration(seconds: 2),
           message: responseMap.values.first,
-        ).show(context);
+        );
       }
     } else {
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "Please Enter all the details",
-      ).show(context);
+      );
     }
   }
   // void uploadData() {

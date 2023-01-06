@@ -40,7 +40,7 @@ class UpdatePasswordState extends State<UpdatePassword> {
       Flushbar(
         message: responseMap.values.first,
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
     }
   }
 
@@ -52,7 +52,7 @@ class UpdatePasswordState extends State<UpdatePassword> {
       Flushbar(
         message: "Password not matched",
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
     }
   }
 
