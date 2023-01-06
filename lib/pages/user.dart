@@ -558,12 +558,12 @@ buildPin(context) {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),
                                   message: "New User Added Successfully",
-                                ).show(context);
+                                );
                               } else {
                                 Flushbar(
                                   duration: const Duration(seconds: 2),
                                   message: "Please Enter Email and Role",
-                                ).show(context);
+                                );
                               }
                             },
                             title: "Add User",

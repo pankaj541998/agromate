@@ -180,7 +180,7 @@ final FutureGroup futureGroup = FutureGroup();
                                   top: 18,
                                 ),
                                 child: Text(
-                                  "Allocating Agronomist & Manager",
+                                  "Allocating User",
                                   style: TextStyle(
                                       fontSize: 18, fontWeight: FontWeight.w500),
                                 ),
@@ -282,7 +282,7 @@ final FutureGroup futureGroup = FutureGroup();
                                   top: 18,
                                 ),
                                 child: Text(
-                                  "Allocating Farmer & Labourer",
+                                  "Allocating Farm, Block & Field",
                                   style: TextStyle(
                                       fontSize: 18, fontWeight: FontWeight.w500),
                                 ),

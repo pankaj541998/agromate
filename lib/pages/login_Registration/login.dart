@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_agro_new/component/services/auth_api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../models/MyProfileModel.dart';
 
 late Profile profileData;
@@ -39,18 +37,18 @@ class _LoginState extends State<Login> {
         var data = Profile.fromJson(responseMap);
         profileData = data;
         _saveOptions();
-        Get.toNamed('/dashboard');
+        Get.toNamed('/dashboard'); 
       } else {
         Flushbar(
           duration: const Duration(seconds: 2),
           message: responseMap.values.first,
-        ).show(context);
+        );
       }
     } else {
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "Please Enter Username And Password",
-      ).show(context);
+      );
     }
   }
 

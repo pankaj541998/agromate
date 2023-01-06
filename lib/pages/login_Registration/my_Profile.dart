@@ -184,12 +184,12 @@ class _ProfileState extends State<Profile> {
       Flushbar(
         message: "Changes Saved Successfully",
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
     } else
       return Flushbar(
         message: "Unable to save Changes",
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
   }
 
   Widget build(BuildContext context) {
@@ -479,17 +479,17 @@ class _ChangePasswordState extends State<ChangePassword> {
 
     http.Response response = await AuthServices.changePassword(updata);
     Map responseMap = jsonDecode(response.body);
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200) { 
+      Get.toNamed('/');
       Flushbar(
         message: "Password Changed Successfully",
         duration: const Duration(seconds: 3),
-      ).show(context);
-      Get.toNamed('/');
+      );
     } else {
       Flushbar(
         message: responseMap.values.last,
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
     }
   }
 
@@ -499,9 +499,9 @@ class _ChangePasswordState extends State<ChangePassword> {
       changePasword();
     } else {
       Flushbar(
-        message: "Password not matched",
+        message: "Password not matched new password",
         duration: const Duration(seconds: 3),
-      ).show(context);
+      );
 
       Timer(Duration(seconds: 2), () {});
     }
@@ -546,7 +546,14 @@ class _ChangePasswordState extends State<ChangePassword> {
             ),
             SizedBox(
               width: 353,
-              child: TextInputField(
+              child: TextInputField( validator: (value) {
+                          if (value != null && value.isEmpty) {
+                            return "Password cannot be empty";
+                          } else if (value != null && value.length < 6) {
+                            return "Password length should be atleast 6";
+                          }
+                          return null;
+                        },
                 textEditingController: currentpassword,
                 hintText: "Enter Current Password",
                 validatorText: "",
