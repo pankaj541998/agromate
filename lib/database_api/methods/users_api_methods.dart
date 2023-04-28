@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/user.dart';
+import '../../models/user1.dart';
 import '../url.dart';
 
 class UserApiMethods {

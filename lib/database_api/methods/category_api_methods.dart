@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_agro_new/database_api/models/category.dart';
+
 import 'package:flutter_agro_new/database_api/url.dart';
+import 'package:flutter_agro_new/models/category.dart';
 import 'package:flutter_agro_new/models/class_model.dart';
 import 'package:http/http.dart' as http;
 

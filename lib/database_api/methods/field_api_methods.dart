@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_agro_new/models/field.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/field.dart';
 import '../url.dart';
 
 class FieldApiMethods {
