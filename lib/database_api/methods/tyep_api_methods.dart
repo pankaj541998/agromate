@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_agro_new/database_api/models/type.dart';
+import 'package:flutter_agro_new/models/type.dart';
 import 'package:flutter_agro_new/database_api/url.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
