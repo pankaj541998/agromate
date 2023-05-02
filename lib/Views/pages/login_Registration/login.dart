@@ -60,15 +60,15 @@ class _LoginState extends State<Login> {
         replaceLoaderWithLoginBtn();
         Flushbar(
           duration: const Duration(seconds: 2),
-          message: responseMap.values.first,
-        );
+          message: responseMap["message"].toString(),
+        ).show(context);
       }
     } else {
       replaceLoaderWithLoginBtn();
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "Please Enter Username And Password",
-      );
+      ).show(context);
     }
   }
 

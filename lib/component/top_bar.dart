@@ -108,6 +108,7 @@ class TopBar extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     return SizedBox(
         child: Container(
+      width: double.infinity,
       height: 55,
       decoration: const BoxDecoration(
         color: Color(0xff327C04),
@@ -122,292 +123,296 @@ class TopBar extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.05),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () => Get.toNamed('/dashboard'),
-                child: const Image(
-                  image: AssetImage('/images/dashborad_logo.png'),
-                  height: 40,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: GestureDetector(
+                  onTap: () => Get.toNamed('/dashboard'),
+                  child: const Image(
+                    image: AssetImage('/images/dashborad_logo.png'),
+                    height: 40,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/dashboard'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Dashboard',
-                          style: TextStyle(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/dashboard'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Dashboard',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                color: Color(0xffffffff)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/view_farm');
+                      },
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Farms',
+                            style: TextStyle(
                               fontSize: 16,
                               fontFamily: 'Poppins',
-                              color: Color(0xffffffff)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed('/view_farm');
-                    },
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Farms',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
+                              color: Color(0xffffffff),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/grid_view_crop'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Crop Program',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/crop_plan'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Crop Schedule',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/tasks'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Task',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/inventory'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Inventory',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed('/growthstage');
-                    },
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Growth Stage',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed('/gapanalysis');
-                    },
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'GAP',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/user'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'User',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/allocation'),
-                    child: Container(
-                      height: double.maxFinite,
-                      // color: Colors.orange[300],
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: const Center(
-                        child: Text(
-                          'Allocation',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins',
-                            color: Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                const CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  radius: 15,
-                  backgroundImage: NetworkImage(
-                      'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 4.0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                  ),
-                  child: PopupMenuButton(
-                    offset: const Offset(0, 50),
-                    color: const Color(0xFF327C04),
-                    tooltip: '',
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Color(0xffffffff),
-                    ),
-                    onSelected: (value) {
-                      if (value == '/logout') {
-                        buildPin(context);
-                      } else if (value == "/myProfile") {
-                        Get.toNamed('/myprofile');
-                      }
-                    },
-                    itemBuilder: (BuildContext bc) {
-                      return [
-                        const PopupMenuItem(
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/grid_view_crop'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
                           child: Text(
-                            "My profile",
-                            style: TextStyle(color: Colors.white),
+                            'Crop Program',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
                           ),
-                          value: '/myProfile',
                         ),
-                        const PopupMenuItem(
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          value: '/logout',
-                        )
-                      ];
-                    },
+                      ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/crop_plan'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Crop Schedule',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/tasks'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Task',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/inventory'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Inventory',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/growthstage');
+                      },
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Growth Stage',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed('/gapanalysis');
+                      },
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'GAP',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/user'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'User',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () => Get.toNamed('/allocation'),
+                      child: Container(
+                        height: double.maxFinite,
+                        // color: Colors.orange[300],
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: const Center(
+                          child: Text(
+                            'Allocation',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins',
+                              color: Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 15,
+                    backgroundImage: NetworkImage(
+                        'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 4.0,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
+                    ),
+                    child: PopupMenuButton(
+                      offset: const Offset(0, 50),
+                      color: const Color(0xFF327C04),
+                      tooltip: '',
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Color(0xffffffff),
+                      ),
+                      onSelected: (value) {
+                        if (value == '/logout') {
+                          buildPin(context);
+                        } else if (value == "/myProfile") {
+                          Get.toNamed('/myprofile');
+                        }
+                      },
+                      itemBuilder: (BuildContext bc) {
+                        return [
+                          const PopupMenuItem(
+                            child: Text(
+                              "My profile",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            value: '/myProfile',
+                          ),
+                          const PopupMenuItem(
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            value: '/logout',
+                          )
+                        ];
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ));
