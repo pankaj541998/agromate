@@ -37,18 +37,18 @@ class _LoginState extends State<Login> {
         var data = Profile.fromJson(responseMap);
         profileData = data;
         _saveOptions();
-        Get.toNamed('/dashboard'); 
+        Get.toNamed('/dashboard');
       } else {
         Flushbar(
           duration: const Duration(seconds: 2),
-          message: responseMap.values.first,
-        );
+          message: responseMap["message"].toString(),
+        ).show(context);
       }
     } else {
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "Please Enter Username And Password",
-      );
+      ).show(context);
     }
   }
 
