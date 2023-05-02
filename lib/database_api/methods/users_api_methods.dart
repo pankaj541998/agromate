@@ -8,7 +8,10 @@ import '../url.dart';
 class UserApiMethods {
   static Future<List<UserModel>> fetchUsers() async {
     final response = await http.Client().get(Uri.parse(ApiUrl.getUsers));
+    print("fetch uder" + response.body);
+    print("done");
     return compute(_parseUsers, response.body);
+    // print("object");
   }
 
   static List<UserModel> _parseUsers(String responseBody) {

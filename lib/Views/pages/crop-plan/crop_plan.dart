@@ -35,11 +35,13 @@ class _CropPlanState extends State<CropPlan> {
   //     }
   //   }
   // }
+late final Future myfuture;
 
   @override
   void initState() {
     super.initState();
-    fetchCropSchedule();
+    //fetchCropSchedule();
+    myfuture = fetchCropSchedule();
   }
 
 // List<CropScheduleData> myDataRequest = cropschedule;
@@ -129,14 +131,16 @@ class _CropPlanState extends State<CropPlan> {
                                   setState(() {
                                     myData = cropschedule.data!
                                         .where(
-                                          (element) => element
-                                              .cropProgram!.first.crop!
+                                          (element) => element.farm!.first.farm!
+                                              // .farm!.first.crop!
                                               .toLowerCase()
                                               .contains(
                                                 value.toLowerCase(),
                                               ),
                                         )
                                         .toList();
+
+                                    print("search working $myData");
                                   });
                                 },
                                 controller: controller,
@@ -192,7 +196,7 @@ class _CropPlanState extends State<CropPlan> {
                 //       return const Center(child: CircularProgressIndicator());
                 //     }),
                 FutureBuilder(
-                  future: fetchCropSchedule(),
+                  future: myfuture,
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
@@ -218,7 +222,7 @@ class _CropPlanState extends State<CropPlan> {
   }
 
   datatable(screenSize, context) {
-    fetchCropSchedule();
+    // fetchCropSchedule();
     return Container(
       padding: const EdgeInsets.all(0.0),
       decoration: const BoxDecoration(),
@@ -499,7 +503,10 @@ DataRow recentFileDataRow(CropScheduleData data, int index) {
       DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.farm!.first.farm.toString()))),
+          child: Text(data.farm!.
+          // last.farm.toString())
+          first.farm.toString())
+          )),
       DataCell(Align(
           alignment: Alignment.center,
           child: Text(data.block!.first.block.toString()))),
