@@ -23,8 +23,25 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final username = TextEditingController();
   final password = TextEditingController();
+  bool isloginBtnVisible = true;
+  bool isloginBtnLoaderVisible = false;
+
+  void replaceLoginBtnWithLoader() {
+    setState(() {
+      isloginBtnVisible = false;
+      isloginBtnLoaderVisible = true;
+    });
+  }
+
+  void replaceLoaderWithLoginBtn() {
+    setState(() {
+      isloginBtnVisible = true;
+      isloginBtnLoaderVisible = false;
+    });
+  }
 
   loginPressed() async {
+    replaceLoginBtnWithLoader();
     var data = {
       'user_name': username.text,
       'password': password.text,
@@ -37,14 +54,17 @@ class _LoginState extends State<Login> {
         var data = Profile.fromJson(responseMap);
         profileData = data;
         _saveOptions();
-        Get.toNamed('/dashboard'); 
+        replaceLoaderWithLoginBtn();
+        Get.toNamed('/dashboard');
       } else {
+        replaceLoaderWithLoginBtn();
         Flushbar(
           duration: const Duration(seconds: 2),
           message: responseMap.values.first,
         );
       }
     } else {
+      replaceLoaderWithLoginBtn();
       Flushbar(
         duration: const Duration(seconds: 2),
         message: "Please Enter Username And Password",
@@ -157,16 +177,28 @@ class _LoginState extends State<Login> {
                       const SizedBox(
                         height: 51,
                       ),
-                      SizedBox(
-                          height: 50,
-                          width: 500,
-                          child: CustomElevatedButton(
-                            title: 'Log in',
-                            onPressed: () {
-                              loginPressed();
-                              // Get.toNamed('/dashboard');
-                            },
-                          ))
+                      Visibility(
+                        visible: isloginBtnVisible,
+                        child: SizedBox(
+                            height: 50,
+                            width: 500,
+                            child: CustomElevatedButton(
+                              title: 'Log in',
+                              onPressed: () {
+                                loginPressed();
+                                // Get.toNamed('/dashboard');
+                              },
+                            )),
+                      ),
+                      Visibility(
+                        visible: isloginBtnLoaderVisible,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 250),
+                          child: CircularProgressIndicator(
+                            color: Color(0XFF327C04),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
