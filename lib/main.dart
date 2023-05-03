@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/routes/routes.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'providers/map_box_provider.dart';
@@ -26,11 +26,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'),
-      initialRoute: '/',
-      getPages: AppRoutes.appRoutes(),
+    return ScreenUtilInit(
+      designSize: Size(1280, 717),
+      builder: (BuildContext context, child) => 
+      GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Poppins'),
+        initialRoute: '/',
+        getPages: AppRoutes.appRoutes(),
+      )
     );
+    
   }
 }
