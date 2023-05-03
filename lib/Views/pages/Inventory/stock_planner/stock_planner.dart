@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/common/sized_box.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.dart';
 import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
 import 'package:flutter_agro_new/models/stock_plan_model.dart';
 import 'package:flutter_agro_new/Views/pages/growth_stages/dropdown_btn.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -34,7 +36,7 @@ class _StockPlannerState extends State<StockPlanner> {
       TextEditingController();
   final format = DateFormat("dd-MM-yyyy");
   String questionsSelected = 'Select Your Question *';
-
+//
   Future<String> addStockplannerAPI() async {
     print("reached");
     final _chuckerHttpClient = await http.Client();
@@ -1091,7 +1093,10 @@ Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: (0.5 / 0.2),
+        childAspectRatio: (
+          // screenSize.height/screenSize.width
+          1 / 0.5
+        ),
         crossAxisCount: 4,
       ),
       itemCount: stockplan.data!.length,
@@ -1102,53 +1107,83 @@ Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
             color: Color(0xfff7f9ea),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/Group6740.png", height: 40),
-                        SizedBox(width: screenSize.width * 0.01),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              stockplan.data!.elementAt(index).stockName!,
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: screenSize.height * 0.01),
-                            Row(
-                              children: [
-                                Text("Quantity : "),
-                                Text(stockplan.data!
-                                    .elementAt(index)
-                                    .quantity!
-                                    .toString())
-                              ],
-                            ),
-                            SizedBox(height: screenSize.height * 0.01),
-                            Row(
-                              children: [
-                                Text("Required : "),
-                                Text(stockplan.data!
-                                    .elementAt(index)
-                                    .quantity!
-                                    .toString())
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset("assets/images/Group6740.png", 
+                        // height: 40
+                        height: 60.w,
+                        width: 60.w,
+                      ),
+
+                      // sizedBoxHeight(15.w),
+                      sizedBoxWidth(15.w),
+                      // size
+                      // size
+                      // SizedBox(width: screenSize.width * 0.01),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            stockplan.data!.elementAt(index).stockName!,
+                            style: TextStyle(
+                                fontSize: 18.sp, fontWeight: FontWeight.bold),
+                          ),
+                          // sizedBoxHeight(10.w),
+                          // SizedBox(height: screenSize.height * 0.01),
+                          Row(
+                            children: [
+                              Text("Quantity : ",
+                                style: TextStyle(
+                                fontSize: 16.sp, 
+                                // fontWeight: FontWeight.bold
+                                )
+                              ),
+                              Text(stockplan.data!
+                                  .elementAt(index)
+                                  .quantity!
+                                  .toString(),
+                                  style: TextStyle(
+                                fontSize: 16.sp, 
+                                // fontWeight: FontWeight.bold
+                                )
+                                  )
+                            ],
+                          ),
+                          // sizedBoxHeight(10.w),
+
+                          // SizedBox(height: screenSize.height * 0.01),
+                          Row(
+                            children: [
+                              Text("Required : ",
+                                style: TextStyle(
+                                  fontSize: 16.sp, 
+                                  // fontWeight: FontWeight.bold
+                                )
+                              ),
+                              Text(stockplan.data!
+                                  .elementAt(index)
+                                  .quantity!
+                                  .toString(),
+                                  style: TextStyle(
+                                  fontSize: 16.sp, 
+                                  // fontWeight: FontWeight.bold
+                                )
+                                  )
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ),
