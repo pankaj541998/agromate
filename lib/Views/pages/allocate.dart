@@ -51,11 +51,11 @@ class _AllocateState extends State<Allocate> {
         body: {
           "landholder_id": currentLandholderId.toString(),
           "farm_id": currentFarmId.toString(),
-          "agronomist_id": currentAgronomistId.toString(),
-          "manager_id": currentManagerId.toString(),
+          "agronomist_id": currentAgronomistId.toString(), //"9".toString(),
+          "manager_id": currentManagerId.toString(), // "16".toString(),
           "block_id": currentBlockId.toString(),
           "field_id": currentFieldId.toString(),
-          "farmer_id": currentFarmerId.toString(),
+          "farmer_id": currentFarmerId.toString(), //"19".toString(),
           "labourer_id": "".toString(),
         });
     print("api resp is ${response.body}");
@@ -155,7 +155,7 @@ class _AllocateState extends State<Allocate> {
                                 width: 25,
                               ),
                               Text(
-                                "Allocation",
+                                "Allocating Agronomist & Manager",
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500),
                               ),
@@ -266,6 +266,79 @@ class _AllocateState extends State<Allocate> {
                                   ),
                                 ],
                               ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Agronomist",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  DropdownBtn(
+                                    items: fetchedusers
+                                        .where((element) =>
+                                            element.roleIndex ==
+                                            Roles.Agronomist.index)
+                                        .map((e) {
+                                      return "${e.firstName} ${e.lastName}";
+                                    }).toList(),
+                                    hint: 'Select Agronomist',
+                                    onItemSelected: (value) async {
+                                      setState(() {
+                                        currentAgronomist = value;
+                                        currentAgronomistId = fetchedusers
+                                            .firstWhere((element) =>
+                                                "${element.firstName} ${element.lastName}" ==
+                                                currentAgronomist)
+                                            .id;
+
+                                        debugPrint(
+                                            currentAgronomistId.toString());
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Manager",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  DropdownBtn(
+                                    items: fetchedusers
+                                        .where((element) =>
+                                            element.roleIndex ==
+                                            Roles.Manager.index)
+                                        .map((e) {
+                                      return "${e.firstName} ${e.lastName}";
+                                    }).toList(),
+                                    hint: 'Select Manager',
+                                    onItemSelected: (value) async {
+                                      setState(() {
+                                        currentManager = value;
+                                        currentManagerId = fetchedusers
+                                            .firstWhere((element) =>
+                                                "${element.firstName} ${element.lastName}" ==
+                                                currentManager)
+                                            .id;
+
+                                        debugPrint(currentManagerId.toString());
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -281,7 +354,7 @@ class _AllocateState extends State<Allocate> {
                                 top: 18,
                               ),
                               child: Text(
-                                "Allocating Farm, Block & Field",
+                                "Allocating Farmer & Labourer",
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w500),
                               ),
@@ -361,6 +434,78 @@ class _AllocateState extends State<Allocate> {
                                   ),
                                 ],
                               ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Farmer",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  DropdownBtn(
+                                    items: fetchedusers
+                                        .where((element) =>
+                                            element.roleIndex ==
+                                            Roles.Farmer.index)
+                                        .map((e) {
+                                      return "${e.firstName} ${e.lastName}";
+                                    }).toList(),
+                                    hint: 'Select Farmer',
+                                    onItemSelected: (value) async {
+                                      setState(() {
+                                        currentFarmer = value;
+                                        currentFarmerId = fetchedusers
+                                            .firstWhere((element) =>
+                                                "${element.firstName} ${element.lastName}" ==
+                                                currentFarmer)
+                                            .id;
+
+                                        debugPrint(currentFarmerId.toString());
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // Column(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: [
+                              //     Text(
+                              //       "Labourer",
+                              //       style: TextStyle(
+                              //           fontSize: 20,
+                              //           fontWeight: FontWeight.w500),
+                              //     ),
+                              //     SizedBox(
+                              //       height: 15,
+                              //     ),
+                              //     DropdownBtn(
+                              //       items: fetchedusers
+                              //           .where((element) =>
+                              //               element.roleIndex ==
+                              //               Roles.Farmer.index)
+                              //           .map((e) {
+                              //         return "${e.firstName} ${e.lastName}";
+                              //       }).toList(),
+                              //       hint: 'Select Labourer',
+                              //       onItemSelected: (value) async {
+                              //         setState(() {
+                              //           currentFarmer = value;
+                              //           currentFarmerId = fetchedusers
+                              //               .firstWhere((element) =>
+                              //                   "${element.firstName} ${element.lastName}" ==
+                              //                   currentFarmer)
+                              //               .id;
+
+                              //           debugPrint(currentFarmerId.toString());
+                              //         });
+                              //       },
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                           SizedBox(

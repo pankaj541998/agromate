@@ -623,7 +623,7 @@ class GetLabourer {
   }
 }
 
-class GetAgronomist{
+class GetAgronomist {
   int? id;
   String? firstName;
   String? lastName;
