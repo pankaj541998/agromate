@@ -30,14 +30,17 @@ class Allocation extends StatefulWidget {
 }
 
 class _AllocationState extends State<Allocation> {
+  late Future myFuture;
   @override
   void initState() {
-    fetchAllocation();
+    // fetchAllocation();
+    myFuture = fetchAllocation();
 
     super.initState();
   }
 
   Future<allocationModel> fetchAllocation() async {
+    print("apicalled");
     var client = http.Client();
     final response = await client
         .get(Uri.parse('https://agromate.website/laravel/api/get_allocation'));
@@ -128,23 +131,12 @@ class _AllocationState extends State<Allocation> {
                               child: CupertinoSearchTextField(
                                 onChanged: (value) {
                                   setState(() {
-                                    // myDataRequest = filterData!
-                                    //     .where(
-                                    //       (element) => element.name!
-                                    //           .toLowerCase()
-                                    //           .contains(
-                                    //             value.toLowerCase(),
-                                    //           ),
-                                    //     )
-                                    //     .toList();
-                                    allocation.data = myData
+                                    myData = allocation.data!
                                         .where(
                                           (element) => element
                                               .getLandholder!.first.firstName!
                                               .toLowerCase()
-                                              .contains(
-                                                value.toLowerCase(),
-                                              ),
+                                              .contains(value.toLowerCase()),
                                         )
                                         .toList();
                                   });
@@ -190,7 +182,7 @@ class _AllocationState extends State<Allocation> {
                   ],
                 ),
                 FutureBuilder(
-                  future: fetchAllocation(),
+                  future: myFuture,
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
@@ -216,7 +208,7 @@ class _AllocationState extends State<Allocation> {
   }
 
   datatable(screenSize, context) {
-    fetchAllocation();
+    // fetchAllocation();
     return Container(
       decoration: const BoxDecoration(),
       child: SingleChildScrollView(
