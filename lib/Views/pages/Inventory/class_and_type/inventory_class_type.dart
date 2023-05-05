@@ -46,6 +46,7 @@ class InventoryClassType extends StatefulWidget {
 }
 
 List<ClassData> myData = classdata.data!;
+List<TypeData> mytype = typedata.data!;
 final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
 var catid;
@@ -69,6 +70,7 @@ Future<TypeModel> fetchType() async {
   final parsed = jsonDecode(response.body);
   // print(response.body);
   typedata = TypeModel.fromJson(parsed);
+  mytype = typedata.data!;
   // print(modedata.data!.elementAt(1).firstName!);
   return typedata;
 }
@@ -224,11 +226,17 @@ class _InventoryClassTypeState extends State<InventoryClassType>
     super.dispose();
   }
 
+  late Future myFuture;
+  late Future myFetch;
+
   @override
   void initState() {
     super.initState();
-    fetchClass();
-    fetchType();
+    // fetchClass();
+    // fetchType();
+
+    myFuture = fetchClass();
+    myFetch = fetchType();
     // myfuture = CategoryAPI().getCategory();
     // myData = classdata.data!;
     _controller = new TabController(
@@ -546,7 +554,9 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
                                     setState(() {
-                                      myData = classdata.data!
+
+                                      if(initialindex == 0){
+                                        myData = classdata.data!
                                           .where(
                                             (element) => element.iclass!
                                                 .toLowerCase()
@@ -555,6 +565,23 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                                                 ),
                                           )
                                           .toList();
+                                      } else{
+                                       typedata.data = mytype.where((element) => element.type!.toLowerCase().contains(value.toLowerCase(),),).toList();
+                                      }
+                                      // initialindex == 0?
+                                      // myData = classdata.data!
+                                      //     .where(
+                                      //       (element) => element.iclass!
+                                      //           .toLowerCase()
+                                      //           .contains(
+                                      //             value.toLowerCase(),
+                                      //           ),
+                                      //     )
+                                      //     .toList()
+                                      //   :
+                                      // typedata.data = mytype.where((element) => element.type!.toLowerCase().contains(value.toLowerCase(),),).toList();
+
+
                                     });
                                   },
                                   controller: controller,
@@ -641,8 +668,11 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                         StreamBuilder<bool>(
                             stream: _classrefresh.stream,
                             builder: (context, snapshot) {
-                              return FutureBuilder<ClassModel>(
-                                future: fetchClass(),
+                              return FutureBuilder
+                              //<ClassModel>
+                              (
+                                future: myFuture,
+                                //fetchClass(),
                                 builder: (ctx, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.done) {
@@ -670,8 +700,11 @@ class _InventoryClassTypeState extends State<InventoryClassType>
                         StreamBuilder<bool>(
                             stream: _typerefresh.stream,
                             builder: (context, snapshot) {
-                              return FutureBuilder<TypeModel>(
-                                future: fetchType(),
+                              return FutureBuilder
+                              //<TypeModel>
+                              (
+                                future: myFetch,
+                                //fetchType(),
                                 builder: (ctx, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.done) {

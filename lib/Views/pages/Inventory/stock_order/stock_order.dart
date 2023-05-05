@@ -28,6 +28,8 @@ import '../../../../database_api/methods/users_api_methods.dart';
 import '../../../../main.dart';
 import '../../growth_stages/dropdown_btn.dart';
 
+//late stockOrderModel stockorder;
+
 class StockOrder extends StatefulWidget {
   const StockOrder({Key? key}) : super(key: key);
 
@@ -81,6 +83,7 @@ class _StockOrderState extends State<StockOrder> {
 
     if (response.statusCode == 200) {
       stockOrderData = stockOrderModel.fromJson(parsed);
+      myData = stockOrderData.data;
       _stockOrderGet.add(requestResponseState.DataReceived);
       return stockOrderData;
     } else {
@@ -104,6 +107,8 @@ class _StockOrderState extends State<StockOrder> {
     futureGroup.add(stockPlannerAPI.getWarehouse());
     futureGroup.close();
   }
+
+  List<StockOrderData>? myData;
 
   String? currentFarm;
   int? currentFarmId;
@@ -534,15 +539,14 @@ class _StockOrderState extends State<StockOrder> {
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
                                     setState(() {
-                                      // myDataRequest = registeredusers.data!
-                                      //     .where(
-                                      //       (element) => element.email!
-                                      //           .toLowerCase()
-                                      //           .contains(
-                                      //             value.toLowerCase(),
-                                      //           ),
-                                      //     )
-                                      //     .toList();
+                                      stockOrderData.data = myData!.where(
+                                            (element) => element.farm!.first.farm!
+                                                .toLowerCase()
+                                                .contains(
+                                                  value.toLowerCase(),
+                                                ),
+                                          )
+                                          .toList();
                                     });
                                   },
                                   controller: controller,
