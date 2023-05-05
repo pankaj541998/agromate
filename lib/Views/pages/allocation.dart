@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -126,18 +127,27 @@ class _AllocationState extends State<Allocation> {
                               width: 250,
                               child: CupertinoSearchTextField(
                                 onChanged: (value) {
-                                  // setState(() {
-                                  //   myDataRequest = filterData!
-                                  //       .where(
-                                  //         (element) => element.name!
-                                  //             .toLowerCase()
-                                  //             .contains(
-                                  //               value.toLowerCase(),
-                                  //             ),
-                                  //       )
-                                  //       .toList();
-                                  // }
-                                  // );
+                                  setState(() {
+                                    // myDataRequest = filterData!
+                                    //     .where(
+                                    //       (element) => element.name!
+                                    //           .toLowerCase()
+                                    //           .contains(
+                                    //             value.toLowerCase(),
+                                    //           ),
+                                    //     )
+                                    //     .toList();
+                                    allocation.data = myData
+                                        .where(
+                                          (element) => element
+                                              .getLandholder!.first.firstName!
+                                              .toLowerCase()
+                                              .contains(
+                                                value.toLowerCase(),
+                                              ),
+                                        )
+                                        .toList();
+                                  });
                                 },
                                 // controller: controller,
                                 decoration: BoxDecoration(
@@ -246,60 +256,24 @@ class _AllocationState extends State<Allocation> {
                       ),
                     ),
                   ),
-                  DataColumn(
-                    label: Expanded(
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff327C04).withOpacity(0.11),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Profile",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Expanded(
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff327C04).withOpacity(0.11),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Full Name",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Expanded(
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff327C04).withOpacity(0.11),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Role",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  //  DataColumn(
+                  //   label: Expanded(
+                  //     child: Container(
+                  //       height: 50,
+                  //       decoration: BoxDecoration(
+                  //         color: const Color(0xff327C04).withOpacity(0.11),
+                  //       ),
+                  //       child: const Center(
+                  //         child: Text(
+                  //           "Profile",
+                  //           textAlign: TextAlign.center,
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.w500, fontSize: 14),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   DataColumn(
                     label: Expanded(
                       child: Container(
@@ -372,6 +346,79 @@ class _AllocationState extends State<Allocation> {
                       ),
                     ),
                   ),
+
+                  // DataColumn(
+                  //   label: Expanded(
+                  //     child: Container(
+                  //       height: 50,
+                  //       decoration: BoxDecoration(
+                  //         color: const Color(0xff327C04).withOpacity(0.11),
+                  //       ),
+                  //       child: const Center(
+                  //         child: Text(
+                  //           "Role",
+                  //           textAlign: TextAlign.center,
+                  //           style: TextStyle(
+                  //               fontWeight: FontWeight.w500, fontSize: 14),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Farmer",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Agronomist",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded(
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: const Color(0xff327C04).withOpacity(0.11),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Manager",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 14),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   DataColumn(
                     label: Expanded(
                       child: Container(
@@ -400,10 +447,6 @@ class _AllocationState extends State<Allocation> {
   }
 }
 
-_buildusertable(screenSize, context) {}
-
-// datatable(screenSize, context) {}
-
 class RowSource extends DataTableSource {
   var myData;
   final count;
@@ -430,38 +473,24 @@ class RowSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-DataRow recentFileDataRow(allocationData data, context, int index) {
-  int no = index + 1;
-
-  return DataRow(
-    cells: [
-      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
-      DataCell(Align(
-        alignment: Alignment.center,
-        child: Image.asset("assets/images/albert.png", height: 30),
-      )),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getLandholder!.first.firstName.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getFarm!.first.farm.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getFarm!.first.farm.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getFarm!.first.farm.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getFarm!.first.farm.toString()))),
-      DataCell(Align(
-          alignment: Alignment.center,
-          child: Text(data.getFarm!.first.farm.toString()))),
-      DataCell(
-          Align(alignment: Alignment.center, child: _buildactions(context))),
-    ],
-  );
+Future<String> deleteAllocation() async {
+  print("reached");
+  final _chuckerHttpClient = await http.Client();
+  final http.Response response = await http.post(
+      Uri.parse("https://agromate.website/laravel/api/delete_allocation"),
+      body: {
+        "allocation_id": "currentLandholderId".toString(),
+      });
+  print("api resp is ${response.body}");
+  if (response.statusCode == 200) {
+    Flushbar(
+      message: "Deleted Successfully",
+      duration: Duration(seconds: 2),
+    );
+    return 'null';
+  } else {
+    return throw (Exception("Error occured"));
+  }
 }
 
 _buildactions(context) {
@@ -499,6 +528,143 @@ _buildactions(context) {
             customAlert(context);
           },
           child: Image.asset("assets/images/delete.png", height: 30)),
+    ],
+  );
+}
+
+customAlert(context) {
+  return showDialog(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AlertDialog(
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.cancel_outlined,
+                    size: 60,
+                    color: Color(0xFFFF0000),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const Text(
+                    "Are You Sure?",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                  color: Color(0xFF327C04),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Color(0XFF000000),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 160,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF327C04),
+                            ),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            deleteAllocation();
+                          },
+                          child: const Text('Delete'),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
+DataRow recentFileDataRow(allocationData data, context, int index) {
+  int no = index + 1;
+
+  return DataRow(
+    cells: [
+      DataCell(Align(alignment: Alignment.center, child: Text(no.toString()))),
+      // DataCell(Align(
+      //   alignment: Alignment.center,
+      //   child: Image.asset("assets/images/albert.png", height: 30),
+      // )),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getLandholder!.first.firstName.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getFarm!.first.farm.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getBlock!.first.block.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getField!.first.field.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getFarmer!.first.firstName.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getAgronomist!.first.firstName.toString()))),
+      DataCell(Align(
+          alignment: Alignment.center,
+          child: Text(data.getManager!.first.firstName.toString()))),
+      // DataCell(Align(
+      //     alignment: Alignment.center,
+      //     child: Text(data.getFarm!.first.farm.toString()))),
+
+      DataCell(
+          Align(alignment: Alignment.center, child: _buildactions(context))),
     ],
   );
 }
@@ -939,97 +1105,6 @@ buildPinAlert(context) {
               ),
             ],
           ),
-        );
-      },
-    ),
-  );
-}
-
-customAlert(context) {
-  return showDialog(
-    context: context,
-    builder: (context) => StatefulBuilder(
-      builder: (context, setState) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AlertDialog(
-              content: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.cancel_outlined,
-                    size: 60,
-                    color: Color(0xFFFF0000),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
-                    "Are You Sure?",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 160,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: const BorderSide(
-                                  color: Color(0xFF327C04),
-                                ),
-                              ),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Color(0XFF000000),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 160,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                const Color(0xFF327C04),
-                              ),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ))),
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Delete'),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
         );
       },
     ),

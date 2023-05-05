@@ -17,8 +17,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 final StreamController<bool> _requestuserrefresh = StreamController.broadcast();
 final StreamController<bool> _userrefresh = StreamController.broadcast();
 late RegisteredUserModel registeredusers;
@@ -851,7 +849,7 @@ _buildactions(context, data, index) {
           onTap: () {
             int id = registeredusers.data!.elementAt(index).id!;
             debugPrint(id.toString());
-            customAlert(context, id);
+            customAlert(context);
           },
           child: Image.asset("assets/images/delete.png", height: 30)),
     ],
@@ -1144,7 +1142,7 @@ buildPinShowData(context, id) {
   );
 }
 
-customAlert(context, id) {
+customAlert(context) {
   return showDialog(
     context: context,
     builder: (context) => StatefulBuilder(
