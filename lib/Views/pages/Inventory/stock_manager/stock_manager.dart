@@ -228,8 +228,8 @@ Widget _buildgridview(context, screenSize) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Card(
-            color: Color(0xfff7f9ea),
-            shape: RoundedRectangleBorder(
+            color: const Color(0xfff7f9ea),
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: SingleChildScrollView(
               child: Padding(
@@ -246,28 +246,28 @@ Widget _buildgridview(context, screenSize) {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Nitrogen",
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: screenSize.height * 0.007),
-                            Text(
+                            const Text(
                               "Description",
                               style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(height: screenSize.height * 0.007),
-                            Text(
+                            const Text(
                               "Class: Fertiliser",
                               style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(height: screenSize.height * 0.007),
-                            Text(
+                            const Text(
                               "Type: Organic",
                               style: TextStyle(fontSize: 12),
                             ),
                             SizedBox(height: screenSize.height * 0.007),
-                            Text(
+                            const Text(
                               "Quantity: 200ml",
                               style: TextStyle(fontSize: 12),
                             ),
