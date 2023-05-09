@@ -5,6 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/common/sized_box.dart';
 import 'package:flutter_agro_new/component/custom_Elevated_Button.dart';
 import 'package:flutter_agro_new/component/dropdown_btn.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.
 import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
 import 'package:flutter_agro_new/models/stock_plan_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -631,16 +633,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                   DataColumn(
                     label: Expanded(
                       child: Container(
-                        height: 50,
+                        // height: 50,
                         decoration: BoxDecoration(
                           color: const Color(0xff327C04).withOpacity(0.11),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "ID",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -649,16 +651,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                   DataColumn(
                     label: Expanded(
                       child: Container(
-                        height: 50,
+                        // height: 50,
                         decoration: BoxDecoration(
                           color: const Color(0xff327C04).withOpacity(0.11),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Warehouse",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -667,16 +669,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                   DataColumn(
                     label: Expanded(
                       child: Container(
-                        height: 50,
+                        // height: 50,
                         decoration: BoxDecoration(
                           color: const Color(0xff327C04).withOpacity(0.11),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Stock Name",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -685,16 +687,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                   DataColumn(
                     label: Expanded(
                       child: Container(
-                        height: 50,
+                        // height: 50,
                         decoration: BoxDecoration(
                           color: const Color(0xff327C04).withOpacity(0.11),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Quantity",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -703,16 +705,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                   DataColumn(
                     label: Expanded(
                       child: Container(
-                        height: 50,
+                        // height: 50,
                         decoration: BoxDecoration(
                           color: const Color(0xff327C04).withOpacity(0.11),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Date",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 14),
+                                fontWeight: FontWeight.w500, fontSize: 16.sp),
                           ),
                         ),
                       ),
@@ -749,14 +751,16 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                           onTap: () => Navigator.pop(context),
                           child: const Icon(Icons.arrow_back_ios_rounded)),
                       SizedBox(width: screenSize.width * 0.02),
-                      const Text(
+                       Text(
                         'Stock Planner',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             color: Color(0xff000000),
                             fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(width: screenSize.width * 0.02),
+                      sizedBoxWidth(20.w),
+                      
+                      // SizedBox(width: screenSize.width * 0.02),
                       Row(
                         children: [
                           InkWell(
@@ -772,13 +776,13 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                   bottomLeft: Radius.circular(5),
                                 ),
                               ),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 3),
+                                    horizontal: 8.0.w, vertical: 3.h),
                                 child: Text(
                                   'Grid',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     color: Color(0xff000000),
                                   ),
                                 ),
@@ -800,13 +804,13 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                   bottomRight: Radius.circular(5),
                                 ),
                               ),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 8.0, vertical: 3),
                                 child: Text(
                                   'Table',
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     color: Color(0xffffffff),
                                   ),
                                 ),
@@ -831,20 +835,20 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 9),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 9.w),
                                   child: Row(
-                                    children: const [
+                                    children: [
                                       Icon(
                                         Icons.add,
                                         color: Color(0xffffffff),
-                                        size: 20,
+                                        size: 20.w,
                                       ),
                                       SizedBox(width: 6),
                                       Text(
                                         'Add',
                                         style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                             color: Color(0xffffffff)),
                                       )
                                     ],
@@ -855,21 +859,25 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                             Padding(
                               padding: const EdgeInsets.only(left: 15.0),
                               child: SizedBox(
-                                width: 250,
+                                width: 180.w,
+                                height: 40.w,
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
-                                    // setState(() {
-                                    //   myData = filterData!
-                                    //       .where(
-                                    //         (element) => element.name!
-                                    //             .toLowerCase()
-                                    //             .contains(
-                                    //               value.toLowerCase(),
-                                    //             ),
-                                    //       )
-                                    //       .toList();
-                                    // }
-                                    // );
+                                    setState(() {
+                                      // stockplan
+                                    myData = stockplan.data!.where((element) => element.stockName!.toLowerCase().contains(value.toLowerCase())).toList();
+                                  print(myData);
+                                    // myData = filterData!
+                                    //     .where(s
+                                    //       (element) => element.name!
+                                    //           .toLowerCase()
+                                    //           .contains(
+                                    //             value.toLowerCase(),
+                                    //           ),
+                                    //     )
+                                    //     .toList();
+                                  }
+                                  );
                                   },
                                   // controller: controller,
                                   decoration: BoxDecoration(
@@ -880,28 +888,28 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                     color: const Color(0xff327C04)
                                         .withOpacity(0.11),
                                   ),
-                                  itemSize: 25,
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                  itemSize: 25.w,
+                                  style: TextStyle(
+                                    fontSize: 16.w,
                                     color: Color(0xff000000),
                                   ),
-                                  prefixInsets:
-                                      const EdgeInsetsDirectional.fromSTEB(
-                                          10, 8, 0, 8),
+                                  // prefixInsets:
+                                  //     const EdgeInsetsDirectional.fromSTEB(
+                                  //         10, 8, 0, 8),
                                   placeholder: 'Search',
                                   suffixInsets:
                                       const EdgeInsetsDirectional.fromSTEB(
                                           0, 0, 15, 2),
                                   placeholderStyle: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 16.sp,
                                     color: const Color(0xff000000)
                                         .withOpacity(0.38),
                                   ),
                                   padding: const EdgeInsets.only(
-                                    left: 5,
+                                    left: 0,
                                     top: 0,
                                     bottom: 0,
-                                    right: 15,
+                                    right: 0,
                                   ),
                                 ),
                               ),
@@ -911,21 +919,24 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20.w),
                   const Divider(
                     height: 5,
                     color: Colors.grey,
                     thickness: 1,
                   ),
-                  SizedBox(height: screenSize.height * 0.03),
-                 StreamBuilder<requestResponseState>(
-                          stream: _stockPlannerGet.stream,
-                          builder: (context, snapshot) {
-                            fetchStockPlan();
-                            return SizedBox(
-                              child: datatable(screenSize),
-                            );
-                          })
+
+                  SizedBox(height: 20.w),
+
+                  // SizedBox(height: screenSize.height * 0.03),
+                  StreamBuilder<requestResponseState>(
+                      stream: _stockPlannerGet.stream,
+                      builder: (context, snapshot) {
+                        // fetchStockPlan();
+                        return SizedBox(
+                          child: datatable(screenSize),
+                        );
+                      })
                 ],
               ),
             ),
@@ -1046,16 +1057,16 @@ DataRow recentFileDataRow(StockData data) {
   return DataRow(
     cells: [
       DataCell(
-          Align(alignment: Alignment.center, child: Text(data.id.toString()))),
+          Align(alignment: Alignment.center, child: Text(data.id.toString(),style: TextStyle(fontSize: 14.sp),))),
       DataCell(Align(
           alignment: Alignment.center,
-          child: Text(data.warehouseId.toString()))),
+          child: Text(data.warehouseId.toString(),style: TextStyle(fontSize: 14.sp),))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.stockName.toString()))),
+          alignment: Alignment.center, child: Text(data.stockName.toString(),style: TextStyle(fontSize: 14.sp),))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.quantity.toString()))),
+          alignment: Alignment.center, child: Text(data.quantity.toString(),style: TextStyle(fontSize: 14.sp),))),
       DataCell(Align(
-          alignment: Alignment.center, child: Text(data.startDate.toString()))),
+          alignment: Alignment.center, child: Text(data.startDate.toString(),style: TextStyle(fontSize: 14.sp),))),
     ],
   );
 }
