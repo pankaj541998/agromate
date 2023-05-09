@@ -85,16 +85,11 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
-      fetchStockPlan();
       Flushbar(
         message: "Stock Planner Added Successfully",
         duration: Duration(seconds: 2),
       );
-     Navigator.pop(context);
-
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => StockPlannerTable()));
-      
+       fetchStockPlan();
       return 'null';
     } else {
       return throw (Exception("Search Error"));
@@ -591,7 +586,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                             child: CustomElevatedButton(
                               onPressed: () {
                                 addStockplannerAPI();
-                               // Navigator.pop(context);
+                                Navigator.pop(context);
                               },
                               title: "Submit",
                             ),
