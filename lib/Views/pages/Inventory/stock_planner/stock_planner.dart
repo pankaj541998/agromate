@@ -8,6 +8,7 @@ import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/database_api/methods/stock_planner_api_methods.dart';
 import 'package:flutter_agro_new/main.dart';
 import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
+import 'package:flutter_agro_new/models/stock_order_model.dart';
 import 'package:flutter_agro_new/models/stock_plan_model.dart';
 import 'package:flutter_agro_new/Views/pages/growth_stages/dropdown_btn.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +31,7 @@ class _StockPlannerState extends State<StockPlanner> {
   final StreamController<requestResponseState> _stockPlannerGet =
       StreamController.broadcast();
   final TextEditingController _date = TextEditingController();
-  final TextEditingController PlannerDateTextEditingController =
+  final TextEditingController plannerDateTextEditingController =
       TextEditingController();
   final TextEditingController stockPlannerQuantityTextEditingController =
       TextEditingController();
@@ -43,17 +44,21 @@ class _StockPlannerState extends State<StockPlanner> {
     final http.Response response = await http.post(
         Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
         body: {
-          "warehouse_id": currentWarehouseId,
-          "start_date": PlannerDateTextEditingController.toString(),
+          "warehouse_id": currentWarehouseId.toString(),
+          "start_date": plannerDateTextEditingController.text,
           "stock_name": _selectedValue1.toString(),
-          "quantity": stockPlannerQuantityTextEditingController.toString()
+          "quantity": stockPlannerQuantityTextEditingController.text
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
+      fetchStockPlan();
       Flushbar(
         message: "Stock Planner Added Successfully",
         duration: Duration(seconds: 2),
       );
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => StockPlanner()));
+     Navigator.pop(context);
       return 'null';
     } else {
       return throw (Exception("Search Error"));
@@ -81,7 +86,7 @@ class _StockPlannerState extends State<StockPlanner> {
     return stockplan;
   }
 
-  late String _selectedValue1;
+  String? _selectedValue1;
   List<String> listOfValue1 = [
     'Stock 1',
     'Stock 2',
@@ -215,25 +220,87 @@ class _StockPlannerState extends State<StockPlanner> {
                                     ),
                                     const SizedBox(height: 15),
                                     SizedBox(
-                                        height: 40,
-                                        child: DropdownBtn(
-                                          items: fetchedwarehouselist.map((e) {
-                                            return e.warehouseName.toString();
-                                          }).toList(),
-                                          hint: "Select Warehouse",
-                                          onItemSelected: (value) async {
-                                            setState(() {
-                                              currentWarehouse = value;
-                                              currentWarehouseId =
-                                                  fetchedwarehouselist
-                                                      .singleWhere((element) =>
-                                                          element
-                                                              .warehouseName ==
-                                                          currentWarehouse)
-                                                      .id;
-                                            });
-                                          },
-                                        )),
+                                      height: 40,
+                                      child: DropdownButtonFormField(
+                                        hint: Text("Select Warehouse"),
+                                        focusColor: Colors.white,
+                                        isExpanded: true,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              left: 10, top: 10, right: 10),
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color(0xFF327C04),
+                                              width: 5.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+
+                                        items: fetchedwarehouselist.map((e) {
+                                          return DropdownMenuItem(
+                                            child: Text(
+                                                e.warehouseName.toString()),
+                                            value: e.warehouseName,
+                                          );
+                                          //e.warehouseName.toString();
+                                        }).toList(),
+
+                                        //  listOfValue1.map((String val) {
+                                        //   return DropdownMenuItem(
+                                        //   enabled: true,
+                                        //   value: val,
+                                        //   child: Text(
+                                        //     val,
+                                        //   ),
+                                        // );
+                                        // }).toList(),
+                                        onChanged: (value) async {
+                                          setState(() {
+                                            currentWarehouse = value.toString();
+                                            currentWarehouseId =
+                                                fetchedwarehouselist
+                                                    .singleWhere((element) =>
+                                                        element.warehouseName ==
+                                                        currentWarehouse)
+                                                    .id;
+                                          });
+                                        },
+                                      ),
+
+                                      // DropdownBtn(
+                                      //   items: fetchedwarehouselist.map((e) {
+                                      //     return e.warehouseName.toString();
+                                      //   }).toList(),
+                                      //   hint: "Select Warehouse",
+                                      //   onItemSelected: (value) async {
+                                      //     setState(() {
+                                      //       currentWarehouse = value;
+                                      //       currentWarehouseId =
+                                      //           fetchedwarehouselist
+                                      //               .singleWhere((element) =>
+                                      //                   element
+                                      //                       .warehouseName ==
+                                      //                   currentWarehouse)
+                                      //               .id;
+                                      //     });
+                                      //   },
+                                      // ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -256,7 +323,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                     const SizedBox(height: 15),
                                     DateTimeField(
                                       controller:
-                                          PlannerDateTextEditingController,
+                                          plannerDateTextEditingController,
                                       cursorColor: const Color(0xff000000),
                                       decoration: InputDecoration(
                                         errorMaxLines: 3,
@@ -426,7 +493,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                         }).toList(),
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedValue1;
+                                            _selectedValue1 = value;
                                           });
                                         },
                                       ),
@@ -544,7 +611,7 @@ class _StockPlannerState extends State<StockPlanner> {
                             child: CustomElevatedButton(
                               onPressed: () {
                                 addStockplannerAPI();
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                               },
                               title: "Submit",
                             ),
@@ -985,25 +1052,28 @@ class _StockPlannerState extends State<StockPlanner> {
                 SizedBox(
                   height: 10,
                 ),
-                StreamBuilder<requestResponseState>(
-                    stream: _stockPlannerGet.stream,
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.waiting:
-                          return Center(child: CircularProgressIndicator());
-
-                        default:
-                          if (snapshot.hasError) {
-                            return Text("Error Occured");
-                          } else {
-                            return _buildgridview(
-                                context, screenSize, stockplan);
-                          }
-                      }
-                    }),
               ],
             ),
-          )
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: StreamBuilder<requestResponseState>(
+                  stream: _stockPlannerGet.stream,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Center(child: CircularProgressIndicator());
+
+                      default:
+                        if (snapshot.hasError) {
+                          return Text("Error Occured");
+                        } else {
+                          return _buildgridview(context, screenSize, stockplan);
+                        }
+                    }
+                  }),
+            ),
+          ),
         ],
       ),
     );
@@ -1092,11 +1162,12 @@ class _TextDropdownState extends State<TextDropdown> {
 Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
   return GridView.builder(
       shrinkWrap: true,
+      // physics: NeverScrollableScrollPhysics(),
+      // scrollDirection: Axis.vertical,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: (
-          // screenSize.height/screenSize.width
-          1 / 0.5
-        ),
+            // screenSize.height/screenSize.width
+            1 / 0.5),
         crossAxisCount: 4,
       ),
       itemCount: stockplan.data!.length,
@@ -1116,7 +1187,8 @@ Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset("assets/images/Group6740.png", 
+                      Image.asset(
+                        "assets/images/Group6740.png",
                         // height: 40
                         height: 60.w,
                         width: 60.w,
@@ -1141,20 +1213,19 @@ Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
                           Row(
                             children: [
                               Text("Quantity : ",
-                                style: TextStyle(
-                                fontSize: 16.sp, 
-                                // fontWeight: FontWeight.bold
-                                )
-                              ),
-                              Text(stockplan.data!
-                                  .elementAt(index)
-                                  .quantity!
-                                  .toString(),
                                   style: TextStyle(
-                                fontSize: 16.sp, 
-                                // fontWeight: FontWeight.bold
-                                )
-                                  )
+                                    fontSize: 16.sp,
+                                    // fontWeight: FontWeight.bold
+                                  )),
+                              Text(
+                                  stockplan.data!
+                                      .elementAt(index)
+                                      .quantity!
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    // fontWeight: FontWeight.bold
+                                  ))
                             ],
                           ),
                           // sizedBoxHeight(10.w),
@@ -1163,20 +1234,19 @@ Widget _buildgridview(context, screenSize, stockPlanModel stockplan) {
                           Row(
                             children: [
                               Text("Required : ",
-                                style: TextStyle(
-                                  fontSize: 16.sp, 
-                                  // fontWeight: FontWeight.bold
-                                )
-                              ),
-                              Text(stockplan.data!
-                                  .elementAt(index)
-                                  .quantity!
-                                  .toString(),
                                   style: TextStyle(
-                                  fontSize: 16.sp, 
-                                  // fontWeight: FontWeight.bold
-                                )
-                                  )
+                                    fontSize: 16.sp,
+                                    // fontWeight: FontWeight.bold
+                                  )),
+                              Text(
+                                  stockplan.data!
+                                      .elementAt(index)
+                                      .quantity!
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    // fontWeight: FontWeight.bold
+                                  ))
                             ],
                           ),
                         ],

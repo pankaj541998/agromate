@@ -37,7 +37,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
   String? yield;
   String? weeks;
   TextEditingController controller = TextEditingController();
-  final TextEditingController PlannerDateTextEditingController =
+  final TextEditingController plannerDateTextEditingController =
       TextEditingController();
   final TextEditingController stockPlannerQuantityTextEditingController =
       TextEditingController();
@@ -76,24 +76,30 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
     final http.Response response = await http.post(
         Uri.parse("https://agromate.website/laravel/api/add_stock_planner"),
         body: {
-          "warehouse_id": currentWarehouseId,
-          "start_date": PlannerDateTextEditingController.toString(),
+          "warehouse_id": currentWarehouseId.toString(),
+          "start_date": plannerDateTextEditingController.text,
           "stock_name": _selectedValue1.toString(),
-          "quantity": stockPlannerQuantityTextEditingController.toString()
+          "quantity": stockPlannerQuantityTextEditingController.text
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
+      fetchStockPlan();
       Flushbar(
         message: "Stock Planner Added Successfully",
         duration: Duration(seconds: 2),
       );
+     Navigator.pop(context);
+
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => StockPlannerTable()));
+      
       return 'null';
     } else {
       return throw (Exception("Search Error"));
     }
   }
 
-  late String _selectedValue1;
+  String? _selectedValue1;
   List<String> listOfValue1 = [
     'Stock 1',
     'Stock 2',
@@ -203,25 +209,76 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                     ),
                                     const SizedBox(height: 15),
                                     SizedBox(
-                                        height: 40,
-                                        child: DropdownBtn(
-                                          items: fetchedwarehouselist.map((e) {
-                                            return e.warehouseName.toString();
-                                          }).toList(),
-                                          hint: "Select Warehouse",
-                                          onItemSelected: (value) async {
-                                            setState(() {
-                                              currentWarehouse = value;
-                                              currentWarehouseId =
-                                                  fetchedwarehouselist
-                                                      .singleWhere((element) =>
-                                                          element
-                                                              .warehouseName ==
-                                                          currentWarehouse)
-                                                      .id;
-                                            });
-                                          },
-                                        )),
+                                      height: 40,
+                                      child: DropdownButtonFormField(
+                                        hint: Text("Select Warehouse"),
+                                        focusColor: Colors.white,
+                                        isExpanded: true,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              left: 10, top: 10, right: 10),
+                                          fillColor: Colors.white,
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: const BorderSide(
+                                                color: Color(0xFF327C04)),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Color(0xFF327C04),
+                                              width: 5.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        items: fetchedwarehouselist.map((e) {
+                                          return DropdownMenuItem(
+                                            child: Text(
+                                                e.warehouseName.toString()),
+                                            value: e.warehouseName,
+                                          );
+                                          //e.warehouseName.toString();
+                                        }).toList(),
+                                        onChanged: (value) async {
+                                          setState(() {
+                                            currentWarehouse = value.toString();
+                                            currentWarehouseId =
+                                                fetchedwarehouselist
+                                                    .singleWhere((element) =>
+                                                        element.warehouseName ==
+                                                        currentWarehouse)
+                                                    .id;
+                                          });
+                                        },
+                                      ),
+
+                                      // DropdownBtn(
+                                      //   items: fetchedwarehouselist.map((e) {
+                                      //     return e.warehouseName.toString();
+                                      //   }).toList(),
+                                      //   hint: "Select Warehouse",
+                                      //   onItemSelected: (value) async {
+                                      //     setState(() {
+                                      //       currentWarehouse = value;
+                                      //       currentWarehouseId =
+                                      //           fetchedwarehouselist
+                                      //               .singleWhere((element) =>
+                                      //                   element
+                                      //                       .warehouseName ==
+                                      //                   currentWarehouse)
+                                      //               .id;
+                                      //     });
+                                      //   },
+                                      // )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -244,7 +301,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                     const SizedBox(height: 15),
                                     DateTimeField(
                                       controller:
-                                          PlannerDateTextEditingController,
+                                          plannerDateTextEditingController,
                                       cursorColor: const Color(0xff000000),
                                       decoration: InputDecoration(
                                         errorMaxLines: 3,
@@ -414,7 +471,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                                         }).toList(),
                                         onChanged: (value) {
                                           setState(() {
-                                            _selectedValue1;
+                                            _selectedValue1 = value;
                                           });
                                         },
                                       ),
@@ -532,7 +589,7 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                             child: CustomElevatedButton(
                               onPressed: () {
                                 addStockplannerAPI();
-                                Navigator.pop(context);
+                               // Navigator.pop(context);
                               },
                               title: "Submit",
                             ),
@@ -861,14 +918,14 @@ class _StockPlannerTableState extends State<StockPlannerTable> {
                     thickness: 1,
                   ),
                   SizedBox(height: screenSize.height * 0.03),
-                  StreamBuilder<requestResponseState>(
-                      stream: _stockPlannerGet.stream,
-                      builder: (context, snapshot) {
-                        fetchStockPlan();
-                        return SizedBox(
-                          child: datatable(screenSize),
-                        );
-                      })
+                 StreamBuilder<requestResponseState>(
+                          stream: _stockPlannerGet.stream,
+                          builder: (context, snapshot) {
+                            fetchStockPlan();
+                            return SizedBox(
+                              child: datatable(screenSize),
+                            );
+                          })
                 ],
               ),
             ),
