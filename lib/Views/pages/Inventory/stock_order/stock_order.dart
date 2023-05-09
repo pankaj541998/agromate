@@ -67,7 +67,8 @@ class _StockOrderState extends State<StockOrder> {
       Flushbar(
         message: "Stock Order Added Successfully",
         duration: Duration(seconds: 2),
-      );
+      ).show(context);
+      fetchStockOrder();
       return 'null';
     } else {
       return throw (Exception("Search Error"));
@@ -539,8 +540,10 @@ class _StockOrderState extends State<StockOrder> {
                                 child: CupertinoSearchTextField(
                                   onChanged: (value) {
                                     setState(() {
-                                      stockOrderData.data = myData!.where(
-                                            (element) => element.farm!.first.farm!
+                                      stockOrderData.data = myData!
+                                          .where(
+                                            (element) => element
+                                                .farm!.first.farm!
                                                 .toLowerCase()
                                                 .contains(
                                                   value.toLowerCase(),

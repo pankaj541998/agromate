@@ -52,14 +52,11 @@ class _StockPlannerState extends State<StockPlanner> {
         });
     print("api resp is ${response.body}");
     if (response.statusCode == 200) {
-      fetchStockPlan();
       Flushbar(
         message: "Stock Planner Added Successfully",
         duration: Duration(seconds: 2),
-      );
-      // Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => StockPlanner()));
-     Navigator.pop(context);
+      ).show(context);
+      fetchStockPlan();
       return 'null';
     } else {
       return throw (Exception("Search Error"));
@@ -113,7 +110,6 @@ class _StockPlannerState extends State<StockPlanner> {
   TextEditingController controller = TextEditingController();
 
   List<StockData>? myData;
-
 
   late final Future warehouse;
   @override
@@ -616,7 +612,7 @@ class _StockPlannerState extends State<StockPlanner> {
                             child: CustomElevatedButton(
                               onPressed: () {
                                 addStockplannerAPI();
-                                // Navigator.pop(context);
+                                Navigator.pop(context);
                               },
                               title: "Submit",
                             ),
@@ -651,7 +647,8 @@ class _StockPlannerState extends State<StockPlanner> {
                   children: [
                     InkWell(
                         onTap: () => Navigator.pop(context),
-                        child: Icon(Icons.arrow_back_ios_rounded,
+                        child: Icon(
+                          Icons.arrow_back_ios_rounded,
                           size: 30.w,
                         )),
                     sizedBoxHeight(30.w),
@@ -790,7 +787,11 @@ class _StockPlannerState extends State<StockPlanner> {
                               child: CupertinoSearchTextField(
                                 onChanged: (value) {
                                   setState(() {
-                                    stockplan.data = myData!.where((element) => element.stockName!.toLowerCase().contains(value.toLowerCase())).toList();
+                                    stockplan.data = myData!
+                                        .where((element) => element.stockName!
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()))
+                                        .toList();
                                     // myData = filterData!
                                     //     .where(
                                     //       (element) => element.name!
@@ -800,8 +801,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                     //           ),
                                     //     )
                                     //     .toList();
-                                  }
-                                  );
+                                  });
                                 },
                                 // controller: controller,
                                 decoration: BoxDecoration(
@@ -813,11 +813,11 @@ class _StockPlannerState extends State<StockPlanner> {
                                       const Color(0xff327C04).withOpacity(0.11),
                                 ),
                                 itemSize: 25.w,
-                                style:  TextStyle(
+                                style: TextStyle(
                                   fontSize: 16.w,
                                   color: Color(0xff000000),
                                 ),
-                                
+
                                 // prefixInsets:
                                 //     const EdgeInsetsDirectional.fromSTEB(
                                 //         10, 8, 0, 8),
@@ -830,9 +830,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                   color:
                                       const Color(0xff000000).withOpacity(0.38),
                                 ),
-                                padding: const EdgeInsets.all(
-                                  0
-                                ),
+                                padding: const EdgeInsets.all(0),
                               ),
                             ),
                           ),
@@ -882,7 +880,8 @@ class _StockPlannerState extends State<StockPlanner> {
                                 ),
                                 hintStyle: TextStyle(
                                   fontSize: 16.sp,
-                                  color: const Color(0xff327C04).withOpacity(0.5),
+                                  color:
+                                      const Color(0xff327C04).withOpacity(0.5),
                                   fontFamily: 'Helvetica',
                                 ),
                                 fillColor: Colors.transparent,
@@ -904,7 +903,6 @@ class _StockPlannerState extends State<StockPlanner> {
                                 errorStyle: const TextStyle(
                                   fontSize: 14,
                                 ),
-                                
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.w),
                                   borderSide: const BorderSide(
@@ -970,7 +968,6 @@ class _StockPlannerState extends State<StockPlanner> {
                           SizedBox(
                             // height: 150.w,
                             child: DateTimeField(
-
                               // hei
                               cursorColor: const Color(0xff000000),
                               decoration: InputDecoration(
@@ -991,7 +988,8 @@ class _StockPlannerState extends State<StockPlanner> {
                                 filled: true,
                                 fillColor: Colors.transparent,
                                 suffixIcon: Padding(
-                                  padding: EdgeInsets.fromLTRB(0,6.w,10.w,6.w),
+                                  padding:
+                                      EdgeInsets.fromLTRB(0, 6.w, 10.w, 6.w),
                                   child: Icon(
                                     CupertinoIcons.calendar_today,
                                     color: Color(0xff327C04),
@@ -999,9 +997,7 @@ class _StockPlannerState extends State<StockPlanner> {
                                   ),
                                 ),
                                 suffixIconConstraints: BoxConstraints(
-                                  maxHeight: 45.w,
-                                  maxWidth: 45.w
-                                ),
+                                    maxHeight: 45.w, maxWidth: 45.w),
                                 // icons
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.w),
@@ -1035,7 +1031,6 @@ class _StockPlannerState extends State<StockPlanner> {
                                   ),
                                 ),
                                 isDense: true,
-                                
                               ),
                               format: format,
                               onShowPicker: (context, currentValue) {
@@ -1049,7 +1044,8 @@ class _StockPlannerState extends State<StockPlanner> {
                                           .subtract(const Duration(days: 4745)),
                                   // lastDate: DateTime(2100));
                                   lastDate: DateTime.now(),
-                                  builder: (BuildContext context, Widget? child) {
+                                  builder:
+                                      (BuildContext context, Widget? child) {
                                     return Theme(
                                       data: ThemeData.dark().copyWith(
                                         colorScheme: const ColorScheme.dark(
