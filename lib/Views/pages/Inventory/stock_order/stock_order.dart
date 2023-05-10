@@ -15,6 +15,7 @@ import 'package:flutter_agro_new/models/user1.dart';
 import 'package:flutter_agro_new/models/fetch_Warehouse_Model.dart';
 import 'package:flutter_agro_new/models/stock_order_model.dart';
 import 'package:flutter_agro_new/providers/map_filter_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -644,7 +645,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(7),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -658,9 +659,9 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                           Row(
                             children: [
                               Image.asset("assets/images/Group308.png",
-                                  height: 40),
+                                  height: 40.w),
                               SizedBox(
-                                width: 20,
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -668,7 +669,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                   Text(
                                     "Farm",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -679,22 +680,22 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                         .farm!
                                         .toString(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   )
                                 ],
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 5,
+                          SizedBox(
+                            height: 5.h,
                           ),
                           Row(
                             children: [
                               Image.asset("assets/images/Group309.png",
-                                  height: 40),
+                                  height: 40.w),
                               SizedBox(
-                                width: 20,
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -702,7 +703,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                   Text(
                                     "Block",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -713,22 +714,22 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                         .block!
                                         .toString(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   ),
                                 ],
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 5,
+                          SizedBox(
+                            height: 5.h,
                           ),
                           Row(
                             children: [
                               Image.asset("assets/images/Group310.png",
-                                  height: 40),
+                                  height: 40.w),
                               SizedBox(
-                                width: 20,
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -736,7 +737,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                   Text(
                                     "Field",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -747,7 +748,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                         .field!
                                         .toString(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   ),
                                 ],
@@ -762,9 +763,9 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                           Row(
                             children: [
                               Image.asset("assets/images/Group311.png",
-                                  height: 40),
+                                  height: 40.w),
                               SizedBox(
-                                width: 20,
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -772,28 +773,28 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                   Text(
                                     "Person",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "${stockOrderData.data!.elementAt(index).user!.first.firstName!.toString()} ${stockOrderData.data!.elementAt(index).user!.first.lastName!.toString()}",
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   )
                                 ],
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 5,
+                          SizedBox(
+                            height: 5.h,
                           ),
                           Row(
                             children: [
                               Image.asset("assets/images/Group312.png",
-                                  height: 40),
+                                  height: 40.w),
                               SizedBox(
-                                width: 20,
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -801,7 +802,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                   Text(
                                     "Crop",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -812,30 +813,30 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                         .crop!
                                         .toString(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   )
                                 ],
                               )
                             ],
                           ),
-                          const SizedBox(
-                            height: 5,
+                          SizedBox(
+                            height: 5.h,
                           ),
                           Row(
                             children: [
                               Image.asset("assets/images/Group313.png",
-                                  height: 40),
-                              const SizedBox(
-                                width: 20,
+                                  height: 40.w),
+                              SizedBox(
+                                width: 15.w,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
                                     "Stage",
                                     style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12.sp,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -845,7 +846,7 @@ Widget _buildgridview(context, screenSize, stockOrderModel stockOrderData) {
                                     //     .stageId
                                     //     .toString(),
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                     ),
                                   )
                                 ],
