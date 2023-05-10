@@ -220,87 +220,83 @@ class _StockPlannerState extends State<StockPlanner> {
                                       ),
                                     ),
                                     const SizedBox(height: 15),
-                                    SizedBox(
-                                      height: 40,
-                                      child: DropdownButtonFormField(
-                                        hint: Text("Select Warehouse"),
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 10, top: 10, right: 10),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFF327C04)),
+                                    DropdownButtonFormField(
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      hint: Text("Select Warehouse"),
+                                      focusColor: Colors.white,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 10, top: 10, right: 10),
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF327C04),
+                                            width: 5.0,
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFF327C04)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.red.shade900,
                                           ),
                                         ),
-
-                                        items: fetchedwarehouselist.map((e) {
-                                          return DropdownMenuItem(
-                                            child: Text(
-                                                e.warehouseName.toString()),
-                                            value: e.warehouseName,
-                                          );
-                                          //e.warehouseName.toString();
-                                        }).toList(),
-
-                                        //  listOfValue1.map((String val) {
-                                        //   return DropdownMenuItem(
-                                        //   enabled: true,
-                                        //   value: val,
-                                        //   child: Text(
-                                        //     val,
-                                        //   ),
-                                        // );
-                                        // }).toList(),
-                                        onChanged: (value) async {
-                                          setState(() {
-                                            currentWarehouse = value.toString();
-                                            currentWarehouseId =
-                                                fetchedwarehouselist
-                                                    .singleWhere((element) =>
-                                                        element.warehouseName ==
-                                                        currentWarehouse)
-                                                    .id;
-                                          });
-                                        },
+                                        errorStyle: TextStyle(
+                                          fontSize: 16.0.sp,
+                                        ),
                                       ),
+                                      items: fetchedwarehouselist.map((e) {
+                                        return DropdownMenuItem(
+                                          child:
+                                              Text(e.warehouseName.toString()),
+                                          value: e.warehouseName,
+                                        );
+                                        //e.warehouseName.toString();
+                                      }).toList(),
 
-                                      // DropdownBtn(
-                                      //   items: fetchedwarehouselist.map((e) {
-                                      //     return e.warehouseName.toString();
-                                      //   }).toList(),
-                                      //   hint: "Select Warehouse",
-                                      //   onItemSelected: (value) async {
-                                      //     setState(() {
-                                      //       currentWarehouse = value;
-                                      //       currentWarehouseId =
-                                      //           fetchedwarehouselist
-                                      //               .singleWhere((element) =>
-                                      //                   element
-                                      //                       .warehouseName ==
-                                      //                   currentWarehouse)
-                                      //               .id;
-                                      //     });
-                                      //   },
-                                      // ),
+                                      //  listOfValue1.map((String val) {
+                                      //   return DropdownMenuItem(
+                                      //   enabled: true,
+                                      //   value: val,
+                                      //   child: Text(
+                                      //     val,
+                                      //   ),
+                                      // );
+                                      // }).toList(),
+                                      onChanged: (value) async {
+                                        setState(() {
+                                          currentWarehouse = value.toString();
+                                          currentWarehouseId =
+                                              fetchedwarehouselist
+                                                  .singleWhere((element) =>
+                                                      element.warehouseName ==
+                                                      currentWarehouse)
+                                                  .id;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter stock name';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                   ],
                                 ),
@@ -330,10 +326,10 @@ class _StockPlannerState extends State<StockPlanner> {
                                         errorMaxLines: 3,
                                         hintText: "Date",
                                         contentPadding: const EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          left: 10,
-                                          right: 10,
+                                          top: 16,
+                                          bottom: 16,
+                                          left: 16,
+                                          right: 16,
                                         ),
                                         hintStyle: const TextStyle(
                                           fontSize: 16,
@@ -359,13 +355,13 @@ class _StockPlannerState extends State<StockPlanner> {
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             width: 1,
-                                            color: Color(0xff327C04),
+                                            color: Colors.red.shade900,
                                           ),
                                         ),
-                                        errorStyle: const TextStyle(
-                                          fontSize: 16.0,
+                                        errorStyle: TextStyle(
+                                          fontSize: 16.0.sp,
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
@@ -452,52 +448,67 @@ class _StockPlannerState extends State<StockPlanner> {
                                       ),
                                     ),
                                     const SizedBox(height: 15),
-                                    SizedBox(
-                                      height: 40,
-                                      child: DropdownButtonFormField(
-                                        hint: Text("Select Name"),
-                                        focusColor: Colors.white,
-                                        isExpanded: true,
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.only(
-                                              left: 10, top: 10, right: 10),
-                                          fillColor: Colors.white,
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFF327C04)),
+                                    DropdownButtonFormField(
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter stock name';
+                                        }
+                                        return null;
+                                      },
+                                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                                      hint: Text("Select Name"),
+                                      focusColor: Colors.white,
+                                      isExpanded: true,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(
+                                            left: 10, top: 10, right: 10),
+                                        fillColor: Colors.white,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Color(0xFF327C04)),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Color(0xFF327C04),
+                                            width: 5.0,
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            borderSide: const BorderSide(
-                                                color: Color(0xFF327C04)),
-                                          ),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                              color: Color(0xFF327C04),
-                                              width: 5.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.red.shade900,
                                           ),
                                         ),
-                                        items: listOfValue1.map((String val) {
-                                          return DropdownMenuItem(
-                                            enabled: true,
-                                            value: val,
-                                            child: Text(
-                                              val,
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedValue1 = value;
-                                          });
-                                        },
+                                        errorStyle: TextStyle(
+                                          fontSize: 16.0.sp,
+                                        ),
                                       ),
+                                      items: listOfValue1.map((String val) {
+                                        return DropdownMenuItem(
+                                          enabled: true,
+                                          value: val,
+                                          child: Text(
+                                            val,
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedValue1 = value;
+                                        });
+                                      },
                                     ),
                                   ],
                                 ),
@@ -537,10 +548,10 @@ class _StockPlannerState extends State<StockPlanner> {
                                         errorMaxLines: 3,
                                         hintText: "Enter Quantity",
                                         contentPadding: const EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                            top: 15,
-                                            bottom: 15),
+                                            left: 16,
+                                            right: 16,
+                                            top: 19,
+                                            bottom: 19),
                                         hintStyle: const TextStyle(
                                           fontSize: 16,
                                           // color: const Color(0xffffffff).withOpacity(0.8),
@@ -559,9 +570,9 @@ class _StockPlannerState extends State<StockPlanner> {
                                         errorBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          borderSide: const BorderSide(
+                                          borderSide: BorderSide(
                                             width: 1,
-                                            color: Color(0xff327C04),
+                                            color: Colors.red.shade900,
                                           ),
                                         ),
                                         errorStyle: const TextStyle(
@@ -585,14 +596,13 @@ class _StockPlannerState extends State<StockPlanner> {
                                         ),
                                         isDense: true,
                                       ),
-                                      // controller: _email,
                                       keyboardType: TextInputType.text,
-                                      // validator: (value) {
-                                      //   if (value == null || value.isEmpty) {
-                                      //     return 'Please enter your email Id';
-                                      //   }
-                                      //   return null;
-                                      // },
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter quantity';
+                                        }
+                                        return null;
+                                      },
                                       // onSaved: (name) {},
                                     ),
                                   ],
@@ -611,8 +621,16 @@ class _StockPlannerState extends State<StockPlanner> {
                             height: 40,
                             child: CustomElevatedButton(
                               onPressed: () {
-                                addStockplannerAPI();
-                                Navigator.pop(context);
+                                if (_form.currentState!.validate()) {
+                                  addStockplannerAPI();
+                                  Navigator.pop(context);
+                                }
+                                // else{
+                                //   Flushbar(
+                                //     message: "Enter all fields",
+                                //     duration: Duration(seconds: 2),
+                                //   );
+                                // }
                               },
                               title: "Submit",
                             ),
