@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 const List<Widget> options = <Widget>[Text('Grid'), Text('Table')];
@@ -226,57 +227,56 @@ Widget _buildgridview(context, screenSize) {
       itemCount: 12,
       itemBuilder: (BuildContext ctx, index) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Card(
             color: const Color(0xfff7f9ea),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/images/Group6740.png", height: 60),
-                        SizedBox(width: screenSize.width * 0.03),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Nitrogen",
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: screenSize.height * 0.007),
-                            const Text(
-                              "Description",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            SizedBox(height: screenSize.height * 0.007),
-                            const Text(
-                              "Class: Fertiliser",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            SizedBox(height: screenSize.height * 0.007),
-                            const Text(
-                              "Type: Organic",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            SizedBox(height: screenSize.height * 0.007),
-                            const Text(
-                              "Quantity: 200ml",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image.asset("assets/images/Group6740.png",
+                          width: 60.w, height: 60.w),
+                      SizedBox(width: 15.w),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nitrogen",
+                            style: TextStyle(
+                                fontSize: 14.sp, fontWeight: FontWeight.bold),
+                          ),
+                          //    SizedBox(height: screenSize.height * 0.007),
+                          Text(
+                            "Description",
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          //    SizedBox(height: screenSize.height * 0.007),
+                          Text(
+                            "Class: Fertiliser",
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          //  SizedBox(height: screenSize.height * 0.007),
+                          Text(
+                            "Type: Organic",
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                          // SizedBox(height: screenSize.height * 0.007),
+                          Text(
+                            "Quantity: 200ml",
+                            style: TextStyle(fontSize: 12.sp),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
           ),
