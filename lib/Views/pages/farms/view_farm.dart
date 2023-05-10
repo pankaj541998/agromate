@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_agro_new/Views/pages/crop-plan/add_crop_plan_from_farm.dart';
 import 'package:flutter_agro_new/component/top_bar.dart';
 import 'package:flutter_agro_new/providers/map_filter_provider.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:get/get.dart';
 import 'package:async/async.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../component/dropdown_btn.dart';
 import '../../../constants.dart';
@@ -440,7 +442,8 @@ class _ViewFarmState extends State<ViewFarm> {
                                               .map((e) {
                                             return e.fieldName.toString();
                                           }).toList(),
-                                          hint: watchProvider.currentField ??
+                                          hint:
+                                              //  watchProvider.currentField ??
                                               'Field',
                                           onItemSelected: (value) async {
                                             readProvider.enableCropDropdown();
@@ -573,8 +576,62 @@ class _ViewFarmState extends State<ViewFarm> {
                                                   ? false
                                                   : true,
                                           child: IconButton(
-                                            onPressed: () {
-                                              Get.toNamed('/crop_plan');
+                                            onPressed: () async {
+                                              // Get.to(AddCropPlanFromFarm())
+
+                                              Get.toNamed(
+                                                '/AddCropPlanFromFarm',
+                                                // arguments: [
+                                                //   {
+                                                //     "farm": watchProvider
+                                                //         .currentFarm,
+                                                //     "farmId": watchProvider
+                                                //         .currentFarmId,
+                                                //     "block": watchProvider
+                                                //         .currentBlock,
+                                                //     "blockId": watchProvider
+                                                //         .currentBlockId,
+                                                //     "field": watchProvider
+                                                //         .currentField,
+                                                //     "fieldId": watchProvider
+                                                //         .currentFieldId,
+                                                //   },
+                                                // ],
+                                              
+                                              );
+
+                                              var argData = [
+                                                {
+                                                  "farm": watchProvider
+                                                      .currentFarm,
+                                                  "farmId": watchProvider
+                                                      .currentFarmId,
+                                                  "block": watchProvider
+                                                      .currentBlock,
+                                                  "blockId": watchProvider
+                                                      .currentBlockId,
+                                                  "field": watchProvider
+                                                      .currentField,
+                                                  "fieldId": watchProvider
+                                                      .currentFieldId,
+                                                },
+                                              ];
+
+                                              String encodedData = json.encode(argData);
+
+                                              // Obtain shared preferences.
+                                              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                                              await prefs.setString('argData', encodedData);
+
+
+
+
+
+
+
+
+                                              
                                             },
                                             icon: const Icon(Icons
                                                 .add_circle_outline_rounded),

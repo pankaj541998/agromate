@@ -378,6 +378,7 @@ class _AllocateState extends State<Allocate> {
                                   SizedBox(
                                     height: 15,
                                   ),
+                                /*
                                   DropdownBtn(
                                     items: fetchedblock
                                         .where((element) =>
@@ -398,6 +399,7 @@ class _AllocateState extends State<Allocate> {
                                       });
                                     },
                                   ),
+                                */
                                 ],
                               ),
                               Column(

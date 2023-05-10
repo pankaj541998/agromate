@@ -30,6 +30,7 @@ class _DropdownBtnState extends State<DropdownBtn> {
     return PopupMenuButton<String>(
       offset: const Offset(0, 48),
       enabled: widget.isEnabled,
+      initialValue: label,
       itemBuilder: (BuildContext context) {
         return widget.items
             .map((e) => PopupMenuItem<String>(
