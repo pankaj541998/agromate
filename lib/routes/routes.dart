@@ -1,3 +1,4 @@
+import 'package:flutter_agro_new/Views/pages/crop-plan/add_crop_plan_from_farm.dart';
 import 'package:flutter_agro_new/Views/pages/login_Registration/forgot_Password.dart';
 import 'package:flutter_agro_new/Views/pages/login_Registration/my_Profile.dart';
 import 'package:get/get.dart';
@@ -61,6 +62,8 @@ class AppRoutes {
         GetPage(name: '/plot_block', page: () => PlotBlock()),
         GetPage(name: '/plot_field', page: () => PlotField()),
         GetPage(name: '/inventory', page: () => const Inventory()),
+        GetPage(name: '/AddCropPlanFromFarm', page: () => AddCropPlanFromFarm()),
+
         GetPage(name: '/stockplanner', page: () => const StockPlanner()),
         GetPage(
             name: '/stockplannertable', page: () => const StockPlannerTable()),
